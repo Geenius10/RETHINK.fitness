@@ -742,6 +742,7 @@ body.modal-open{
   display:none!important;
 }
 
+.exercise-category-heading{padding:10px 4px 6px;color:#8d8d94;font-size:10px;font-weight:900;letter-spacing:.10em;text-transform:uppercase}
 </style>
 
 
@@ -750,6 +751,41 @@ body.modal-open{
 <meta name="apple-mobile-web-app-title" content="Geeniusapp">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 
+<style>
+.my-drink-row{display:flex;align-items:center;gap:8px}
+.my-drink-main{flex:1;min-width:0;border:0;background:transparent;text-align:left;display:flex;align-items:center;justify-content:space-between;padding:0}
+.drink-order-controls{display:flex;gap:4px;flex:0 0 auto}
+.drink-order-controls button{width:32px;height:32px;border:1px solid rgba(0,0,0,.12);background:var(--card2);color:var(--text);border-radius:8px;font-size:16px;line-height:1;padding:0;-webkit-appearance:none;appearance:none}
+.drink-order-controls button:disabled{opacity:.25}
+</style>
+<style>
+/* v2.40: Getränk bearbeiten als eigener, ruhiger Bildschirm */
+#drinkInlineForm.drink-editor-screen{
+ position:fixed;inset:0;z-index:9999;background:var(--bg);color:var(--text);overflow-y:auto;
+ padding:max(20px,env(safe-area-inset-top)) 18px max(28px,env(safe-area-inset-bottom));
+ box-sizing:border-box;
+}
+#drinkInlineForm.drink-editor-screen .drink-form-head,
+#drinkInlineForm.drink-editor-screen>label,
+#drinkInlineForm.drink-editor-screen>.grid-2,
+#drinkInlineForm.drink-editor-screen>.drink-inline-hint,
+#drinkInlineForm.drink-editor-screen>#saveDrinkInline,
+#drinkInlineForm.drink-editor-screen>#deleteDrinkInline{max-width:620px;margin-left:auto;margin-right:auto}
+#drinkInlineForm.drink-editor-screen .drink-form-head{margin-bottom:22px}
+#drinkInlineForm.drink-editor-screen #drinkInlineTitle{font-size:22px}
+.my-drink-row,.my-drink-main,.drink-order-controls button{-webkit-tap-highlight-color:transparent}
+.my-drink-main:focus,.my-drink-main:active,.drink-order-controls button:focus,.drink-order-controls button:active{outline:none;box-shadow:none}
+.my-drink-main{color:inherit}
+.my-drink-main::selection,.my-drink-name::selection,.my-drink-meta::selection{background:transparent}
+</style>
+<style>
+/* v2.41: kompakte Getränkeliste */
+.my-drink-row{min-height:58px}
+.my-drink-main{min-width:0}
+.my-drink-main>div:first-child{min-width:0;flex:1}
+.my-drink-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.my-drink-meta{font-size:11px!important;line-height:1.2!important;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}
+</style>
 </head>
 <body>
 <div class="app">
@@ -810,7 +846,7 @@ body.modal-open{
     <div class="form-field"><label>Kalorien / Tag</label><input id="dailyCalories" inputmode="numeric" placeholder="z. B. 2400"></div>
     <div class="form-field"><label>Protein / Tag</label><input id="dailyProtein" inputmode="decimal" placeholder="z. B. 180 g"></div>
   </div>
-  <div class="form-field"><label>Flüssigkeit / Tag (ml)</label><input id="dailyHydration" inputmode="numeric" min="1" placeholder="z. B. 2500"></div>
+  <div class="form-field"><label>Flüssigkeit / Tag (ml)</label><input id="dailyHydration" inputmode="numeric" min="1" placeholder="z. B. 2000"></div>
   <button id="saveNutritionGoals" class="primary full" style="margin-top:13px">Ziele speichern</button>
 </div>
 
@@ -825,8 +861,8 @@ body.modal-open{
   <div class="hydration-progress-wrap">
     <div class="hydration-progress"><div id="hydrationProgressBar" class="hydration-progress-bar"></div></div>
     <div class="hydration-progress-meta">
-      <span id="hydrationNetText">0 ml netto</span>
-      <span id="hydrationGoalText">Ziel 2.000 ml</span>
+      <span id="hydrationNetText">–</span>
+      <span id="hydrationGoalText">Ziel berechnen</span>
     </div>
   </div>
   <div id="hydrationNutritionImpact" class="hydration-impact">0 kcal aus Getränken</div>
@@ -1006,16 +1042,18 @@ body.modal-open{
 <div id="finishWorkoutModal" class="modal hidden"><div id="finishWorkoutOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2>Training beenden?</h2><button id="closeFinishWorkout" class="close-button">×</button></div><p id="finishWorkoutCopy" class="confirm-copy"></p><div class="sheet-buttons finish-workout-actions"><button id="cancelFinishWorkout" class="finish-dark">Weitertrainieren</button><button id="discardWorkoutBtn" class="finish-dark">Verwerfen</button><button id="confirmFinishWorkout" class="finish-save">Speichern</button></div></div></div>
 
 <script>
+const NUTRITION_CALCULATED_KEY="geeniusapp_nutrition_targets_calculated";
+
 let addingExerciseToLiveWorkout=false;
 "use strict";
-const defaultExercises=[{"name":"Barbell Bench Press","category":"Gewichte","tracking":"reps","variants":["Standard","Incline","Decline"],"subcategory":"Brust","muscles":["Brust","Arme","Schulter"]},{"name":"Dumbbell Bench Press","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Brust","muscles":["Brust","Arme","Schulter"]},{"name":"Pull-Over","category":"Gewichte","tracking":"reps","subcategory":"Brust","muscles":["Brust","Rücken"]},{"name":"Dumbbell Fly","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Brust","muscles":["Brust"]},{"name":"Cable-Fly","category":"Gewichte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Dumbbell Lateral Raise","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Standing Shoulder Press","category":"Gewichte","tracking":"reps","variants":["Dumbbell","Barbell"],"subcategory":"Schulter","muscles":["Schulter","Arme"]},{"name":"Seated Dumbbell Shoulder Press","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Schulter","muscles":["Schulter","Arme"]},{"name":"Barbell Row","category":"Gewichte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme"]},{"name":"Dumbbell Row","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Rücken","muscles":["Rücken","Arme"]},{"name":"T-Bar Row","category":"Gewichte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme"]},{"name":"Face-Pull","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"Prone Arm Circles","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"Triceps Extension","category":"Gewichte","tracking":"reps","subcategory":"Arme","muscles":["Arme"]},{"name":"Biceps Curl","category":"Gewichte","tracking":"reps","subcategory":"Arme","muscles":["Arme"]},{"name":"Dumbbell Shoulder Rotation","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Barbell Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte","Core"]},{"name":"Front Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Core","Gesäß/Hüfte"]},{"name":"Goblet Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte","Core"]},{"name":"ATG Split Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Bulgarian Split Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Barbell Deadlift","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte","Rücken","Core"]},{"name":"Romanian Deadlift","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte","Rücken"]},{"name":"Barbell Hip Thrust","category":"Gewichte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine"]},{"name":"Tibialis Raise","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine"]},{"name":"Barbell Good Morning","category":"Gewichte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte","Rücken"]},{"name":"Suitcase Carry","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core","Arme"]},{"name":"Paloff Press","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core"]},{"name":"Landmine Rotation","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Chest Press","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme","Schulter"]},{"name":"Butterfly Machine","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Cable Fly","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Reverse Fly","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"Lat Pull-Down","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme"]},{"name":"Cable Row","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme"]},{"name":"Chest Supported Row","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme"]},{"name":"Cable Lateral Raise","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Cable Shoulder Rotation","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Cable Triceps Extension","category":"Geräte","tracking":"reps","subcategory":"Arme","muscles":["Arme"]},{"name":"Cable Biceps Curl","category":"Geräte","tracking":"reps","subcategory":"Arme","muscles":["Arme"]},{"name":"Leg Press","category":"Geräte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Leg Extension","category":"Geräte","tracking":"reps","subcategory":"Beine","muscles":["Beine"]},{"name":"Leg Curl","category":"Geräte","tracking":"reps","subcategory":"Beine","muscles":["Beine"]},{"name":"Hip Adduction Machine","category":"Geräte","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Hip Abduction Machine","category":"Geräte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine"]},{"name":"Hip Thrust Machine","category":"Geräte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine"]},{"name":"Calf Machine","category":"Geräte","tracking":"reps","variants":["Seated","Standing"],"subcategory":"Beine","muscles":["Beine"]},{"name":"Crunch Machine","category":"Geräte","tracking":"reps","subcategory":"Core","muscles":["Core"]},{"name":"Push-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme","Schulter","Core"]},{"name":"Dip","category":"Körpergewicht","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme","Schulter"]},{"name":"Pull-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme","Core"]},{"name":"Chin-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme"]},{"name":"Step-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Step-Down","category":"Körpergewicht","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Reverse Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Curtsy Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte"]},{"name":"Reverse Nordics","category":"Körpergewicht","tracking":"reps","subcategory":"Beine","muscles":["Beine"]},{"name":"Nordic Hamstring Curl","category":"Körpergewicht","tracking":"reps","subcategory":"Beine","muscles":["Beine"]},{"name":"Glute Bridge","category":"Körpergewicht","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine"]},{"name":"Clamshell","category":"Körpergewicht","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte"]},{"name":"Hollow Body Hold","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core"]},{"name":"Ab Wheel","category":"Körpergewicht","tracking":"reps","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Plank","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Side Plank","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Bird Dog","category":"Körpergewicht","tracking":"reps","subcategory":"Core","muscles":["Core","Gesäß/Hüfte"]},{"name":"Hyperextensions","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Gesäß/Hüfte","Beine"]},{"name":"Muscle-Up","category":"Calisthenics","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme","Brust","Core"]},{"name":"Handstand","category":"Calisthenics","tracking":"reps_time","subcategory":"Schulter","muscles":["Schulter","Arme","Core"]},{"name":"Handstand Push-Up","category":"Calisthenics","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Arme","Core"]},{"name":"Planche","category":"Calisthenics","tracking":"reps_time","subcategory":"Schulter","muscles":["Schulter","Brust","Arme","Core"]},{"name":"Planche Push-Up","category":"Calisthenics","tracking":"reps","subcategory":"Brust","muscles":["Brust","Schulter","Arme","Core"]},{"name":"L-Sit/V-Sit","category":"Calisthenics","tracking":"reps_time","subcategory":"Core","muscles":["Core","Arme"]},{"name":"Hanging Leg Raise","category":"Calisthenics","tracking":"reps","subcategory":"Core","muscles":["Core","Arme"]},{"name":"Dragon Flag","category":"Calisthenics","tracking":"reps","subcategory":"Core","muscles":["Core","Rücken"]},{"name":"Front Lever","category":"Calisthenics","tracking":"reps_time","subcategory":"Rücken","muscles":["Rücken","Core","Arme"]},{"name":"Back Lever","category":"Calisthenics","tracking":"reps_time","subcategory":"Rücken","muscles":["Rücken","Schulter","Core"]},{"name":"Human Flag","category":"Calisthenics","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter","Arme"]},{"name":"Pistol Squat","category":"Calisthenics","tracking":"reps","subcategory":"Beine","muscles":["Beine","Gesäß/Hüfte","Core"]},{"name":"Sissy Squat","category":"Calisthenics","tracking":"reps","subcategory":"Beine","muscles":["Beine"]},{"name":"Laufband","category":"Cardio","tracking":"cardio","muscles":["Beine"],"subcategory":"Beine"},{"name":"Fahrradergometer","category":"Cardio","tracking":"cardio","muscles":["Beine"],"subcategory":"Beine"},{"name":"AirBike","category":"Cardio","tracking":"cardio","muscles":["Beine","Arme"],"subcategory":"Beine"},{"name":"Skiergometer","category":"Cardio","tracking":"cardio","muscles":["Rücken","Arme","Core"],"subcategory":"Rücken"},{"name":"Ruderergometer","category":"Cardio","tracking":"cardio","muscles":["Rücken","Beine","Arme","Core"],"subcategory":"Rücken"},{"name":"CrossTrainer","category":"Cardio","tracking":"cardio","muscles":["Beine","Arme"],"subcategory":"Beine"},{"name":"StairMaster","category":"Cardio","tracking":"cardio","muscles":["Beine","Gesäß/Hüfte"],"subcategory":"Beine"},{"name":"Seilspringen","category":"Cardio","tracking":"cardio","muscles":["Beine","Sprünge"],"subcategory":"Beine"},{"name":"Countermovement Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Squat Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Tuck Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Core","Athletik"]},{"name":"Box Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Depth Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Athletik"]},{"name":"Drop Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Athletik"]},{"name":"Broad Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Repeated Broad Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Pogo Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Athletik"]},{"name":"Single-Leg Hop","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Athletik"]},{"name":"Repeated Single-Leg Hop","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Athletik"]},{"name":"Lateral Bound","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Skater Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Split Squat Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Alternating Lunge Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Hurdle Hop","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Athletik"]},{"name":"Lateral Hurdle Hop","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Athletik"]},{"name":"Bounding","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Single-Leg Bound","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"180° Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Core","Athletik"]},{"name":"Approach Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Kneeling Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine","Gesäß/Hüfte","Athletik"]},{"name":"Power Clean","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"Hang Power Clean","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"Clean","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"Hang Clean","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"Clean Pull","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte","Rücken"]},{"name":"High Pull","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Rücken","Schulter","Beine"]},{"name":"Power Snatch","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"Hang Power Snatch","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"Snatch Pull","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte","Rücken"]},{"name":"Push Press","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme","Beine"]},{"name":"Push Jerk","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme","Beine"]},{"name":"Split Jerk","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme","Beine"]},{"name":"Jump Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Sprünge","Beine","Gesäß/Hüfte"]},{"name":"Loaded Jump Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Sprünge","Beine","Gesäß/Hüfte"]},{"name":"Half Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte"]},{"name":"Quarter Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte"]},{"name":"Speed Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine","Gesäß/Hüfte"]},{"name":"Kettlebell Swing","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Gesäß/Hüfte","Beine","Core"]},{"name":"Landmine Push Press","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme","Core"]},{"name":"Medicine Ball Chest Pass","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Brust","Arme"]},{"name":"Medicine Ball Overhead Throw","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme","Core"]},{"name":"Medicine Ball Scoop Toss","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Gesäß/Hüfte"]},{"name":"Medicine Ball Rotational Throw","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Schulter"]},{"name":"Medicine Ball Slam","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Schulter","Arme"]},{"name":"Medicine Ball Shot Put","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Brust","Schulter","Arme"]}];
+const defaultExercises=[{"name":"Back Lever","category":"Calisthenics","tracking":"reps_time","subcategory":"Rücken","muscles":["Rücken","Schulter","Core"]},{"name":"Dragon Flag","category":"Calisthenics","tracking":"reps","subcategory":"Core","muscles":["Core","Rücken"]},{"name":"Front Lever","category":"Calisthenics","tracking":"reps_time","subcategory":"Rücken","muscles":["Rücken","Core","Arme/Hände"]},{"name":"Handstand","category":"Calisthenics","tracking":"reps_time","subcategory":"Schulter","muscles":["Schulter","Arme/Hände","Core"]},{"name":"Handstand Push-Up","category":"Calisthenics","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Arme/Hände","Core"]},{"name":"Hanging Leg Raise","category":"Calisthenics","tracking":"reps","subcategory":"Core","muscles":["Core","Arme/Hände"]},{"name":"Human Flag","category":"Calisthenics","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter","Arme/Hände"]},{"name":"L-Sit/V-Sit","category":"Calisthenics","tracking":"reps_time","subcategory":"Core","muscles":["Core","Arme/Hände"]},{"name":"Muscle-Up","category":"Calisthenics","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände","Brust","Core"]},{"name":"Pistol Squat","category":"Calisthenics","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Core"]},{"name":"Planche","category":"Calisthenics","tracking":"reps_time","subcategory":"Schulter","muscles":["Schulter","Brust","Arme/Hände","Core"]},{"name":"Planche Push-Up","category":"Calisthenics","tracking":"reps","subcategory":"Brust","muscles":["Brust","Schulter","Arme/Hände","Core"]},{"name":"Sissy Squat","category":"Calisthenics","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"AirBike","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße","Arme/Hände"],"subcategory":"Beine/Füße"},{"name":"CrossTrainer","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße","Arme/Hände"],"subcategory":"Beine/Füße"},{"name":"Fahrradergometer","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße"],"subcategory":"Beine/Füße"},{"name":"Laufband","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße"],"subcategory":"Beine/Füße"},{"name":"Ruderergometer","category":"Cardio","tracking":"cardio","muscles":["Rücken","Beine/Füße","Arme/Hände","Core"],"subcategory":"Rücken"},{"name":"Seilspringen","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße","Sprünge"],"subcategory":"Beine/Füße"},{"name":"Skiergometer","category":"Cardio","tracking":"cardio","muscles":["Rücken","Arme/Hände","Core"],"subcategory":"Rücken"},{"name":"StairMaster","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße","Gesäß/Hüfte"],"subcategory":"Beine/Füße"},{"name":"Box Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Broad Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Clean Pull","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine/Füße","Gesäß/Hüfte","Rücken"]},{"name":"Countermovement Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Depth Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Athletik"]},{"name":"Half Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine/Füße","Gesäß/Hüfte"]},{"name":"Hang Power Clean","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine/Füße","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"High Pull","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Rücken","Schulter","Beine/Füße"]},{"name":"Jump Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Sprünge","Beine/Füße","Gesäß/Hüfte"]},{"name":"Kettlebell Swing","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Gesäß/Hüfte","Beine/Füße","Core"]},{"name":"Landmine Push Press","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme/Hände","Core"]},{"name":"Lateral Bound","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Loaded Jump Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Sprünge","Beine/Füße","Gesäß/Hüfte"]},{"name":"Medicine Ball Chest Pass","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Brust","Arme/Hände"]},{"name":"Medicine Ball Overhead Throw","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme/Hände","Core"]},{"name":"Medicine Ball Rotational Throw","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Schulter"]},{"name":"Medicine Ball Scoop Toss","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Gesäß/Hüfte"]},{"name":"Medicine Ball Shot Put","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Brust","Schulter","Arme/Hände"]},{"name":"Medicine Ball Slam","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Schulter","Arme/Hände"]},{"name":"Pogo Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Athletik"]},{"name":"Power Clean","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine/Füße","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"Push Press","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme/Hände","Beine/Füße"]},{"name":"Repeated Broad Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Single-Leg Bound","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Butterfly Machine","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Cable Biceps Curl","category":"Geräte","tracking":"reps","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Cable Fly","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Cable Lateral Raise","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Cable Row","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Cable Shoulder Rotation","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Cable Triceps Extension","category":"Geräte","tracking":"reps","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Calf Machine","category":"Geräte","tracking":"reps","variants":["Seated","Standing"],"subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Chest Press","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter"]},{"name":"Chest Supported Row","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Crunch Machine","category":"Geräte","tracking":"reps","subcategory":"Core","muscles":["Core"]},{"name":"Hip Abduction Machine","category":"Geräte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine/Füße"]},{"name":"Hip Adduction Machine","category":"Geräte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Hip Thrust Machine","category":"Geräte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine/Füße"]},{"name":"Lat Pull-Down","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Leg Curl","category":"Geräte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Leg Extension","category":"Geräte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Leg Press","category":"Geräte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Reverse Fly","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"ATG Split Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Barbell Bench Press","category":"Gewichte","tracking":"reps","variants":["Standard","Incline","Decline"],"subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter"]},{"name":"Barbell Deadlift","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Rücken","Core"]},{"name":"Barbell Good Morning","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Rücken"]},{"name":"Barbell Hip Thrust","category":"Gewichte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine/Füße"]},{"name":"Barbell Row","category":"Gewichte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Barbell Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Core"]},{"name":"Biceps Curl","category":"Gewichte","tracking":"reps","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Bulgarian Split Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Cable-Fly","category":"Gewichte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Dumbbell Bench Press","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter"]},{"name":"Dumbbell Fly","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Brust","muscles":["Brust"]},{"name":"Dumbbell Lateral Raise","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Dumbbell Row","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Dumbbell Shoulder Rotation","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Face-Pull","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"Front Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Core","Gesäß/Hüfte"]},{"name":"Goblet Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Core"]},{"name":"Landmine Rotation","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Paloff Press","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core"]},{"name":"Prone Arm Circles","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"Pull-Over","category":"Gewichte","tracking":"reps","subcategory":"Brust","muscles":["Brust","Rücken"]},{"name":"Romanian Deadlift","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Rücken"]},{"name":"Seated Dumbbell Shoulder Press","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Schulter","muscles":["Schulter","Arme/Hände"]},{"name":"Standing Shoulder Press","category":"Gewichte","tracking":"reps","variants":["Dumbbell","Barbell"],"subcategory":"Schulter","muscles":["Schulter","Arme/Hände"]},{"name":"Suitcase Carry","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core","Arme/Hände"]},{"name":"T-Bar Row","category":"Gewichte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Tibialis Raise","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Triceps Extension","category":"Gewichte","tracking":"reps","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Ab Wheel","category":"Körpergewicht","tracking":"reps","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Bird Dog","category":"Körpergewicht","tracking":"reps","subcategory":"Core","muscles":["Core","Gesäß/Hüfte"]},{"name":"Chin-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Clamshell","category":"Körpergewicht","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte"]},{"name":"Curtsy Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Dip","category":"Körpergewicht","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter"]},{"name":"Glute Bridge","category":"Körpergewicht","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine/Füße"]},{"name":"Hollow Body Hold","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core"]},{"name":"Hyperextensions","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Gesäß/Hüfte","Beine/Füße"]},{"name":"Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Nordic Hamstring Curl","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Plank","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Pull-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände","Core"]},{"name":"Push-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter","Core"]},{"name":"Reverse Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Reverse Nordics","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Side Plank","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Step-Down","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Step-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"90/90 Hip Switch","category":"Mobilität","tracking":"time","subcategory":"Beine/Füße","muscles":["Beine/Füße","Core"]},{"name":"Ankle Dorsiflexion Mobilization","category":"Mobilität","tracking":"time","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Cat-Cow","category":"Mobilität","tracking":"time","subcategory":"Rücken","muscles":["Rücken","Core"]},{"name":"Couch Stretch","category":"Mobilität","tracking":"time","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Deep Squat Hold","category":"Mobilität","tracking":"time","subcategory":"Beine/Füße","muscles":["Beine/Füße","Core"]},{"name":"Open Book Rotation","category":"Mobilität","tracking":"time","subcategory":"Rücken","muscles":["Rücken","Core"]},{"name":"Shoulder CARs","category":"Mobilität","tracking":"time","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Thoracic Rotation","category":"Mobilität","tracking":"time","subcategory":"Rücken","muscles":["Rücken"]},{"name":"Wall Shoulder Flexion","category":"Mobilität","tracking":"time","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Wrist CARs","category":"Mobilität","tracking":"time","subcategory":"Arme/Hände","muscles":["Arme/Hände"]}];
 defaultExercises.forEach(e=>{
  if(e.category==="Gewichte"||e.category==="Geräte")e.tracking="reps_time";
  e.muscles=Array.isArray(e.muscles)&&e.muscles.length?e.muscles:[e.subcategory||"Core"];
  e.subcategory=e.muscles[0];
 });
 const STORAGE={plans:"gymapp_plans",custom:"gymapp_custom_exercises",library:"gymapp_exercise_library",history:"gymapp_workout_history",active:"gymapp_active_workout",measurements:"gymapp_measurements",nutrition:"gymapp_nutrition",profile:"gymapp_profile"};
-let editingCardio=false;let plans=[],customExercises=[],workoutHistory=[],measurements=[],nutritionGoals={calories:"",protein:"",hydration:"2000"},profile={age:"",height:"",sex:"male",activity:"1.55",goal:"cut"},exerciseLibrary={hidden:[],renames:{},meta:{}},currentPlan=null,selectedExercise=null,editingIndex=null,actionIndex=null,pendingWorkoutPlanId=null,activeWorkoutData=null,workoutClockInterval=null,restTimerInterval=null,restTimerEnd=null,exerciseTimerInterval=null,exerciseTimerTarget=null,ratingTarget=null,audioCtx=null;
+let editingCardio=false;let plans=[],customExercises=[],workoutHistory=[],measurements=[],nutritionGoals={calories:"",protein:"",hydration:""},profile={age:"",height:"",sex:"male",activity:"1.55",goal:"cut"},exerciseLibrary={hidden:[],renames:{},meta:{}},currentPlan=null,selectedExercise=null,editingIndex=null,actionIndex=null,pendingWorkoutPlanId=null,activeWorkoutData=null,workoutClockInterval=null,restTimerInterval=null,restTimerEnd=null,exerciseTimerInterval=null,exerciseTimerTarget=null,ratingTarget=null,audioCtx=null;
 const $=id=>document.getElementById(id);
 
 const REST_END_KEY="geeniusapp_rest_end";
@@ -1110,7 +1148,7 @@ function renderExercises(){
  connectTechniqueGroups("exerciseList")
 }
 let exerciseCategoryFilter="Alle",exerciseSubcategoryFilter="Alle";
-const trainingTypes=["Gewichte","Geräte","Körpergewicht","Calisthenics","Explosivität","Cardio"];
+const trainingTypes=["Gewichte","Geräte","Körpergewicht","Calisthenics","Mobilität","Cardio","Explosivität"];
 const muscleGroups=["Brust","Schulter","Rücken","Arme","Beine","Gesäß/Hüfte","Core","Sprünge","Athletik"];
 function renderFilterRow(){
  const primary=$("exerciseFilters"),secondary=$("exerciseSubfilters");
@@ -1181,12 +1219,60 @@ window.addEventListener("DOMContentLoaded",bindExerciseModalControls);
 
 function openExerciseModal(){
  $("search").value="";exerciseCategoryFilter="Alle";exerciseSubcategoryFilter="Alle";renderFilterRow();renderExerciseOptions("");$("exerciseModal").classList.remove("hidden")
-;bindExerciseBackButton();;document.body.classList.add("modal-open");bindExerciseModalControls();}
+;bindExerciseBackButton();;document.body.classList.add("modal-open");bindExerciseModalControls();;bindLiveExerciseSearch();}
 function renderExerciseOptions(q){
- $("exerciseOptions").innerHTML="";q=q.toLowerCase().trim();
- allExercises().filter(x=>(exerciseCategoryFilter==="Alle"||x.category===exerciseCategoryFilter)&&(exerciseSubcategoryFilter==="Alle"||(x.muscles||[]).includes(exerciseSubcategoryFilter))&&(x.name.toLowerCase().includes(q)||x.category.toLowerCase().includes(q)||(x.muscles||[]).some(m=>m.toLowerCase().includes(q)))).forEach(x=>{
-  const b=document.createElement("button");b.className="exercise-option clean-exercise-option";b.innerHTML=`<strong>${esc(x.name)}</strong>`;b.onclick=()=>selectExercise(x.name);$("exerciseOptions").appendChild(b)
- })
+ const box=$("exerciseOptions");
+ box.innerHTML="";
+ const query=String(q||"").toLowerCase().trim();
+ const categoryOrder=["Gewichte","Geräte","Körpergewicht","Calisthenics","Mobilität","Cardio","Explosivität"];
+
+ let items=allExercises();
+
+ // 1. Suchbegriff immer zuerst anwenden – unabhängig vom aktuell gewählten Bereich.
+ if(query){
+   items=items.filter(x=>
+     x.name.toLowerCase().includes(query) ||
+     x.category.toLowerCase().includes(query) ||
+     String(x.subcategory||"").toLowerCase().includes(query) ||
+     (x.muscles||[]).some(m=>m.toLowerCase().includes(query))
+   );
+ }
+
+ // 2. Danach den gewählten Trainingsbereich einschränken.
+ if(exerciseCategoryFilter!=="Alle"){
+   items=items.filter(x=>x.category===exerciseCategoryFilter);
+ }
+
+ // 3. Danach ggf. die Muskelgruppe / den Bereich einschränken.
+ if(exerciseSubcategoryFilter!=="Alle"){
+   items=items.filter(x=>(x.muscles||[]).includes(exerciseSubcategoryFilter));
+ }
+
+ // Feste Bereichsreihenfolge; Übungen innerhalb des Bereichs alphabetisch.
+ items.sort((a,b)=>{
+   const ai=categoryOrder.indexOf(a.category),bi=categoryOrder.indexOf(b.category);
+   const aOrder=ai===-1?999:ai,bOrder=bi===-1?999:bi;
+   if(aOrder!==bOrder)return aOrder-bOrder;
+   return String(a.name||"").localeCompare(String(b.name||""),"de",{sensitivity:"base"});
+ });
+
+ let lastCategory="";
+ items.forEach(x=>{
+   if(exerciseCategoryFilter==="Alle" && x.category!==lastCategory){
+     const h=document.createElement("div");
+     h.className="exercise-category-heading";
+     h.textContent=x.category;
+     box.appendChild(h);
+     lastCategory=x.category;
+   }
+   const b=document.createElement("button");
+   b.className="exercise-option clean-exercise-option";
+   b.innerHTML=`<strong>${esc(x.name)}</strong>`;
+   b.onclick=()=>selectExercise(x.name);
+   box.appendChild(b);
+ });
+
+ // Bei Suche ohne Treffer darf die Liste einfach leer bleiben.
 }
 function openLibraryActions(name){
  const ok=confirm(`„${name}“ verwalten?\n\nOK = umbenennen\nAbbrechen = löschen oder nichts tun`);
@@ -1262,13 +1348,10 @@ function applyTechniqueUI(){
 function updateTechniquePartner(){
  const t=$("setTechnique").value,show=groupedTechniques.has(t),wrap=$("techniquePartnerWrap"),sel=$("techniquePartner");
  wrap.classList.toggle("config-hidden",!show);
- sel.innerHTML='<option value="">Noch nicht verknüpfen</option>';
+ sel.innerHTML='<option value="">Bitte zweite Übung wählen</option>';
  if(show){
    const source=addingExerciseToLiveWorkout?(activeWorkoutData?.exercises||[]):(currentPlan?.exercises||[]);
-   source.forEach((e,i)=>{
-     if(isCardio(e)||i===editingIndex)return;
-     const o=document.createElement("option");o.value=String(i);o.textContent=(e.techniqueGroup?"▰ ":"")+e.name;sel.appendChild(o)
-   })
+   source.forEach((e,i)=>{if(isCardio(e)||i===editingIndex)return;const o=document.createElement("option");o.value=String(i);o.textContent=(e.techniqueGroup?"▰ ":"")+e.name;sel.appendChild(o)});
  }
 }
 function detachTechniqueGroup(e){
@@ -1926,26 +2009,77 @@ function estimateHydrationTarget(weight,height,activity){
   return Math.max(1500,Math.min(5000,Math.round(ml/100)*100))
 }
 function calculateCalorieAdvice(){
-  const latest=measurements.slice().sort((a,b)=>a.date.localeCompare(b.date)).at(-1);
-  const weight=Number(latest?.weight),age=Number(profile.age),height=Number(profile.height),activity=Number(profile.activity);
-  if(!weight||!age||!height||!activity)return alert("Für einen sinnvollen Tipp brauchen wir dein aktuelles Gewicht, Alter und deine Größe.");
-  if(age<14||age>100)return alert("Bitte ein Alter zwischen 14 und 100 Jahren eingeben.");
-  if(height<120||height>230)return alert("Bitte eine Größe zwischen 120 und 230 cm eingeben.");
-  const bmr=profile.sex==="female"?(10*weight+6.25*height-5*age-161):(10*weight+6.25*height-5*age+5);
-  const maintenance=roundTo50(bmr*activity),goal=profile.goal||"cut",adjustment=goal==="cut"?-400:goal==="gain"?250:0;
-  const target=Math.max(1200,roundTo50(maintenance+adjustment));
-  const protein=Math.round(weight*1.6/5)*5;
-  const hydration=estimateHydrationTarget(weight,height,activity);
-  const title=goal==="cut"?"Gewicht verlieren":goal==="gain"?"Muskelaufbau":"Gewicht halten";
-  const range=goal==="cut"?"ca. 300–500 kcal unter Erhalt":goal==="gain"?"ca. 200–300 kcal über Erhalt":"ungefähr auf Erhalt";
-  $("calorieAdvice").innerHTML=`<div class="calorie-advice-title">Startwerte für ${title}</div><div class="calorie-advice-kcal">${target} kcal / Tag</div><div class="calorie-advice-meta">Geschätzter Erhalt: ca. ${maintenance} kcal · ${range}.<br>Protein: ca. ${protein} g / Tag (1,6 g/kg).<br>Flüssigkeit: ca. ${hydration.toLocaleString("de-DE")} ml / Tag.</div><button id="useCalorieAdvice" class="primary full" style="margin-top:11px;min-height:44px">Als Ziele übernehmen</button>`;
-  $("calorieAdvice").classList.remove("hidden");
-  $("hydrationFormulaNote").textContent="Flüssigkeit ist ein Startwert aus Gewicht, Größe und Aktivität. Hitze, starkes Schwitzen und lange Trainingseinheiten können den tatsächlichen Bedarf erhöhen.";
-  $("hydrationFormulaNote").classList.remove("hidden");
+  const latest=[...measurements].sort((a,b)=>String(a.date||"").localeCompare(String(b.date||""))).at(-1);
+  if(!latest||!latest.weight)return alert("Bitte zuerst unter Messungen ein Gewicht eintragen.");
+
+  const weight=parseFloat(String(latest.weight).replace(",","."));
+  const height=parseFloat(String(profile.height||"").replace(",","."));
+  const age=parseFloat(String(profile.age||"").replace(",","."));
+  const activity=parseFloat(String(profile.activity||"1.55").replace(",","."));
+  const sex=profile.sex||"male";
+  const goal=profile.goal||"cut";
+
+  if(!Number.isFinite(weight)||weight<=0)return alert("Bitte ein gültiges Gewicht eintragen.");
+  if(!Number.isFinite(height)||height<=0)return alert("Bitte deine Körpergröße im Profil eintragen.");
+  if(!Number.isFinite(age)||age<=0)return alert("Bitte dein Alter im Profil eintragen.");
+
+  // Mifflin-St.-Jeor
+  const bmr=sex==="female"
+    ? 10*weight+6.25*height-5*age-161
+    : 10*weight+6.25*height-5*age+5;
+
+  const maintenance=bmr*activity;
+
+  // Zielabhängige Anpassung statt pauschalem Fixwert.
+  let calorieFactor=1;
+  if(["cut","lose","weightloss"].includes(goal))calorieFactor=.80;
+  else if(["gain","bulk","muscle"].includes(goal))calorieFactor=1.08;
+
+  const target=Math.round((maintenance*calorieFactor)/50)*50;
+
+  // Protein realistisch nach Aktivität und Ziel staffeln.
+  let proteinPerKg=1.2;
+  if(["cut","lose","weightloss"].includes(goal)){
+    proteinPerKg=activity>=1.55?1.8:1.6;
+  }else if(["gain","bulk","muscle"].includes(goal)){
+    proteinPerKg=activity>=1.55?1.6:1.4;
+  }else{
+    proteinPerKg=activity>=1.55?1.6:activity>=1.375?1.4:1.2;
+  }
+  const protein=Math.round(weight*proteinPerKg);
+
+  // Trinkziel = Getränke, nicht Gesamtwasser inklusive Nahrung.
+  // Alltag bewusst moderat; Aktivität erhöht den Zielwert stufenweise.
+  let hydration=1500;
+  if(weight>=70)hydration+=100;
+  if(weight>=90)hydration+=100;
+  if(activity>=1.375)hydration+=250;
+  if(activity>=1.55)hydration+=250;
+  if(activity>=1.725)hydration+=300;
+  if(activity>=1.90)hydration+=300;
+
+  // Beim Abnehmen kein künstlich hohes Literziel:
+  // nur ein kleiner praktischer Aufschlag, der z.B. Wasser vor Mahlzeiten ermöglicht.
+  if(["cut","lose","weightloss"].includes(goal))hydration+=200;
+
+  hydration=Math.max(1500,Math.min(3000,Math.round(hydration/50)*50));
+
+  $("calorieAdvice").innerHTML=
+    `<div class="calorie-advice-title">Dein berechneter Startwert</div>`+
+    `<div class="calorie-advice-kcal">${target} kcal / Tag</div>`+
+    `<div class="calorie-advice-meta">Geschätzter Erhaltungsbedarf: ca. ${Math.round(maintenance/50)*50} kcal.<br>Protein: ca. ${protein} g / Tag (${proteinPerKg.toFixed(1).replace(".",",")} g/kg).<br>Flüssigkeit: ca. ${hydration.toLocaleString("de-DE")} ml / Tag.</div>`+
+    `<button id="useCalorieAdvice" class="primary full" style="margin-top:11px;min-height:44px">Als Ziele übernehmen</button>`;
+
+  if($("hydrationFormulaNote")){
+    $("hydrationFormulaNote").textContent="Das Trinkziel meint Getränke, nicht das gesamte Wasser aus Getränken und Lebensmitteln. Aktivität erhöht den Bedarf; beim Abnehmen ist nur ein kleiner zusätzlicher Puffer vorgesehen – mehr Wasser allein führt nicht automatisch zu mehr Gewichtsverlust.";
+    $("hydrationFormulaNote").classList.remove("hidden");
+  }
+
   $("useCalorieAdvice").onclick=()=>{
     nutritionGoals.calories=String(target);
     nutritionGoals.protein=String(protein);
     nutritionGoals.hydration=String(hydration);
+    localStorage.setItem(NUTRITION_CALCULATED_KEY,"1");
     localStorage.setItem(HYDRATION_GOAL_KEY,String(hydration));
     saveAll();
     renderProgress();
@@ -1953,17 +2087,27 @@ function calculateCalorieAdvice(){
     toast("Kalorien-, Protein- und Flüssigkeitsziel übernommen")
   };
 }
-function renderProgress(){renderHydration();
+function renderProgress(){
+  const hasMeasurement=measurements.some(m=>parseLocaleNumber(m.weight)!==null);
+  if(!hasMeasurement){
+    nutritionGoals={calories:"",protein:"",hydration:""};
+    localStorage.removeItem(NUTRITION_CALCULATED_KEY);
+    localStorage.removeItem(HYDRATION_GOAL_KEY);
+    saveAll();
+  }
+
+  const hasNutritionTargets=hasMeasurement&&localStorage.getItem(NUTRITION_CALCULATED_KEY)==="1";
+renderHydration();
   const sorted=[...measurements].sort((a,b)=>a.date.localeCompare(b.date));
   const latest=sorted.at(-1), previous=sorted.at(-2);
   $("latestWeight").textContent=latest?.weight?`${Number(latest.weight).toFixed(1)} kg`:"—";
   $("latestBodyFat").textContent=latest?.bodyFat?`${Number(latest.bodyFat).toFixed(1)} %`:"—";
   $("weightTrend").textContent=latest&&previous&&latest.weight&&previous.weight?`${(Number(latest.weight)-Number(previous.weight)>0?"+":"")}${(Number(latest.weight)-Number(previous.weight)).toFixed(1)} kg seit letzter Messung`:"Noch keine Vergleichsdaten";
   $("bodyFatTrend").textContent=latest&&previous&&latest.bodyFat&&previous.bodyFat?`${(Number(latest.bodyFat)-Number(previous.bodyFat)>0?"+":"")}${(Number(latest.bodyFat)-Number(previous.bodyFat)).toFixed(1)} %-Pkt.`:"Noch keine Vergleichsdaten";
-  $("dailyCalories").value=nutritionGoals.calories||"";
-  $("dailyProtein").value=nutritionGoals.protein||"";$("dailyHydration").value=nutritionGoals.hydration||"2000";
-  if($("calorieTargetLabel"))$("calorieTargetLabel").textContent=nutritionGoals.calories?`${nutritionGoals.calories} kcal`:"Nicht gesetzt";
-  if($("proteinTargetLabel"))$("proteinTargetLabel").textContent=nutritionGoals.protein?`${nutritionGoals.protein} g`:"Nicht gesetzt";if($("hydrationTargetLabel"))$("hydrationTargetLabel").textContent=`${Number(nutritionGoals.hydration||2000).toLocaleString("de-DE")} ml`;$("measurementSummary").textContent=latest?(latest.weight?`${Number(latest.weight).toFixed(1)} kg · ${new Date(latest.date+"T12:00:00").toLocaleDateString("de-DE")}`:`Letzte Messung · ${new Date(latest.date+"T12:00:00").toLocaleDateString("de-DE")}`):"Noch keine Messung";$("calorieTipSummary").textContent=nutritionGoals.calories?`Ziel: ${nutritionGoals.calories} kcal / Tag`:"Noch kein Kalorienziel gesetzt";
+  $("dailyCalories").value=hasNutritionTargets?(nutritionGoals.calories||""):"";
+  $("dailyProtein").value=hasNutritionTargets?(nutritionGoals.protein||""):"";if($("dailyHydration"))$("dailyHydration").value=hasNutritionTargets?(nutritionGoals.hydration||""):"";
+  if($("calorieTargetLabel"))$("calorieTargetLabel").textContent=hasNutritionTargets&&nutritionGoals.calories?`${nutritionGoals.calories} kcal`:"–";
+  if($("proteinTargetLabel"))$("proteinTargetLabel").textContent=hasNutritionTargets&&nutritionGoals.protein?`${nutritionGoals.protein} g`:"–";if($("hydrationTargetLabel"))$("hydrationTargetLabel").textContent=hasNutritionTargets&&nutritionGoals.hydration?`${Number(nutritionGoals.hydration).toLocaleString("de-DE")} ml`:"–";$("measurementSummary").textContent=latest?(latest.weight?`${Number(latest.weight).toFixed(1)} kg · ${new Date(latest.date+"T12:00:00").toLocaleDateString("de-DE")}`:`Letzte Messung · ${new Date(latest.date+"T12:00:00").toLocaleDateString("de-DE")}`):"Noch keine Messung";$("calorieTipSummary").textContent=hasNutritionTargets&&nutritionGoals.calories?`Ziel: ${nutritionGoals.calories} kcal / Tag`:"Noch keine Ziele berechnet";
   $("profileAge").value=profile.age||"";
   $("profileHeight").value=profile.height||"";
   $("profileSex").value=profile.sex||"male";
@@ -1977,6 +2121,16 @@ function renderProgress(){renderHydration();
     row.querySelector("button").onclick=()=>{measurements=measurements.filter(x=>x.id!==m.id);saveAll();renderProgress();toast("Messung gelöscht")};
     box.appendChild(row);
   });
+
+  if(!hasNutritionTargets){
+    if($("calorieAdvice")&&!$("calorieAdvice").querySelector("#useCalorieAdvice")){
+      $("calorieAdvice").innerHTML=hasMeasurement?'<div class="empty-small">Berechne deinen persönlichen Startwert für Kalorien, Protein und Flüssigkeit.</div>':'<div class="empty-small">Trage zuerst unter Messungen dein Gewicht ein. Danach kann der Kalorien-Tipp berechnet werden.</div>';
+      $("calorieAdvice").classList.remove("hidden");
+    }
+    if($("calorieTargetLabel"))$("calorieTargetLabel").textContent="–";
+    if($("proteinTargetLabel"))$("proteinTargetLabel").textContent="–";
+    if($("hydrationTargetLabel"))$("hydrationTargetLabel").textContent="–";
+  }
 }
 function openMeasurement(){
   $("measurementWeight").value="";
@@ -1997,11 +2151,20 @@ $("saveMeasurement").onclick=()=>{
 };
 $("saveNutritionGoals").onclick=()=>{
   const cal=parseLocaleNumber($("dailyCalories").value), prot=parseLocaleNumber($("dailyProtein").value);
-  nutritionGoals={calories:cal===null?"":String(Math.round(cal)),protein:prot===null?"":String(Math.round(prot)),hydration:String(parseInt($("dailyHydration").value,10)||nutritionGoals.hydration||2000)};
-  saveAll();renderProgress();toast("Ernährungsziele gespeichert");
+  const hydRaw=$("dailyHydration").value.trim(),hyd=hydRaw===""?"":String(Math.max(1,Math.round(parseFloat(hydRaw.replace(",","."))||0)));
+  nutritionGoals={calories:cal===null?"":String(Math.round(cal)),protein:prot===null?"":String(Math.round(prot)),hydration:hyd};
+  if(hyd)localStorage.setItem(HYDRATION_GOAL_KEY,hyd);else localStorage.removeItem(HYDRATION_GOAL_KEY);
+  if(cal!==null||prot!==null||hyd)localStorage.setItem(NUTRITION_CALCULATED_KEY,"1");
+  saveAll();renderProgress();renderHydration();toast("Ernährungsziele gespeichert");
 };
 $("resetMeasurements").onclick=()=>{
-  if(confirm("Alle Messwerte löschen?")){measurements=[];saveAll();renderProgress();toast("Messwerte gelöscht")}
+  if(confirm("Alle Messwerte löschen?")){
+    measurements=[];
+    nutritionGoals={calories:"",protein:"",hydration:""};
+    localStorage.removeItem(NUTRITION_CALCULATED_KEY);
+    localStorage.removeItem(HYDRATION_GOAL_KEY);
+    saveAll();renderProgress();renderHydration();toast("Messwerte gelöscht")
+  }
 };
 $("calculateCalories").onclick=()=>{
   profile.age=$("profileAge").value.trim();
@@ -2087,13 +2250,53 @@ function ensureHydrationDay(){
 function todayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
 function nfmt(v){return Math.round(Number(v)||0).toLocaleString("de-DE")}
 function ensureDefaultWater(){
- const drinks=loadDrinks();let water=drinks.find(d=>String(d.id)==="default-water"||String(d.name||"").trim().toLowerCase()==="wasser");
- if(!water){water={id:"default-water",name:"Wasser",size:250,lastSize:250,hydration:100,calories:0,caffeine:0,builtIn:true};drinks.unshift(water)}
- else{water.id="default-water";water.name="Wasser";water.builtIn=true;water.size=Number(water.size)||250;water.lastSize=Number(water.lastSize)||water.size;water.hydration=Number.isFinite(Number(water.hydration))?Number(water.hydration):100;const others=drinks.filter(d=>d!==water);drinks.splice(0,drinks.length,water,...others)}
- saveDrinks(drinks);return drinks
+ const DEFAULT_DRINKS_VERSION="v2-39";
+ const versionKey="geeniusapp_default_drinks_version";
+ const defaults=[
+  {id:"default-water",name:"Wasser",size:250,lastSize:250,hydration:100,calories:0,caffeine:0,builtIn:true,order:0},
+  {id:"default-coffee",name:"Kaffee",size:250,lastSize:250,hydration:95,calories:2,caffeine:95,builtIn:true,order:1},
+  {id:"default-cappuccino",name:"Cappuccino",size:200,lastSize:200,hydration:97,calories:80,caffeine:75,builtIn:true,order:2},
+  {id:"default-oat-cappuccino",name:"Hafer Cappuccino",size:200,lastSize:200,hydration:96,calories:90,caffeine:75,builtIn:true,order:3},
+  {id:"default-espresso",name:"Espresso",size:30,lastSize:30,hydration:85,calories:2,caffeine:63,builtIn:true,order:4},
+  {id:"default-herbal-tea",name:"Kräuter Tee",size:250,lastSize:250,hydration:100,calories:0,caffeine:0,builtIn:true,order:5},
+  {id:"default-green-tea",name:"Grüner Tee",size:250,lastSize:250,hydration:99,calories:0,caffeine:25,builtIn:true,order:6},
+  {id:"default-black-tea",name:"Schwarzer Tee",size:250,lastSize:250,hydration:99,calories:0,caffeine:45,builtIn:true,order:7},
+  {id:"default-na-beer",name:"Bier alkoholfrei",size:500,lastSize:500,hydration:100,calories:100,caffeine:0,builtIn:true,order:8},
+  {id:"default-beer",name:"Bier",size:500,lastSize:500,hydration:70,calories:215,caffeine:0,builtIn:true,order:9},
+  {id:"default-diet-soda",name:"Diätlimonade",size:330,lastSize:330,hydration:95,calories:0,caffeine:0,builtIn:true,order:10},
+  {id:"default-soda",name:"Limonade",size:330,lastSize:330,hydration:85,calories:135,caffeine:0,builtIn:true,order:11},
+  {id:"default-juice",name:"Saft",size:250,lastSize:250,hydration:85,calories:110,caffeine:0,builtIn:true,order:12},
+  {id:"default-gin-tonic",name:"Gin Tonic",size:250,lastSize:250,hydration:30,calories:170,caffeine:0,builtIn:true,order:13},
+  {id:"default-aperol",name:"Aperol Spritz",size:250,lastSize:250,hydration:40,calories:190,caffeine:0,builtIn:true,order:14},
+  {id:"default-white-wine",name:"Weißwein",size:150,lastSize:150,hydration:35,calories:120,caffeine:0,builtIn:true,order:15},
+  {id:"default-red-wine",name:"Rotwein",size:150,lastSize:150,hydration:35,calories:125,caffeine:0,builtIn:true,order:16},
+  {id:"default-prosecco",name:"Prosecco",size:100,lastSize:100,hydration:35,calories:75,caffeine:0,builtIn:true,order:17},
+  {id:"default-energy",name:"Energy Drink",size:250,lastSize:250,hydration:80,calories:110,caffeine:80,builtIn:true,order:18},
+  {id:"default-smoothie",name:"Smoothie",size:250,lastSize:250,hydration:85,calories:150,caffeine:0,builtIn:true,order:19},
+  {id:"default-milkshake",name:"Milchshake",size:300,lastSize:300,hydration:75,calories:300,caffeine:0,builtIn:true,order:20}
+ ];
+ let drinks=loadDrinks();
+ if(localStorage.getItem(versionKey)!==DEFAULT_DRINKS_VERSION){
+   const custom=drinks.filter(d=>!d.builtIn&&String(d.id)!=="default-water");
+   const existingWater=drinks.find(d=>String(d.id)==="default-water"||String(d.name||"").trim().toLowerCase()==="wasser");
+   const water={...defaults[0],...(existingWater||{}),id:"default-water",name:"Wasser",builtIn:true,order:0};
+   drinks=[water,...defaults.slice(1).map(d=>({...d})),...custom.map((d,i)=>({...d,order:defaults.length+i}))];
+   localStorage.setItem(versionKey,DEFAULT_DRINKS_VERSION);
+   saveDrinks(drinks);
+ }
+ if(!drinks.some(d=>String(d.id)==="default-water")){
+   drinks.unshift({...defaults[0]});saveDrinks(drinks)
+ }
+ drinks=drinks.map((d,i)=>({...d,order:Number.isFinite(Number(d.order))?Number(d.order):i}));
+ saveDrinks(drinks);
+ return drinks
 }
-function sortedDrinks(){return ensureDefaultWater().slice().sort((a,b)=>String(a.id)==="default-water"?-1:String(b.id)==="default-water"?1:String(a.name||"").localeCompare(String(b.name||""),"de"))}
-function hydrationGoal(){const g=parseInt(nutritionGoals?.hydration||localStorage.getItem(HYDRATION_GOAL_KEY)||"2000",10);return Number.isFinite(g)&&g>0?g:2000}
+function sortedDrinks(){return ensureDefaultWater().slice().sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0))}
+function hydrationGoal(){
+ if(localStorage.getItem(NUTRITION_CALCULATED_KEY)!=="1")return 0;
+ const g=parseInt(nutritionGoals?.hydration||localStorage.getItem(HYDRATION_GOAL_KEY)||"",10);
+ return Number.isFinite(g)&&g>0?g:0
+}
 function drinkCalc(d,size){const f=size/250;return{net:size*(Number(d.hydration)||0)/100,calories:(Number(d.calories)||0)*f,caffeine:(Number(d.caffeine)||0)*f}}
 function todayDrinkEntries(){const t=todayKey();return loadDrinkLog().filter(x=>x.date===t)}
 function hydrationTotals(){return todayDrinkEntries().reduce((a,x)=>{a.volume+=Number(x.size)||0;a.net+=Number(x.netHydration)||0;a.calories+=Number(x.calories)||0;a.caffeine+=Number(x.caffeine)||0;return a},{volume:0,net:0,calories:0,caffeine:0})}
@@ -2121,29 +2324,68 @@ function resetInlineDrinkForm(){
  editingDrinkId=null;$("drinkInlineTitle").textContent="Getränk erstellen";$("drinkNameInline").disabled=false;$("drinkNameInline").value="";$("drinkSizeInline").value="250";$("drinkHydrationInline").value="100";$("drinkCaloriesInline").value="";$("drinkCaffeineInline").value="";$("deleteDrinkInline").classList.add("hidden")
 }
 function showInlineDrinkForm(drinkId=null){
- const d=drinkId?sortedDrinks().find(x=>x.id===drinkId):null;editingDrinkId=drinkId;$("drinkInlineForm").classList.remove("hidden");$("showDrinkFormBtn").classList.add("hidden");
+ const d=drinkId?sortedDrinks().find(x=>String(x.id)===String(drinkId)):null;editingDrinkId=drinkId;
+ const form=$("drinkInlineForm");form.classList.remove("hidden");form.classList.add("drink-editor-screen");$("showDrinkFormBtn").classList.add("hidden");
  if(d){$("drinkInlineTitle").textContent="Getränk bearbeiten";$("drinkNameInline").value=d.name;$("drinkNameInline").disabled=String(d.id)==="default-water";$("drinkSizeInline").value=d.lastSize||d.size||250;$("drinkHydrationInline").value=d.hydration??100;$("drinkCaloriesInline").value=Number(d.calories)?d.calories:"";$("drinkCaffeineInline").value=Number(d.caffeine)?d.caffeine:"";$("deleteDrinkInline").classList.toggle("hidden",String(d.id)==="default-water")}
- else resetInlineDrinkForm()
+ else resetInlineDrinkForm();
+ form.scrollTop=0;document.body.style.overflow="hidden"
 }
-function hideInlineDrinkForm(){$("drinkInlineForm").classList.add("hidden");$("showDrinkFormBtn").classList.remove("hidden");resetInlineDrinkForm()}
+function hideInlineDrinkForm(){const form=$("drinkInlineForm");form.classList.add("hidden");form.classList.remove("drink-editor-screen");$("showDrinkFormBtn").classList.remove("hidden");document.body.style.overflow="";resetInlineDrinkForm()}
 function saveInlineDrink(){
  const name=$("drinkNameInline").value.trim(),size=parseInt($("drinkSizeInline").value,10),hyd=parseFloat($("drinkHydrationInline").value);
  if(!name)return alert("Bitte einen Namen eingeben.");if(!Number.isFinite(size)||size<1||size>1000)return alert("Die Größe muss zwischen 1 und 1000 ml liegen.");if(!Number.isFinite(hyd))return alert("Bitte die Hydrierung in Prozent angeben.");
  const calories=$("drinkCaloriesInline").value===""?0:Math.max(0,parseFloat($("drinkCaloriesInline").value)||0),caffeine=$("drinkCaffeineInline").value===""?0:Math.max(0,parseFloat($("drinkCaffeineInline").value)||0),drinks=loadDrinks();
- if(editingDrinkId){const i=drinks.findIndex(d=>String(d.id)===String(editingDrinkId));if(i>=0){const builtIn=String(drinks[i].id)==="default-water";drinks[i]={...drinks[i],name:builtIn?"Wasser":name,size,lastSize:size,hydration:hyd,calories,caffeine,builtIn}}}
+ if(editingDrinkId){const i=drinks.findIndex(d=>String(d.id)===String(editingDrinkId));if(i>=0){const isWater=String(drinks[i].id)==="default-water";drinks[i]={...drinks[i],name:isWater?"Wasser":name,size,lastSize:size,hydration:hyd,calories,caffeine,builtIn:Boolean(drinks[i].builtIn)}}}
  else{if(drinks.some(d=>String(d.name||"").trim().toLowerCase()===name.toLowerCase()))return alert("Ein Getränk mit diesem Namen existiert bereits.");drinks.push({id:String(id()),name,size,lastSize:size,hydration:hyd,calories,caffeine,builtIn:false})}
  saveDrinks(drinks);hideInlineDrinkForm();renderHydration();$("myDrinksDetails").open=true;toast("Getränk gespeichert")
 }
 function deleteInlineDrink(){if(!editingDrinkId||String(editingDrinkId)==="default-water")return;if(!confirm("Dieses Getränk wirklich löschen?"))return;saveDrinks(loadDrinks().filter(d=>d.id!==editingDrinkId));hideInlineDrinkForm();renderHydration();toast("Getränk gelöscht")}
+function moveDrink(drinkId,direction){
+ const drinks=sortedDrinks(),i=drinks.findIndex(d=>String(d.id)===String(drinkId)),j=i+direction;
+ if(i<0||j<0||j>=drinks.length)return;
+ [drinks[i],drinks[j]]=[drinks[j],drinks[i]];
+ drinks.forEach((d,idx)=>d.order=idx);
+ saveDrinks(drinks);renderHydration()
+}
 function renderMyDrinks(){
- const list=$("myDrinksList");if(!list)return;const drinks=sortedDrinks();$("myDrinksCount").textContent=drinks.length;list.innerHTML="";
- drinks.forEach(d=>{const row=document.createElement("button");row.className="my-drink-row";row.innerHTML=`<div><div class="my-drink-name">${esc(d.name)}</div><div class="my-drink-meta">${d.lastSize||d.size||250} ml · ${d.hydration}% Hydrierung${Number(d.calories)?` · ${d.calories} kcal/250 ml`:""}${Number(d.caffeine)?` · ${d.caffeine} mg Koffein/250 ml`:""}</div></div><div class="compact-plan-chevron">›</div>`;row.onclick=()=>showInlineDrinkForm(d.id);list.appendChild(row)})
+  const list=$("myDrinksList");if(!list)return;const drinks=sortedDrinks();
+  $("myDrinksCount").textContent=drinks.length;list.innerHTML="";
+  drinks.forEach((d,index)=>{
+    const size=Number(d.lastSize||d.size||250),c=drinkCalc(d,size);
+    const meta=[`${size} ml`,`${nfmt(c.net)} ml netto`];
+    if(Number(c.caffeine)>0)meta.push(`${Math.round(c.caffeine)} mg Koffein`);
+    if(Number(c.calories)>0)meta.push(`${Math.round(c.calories)} kcal`);
+    const row=document.createElement("div");row.className="my-drink-row";
+    row.innerHTML=`<button class="my-drink-main" type="button"><div><div class="my-drink-name">${esc(d.name)}</div><div class="my-drink-meta">${meta.join(" · ")}</div></div><div class="compact-plan-chevron">›</div></button><div class="drink-order-controls"><button type="button" aria-label="Nach oben" ${index===0?"disabled":""}>↑</button><button type="button" aria-label="Nach unten" ${index===drinks.length-1?"disabled":""}>↓</button></div>`;
+    row.querySelector(".my-drink-main").onclick=()=>showInlineDrinkForm(d.id);
+    const orderBtns=row.querySelectorAll(".drink-order-controls button");
+    orderBtns[0].onclick=e=>{e.stopPropagation();moveDrink(d.id,-1)};
+    orderBtns[1].onclick=e=>{e.stopPropagation();moveDrink(d.id,1)};
+    list.appendChild(row)
+  })
 }
 function renderHydration(){
- ensureHydrationDay();ensureDefaultWater();const t=hydrationTotals(),goal=hydrationGoal(),pct=Math.max(0,Math.min(100,t.net/goal*100));
- $("hydrationProgressBar").style.width=pct+"%";$("hydrationNetText").textContent=`${nfmt(t.net)} ml netto`;$("hydrationGoalText").textContent=`Ziel ${nfmt(goal)} ml`;$("hydrationSummary").textContent=t.volume?`Heute ${nfmt(t.volume)} ml getrunken · ${nfmt(t.net)} ml hydriert`:"Heute noch nichts eingetragen";$("hydrationNutritionImpact").textContent=`${Math.round(t.calories)} kcal aus Getränken${t.caffeine?` · ${Math.round(t.caffeine)} mg Koffein`:""}`;
- const list=$("hydrationTodayList");list.innerHTML="";todayDrinkEntries().slice().reverse().forEach(x=>{const row=document.createElement("div");row.className="hydration-item";row.innerHTML=`<div><div class="hydration-item-name">${esc(x.name)}</div><div class="hydration-item-meta">${x.size} ml · ${nfmt(x.netHydration)} ml netto${x.calories?` · ${Math.round(x.calories)} kcal`:""}</div></div><button class="hydration-item-delete">Löschen</button>`;row.querySelector("button").onclick=()=>{saveDrinkLog(loadDrinkLog().filter(y=>y.id!==x.id));renderHydration()};list.appendChild(row)});
+  const hydrationGoalValue=Number(nutritionGoals.hydration||localStorage.getItem(HYDRATION_GOAL_KEY)||0);
+  const hasHydrationGoal=Number.isFinite(hydrationGoalValue)&&hydrationGoalValue>0;
+
+ ensureHydrationDay();ensureDefaultWater();const t=hydrationTotals(),goal=hydrationGoalValue,pct=hasHydrationGoal?Math.max(0,Math.min(100,(t.net/goal)*100)):0;
+ $("hydrationProgressBar").style.width=(Number.isFinite(pct)?pct:0)+"%";$("hydrationNetText").textContent=hasHydrationGoal?`${nfmt(t.net)} ml netto`:"–";$("hydrationGoalText").textContent=hasHydrationGoal?`Ziel ${nfmt(goal)} ml`:"Ziel berechnen";$("hydrationSummary").textContent=t.volume?`Heute ${nfmt(t.volume)} ml getrunken · ${nfmt(t.net)} ml hydriert`:"Heute noch nichts eingetragen";$("hydrationNutritionImpact").textContent=`${Math.round(t.calories)} kcal aus Getränken${t.caffeine?` · ${Math.round(t.caffeine)} mg Koffein`:""}`;
+ const list=$("hydrationTodayList");list.innerHTML="";todayDrinkEntries().slice().reverse().forEach(x=>{const row=document.createElement("div");row.className="hydration-item";const meta=[`${x.size} ml`,`${nfmt(x.netHydration)} ml netto`];if(Number(x.caffeine)>0)meta.push(`${Math.round(x.caffeine)} mg Koffein`);if(Number(x.calories)>0)meta.push(`${Math.round(x.calories)} kcal`);row.innerHTML=`<div><div class="hydration-item-name">${esc(x.name)}</div><div class="hydration-item-meta">${meta.join(" · ")}</div></div><button class="hydration-item-delete">Löschen</button>`;row.querySelector("button").onclick=()=>{saveDrinkLog(loadDrinkLog().filter(y=>y.id!==x.id));renderHydration()};list.appendChild(row)});
  renderQuickDrink(false);renderMyDrinks()
+
+  if(!hasHydrationGoal){
+    const goalNode=$("hydrationGoalText")||$("hydrationGoalDisplay")||$("hydrationGoalLabel");
+    if(goalNode)goalNode.textContent="Ziel berechnen";
+    const progress=$("hydrationProgress");
+    if(progress)progress.style.width="0%";
+    const amount=$("hydrationAmount")||$("hydrationCurrent");
+    if(amount)amount.textContent="–";
+    const hint=$("hydrationFormulaNote");
+    if(hint){
+      hint.textContent="Noch kein Flüssigkeitsziel berechnet. Nutze den Kalorien-Tipp im Bereich Ernährungsziele.";
+      hint.classList.remove("hidden");
+    }
+  }
 }
 function initHydrationUI(){
  ensureHydrationDay();ensureDefaultWater();renderHydration();
@@ -2253,6 +2495,45 @@ function installSafeSwipeTouchHandling(){
   },{passive:true,capture:true});
 }
 window.addEventListener("DOMContentLoaded",installSafeSwipeTouchHandling);
+
+
+function bindLiveExerciseSearch(){
+  const input=$("search");
+  if(!input)return;
+
+  // Rebind safely so each keystroke filters immediately.
+  input.oninput=null;
+  input.onkeyup=null;
+
+  const update=()=>{
+    renderExerciseOptions(input.value);
+  };
+
+  input.addEventListener("input",update);
+  input.addEventListener("keyup",update);
+}
+window.addEventListener("DOMContentLoaded",bindLiveExerciseSearch);
+
+
+function ensureCommonDrinks(){
+ const common=[
+  {name:"Wasser",size:250,hydration:100,calories:"",caffeine:"",builtin:true},
+  {name:"Kaffee",size:250,hydration:90,calories:2,caffeine:90,builtin:true},
+  {name:"Tee",size:250,hydration:95,calories:0,caffeine:30,builtin:true},
+  {name:"Milch",size:250,hydration:90,calories:120,caffeine:"",builtin:true},
+  {name:"Orangensaft",size:250,hydration:85,calories:110,caffeine:"",builtin:true},
+  {name:"Apfelsaft",size:250,hydration:85,calories:115,caffeine:"",builtin:true},
+  {name:"Cola",size:250,hydration:85,calories:105,caffeine:25,builtin:true},
+  {name:"Cola Zero",size:250,hydration:90,calories:0,caffeine:25,builtin:true},
+  {name:"Energy Drink",size:250,hydration:80,calories:110,caffeine:80,builtin:true},
+  {name:"Sportgetränk",size:500,hydration:100,calories:120,caffeine:"",builtin:true},
+  {name:"Kakao",size:250,hydration:85,calories:180,caffeine:5,builtin:true}
+ ];
+ const existing=new Set((drinks||[]).map(d=>String(d.name||"").toLowerCase()));
+ common.forEach(d=>{if(!existing.has(d.name.toLowerCase()))drinks.push(d)});
+ if(typeof saveDrinks==="function")saveDrinks();
+}
+window.addEventListener("DOMContentLoaded",()=>{ensureCommonDrinks();if(typeof renderHydration==="function")renderHydration()});
 
 </script>
 </body>
