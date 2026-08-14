@@ -1134,12 +1134,73 @@ body.modal-open{
 </style><style id="v273-preview-parity">
 .preview-load-cue{display:block;margin-top:3px;font-size:9px;color:var(--muted);font-weight:800}
 .preview-advanced-set-card{margin-top:10px}
+</style><style id="v274-ui">
+.live-exercise,.workout-method-frame,.plan-preview-card,.readonly-workout-card{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;overflow:hidden}.plan-preview-screen-content,.plan-preview-live,.preview-live-sets,.preview-advanced-sets,.segment-list,.unified-set-list{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+.preview-live-set{display:grid!important;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 48px!important;gap:7px!important;align-items:center}.preview-group-row,.advanced-segment-row.preview-group-row{display:grid!important;grid-template-columns:32px minmax(0,1.15fr) minmax(58px,.72fr) minmax(58px,.72fr) 44px!important;gap:6px!important;align-items:center;min-width:0}.preview-group-row>*{min-width:0}.preview-input-like{min-width:0!important;width:100%!important;padding:0 7px!important}.preview-done-placeholder{width:42px!important;max-width:42px!important}.unified-small-exercise{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.preview-advanced-set-card{max-width:100%;overflow:hidden}
+@media(max-width:430px){.preview-group-row,.advanced-segment-row.preview-group-row{grid-template-columns:28px minmax(0,1fr) 58px 58px 38px!important;gap:5px!important}.preview-input-like{font-size:12px!important}.unified-small-exercise{font-size:11px!important}}
+.time-config-wrap{grid-column:1/-1}.time-extra-grid,.time-parameter-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.preview-time-params{margin:8px 0 12px}
+.plan-card-simple{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;color:var(--text);touch-action:manipulation}.plan-card-simple .plan-name{font-weight:900!important;font-size:20px}.plan-card-simple .plan-count{margin-top:6px;color:var(--muted)}.plan-chevron{font-size:24px}.compact-action-sheet{max-width:520px}.plan-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:8px}.plan-choice-grid button{min-height:52px}
+.bottom-inner-four{grid-template-columns:repeat(4,1fr)!important}.bottom-inner-four .nav-button{min-width:0;font-size:11px}.bottom-inner-four .nav-icon{font-size:18px}
+.catalog-search{margin:8px 0 12px}.catalog-filters{margin-bottom:14px}.catalog-exercise-list{display:grid;gap:9px}.catalog-exercise-card{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:14px 15px;border:1px solid var(--line);border-radius:15px;background:var(--card);color:var(--text)}.catalog-exercise-card strong{display:block;font-weight:850}.catalog-exercise-card small{display:block;margin-top:4px;color:var(--muted);font-size:11px}.catalog-detail-body{display:grid;gap:10px}.catalog-detail-hero{padding:14px;border:1px solid var(--line);border-radius:15px;background:var(--card2)}.catalog-detail-hero strong{display:block;font-size:20px}.catalog-detail-hero span{display:block;margin-top:5px;color:var(--muted)}.catalog-detail-row{display:flex;justify-content:space-between;gap:18px;padding:12px 2px;border-bottom:1px solid var(--line);font-size:13px}.catalog-detail-row span{color:var(--muted)}.catalog-detail-row strong{text-align:right}.catalog-detail-note{padding:12px;border-radius:12px;background:var(--card2);color:var(--muted);font-size:12px}
+.summary-actual-set-row{grid-template-columns:34px minmax(0,1fr) minmax(80px,auto)!important;gap:8px!important}.summary-actual-values{min-width:0;overflow-wrap:anywhere}
+</style><style id="v275-catalog">
+.bottom-inner-five{grid-template-columns:repeat(5,minmax(0,1fr))!important}.bottom-inner-five .nav-button{min-width:0!important;font-size:10px!important;padding-left:2px!important;padding-right:2px!important}.bottom-inner-five .nav-icon{font-size:17px!important}
+#catalogHome .filter-axis-label{margin-top:12px}.catalog-filters{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:5px}.catalog-filters::-webkit-scrollbar{display:none}
+.catalog-exercise-card{display:grid!important;grid-template-columns:62px minmax(0,1fr) 20px!important;align-items:center!important;gap:12px!important}.catalog-card-copy{min-width:0}.catalog-card-copy strong{font-size:16px}.catalog-card-copy small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.catalog-thumb{width:62px;height:52px;object-fit:cover;border-radius:9px;background:#202024;border:1px solid var(--line)}
+.catalog-detail-screen{padding:0!important;min-height:100dvh;background:var(--bg)}
+.catalog-detail-header{position:sticky;top:0;z-index:50;display:grid;grid-template-columns:52px minmax(0,1fr) 52px;align-items:center;padding:max(10px,env(safe-area-inset-top)) 16px 10px;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.catalog-detail-header h2{margin:0;text-align:center;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.catalog-detail-header .back-button{width:48px;height:48px}
+.catalog-detail-hero-image{width:100%;aspect-ratio:16/9;background-position:center;background-size:cover;background-color:#1e1e22}
+.catalog-detail-full-body{padding:18px 20px calc(28px + env(safe-area-inset-bottom));display:grid;gap:14px}
+.catalog-detail-category{justify-self:start;padding:7px 11px;border-radius:999px;background:#24242a;border:1px solid var(--line);font-size:12px;font-weight:800}
+.catalog-detail-section{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:15px 0;border-bottom:1px solid var(--line)}.catalog-detail-section span{color:var(--muted)}.catalog-detail-section strong{text-align:right;max-width:65%}
+.catalog-detail-copy{padding-top:4px}.catalog-detail-copy h3{margin:0 0 8px;font-size:15px}.catalog-detail-copy p{margin:0;color:var(--muted);line-height:1.5}
+.food-iq-home{min-height:calc(100dvh - 100px)}.food-iq-empty{min-height:62vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}.food-iq-icon{font-size:54px;opacity:.45}.food-iq-empty h2{font-size:25px;margin:18px 0 8px}.food-iq-empty p{max-width:280px;color:var(--muted)}
+</style><style id="v276-no-exercise-images">
+.catalog-exercise-card{grid-template-columns:minmax(0,1fr) 20px!important;padding:16px 15px!important}
+.catalog-thumb,.catalog-detail-hero-image{display:none!important}
+.catalog-detail-full-body{padding-top:24px!important}
+.catalog-detail-category{margin-top:4px}
+</style><style id="v277-layout-fixes">
+.catalog-detail-header{grid-template-columns:52px minmax(0,1fr) 20px!important}
+.catalog-detail-header h2{text-align:left!important;padding-left:4px}
+.catalog-detail-full-body{text-align:left!important}
+.catalog-detail-section{text-align:left!important}.catalog-detail-section strong{text-align:left!important}
+.advanced-segment-row,.preview-group-row,.advanced-segment-row.preview-group-row{
+ grid-template-columns:28px minmax(0,1fr) minmax(54px,.72fr) minmax(54px,.72fr) 36px!important;
+ column-gap:4px!important;row-gap:6px!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important
+}
+.advanced-segment-row .unified-input,.preview-group-row .preview-input-like{min-width:0!important;width:100%!important;padding-left:5px!important;padding-right:5px!important}
+.segment-list,.advanced-set-card,.preview-advanced-set-card{min-width:0!important;max-width:100%!important;overflow:hidden!important}
+@media(max-width:390px){.advanced-segment-row,.preview-group-row,.advanced-segment-row.preview-group-row{grid-template-columns:25px minmax(0,1fr) 52px 52px 32px!important;column-gap:3px!important}.unified-small-exercise{font-size:10px!important}}
+.time-parameter-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important}
+.time-set{grid-template-columns:30px minmax(58px,.72fr) minmax(0,1fr) 54px!important;gap:6px!important}
+.time-set-head{grid-template-columns:30px minmax(58px,.72fr) minmax(0,1fr) 54px!important;gap:6px!important}
+.time-inline-level{min-width:0!important}
+</style><style id="v278-theme-profile">
+:root[data-theme="dark"]{--bg:#09090b;--card:#151518;--card2:#1c1c20;--line:#29292e;--text:#f5f5f7;--muted:#8e8e93}
+:root[data-theme="light"]{--bg:#f5f5f7;--card:#ffffff;--card2:#f0f0f3;--line:#d9d9df;--text:#111114;--muted:#6f6f78;--green:#28a745;--red:#dc3545}
+:root[data-theme="light"] body,:root[data-theme="light"] .app,:root[data-theme="light"] .plan-preview-screen,:root[data-theme="light"] .catalog-detail-screen,:root[data-theme="light"] .profile-screen{background:var(--bg)!important;color:var(--text)!important}
+:root[data-theme="light"] .icon-button,:root[data-theme="light"] .back-button,:root[data-theme="light"] .close-button,:root[data-theme="light"] .workout-close{color:var(--text)!important;background:var(--card2)!important}
+:root[data-theme="light"] input,:root[data-theme="light"] select,:root[data-theme="light"] .set-input,:root[data-theme="light"] .config-input,:root[data-theme="light"] .config-select{color:var(--text)!important;background:var(--card)!important;border-color:var(--line)!important}
+:root[data-theme="light"] .bottom-bar{background:color-mix(in srgb,var(--bg) 94%,transparent)!important;border-color:var(--line)!important}
+:root[data-theme="light"] .nav-button{color:var(--muted)!important}:root[data-theme="light"] .nav-button.active{color:var(--text)!important;background:var(--card2)!important}
+:root[data-theme="light"] .modal .sheet{background:var(--bg)!important;color:var(--text)!important}
+.profile-button{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--card2);border:1px solid var(--line);color:var(--text);font-weight:900;font-size:19px}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.profile-screen{min-height:100dvh}.profile-header{position:sticky;top:0;z-index:60;display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;padding:max(10px,env(safe-area-inset-top)) 0 14px;background:var(--bg);border-bottom:1px solid var(--line)}.profile-header h2{text-align:center;margin:0;font-size:18px}
+.profile-card{display:flex;align-items:center;gap:14px;padding:18px;margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:18px}.profile-avatar-large{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--card2);font-size:28px}.profile-card strong,.profile-card small{display:block}.profile-card small{margin-top:4px;color:var(--muted)}
+.profile-section{margin-top:22px}.profile-section h3{margin:0 0 10px;font-size:14px}.theme-choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.theme-choice{padding:14px 7px;border-radius:14px;background:var(--card);border:1px solid var(--line);color:var(--text);display:grid;gap:4px;place-items:center}.theme-choice span{font-size:24px}.theme-choice strong{font-size:13px}.theme-choice small{font-size:9px;color:var(--muted);text-align:center}.theme-choice.active{outline:2px solid #8b5cf6;border-color:#8b5cf6}
+.profile-row{width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px 2px;background:transparent;color:var(--text);border-bottom:1px solid var(--line)}
+.catalog-exercise-card.has-image{grid-template-columns:72px minmax(0,1fr) 20px!important}.catalog-generated-thumb{width:72px;height:54px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--card2)}
+.catalog-detail-generated-image{width:100%;max-height:320px;object-fit:cover;border-radius:16px;border:1px solid var(--line);background:var(--card2);margin-bottom:4px}
 </style></head>
 <body>
 <div class="app">
 
 <section id="home">
-<header class="topbar"><div><p class="kicker">Training</p><h1>Meine Pläne</h1></div><div class="topbar-actions"><button id="createPlanTop" class="plan-create-top" aria-label="Neuen Plan erstellen">＋</button></div></header>
+<header class="topbar"><div><p class="kicker">Training</p><h1>Meine Pläne</h1></div><div class="topbar-actions"><button class="profile-button" aria-label="Profil öffnen">◉</button><button id="createPlanTop" class="plan-create-top" aria-label="Neuen Plan erstellen">＋</button></div></header>
 <div id="empty" class="empty"><div class="empty-icon">＋</div><h2>Noch kein Trainingsplan</h2><p>Erstelle deinen ersten Plan und füge deine Übungen hinzu.</p><button id="createFirstPlan" class="primary">Trainingsplan erstellen</button></div>
 <div id="planList" class="plan-list"></div>
 </section>
@@ -1153,7 +1214,7 @@ body.modal-open{
 </section>
 
 <section id="workoutHome" class="hidden">
-<header class="topbar"><div><p class="kicker">Live</p><h1>Training</h1></div><div class="topbar-actions"><button id="trainingPlus" class="plan-create-top" aria-label="Training starten">▶</button></div></header>
+<header class="topbar"><div><p class="kicker">Live</p><h1>Training</h1></div><div class="topbar-actions"><button class="profile-button" aria-label="Profil öffnen">◉</button><button id="trainingPlus" class="plan-create-top" aria-label="Training starten">▶</button></div></header>
 <div id="resumeWorkout" class="resume-card hidden"><div class="resume-label">Aktives Training</div><div id="resumeWorkoutTitle" class="resume-title"></div><div id="resumeWorkoutMeta" class="resume-meta"></div><div class="resume-actions"><button id="resumeWorkoutButton" class="primary">Fortsetzen</button><button id="discardWorkoutButton" class="secondary">Verwerfen</button></div></div>
 <div id="workoutEmpty" class="empty hidden"><div class="empty-icon">◉</div><h2>Noch kein Plan</h2><p>Erstelle zuerst unter „Meine Pläne“ einen Trainingsplan.</p><button id="goToPlans" class="primary">Zu meinen Plänen</button></div>
 <div id="workoutStartArea" class="workout-start-card"><h2>Bereit fürs Training?</h2><p>Wähle einen Trainingsplan und starte eine Einheit.</p><button id="chooseWorkoutPlan" class="primary full">Training starten</button></div>
@@ -1169,13 +1230,40 @@ body.modal-open{
 <button id="finishWorkoutBottom" class="workout-finish-bottom">Training beenden</button>
 </section>
 
-<section id="moreHome" class="hidden">
+<section id="catalogHome" class="hidden">
+<header class="topbar"><div><p class="kicker">Bibliothek</p><h1>Übungen</h1></div><button class="profile-button" aria-label="Profil öffnen">◉</button></header>
+<input id="catalogSearch" class="search catalog-search" type="search" placeholder="Übung suchen...">
+<div class="filter-axis-label">Trainingsart</div><div id="catalogTypeFilters" class="exercise-filters catalog-filters"></div>
+<div class="filter-axis-label">Muskelgruppe / Bereich</div><div id="catalogMuscleFilters" class="exercise-filters catalog-filters"></div>
+<div id="catalogExerciseList" class="catalog-exercise-list"></div>
+</section><section id="catalogDetailScreen" class="hidden catalog-detail-screen">
+<header class="catalog-detail-header"><button id="catalogDetailBack" class="back-button">‹</button><h2 id="catalogDetailScreenTitle">Übung</h2><div class="catalog-detail-header-spacer"></div></header>
+
+<div id="catalogDetailFullBody" class="catalog-detail-full-body"></div>
+</section> <section id="moreHome" class="hidden">
 <header class="topbar"><div><p class="kicker">App</p><h1>Mehr</h1></div></header>
 <div class="more-card"><h2>Daten</h2><p>Deine Pläne und Workouts werden lokal auf diesem Gerät gespeichert.</p><div class="more-actions"><button id="clearHistory" class="secondary full">Trainingshistorie löschen</button><button id="clearAllData" class="danger-button full">Alle App-Daten löschen</button></div></div>
 </section>
 
-<section id="progressHome" class="hidden">
-<header class="topbar"><div><p class="kicker">Fortschritt</p><h1>Körper & Ernährung</h1></div><button id="addMeasurementTop" class="plan-create-top">＋</button></header>
+<section id="profileScreen" class="hidden profile-screen">
+<header class="profile-header"><button id="profileBack" class="back-button">‹</button><h2>Profil & Einstellungen</h2><div></div></header>
+<div class="profile-card"><div class="profile-avatar-large">◉</div><div><strong>Profil</strong><small>Persönliche Daten und App-Einstellungen</small></div></div>
+<div class="profile-section"><h3>Darstellung</h3>
+<div class="theme-choice-grid">
+<button class="theme-choice" data-theme-choice="system"><span>◐</span><strong>System</strong><small>Folgt deinem Gerät</small></button>
+<button class="theme-choice" data-theme-choice="light"><span>☀</span><strong>Hell</strong><small>Helles Design</small></button>
+<button class="theme-choice" data-theme-choice="dark"><span>◑</span><strong>Dunkel</strong><small>Dunkles Design</small></button>
+</div></div>
+<div class="profile-section"><h3>Profil</h3>
+<button class="profile-row"><span>Körperdaten & Messungen</span><b>›</b></button>
+<button class="profile-row"><span>Ziele</span><b>›</b></button>
+<button class="profile-row"><span>Einstellungen</span><b>›</b></button>
+</div>
+</section><section id="foodIqHome" class="hidden food-iq-home">
+<header class="topbar"><div><p class="kicker">Nutrition</p><h1>Food IQ</h1></div><button class="profile-button" aria-label="Profil öffnen">◉</button></header>
+<div class="food-iq-empty"><div class="food-iq-icon">◌</div><h2>Food IQ</h2><p>Dieser Bereich ist vorbereitet und bleibt vorerst leer.</p></div>
+</section> <section id="progressHome" class="hidden">
+<header class="topbar"><div><p class="kicker">Fortschritt</p><h1>Körper & Ernährung</h1></div><button id="addMeasurementTop" class="plan-create-top">＋</button><button class="profile-button" aria-label="Profil öffnen">◉</button></header>
 
 <div class="metric-grid">
   <div class="metric-card"><div class="metric-label">Gewicht</div><div id="latestWeight" class="metric-value">—</div><div id="weightTrend" class="metric-sub">Noch keine Vergleichsdaten</div></div>
@@ -1283,13 +1371,15 @@ body.modal-open{
 
 </div>
 
-<nav id="bottomBar" class="bottom-bar"><div class="bottom-inner">
+<nav id="bottomBar" class="bottom-bar"><div class="bottom-inner bottom-inner-five">
+<button class="nav-button" id="navCatalog"><span class="nav-icon">⌕</span>Übungen</button>
 <button class="nav-button" id="navPlans"><span class="nav-icon">▦</span>Pläne</button>
-<button class="nav-button active" id="navWorkout"><span class="nav-icon">◉</span>Training</button>
+<button class="nav-button active" id="navWorkout"><span class="nav-icon">▶</span>Training</button>
 <button class="nav-button" id="navMore"><span class="nav-icon">◌</span>Fortschritt</button>
+<button class="nav-button" id="navFoodIq"><span class="nav-icon">◇</span>Food IQ</button>
 </div></nav>
 
-<div id="restBarWrap" class="rest-bar-wrap hidden"><div class="rest-bar"><div><div class="rest-label">Pause</div><div id="restTime" class="rest-time">01:30</div></div><button id="restMinus" class="rest-adjust">−15</button><button id="restAdd" class="rest-add">+15</button><button id="restSkip" class="rest-skip">Skip</button></div></div>
+<div id="planTapModal" class="modal hidden"><div id="planTapOverlay" class="overlay"></div><div class="sheet compact-action-sheet"><div class="sheet-title"><h2 id="planTapTitle">Trainingsplan</h2><button id="closePlanTap" class="close-button">×</button></div><div class="plan-choice-grid"><button id="planTapEdit" class="primary">Bearbeiten</button><button id="planTapPreview" class="secondary">Vorschau</button></div></div></div><div id="planLongModal" class="modal hidden"><div id="planLongOverlay" class="overlay"></div><div class="sheet compact-action-sheet"><div class="sheet-title"><h2 id="planLongTitle">Trainingsplan</h2><button id="closePlanLong" class="close-button">×</button></div><div class="plan-choice-grid"><button id="planLongDuplicate" class="secondary">Duplizieren</button><button id="planLongDelete" class="danger-button">Löschen</button></div></div></div><div id="restBarWrap" class="rest-bar-wrap hidden"><div class="rest-bar"><div><div class="rest-label">Pause</div><div id="restTime" class="rest-time">01:30</div></div><button id="restMinus" class="rest-adjust">−15</button><button id="restAdd" class="rest-add">+15</button><button id="restSkip" class="rest-skip">Skip</button></div></div>
 
 <div id="exerciseModal" class="modal hidden"><div id="exerciseOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2>Übung hinzufügen</h2><button id="closeExercise" class="close-button">×</button></div><input id="search" class="search" type="search" placeholder="Übung suchen..."><div class="filter-axis-label">Trainingsart</div><div id="exerciseFilters" class="exercise-filters"></div><div class="filter-axis-label">Muskelgruppe / Bereich</div><div id="exerciseSubfilters" class="exercise-filters"></div>
 <div id="exerciseOptions" class="exercise-options"></div><button id="createExercise" class="custom-button">+ Eigene Übung erstellen</button></div></div>
@@ -1343,7 +1433,7 @@ body.modal-open{
   </div>
 </div>
 <div id="techniquePartnerWrap" class="technique-partner config-hidden"><label class="config-label">Übungen im Block</label><div id="techniqueGroupBuilder" class="technique-group-builder"></div><p id="techniqueGroupHelp" class="technique-help">Wähle weitere Übungen direkt aus dem gesamten Übungskatalog.</p></div>
-<div class="grid-2"><div><label id="setsLabel" class="config-label">Sätze</label><select id="sets" class="config-select"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div id="repsWrap"><label id="repsLabel" class="config-label">Wiederholungen</label><select id="reps" class="config-select"><option value="1-4">1–4</option><option value="4-6">4–6</option><option value="6-8">6–8</option><option value="8-12" selected>8–12</option><option value="10-15">10–15</option><option value="10-20">10–20</option><option value="20-30">20–30</option><option value="AMRAP">AMRAP</option></select></div><div id="timeWrap" class="config-hidden"><label class="config-label">Zeit pro Satz (Min.)</label><input id="timeMinutes" class="config-input" inputmode="decimal" placeholder="z. B. 1,5"></div></div>
+<div class="grid-2"><div><label id="setsLabel" class="config-label">Sätze</label><select id="sets" class="config-select"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></div><div id="repsWrap"><label id="repsLabel" class="config-label">Wiederholungen</label><select id="reps" class="config-select"><option value="1-4">1–4</option><option value="4-6">4–6</option><option value="6-8">6–8</option><option value="8-12" selected>8–12</option><option value="10-15">10–15</option><option value="10-20">10–20</option><option value="20-30">20–30</option><option value="AMRAP">AMRAP</option></select></div><div id="timeWrap" class="config-hidden time-config-wrap"><label class="config-label">Zeit pro Satz (Min.)</label><input id="timeMinutes" class="config-input" inputmode="decimal" placeholder="z. B. 1,5"><div class="time-extra-grid"><div><label class="config-label">Widerstand / Stufe</label><input id="timeLevel" class="config-input" placeholder="optional"></div><div><label class="config-label">Watt</label><input id="timeWatts" class="config-input" inputmode="decimal" placeholder="optional"></div></div></div></div>
 <div class="grid-2"><div><label class="config-label">Pause · Rolltimer</label><select id="rest" class="config-select"></select></div><div><label class="config-label">Notiz</label><input id="note" class="config-input" placeholder="Optional"></div></div>
 </div>
 <div id="cardioConfig" class="cardio-config">
@@ -1383,7 +1473,7 @@ body.modal-open{
 <div id="editModal" class="modal hidden"><div id="editOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2>Übung bearbeiten</h2><button id="closeEdit" class="close-button">×</button></div>
 <div id="editVariantWrap" class="config-hidden"><label class="config-label">Variante</label><select id="editVariant" class="config-select"></select></div>
 <div id="editTrackingModeWrap" class="config-hidden"><label class="config-label">Tracking</label><select id="editTrackingMode" class="config-select"><option value="reps">Wiederholungen</option><option value="time">Zeit in Minuten</option></select></div><div><label class="config-label">Satzmethode</label><select id="editSetTechnique" class="config-select"><option value="normal">Normal</option><option value="superset">Supersatz</option><option value="dropset">Dropsatz</option><option value="restpause">Rest-Pause</option><option value="cluster">Cluster-Satz</option><option value="pyramid">Pyramide</option><option value="preexhaust">Pre-Exhaust</option><option value="giantset">Giant Set</option><option value="backoff">Back-off Set</option></select></div>
-<div class="grid-2"><div><label class="config-label">Sätze</label><select id="editSets" class="config-select"></select></div><div id="editRepsWrap"><label class="config-label">Wiederholungen</label><select id="editReps" class="config-select"><option value="1-4">1–4</option><option value="4-6">4–6</option><option value="6-8">6–8</option><option value="8-12">8–12</option><option value="10-15">10–15</option><option value="10-20">10–20</option><option value="20-30">20–30</option><option value="AMRAP">AMRAP</option></select></div><div id="editTimeWrap" class="config-hidden"><label class="config-label">Zeit pro Satz (Min.)</label><input id="editTimeMinutes" class="config-input" inputmode="decimal"></div></div>
+<div class="grid-2"><div><label class="config-label">Sätze</label><select id="editSets" class="config-select"></select></div><div id="editRepsWrap"><label class="config-label">Wiederholungen</label><select id="editReps" class="config-select"><option value="1-4">1–4</option><option value="4-6">4–6</option><option value="6-8">6–8</option><option value="8-12">8–12</option><option value="10-15">10–15</option><option value="10-20">10–20</option><option value="20-30">20–30</option><option value="AMRAP">AMRAP</option></select></div><div id="editTimeWrap" class="config-hidden time-config-wrap"><label class="config-label">Zeit pro Satz (Min.)</label><input id="editTimeMinutes" class="config-input" inputmode="decimal"><div class="time-extra-grid"><div><label class="config-label">Widerstand / Stufe</label><input id="editTimeLevel" class="config-input"></div><div><label class="config-label">Watt</label><input id="editTimeWatts" class="config-input" inputmode="decimal"></div></div></div></div>
 <div class="grid-2"><div><label class="config-label">Pause · Rolltimer</label><select id="editRest" class="config-select"></select></div><div><label class="config-label">Notiz</label><input id="editNote" class="config-input"></div></div><button id="saveEdit" class="primary full">Änderungen speichern</button></div></div>
 
 <div id="measurementModal" class="modal hidden"><div id="measurementOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2>Messung eintragen</h2><button id="closeMeasurement" class="close-button">×</button></div><div class="form-field"><label>Datum</label><input id="measurementDate" type="date" class="measurement-date-input"></div><div class="grid-2"><div class="form-field"><label>Gewicht (kg)</label><input id="measurementWeight" inputmode="decimal" placeholder="z. B. 82,5"></div><div class="form-field"><label>Körperfett (%)</label><input id="measurementBodyFat" inputmode="decimal" placeholder="z. B. 15,0"></div></div><button id="saveMeasurement" class="primary full">Messung speichern</button></div></div>
@@ -1420,7 +1510,7 @@ function restoreRestAfterReturn(){
  else{localStorage.removeItem(REST_END_KEY);restTimerEnd=null;alarmSound()}
 }
 
-const sections=["home","editor","workoutHome","activeWorkout","moreHome","progressHome","workoutSummaryScreen","planPreviewScreen"];
+const sections=["home","editor","workoutHome","activeWorkout","catalogHome","catalogDetailScreen","profileScreen","foodIqHome","moreHome","progressHome","workoutSummaryScreen","planPreviewScreen"];
 function readJSON(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch{return f}}
 function saveAll(){localStorage.setItem(STORAGE.plans,JSON.stringify(plans));localStorage.setItem(STORAGE.custom,JSON.stringify(customExercises));localStorage.setItem(STORAGE.library,JSON.stringify(exerciseLibrary));localStorage.setItem(STORAGE.history,JSON.stringify(workoutHistory));localStorage.setItem(STORAGE.measurements,JSON.stringify(measurements));localStorage.setItem(STORAGE.nutrition,JSON.stringify(nutritionGoals));activeWorkoutData?localStorage.setItem(STORAGE.active,JSON.stringify(activeWorkoutData)):localStorage.removeItem(STORAGE.active)}
 function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
@@ -1429,10 +1519,38 @@ function fmtRest(s){if(s===0)return"Keine Pause";if(!s)return"90 Sek.";if(s<60)r
 function fmtDur(ms){const t=Math.max(0,Math.floor(ms/1000)),h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;return h?`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
 function fmtClock(s){return`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
 function toast(msg){document.querySelector(".toast")?.remove();const e=document.createElement("div");e.className="toast";e.textContent=msg;document.body.appendChild(e);setTimeout(()=>e.remove(),1800)}
-function show(section){
- sections.forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});
+
+const THEME_KEY="geeniusapp_theme_mode";
+let themeMode=localStorage.getItem(THEME_KEY)||"system";
+function resolvedTheme(mode=themeMode){
+ if(mode==="system")return window.matchMedia?.("(prefers-color-scheme: light)").matches?"light":"dark";
+ return mode
+}
+function applyTheme(mode=themeMode){
+ themeMode=["system","light","dark"].includes(mode)?mode:"system";
+ localStorage.setItem(THEME_KEY,themeMode);
+ const resolved=resolvedTheme(themeMode);
+ document.documentElement.dataset.theme=resolved;
+ document.documentElement.dataset.themeMode=themeMode;
+ const meta=document.querySelector('meta[name="theme-color"]:not([media])');
+ if(meta)meta.setAttribute("content",resolved==="light"?"#f5f5f7":"#09090b");
+ document.querySelectorAll(".theme-choice").forEach(b=>b.classList.toggle("active",b.dataset.themeChoice===themeMode))
+}
+function openProfile(){show("profileScreen",{top:true});applyTheme()}
+window.matchMedia?.("(prefers-color-scheme: light)").addEventListener?.("change",()=>{if(themeMode==="system")applyTheme("system")});
+const tabScrollState={catalogHome:0,home:0,workoutHome:0,progressHome:0,foodIqHome:0};let visibleSection="workoutHome";
+function rememberTabScroll(){if(Object.prototype.hasOwnProperty.call(tabScrollState,visibleSection))tabScrollState[visibleSection]=window.scrollY||document.documentElement.scrollTop||0}
+function show(section,opts={}){
+ rememberTabScroll();sections.forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});
  const target=$(section);if(!target){console.error("Section not found:",section);return}
- target.classList.remove("hidden");if($("bottomBar"))$("bottomBar").classList.toggle("hidden",section==="editor"||section==="activeWorkout"||section==="workoutSummaryScreen"||section==="planPreviewScreen");document.querySelectorAll(".nav-button").forEach(b=>b.classList.remove("active"));if(section==="home")$("navPlans").classList.add("active");if(section==="workoutHome")$("navWorkout").classList.add("active");if(section==="moreHome")$("navMore").classList.add("active")}
+ target.classList.remove("hidden");visibleSection=section;
+ if($("bottomBar"))$("bottomBar").classList.toggle("hidden",section==="editor"||section==="activeWorkout"||section==="catalogDetailScreen"||section==="profileScreen"||section==="workoutSummaryScreen"||section==="planPreviewScreen");
+ document.querySelectorAll(".nav-button").forEach(b=>b.classList.remove("active"));if(section==="home")$("navPlans").classList.add("active");if(section==="workoutHome")$("navWorkout").classList.add("active");if(section==="catalogHome"&&$("navCatalog"))$("navCatalog").classList.add("active");if(section==="progressHome")$("navMore").classList.add("active");if(section==="foodIqHome"&&$("navFoodIq"))$("navFoodIq").classList.add("active");
+ requestAnimationFrame(()=>window.scrollTo({top:opts.top?0:(tabScrollState[section]||0),behavior:"auto"}))
+}
+function resetTab(section){tabScrollState[section]=0;if(section==="catalogHome"){catalogTypeFilter="Alle";catalogMuscleFilter="Alle";if($("catalogSearch"))$("catalogSearch").value="";renderCatalog()}show(section,{top:true})}
+function navToTab(section){if(visibleSection===section){resetTab(section);return}show(section)}
+document.addEventListener("click",ev=>{if(ev.clientY<=Math.max(70,(window.visualViewport?.offsetTop||0)+70)&&Object.prototype.hasOwnProperty.call(tabScrollState,visibleSection)){window.scrollTo({top:0,behavior:"smooth"});tabScrollState[visibleSection]=0}});
 function fillNumberSelect(id,min,max,value){const el=$(id);if(!el)return;el.innerHTML="";for(let i=min;i<=max;i++){const o=document.createElement("option");o.value=String(i);o.textContent=String(i);el.appendChild(o)}el.value=String(value)}
 function fillRestRoller(id,value=90){const el=$(id);if(!el)return;const opts=[[0,"Keine"],[30,"30 Sek."],[45,"45 Sek."],[60,"1 Min."],[90,"1:30 Min."],[120,"2 Min."],[150,"2:30 Min."],[180,"3 Min."],[240,"4 Min."],[300,"5 Min."]];el.innerHTML="";opts.forEach(([sec,label])=>{const o=document.createElement("option");o.value=String(sec);o.textContent=label;el.appendChild(o)});el.value=String(opts.some(x=>x[0]===+value)?+value:90)}
 function initPickers(){fillNumberSelect("sets",1,6,3);fillNumberSelect("editSets",1,6,3);fillRestRoller("rest",90);fillRestRoller("editRest",90)}
@@ -1440,7 +1558,7 @@ function setVariantPicker(info,value=""){const has=Array.isArray(info.variants)&
 function setEditVariantPicker(info,value=""){const has=Array.isArray(info.variants)&&info.variants.length;$("editVariantWrap").classList.toggle("config-hidden",!has);$("editVariant").innerHTML="";if(has){info.variants.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;$("editVariant").appendChild(o)});$("editVariant").value=value&&info.variants.includes(value)?value:info.variants[0]}}
 function updateTrackingFields(prefix=""){const edit=prefix==="edit";const mode=$(edit?"editTrackingMode":"trackingMode").value;$(edit?"editRepsWrap":"repsWrap").classList.toggle("config-hidden",mode==="time");$(edit?"editTimeWrap":"timeWrap").classList.toggle("config-hidden",mode!=="time")}
 function configureTracking(info,mode="reps",edit=false){const flexible=info.tracking==="reps_time";const wrap=$(edit?"editTrackingModeWrap":"trackingModeWrap");const sel=$(edit?"editTrackingMode":"trackingMode");wrap.classList.toggle("config-hidden",!flexible);sel.value=flexible?(mode==="time"?"time":"reps"):"reps";updateTrackingFields(edit?"edit":"")}
-function load(){initPickers();plans=readJSON(STORAGE.plans,[]);customExercises=readJSON(STORAGE.custom,[]).map(x=>{if(typeof x==="string")return {name:x,category:"Körpergewicht",subcategory:"Core",muscles:["Core"],tracking:"reps"};x.category=x.category==="Gewichte"?"Gewichte":x.category;const legacy=x.subcategory==="Hintere Kette"?"Beine":x.subcategory==="Ganzkörper"?"Athletik":x.subcategory==="Olympic Lifts"||x.subcategory==="Kraft & Athletik"?"Athletik":x.subcategory;x.muscles=Array.isArray(x.muscles)&&x.muscles.length?x.muscles:[legacy||"Core"];x.subcategory=x.muscles[0];return x});exerciseLibrary=readJSON(STORAGE.library,{hidden:[],renames:{},meta:{}});exerciseLibrary.hidden=Array.isArray(exerciseLibrary.hidden)?exerciseLibrary.hidden:[];exerciseLibrary.renames=exerciseLibrary.renames||{};exerciseLibrary.meta=exerciseLibrary.meta||{};plans.forEach(p=>p.exercises?.forEach(e=>{if(!e.exerciseKey)e.exerciseKey=e.name}));workoutHistory=readJSON(STORAGE.history,[]);measurements=readJSON(STORAGE.measurements,[]);nutritionGoals=readJSON(STORAGE.nutrition,{calories:"",protein:""});profile=readJSON(STORAGE.profile,{age:"",height:"",sex:"male",activity:"1.55",goal:"cut"});activeWorkoutData=readJSON(STORAGE.active,null);renderPlans();renderWorkoutHome();renderProgress();sections.forEach(x=>$(x).classList.add("hidden"));$("workoutHome").classList.remove("hidden");show("workoutHome")}
+function load(){initPickers();plans=readJSON(STORAGE.plans,[]);customExercises=readJSON(STORAGE.custom,[]).map(x=>{if(typeof x==="string")return {name:x,category:"Körpergewicht",subcategory:"Core",muscles:["Core"],tracking:"reps"};x.category=x.category==="Gewichte"?"Gewichte":x.category;const legacy=x.subcategory==="Hintere Kette"?"Beine":x.subcategory==="Ganzkörper"?"Athletik":x.subcategory==="Olympic Lifts"||x.subcategory==="Kraft & Athletik"?"Athletik":x.subcategory;x.muscles=Array.isArray(x.muscles)&&x.muscles.length?x.muscles:[legacy||"Core"];x.subcategory=x.muscles[0];return x});exerciseLibrary=readJSON(STORAGE.library,{hidden:[],renames:{},meta:{}});exerciseLibrary.hidden=Array.isArray(exerciseLibrary.hidden)?exerciseLibrary.hidden:[];exerciseLibrary.renames=exerciseLibrary.renames||{};exerciseLibrary.meta=exerciseLibrary.meta||{};plans.forEach(p=>p.exercises?.forEach(e=>{if(!e.exerciseKey)e.exerciseKey=e.name}));workoutHistory=readJSON(STORAGE.history,[]);measurements=readJSON(STORAGE.measurements,[]);nutritionGoals=readJSON(STORAGE.nutrition,{calories:"",protein:""});profile=readJSON(STORAGE.profile,{age:"",height:"",sex:"male",activity:"1.55",goal:"cut"});activeWorkoutData=readJSON(STORAGE.active,null);renderPlans();renderWorkoutHome();renderProgress();renderCatalog();sections.forEach(x=>$(x).classList.add("hidden"));$("workoutHome").classList.remove("hidden");show("workoutHome")}
 let editorPlanBaseline=null;let editorPlanIsDraft=false;
 function newPlan(){currentPlan={id:id(),name:"",exercises:[]};editorPlanBaseline=null;editorPlanIsDraft=true;$("planName").value="";renderExercises();show("editor");bindPlanStartWorkout();setTimeout(()=>$("planName").focus(),100)}
 function persistCurrentPlan(){
@@ -1600,11 +1718,104 @@ function openPlanPreview(pid){
  show("planPreviewScreen")
 }
 function closePlanPreview(){show("home");renderPlans()}
-function renderPlans(){$("planList").innerHTML="";$("empty").classList.toggle("hidden",plans.length>0);plans.forEach(p=>{const c=document.createElement("div");c.className="plan-card";c.innerHTML=`<button class="plan-main"><div class="plan-head"><div><div class="plan-name">${esc(p.name)}</div><div class="plan-count">${p.exercises.length} ${p.exercises.length===1?"Übung":"Übungen"}</div></div><span>›</span></div>${p.exercises.length?`<div class="plan-preview">${p.exercises.slice(0,4).map(e=>`<div class="preview-row"><span class="preview-name">${esc(e.name)}</span><span class="preview-meta">${e.sets} × ${esc(e.reps)}</span></div>`).join("")}</div>`:""}</button><div class="plan-actions"><button class="plan-action preview">Vorschau</button><button class="plan-action duplicate">Duplizieren</button><button class="plan-action delete">Löschen</button></div>`;c.querySelector(".plan-main").onclick=()=>openPlan(p.id);c.querySelector(".preview").onclick=()=>openPlanPreview(p.id);c.querySelector(".duplicate").onclick=()=>{const cp=structuredClone(p);cp.id=id();cp.name+=" Kopie";plans.push(cp);saveAll();renderPlans();toast("Plan dupliziert")};c.querySelector(".delete").onclick=()=>{if(confirm(`„${p.name}“ wirklich löschen?`)){plans=plans.filter(x=>x.id!==p.id);saveAll();renderPlans();renderWorkoutHome();toast("Plan gelöscht")}};$("planList").appendChild(c)})}
+let catalogTypeFilter="Alle",catalogMuscleFilter="Alle";
+function renderCatalogFilterRows(){
+ const typeBox=$("catalogTypeFilters"),muscleBox=$("catalogMuscleFilters");if(!typeBox||!muscleBox)return;
+ const make=(box,values,current,setter)=>{box.innerHTML="";const vals=["Alle",...values];vals.forEach(v=>{const b=document.createElement("button");b.type="button";b.className="filter-btn"+(v===current?" active":"");b.textContent=v;b.onclick=()=>{setter(v);renderCatalogFilterRows();renderCatalog()};box.appendChild(b)})};
+ make(typeBox,trainingTypes,catalogTypeFilter,v=>catalogTypeFilter=v);
+ make(muscleBox,muscleGroups,catalogMuscleFilter,v=>catalogMuscleFilter=v)
+}
+function exerciseImagePath(x){
+ if(x.name==="90/90 Hip Switch")return "assets/exercise/90-90-hip-switch.jpg";
+ const key=String(x.category||"Körpergewicht").toLowerCase().replaceAll("ä","ae").replaceAll("ö","oe").replaceAll("ü","ue").replaceAll("ß","ss");
+ return `assets/exercise/${key}.svg`
+}
 
+const generatedExerciseImages={
+ "90/90 Hip Switch":"assets/exercise/90-90-hip-switch.jpg",
+ "Ab Wheel":"assets/exercise/ab-wheel.jpg",
+ "AirBike":"assets/exercise/airbike.jpg",
+ "Ankle Dorsiflexion Mobilization":"assets/exercise/ankle-dorsiflexion.jpg",
+ "ATG Split Squat":"assets/exercise/atg-split-squat.jpg",
+ "Back Lever":"assets/exercise/back-lever.jpg",
+ "Barbell Bench Press":"assets/exercise/barbell-bench-press.jpg",
+ "Barbell Deadlift":"assets/exercise/barbell-deadlift.jpg"
+};
+function generatedExerciseImage(x,detail=false){
+ if(detail&&x.name==="Ab Wheel")return "assets/exercise/ab-wheel-detail.jpg";
+ return generatedExerciseImages[x.name]||""
+}
+function renderCatalog(){
+ const list=$("catalogExerciseList");if(!list)return;renderCatalogFilterRows();
+ const q=String($("catalogSearch")?.value||"").trim().toLowerCase();
+ let items=allExercises();
+ if(q)items=items.filter(x=>x.name.toLowerCase().includes(q)||String(x.category||"").toLowerCase().includes(q)||String(x.subcategory||"").toLowerCase().includes(q)||(x.muscles||[]).some(m=>m.toLowerCase().includes(q)));
+ if(catalogTypeFilter!=="Alle")items=items.filter(x=>x.category===catalogTypeFilter);
+ if(catalogMuscleFilter!=="Alle")items=items.filter(x=>(x.muscles||[]).includes(catalogMuscleFilter));
+ const order=["Gewichte","Geräte","Körpergewicht","Calisthenics","Mobilität","Cardio","Explosivität"];
+ items.sort((a,b)=>{const ai=order.indexOf(a.category),bi=order.indexOf(b.category);if(ai!==bi)return (ai<0?99:ai)-(bi<0?99:bi);return a.name.localeCompare(b.name,"de",{sensitivity:"base"})});
+ list.innerHTML="";
+ items.forEach(x=>{const b=document.createElement("button");b.type="button";b.className="catalog-exercise-card";const pic=generatedExerciseImage(x);b.classList.toggle("has-image",!!pic);b.innerHTML=`${pic?`<img class="catalog-generated-thumb" src="${esc(pic)}" alt="">`:""}<div class="catalog-card-copy"><strong>${esc(x.name)}</strong><small>${esc(x.category||"")} · ${esc((x.muscles||[]).join(", "))}</small></div><span>›</span>`;b.onclick=()=>openCatalogDetail(x.name);list.appendChild(b)});
+ if(!items.length)list.innerHTML='<div class="history-empty">Keine passende Übung gefunden.</div>'
+}
 
-
-
+const exerciseExecutionGuide={
+"90/90 Hip Switch":"Sitze im 90/90-Sitz mit beiden Knien gebeugt. Halte den Oberkörper möglichst aufrecht und rotiere beide Beine kontrolliert zur Gegenseite, ohne die Füße unnötig zu versetzen. Wechsle fließend zwischen beiden 90/90-Positionen.",
+"Ab Wheel":"Knie dich vor das Ab-Wheel, spanne Bauch und Gesäß an und halte das Becken stabil. Rolle langsam nach vorn, während sich Hüfte und Schultern gemeinsam strecken. Gehe nur so weit, wie du die Lendenwirbelsäule neutral halten kannst, und ziehe dich kontrolliert zurück.",
+"AirBike":"Sitze stabil auf dem Bike, halte den Oberkörper aufrecht und arbeite gleichzeitig mit Armen und Beinen. Drücke und ziehe die Griffe rhythmisch, während du gleichmäßig trittst. Passe die Intensität über deine Bewegungsgeschwindigkeit an.",
+"Ankle Dorsiflexion Mobilization":"Stelle einen Fuß flach vor dir auf. Schiebe das Knie kontrolliert nach vorn über die Zehen, während die Ferse vollständig am Boden bleibt. Führe das Knie in Richtung der Fußlinie und kehre anschließend in die Ausgangsposition zurück.",
+"ATG Split Squat":"Nimm einen langen Ausfallschritt ein und halte den vorderen Fuß vollständig am Boden. Senke die Hüfte kontrolliert nach vorn und unten, sodass das vordere Knie weit über die Zehen wandern darf, während die hintere Hüfte gestreckt wird. Drücke dich über den vorderen Fuß zurück.",
+"Back Lever":"Hänge mit gestreckten Armen an der Stange oder an Ringen und bringe den Körper kontrolliert in eine waagerechte Position mit dem Gesicht zum Boden. Halte Schultergürtel, Rumpf und Beine fest, sodass der Körper eine möglichst gerade Linie bildet.",
+"Barbell Bench Press":"Lege dich stabil auf die Bank, stelle die Füße fest auf und ziehe die Schulterblätter nach hinten und unten. Senke die Langhantel kontrolliert zur unteren Brust und drücke sie anschließend über der Brust wieder nach oben, ohne die Schulterposition zu verlieren.",
+"Barbell Deadlift":"Stelle dich etwa hüftbreit an die Langhantel und greife sie knapp außerhalb der Beine. Spanne Rumpf und Rücken an, drücke den Boden mit den Füßen weg und führe die Hantel eng am Körper nach oben. Strecke Hüfte und Knie gemeinsam und senke die Hantel kontrolliert zurück.",
+"Barbell Good Morning":"Lege die Langhantel stabil auf dem oberen Rücken ab. Beuge die Knie leicht, spanne den Rumpf an und schiebe die Hüfte nach hinten, während der Rücken neutral bleibt. Neige den Oberkörper kontrolliert vor und strecke anschließend die Hüfte wieder.",
+"Chest Supported Row":"Lege Brust und Oberkörper stabil auf der Schrägbank ab. Ziehe die Gewichte mit den Ellenbogen nach hinten zum Rumpf und führe die Schulterblätter zusammen. Senke die Gewichte anschließend kontrolliert, ohne den Oberkörper von der Bank zu lösen.",
+"Calf Machine":"Positioniere den Vorfuß stabil auf der vorgesehenen Fläche. Senke die Fersen kontrolliert ab und drücke dich anschließend über den Vorfuß so hoch wie möglich. Halte Knie und Fußachse während der Bewegung stabil.",
+"Cable-Fly":"Stelle dich stabil zwischen die Kabelzüge und halte die Arme leicht gebeugt. Führe die Hände in einem Bogen vor der Brust zusammen, ohne die Schulter nach vorn kippen zu lassen. Öffne die Arme anschließend kontrolliert bis zu einer angenehmen Dehnung.",
+"Triceps Extension":"Stabilisiere Schulter und Oberarm und bewege hauptsächlich das Ellenbogengelenk. Strecke den Arm gegen den Widerstand vollständig aus und führe ihn anschließend kontrolliert in die Ausgangsposition zurück, ohne mit Schulter oder Oberkörper Schwung zu holen."
+};
+function generatedExerciseExecution(x){
+ const n=String(x.name||"").toLowerCase();
+ if(exerciseExecutionGuide[x.name])return exerciseExecutionGuide[x.name];
+ if(n.includes("bench press")||n.includes("chest press"))return "Lege dich stabil auf die Bank beziehungsweise setze dich fest an das Gerät. Positioniere die Hände etwas weiter als schulterbreit auf Brusthöhe. Senke beziehungsweise führe den Widerstand kontrolliert zur Brust, bis die Ellenbogen ungefähr auf Höhe des Oberkörpers liegen. Drücke anschließend entlang derselben Bahn zurück, bis die Arme nahezu gestreckt sind.";
+ if(n.includes("overhead press")||n.includes("shoulder press"))return "Sitze oder stehe aufrecht und positioniere die Hände auf Schulterhöhe. Drücke den Widerstand senkrecht nach oben, bis sich die Arme über dem Kopf befinden. Halte den Oberkörper ruhig und führe das Gewicht anschließend kontrolliert zurück auf Schulterhöhe.";
+ if(n.includes("row"))return "Nimm eine stabile Sitz-, Stand- oder Bankposition ein und beginne mit nach vorn ausgestreckten Armen. Ziehe den Widerstand in Richtung Rumpf, indem du die Ellenbogen nach hinten führst. Beende die Zugbewegung, wenn die Hände beziehungsweise Griffe den Körper erreichen, und strecke die Arme anschließend kontrolliert wieder nach vorn.";
+ if(n.includes("lat pulldown")||n.includes("pulldown"))return "Setze dich aufrecht unter den Zug und greife die Stange etwas weiter als schulterbreit. Ziehe die Stange vor dem Körper in Richtung obere Brust, während die Ellenbogen nach unten und hinten wandern. Strecke die Arme anschließend kontrolliert wieder nach oben aus.";
+ if(n.includes("pull-up")||n.includes("chin-up"))return "Hänge mit gestreckten Armen an der Stange. Ziehe den Körper nach oben, bis Kinn oder obere Brust die Höhe der Stange erreichen. Senke dich anschließend kontrolliert wieder ab, bis die Arme vollständig gestreckt sind.";
+ if(n.includes("deadlift")||n.includes("romanian"))return "Stelle dich hüftbreit vor das Gewicht und greife es nah am Körper. Schiebe die Hüfte nach hinten und beuge die Knie so weit wie für die Variante nötig. Richte dich auf, indem Hüfte und Knie gemeinsam strecken und das Gewicht eng am Körper nach oben geführt wird. Kehre anschließend über dieselbe Hüftbewegung kontrolliert in die Ausgangsposition zurück.";
+ if(n.includes("squat"))return "Stelle die Füße stabil in der für die Variante vorgesehenen Breite auf. Beuge Hüfte und Knie gleichzeitig und senke den Körper zwischen beziehungsweise über die Füße ab. Gehe so tief, wie du die Fuß- und Knieachse kontrollieren kannst. Drücke dich anschließend über den ganzen Fuß wieder nach oben.";
+ if(n.includes("lunge")||n.includes("split squat"))return "Nimm einen stabilen Schrittstand ein. Senke den Körper kontrolliert ab, indem beide Knie beugen und die Hüfte nach unten bewegt wird. Das vordere Knie folgt der Fußrichtung. Drücke dich über den vorderen Fuß zurück in die Ausgangsposition beziehungsweise bleibe für die nächste Wiederholung im Schrittstand.";
+ if(n.includes("hip thrust")||n.includes("glute bridge"))return "Positioniere den oberen Rücken auf einer Bank beziehungsweise den Rücken am Boden und stelle die Füße auf. Senke die Hüfte kontrolliert ab. Drücke anschließend die Hüfte nach oben, bis Oberschenkel und Oberkörper eine Linie bilden, und senke sie wieder kontrolliert.";
+ if(n.includes("curl"))return "Halte den Oberarm neben dem Körper beziehungsweise in der vorgesehenen Geräteposition. Beuge den Ellenbogen und führe Hand oder Griff in Richtung Schulter. Stoppe am Ende der Beugung und strecke den Arm anschließend kontrolliert wieder aus.";
+ if(n.includes("triceps")||n.includes("extension"))return "Positioniere den Oberarm stabil in der für die Variante vorgesehenen Stellung. Strecke den Ellenbogen, bis der Arm nahezu vollständig gestreckt ist. Beuge den Ellenbogen anschließend kontrolliert wieder und führe den Widerstand in die Ausgangsposition zurück.";
+ if(n.includes("fly"))return "Beginne mit seitlich geöffneten Armen und leicht gebeugten Ellenbogen. Führe die Hände in einem weiten Bogen vor dem Körper zusammen. Öffne die Arme anschließend kontrolliert wieder bis zur Ausgangsposition.";
+ if(n.includes("raise"))return "Beginne mit den Armen neben beziehungsweise vor dem Körper. Hebe die Arme kontrolliert in die vorgegebene Richtung bis ungefähr auf Schulterhöhe. Senke sie anschließend langsam entlang derselben Bahn zurück.";
+ if(n.includes("calf"))return "Stelle den Vorfuß stabil auf die Auflage und lasse die Ferse frei beweglich. Senke die Ferse kontrolliert ab. Drücke dich anschließend über den Vorfuß so weit wie möglich nach oben und kehre langsam in die untere Position zurück.";
+ if(n.includes("plank"))return "Stütze Unterarme beziehungsweise Hände unter den Schultern auf und strecke den Körper nach hinten. Halte Kopf, Rumpf und Beine in einer geraden Linie. Bleibe für die vorgegebene Zeit in dieser Position, ohne die Hüfte absinken oder deutlich ansteigen zu lassen.";
+ if(n.includes("push-up")||n.includes("push up"))return "Stütze die Hände etwas weiter als schulterbreit auf und strecke den Körper nach hinten. Beuge die Ellenbogen und senke Brust und Rumpf gemeinsam Richtung Boden. Drücke dich anschließend zurück nach oben, bis die Arme wieder gestreckt sind.";
+ if(x.category==="Cardio")return "Stelle Sitz, Griffe beziehungsweise Fußposition passend ein und beginne in einem gleichmäßigen Bewegungsrhythmus. Führe jede Bewegungsphase vollständig und kontrolliert aus. Steuere die Belastung über die vorgegebene Zeit sowie Widerstand, Stufe oder Wattzahl.";
+ if(x.category==="Mobilität")return "Nimm die für die Übung vorgesehene Ausgangsposition ein und bewege das Zielgelenk langsam in den verfügbaren Bewegungsumfang. Vermeide Ausweichbewegungen des restlichen Körpers. Kehre kontrolliert in die Ausgangsposition zurück und wiederhole die Bewegung auf derselben oder der Gegenseite.";
+ if(x.category==="Explosivität")return "Nimm eine stabile athletische Ausgangsposition ein. Lade die Bewegung kurz über Hüfte, Knie oder Arme vor und beschleunige anschließend explosiv in die vorgesehene Richtung. Lande beziehungsweise fange die Bewegung kontrolliert ab und stelle die Ausgangsposition vor der nächsten Wiederholung wieder her.";
+ return "Nimm die für die Übung vorgesehene stabile Ausgangsposition ein. Führe den Widerstand kontrolliert entlang der vorgesehenen Bewegungsbahn bis zur Endposition. Stoppe kurz, ohne die Position zu verlieren, und kehre anschließend langsam entlang derselben Bahn in die Ausgangsposition zurück."
+}
+function openCatalogDetail(name){
+ const x=exerciseInfo(name),pic=generatedExerciseImage(x,true);
+ $("catalogDetailScreenTitle").textContent=x.name;
+ $("catalogDetailFullBody").innerHTML=`${pic?`<img class="catalog-detail-generated-image" src="${esc(pic)}" alt="">`:""}<div class="catalog-detail-category">${esc(x.category||"")}</div>
+ <div class="catalog-detail-section"><span>Bereiche</span><strong>${esc((x.muscles||[]).join(", ")||"–")}</strong></div>
+ ${Array.isArray(x.variants)&&x.variants.length?`<div class="catalog-detail-section"><span>Varianten</span><strong>${esc(x.variants.join(", "))}</strong></div>`:""}
+ <div class="catalog-detail-copy"><h3>Ausführung</h3><p>${esc(generatedExerciseExecution(x))}</p></div>`;
+ show("catalogDetailScreen",{top:true})
+}
+let selectedPlanActionId=null;
+function closePlanTap(){selectedPlanActionId=null;$("planTapModal").classList.add("hidden")}
+function closePlanLong(){selectedPlanActionId=null;$("planLongModal").classList.add("hidden")}
+function openPlanTapActions(pid){const p=plans.find(x=>x.id===pid);if(!p)return;selectedPlanActionId=pid;$("planTapTitle").textContent=p.name;$("planTapModal").classList.remove("hidden")}
+function openPlanLongActions(pid){const p=plans.find(x=>x.id===pid);if(!p)return;selectedPlanActionId=pid;$("planLongTitle").textContent=p.name;$("planLongModal").classList.remove("hidden")}
+function duplicateSelectedPlan(){const p=plans.find(x=>x.id===selectedPlanActionId);if(!p)return;const cp=structuredClone(p);cp.id=id();cp.name=`${p.name} Kopie`;plans.push(cp);saveAll();renderPlans();closePlanLong();toast("Plan dupliziert")}
+function deleteSelectedPlan(){const p=plans.find(x=>x.id===selectedPlanActionId);if(!p)return;if(!confirm(`„${p.name}“ wirklich löschen?`))return;plans=plans.filter(x=>x.id!==p.id);saveAll();renderPlans();renderWorkoutHome();closePlanLong();toast("Plan gelöscht")}
+function attachPlanLongPress(card,pid){let timer=null,longFired=false,startX=0,startY=0;const clear=()=>{if(timer){clearTimeout(timer);timer=null}};card.addEventListener("pointerdown",ev=>{if(ev.pointerType==="mouse"&&ev.button!==0)return;longFired=false;startX=ev.clientX;startY=ev.clientY;timer=setTimeout(()=>{longFired=true;openPlanLongActions(pid);navigator.vibrate?.(25)},550)});card.addEventListener("pointermove",ev=>{if(Math.abs(ev.clientX-startX)>10||Math.abs(ev.clientY-startY)>10)clear()});card.addEventListener("pointerup",clear);card.addEventListener("pointercancel",clear);card.addEventListener("click",ev=>{if(longFired){ev.preventDefault();ev.stopPropagation();longFired=false;return}openPlanTapActions(pid)})}
+function renderPlans(){$("planList").innerHTML="";$("empty").classList.toggle("hidden",plans.length>0);plans.forEach(p=>{const c=document.createElement("button");c.type="button";c.className="plan-card plan-card-simple";c.innerHTML=`<div class="plan-head"><div><div class="plan-name">${esc(p.name)}</div><div class="plan-count">${p.exercises.length} ${p.exercises.length===1?"Übung":"Übungen"}</div></div><span class="plan-chevron">›</span></div>`;attachPlanLongPress(c,p.id);$("planList").appendChild(c)})}
 function bindPlanStartWorkout(){
  const b=$("startPlanWorkoutBtn");if(!b)return;
  b.onclick=()=>{
@@ -1649,7 +1860,7 @@ function renderExercises(){
 }
 let exerciseCategoryFilter="Alle",exerciseSubcategoryFilter="Alle";
 const trainingTypes=["Gewichte","Geräte","Körpergewicht","Calisthenics","Mobilität","Cardio","Explosivität"];
-const muscleGroups=["Brust","Schulter","Rücken","Arme","Beine","Gesäß/Hüfte","Core","Sprünge","Athletik"];
+const muscleGroups=["Brust","Schulter","Rücken","Arme/Hände","Beine/Füße","Gesäß/Hüfte","Core","Sprünge","Athletik"];
 function renderFilterRow(){
  const primary=$("exerciseFilters"),secondary=$("exerciseSubfilters");
  primary.innerHTML=""; secondary.innerHTML=""; secondary.classList.remove("hidden");
@@ -1938,7 +2149,7 @@ function selectExercise(n){
  $("setTechnique").value="normal";fillMethodForm({setTechnique:"normal"});applyTechniqueUI();
  $("exerciseModal").classList.add("hidden");$("configTitle").textContent=n;$("sets").value=d.sets;$("sets").disabled=false;
  $("reps").value=d.reps||"8-12";fillRestRoller("rest",d.rest??120);$("note").value="";$("backConfig").classList.remove("config-hidden");
- $("timeMinutes").value=d.time||"5";setVariantPicker(info);configureTracking(info,d.mode||"reps",false);
+ $("timeMinutes").value=d.time||"5";$("timeLevel").value="";$("timeWatts").value="";setVariantPicker(info);configureTracking(info,d.mode||"reps",false);
  $("cardioDuration").value="5";$("cardioDistance").value="";$("cardioDistanceUnit").value="km";$("cardioWatts").value="";$("cardioPace").value="";$("cardioLevel").value="Moderat";$("cardioNote").value="";
  $("strengthConfig").classList.toggle("hide",cardio);$("cardioConfig").classList.toggle("show",cardio);$("confirmExercise").textContent=cardio?"Cardio hinzufügen":"Hinzufügen";$("configModal").classList.remove("hidden")
 }
@@ -1947,7 +2158,7 @@ function openStrengthConfigForEdit(i){
  closeActions();$("exerciseModal").classList.add("hidden");$("configTitle").textContent=e.name;$("strengthConfig").classList.remove("hide");$("cardioConfig").classList.remove("show");
  $("setTechnique").value=e.setTechnique||"normal";fillMethodForm(e);$("sets").disabled=false;$("sets").value=e.sets||3;
  if(!Array.from($("reps").options).some(o=>o.value===e.reps)&&e.reps&&e.reps!=="—"){const o=document.createElement("option");o.value=e.reps;o.textContent=e.reps;$("reps").appendChild(o)}
- $("reps").value=e.reps&&e.reps!=="—"?e.reps:"8-12";$("timeMinutes").value=e.timeMinutes||"5";fillRestRoller("rest",e.rest??90);$("note").value=e.note||"";
+ $("reps").value=e.reps&&e.reps!=="—"?e.reps:"8-12";$("timeMinutes").value=e.timeMinutes||"5";$("timeLevel").value=e.timeLevel||"";$("timeWatts").value=e.timeWatts||"";fillRestRoller("rest",e.rest??90);$("note").value=e.note||"";
  setVariantPicker(info);if(e.variant&&!$("variantWrap").classList.contains("config-hidden"))$("exerciseVariant").value=e.variant;
  configureTracking(info,e.measureMode||"reps",false);applyTechniqueUI();
  if(groupedTechniques.has(e.setTechnique||"normal")&&e.techniqueGroup){const members=currentPlan.exercises.filter((x,idx)=>idx!==i&&x.techniqueGroup===e.techniqueGroup);techniqueDraftMembers=members.map(x=>({name:x.name,reps:x.reps||"8-12"}));updateTechniquePartner()}
@@ -2041,7 +2252,7 @@ function createWorkout(p){
  const prev=lastCompletedWorkout(p.id);
  return{id:id(),planId:p.id,planName:p.name,sourcePlanId:p.id,sourcePlanName:p.name,derivedPlanId:null,derivedPlanName:"",planModified:false,startedAt:Date.now(),finishedAt:null,exercises:p.exercises.map(e=>{
   const cardio=isCardio(e),prevE=prev?.exercises?.find(x=>sameExercise(x,e));
-  return{name:e.name,exerciseKey:e.exerciseKey||e.name,type:e.type||"strength",variant:e.variant||"",measureMode:e.measureMode||"reps",timeMinutes:e.timeMinutes||"",reps:e.reps||"",targetRepRange:e.reps||"",rest:e.rest??90,note:e.note||"",setTechnique:e.setTechnique||"normal",methodData:structuredClone(e.methodData||{}),techniqueGroup:e.techniqueGroup||"",skipped:false,
+  return{name:e.name,exerciseKey:e.exerciseKey||e.name,type:e.type||"strength",variant:e.variant||"",measureMode:e.measureMode||"reps",timeMinutes:e.timeMinutes||"",timeLevel:e.timeLevel||"",timeWatts:e.timeWatts||"",reps:e.reps||"",targetRepRange:e.reps||"",rest:e.rest??90,note:e.note||"",setTechnique:e.setTechnique||"normal",methodData:structuredClone(e.methodData||{}),techniqueGroup:e.techniqueGroup||"",skipped:false,
    cardio:{duration:e.duration||"",distance:e.distance||"",distanceUnit:e.distanceUnit||"km",watts:e.watts||"",pace:e.pace||"",level:e.intensity||e.level||"Moderat"},
    sets:cardio?[{weight:"",reps:"",completed:false,effort:""}]:buildWorkoutSets(e,prevE)}
  })}
@@ -2663,8 +2874,13 @@ function discardActiveWorkout(){
 }
 function renderLive(){$("liveExerciseList").innerHTML="";const groupedRendered=renderLiveGroupedFirst();activeWorkoutData.exercises.forEach((e,ei)=>{if(e.techniqueGroup&&groupedRendered.has(e.techniqueGroup))return;const c=document.createElement("section");c.className=`live-exercise workout-method-frame ${e.setTechnique||"normal"}`;c.dataset.techniqueGroup=e.techniqueGroup||"";c.dataset.technique=e.setTechnique||"normal";const cardio=e.type==="cardio",timeMode=e.measureMode==="time";const prev=previousExerciseFor(e);
 if(cardio){const d=e.cardio||{},st=e.sets[0]||(e.sets[0]={completed:false,effort:""}),prevCardio=previousExerciseFor(e),timerId=`cardioTimer-${ei}`,seconds=Math.max(1,Math.round((parseFloat(String(d.duration).replace(",","."))||5)*60));const running=!!st.timerRunning,done=!!st.completed;c.innerHTML=`<div class="live-exercise-head"><div><div class="live-exercise-title">${esc(e.name)}</div><div class="plan-prescription">${esc(planPrescriptionText(e))}</div><div class="live-rest-prescription">${esc(workoutRestText(e))}</div><div class="live-exercise-sub">Cardio · ${d.duration?esc(d.duration)+" Min.":"5 Min."} · ${esc(d.level||"Moderat")}${d.distance?` · ${esc(d.distance)} ${esc(d.distanceUnit||"km")}`:""}</div></div></div>${compactCardioRecommendation(e,prevCardio)}<div class="cardio-grid"><div><label class="config-label">Dauer (Min.)</label><input class="set-input cardio-duration" inputmode="decimal" value="${esc(d.duration||5)}" placeholder="Min."></div><div><label class="config-label">Distanz</label><input class="set-input cardio-distance" inputmode="decimal" value="${esc(d.distance)}" placeholder="km"></div><div><label class="config-label">Watt</label><input class="set-input cardio-watts" inputmode="decimal" value="${esc(d.watts)}" placeholder="W"></div><div><label class="config-label">Intensität</label><select class="set-input cardio-level"><option ${d.level==="Locker"?"selected":""}>Locker</option><option ${!d.level||d.level==="Moderat"?"selected":""}>Moderat</option><option ${d.level==="Hart"?"selected":""}>Hart</option><option ${d.level==="Sehr hart"?"selected":""}>Sehr hart</option></select></div></div><div class="timer-row"><button class="timer-start ${running?"running":done?"done":""}">${running?"● Läuft":done?"✓ Beendet":"▶ Start"}</button><span id="${timerId}" class="timer-display">${running&&st.timerEnd?fmtClock(Math.max(0,Math.ceil((st.timerEnd-Date.now())/1000))):done?"00:00":fmtClock(seconds)}</span></div><button class="complete-cardio ${ratingClass(st)}">${done?`${ratingSymbol(st)} Cardio abgeschlossen`:"Cardioeinheit abschließen"}</button>`;c.querySelector(".cardio-duration").oninput=ev=>{e.cardio.duration=ev.target.value;saveAll()};c.querySelector(".cardio-distance").oninput=ev=>{e.cardio.distance=ev.target.value;saveAll()};c.querySelector(".cardio-watts").oninput=ev=>{e.cardio.watts=ev.target.value;saveAll()};c.querySelector(".cardio-level").onchange=ev=>{e.cardio.level=ev.target.value;saveAll()};c.querySelector(".timer-start").onclick=()=>{if(st.completed)return openRating(e,st);const mins=parseFloat(String(c.querySelector(".cardio-duration").value).replace(",","."))||5;startExerciseTimer(e,st,mins*60,timerId,()=>{if((e.rest??0)>0)startRest(e.rest);openRating(e,st,true);renderLive()})};c.querySelector(".complete-cardio").onclick=()=>{if(st.timerRunning)stopExerciseTimer(st,timerId,true);const already=!!st.completed;if(!already&&(e.rest??0)>0)startRest(e.rest);openRating(e,st,!already&&(e.rest??0)>0)};enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return}
-if(timeMode){c.innerHTML=`<div class="single-method-label">${esc(techniqueLabel(e.setTechnique||"normal"))}</div><div class="single-method-help">${esc(techniqueDescriptions[e.setTechnique||"normal"]||"")}</div><div class="live-exercise-head"><div><div class="live-exercise-title">${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</div><div class="single-method-label">${esc(techniqueLabel(e.setTechnique||"normal"))}</div><div class="single-method-help">${esc(techniqueDescriptions[e.setTechnique||"normal"]||"")}</div><div class="live-exercise-sub">Zeit pro Satz in Minuten${e.note?`<br>${esc(e.note)}`:""}</div></div></div><div class="set-table-head time-set-head"><span>Satz</span><span>Min.</span><span>Timer</span><span>✓</span></div><div class="live-sets"></div><div class="live-exercise-footer"><button class="live-small-button addset">+ Satz</button></div>`;const box=c.querySelector(".live-sets");e.sets.forEach((st,si)=>{const r=document.createElement("div");r.className=`live-set time-set ${st.completed?"completed":""}`;const timerId=`timeTimer-${ei}-${si}`,mins=parseFloat(String(st.minutes??e.timeMinutes??5).replace(",","."))||5,running=!!st.timerRunning,done=!!st.completed;r.innerHTML=`<div class="set-number-live">${st.isNewSet?`<span class="new-set-dot">Neu</span>`:previousRatingDot(st)}${si+1}</div><input class="set-input mins" inputmode="decimal" value="${esc(st.minutes??e.timeMinutes??5)}" placeholder="Min."><div class="timer-row"><button class="timer-start ${running?"running":done?"done":""}">${running?"●":done?"✓":"▶"}</button><span id="${timerId}" class="timer-display">${running&&st.timerEnd?fmtClock(Math.max(0,Math.ceil((st.timerEnd-Date.now())/1000))):done?"00:00":fmtClock(Math.round(mins*60))}</span></div><button class="complete-set ${ratingClass(st)}">${ratingSymbol(st)}</button>`;r.querySelector(".mins").oninput=ev=>{st.minutes=ev.target.value;saveAll()};r.querySelector(".timer-start").onclick=()=>{if(st.completed)return openRating(e,st);const mm=parseFloat(String(r.querySelector(".mins").value).replace(",","."))||5;startExerciseTimer(e,st,mm*60,timerId,()=>{openRating(e,st,false);renderLive()})};r.querySelector(".complete-set").onclick=()=>{if(st.timerRunning)stopExerciseTimer(st,timerId,true);openRating(e,st,false)};box.appendChild(r)});c.querySelector(".addset").onclick=()=>{if(e.sets.length>=6)return toast("Maximal 6 Sätze");ensureDerivedPlanForWorkout();e.sets.push({minutes:"",prevMinutes:"",prevEffort:"",completed:false,effort:"",isNewSet:true});syncDerivedPlanFromWorkout();saveAll();renderLive()};enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return}
-if(renderAdvancedSegments(c,e,ei)){enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return}
+if(timeMode){
+ c.innerHTML=`<div class="single-method-label">${esc(techniqueLabel(e.setTechnique||"normal"))}</div><div class="single-method-help">${esc(techniqueDescriptions[e.setTechnique||"normal"]||"")}</div><div class="live-exercise-head"><div><div class="live-exercise-title">${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</div><div class="plan-prescription">${esc(`${e.timeMinutes||5} Min. pro Satz`)}</div><div class="live-rest-prescription">${esc(workoutRestText(e))}</div></div></div><div class="set-table-head time-set-head"><span>Satz</span><span>Zeit</span><span>Widerstand / Stufe</span><span>✓</span></div><div class="live-sets"></div><div class="live-exercise-footer"><button class="live-small-button addset">+ Satz</button></div>`;
+
+ const box=c.querySelector(".live-sets");
+ e.sets.forEach((st,si)=>{const r=document.createElement("div");r.className=`live-set time-set ${st.completed?"completed":""}`;const timerId=`timeTimer-${ei}-${si}`,mins=parseFloat(String(st.minutes??e.timeMinutes??5).replace(",","."))||5,running=!!st.timerRunning,done=!!st.completed;r.innerHTML=`<div class="set-number-live">${st.isNewSet?`<span class="new-set-dot">Neu</span>`:previousRatingDot(st)}${si+1}</div><div class="timer-row"><button class="timer-start ${running?"running":done?"done":""}">${running?"●":done?"✓":"▶"}</button><span id="${timerId}" class="timer-display">${running&&st.timerEnd?fmtClock(Math.max(0,Math.ceil((st.timerEnd-Date.now())/1000))):done?"00:00":fmtClock(Math.round(mins*60))}</span></div><input class="set-input time-inline-level" value="${esc(st.level??e.timeLevel??"")}" placeholder="${e.timeWatts?esc(e.timeWatts+" W"):"Stufe"}"><button class="complete-set ${ratingClass(st)}">${ratingSymbol(st)}</button>`;r.querySelector(".time-inline-level").oninput=ev=>{st.level=ev.target.value;saveAll()};r.querySelector(".timer-start").onclick=()=>{if(st.completed)return openRating(e,st);const mm=parseFloat(String(st.minutes??e.timeMinutes??5).replace(",","."))||5;startExerciseTimer(e,st,mm*60,timerId,()=>{openRating(e,st,false);renderLive()})};r.querySelector(".complete-set").onclick=()=>{if(st.timerRunning)stopExerciseTimer(st,timerId,true);openRating(e,st,false)};box.appendChild(r)});
+ c.querySelector(".addset").onclick=()=>{if(e.sets.length>=6)return toast("Maximal 6 Sätze");ensureDerivedPlanForWorkout();e.sets.push({minutes:"",prevMinutes:"",prevEffort:"",completed:false,effort:"",isNewSet:true});syncDerivedPlanFromWorkout();saveAll();renderLive()};enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return
+} if(renderAdvancedSegments(c,e,ei)){enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return}
 c.innerHTML=`<div class="live-exercise-head"><div><div class="live-exercise-title">${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</div><div class="single-method-label">${esc(techniqueLabel(e.setTechnique||"normal"))}</div><div class="single-method-help">${esc(techniqueDescriptions[e.setTechnique||"normal"]||"")}</div><div class="plan-prescription">${esc(planPrescriptionText(e))}</div><div class="live-rest-prescription">${esc(workoutRestText(e))}</div><div class="live-exercise-sub">${e.note?esc(e.note):""}</div></div></div><div class="set-table-head"><span>Satz</span><span>kg</span><span>Wdh.</span><span>✓</span></div><div class="live-sets"></div><div class="live-exercise-footer"><button class="live-small-button addset">+ Satz</button></div>`;const box=c.querySelector(".live-sets");e.sets.forEach((st,si)=>{const r=document.createElement("div");r.className=`live-set ${st.completed?"completed":""}`;r.innerHTML=`<div class="set-number-live">${st.isNewSet?`<span class="new-set-dot">Neu</span>`:previousRatingDot(st)}${si+1}${st.loadCue?`<small>${esc(st.loadCue)}</small>`:""}</div><input class="set-input kg" inputmode="decimal" value="${esc(st.weight)}" placeholder="${esc(st.isNewSet?"kg":(st.prevWeight||"kg"))}"><input class="set-input reps" inputmode="numeric" value="${esc(st.reps)}" placeholder="${esc(st.isNewSet?(st.targetReps||e.targetRepRange||e.reps||"Wdh."):(st.prevReps||st.targetReps||e.targetRepRange||e.reps||"Wdh."))}"><button class="complete-set ${ratingClass(st)}">${ratingSymbol(st)}</button>`;r.querySelector(".kg").oninput=ev=>{
  st.weight=ev.target.value;
  if(e.setTechnique==="pyramid")autoPyramidWeights(e,si);
@@ -2711,37 +2927,11 @@ function summaryRatingClass(v){
  return x?`summary-${x}`:""
 }
 function summaryPlanPrescription(e){
- if(e.type==="cardio"){
-   const d=e.cardio||{};
-   return [d.duration?`${d.duration} Min.`:"",d.level||""].filter(Boolean).join(" · ")
- }
- if((e.measureMode||"reps")==="time")return e.timeMinutes?`${e.timeMinutes} Min.`:"";
- return e.targetRepRange||e.reps?`${e.targetRepRange||e.reps} Wdh.`:""
-}
+ if(e.type==="cardio"){const d=e.cardio||{};return [d.duration?`${d.duration} Min.`:"",d.level||"",d.watts?`${d.watts} W`:""].filter(Boolean).join(" · ")}
+ if((e.measureMode||"reps")==="time")return [e.timeMinutes?`${e.timeMinutes} Min.`:"",e.timeLevel?`Stufe ${e.timeLevel}`:"",e.timeWatts?`${e.timeWatts} W`:""].filter(Boolean).join(" · ");
+ const t=e.setTechnique||"normal",m=e.methodData||{};if(t==="pyramid"){const seq=m.reps||[];return seq.length?`${seq.join(" · ")} Wdh.`:"Pyramide"}if(t==="cluster")return `${m.blocks||3} × ${m.clusterReps||2} Wdh. · ${m.intraRest||20}s intern`;if(t==="dropset")return `${e.targetRepRange||e.reps||"–"} Wdh. · ${m.dropCount||2} Drops · −${m.dropPercent||20}%`;if(t==="restpause")return `${e.targetRepRange||e.reps||"–"} Wdh. · ${m.blocks||2} RP · ${m.miniRest||20}s`;if(t==="backoff")return `${m.topReps||5} / ${m.backoffReps||8} Wdh. · −${m.reduction||15}%`;return e.targetRepRange||e.reps?`${e.targetRepRange||e.reps} Wdh.`:""}
 function summaryActualRows(e){
- const t=e.setTechnique||"normal",rows=[];
- if(["dropset","restpause","cluster"].includes(t)){
-   (e.sets||[]).forEach((st,si)=>{
-     if(!st.completed)return;
-     const parts=(st.segments||[]).map((seg,j)=>{
-       const kg=String(seg.weight??"").trim()||"–";
-       const reps=String(seg.reps??seg.targetReps??"").trim()||"–";
-       const label=t==="dropset"?(j===0?"Basis":`Drop ${j}`):t==="restpause"?(j===0?"Haupt":`RP ${j}`):`C${j+1}`;
-       return `${label}: ${kg} kg · ${reps} Wdh.`
-     });
-     rows.push({n:si+1,text:parts.join("  ·  "),effort:st.effort})
-   });
-   return rows
- }
- (e.sets||[]).forEach((st,si)=>{
-   if(!st.completed)return;
-   const text=(e.measureMode||"reps")==="time"
-     ?`${st.minutes||st.targetMinutes||"–"} Min.`
-     :`${st.weight||"–"} kg · ${st.reps||st.targetReps||"–"} Wdh.`;
-   rows.push({n:si+1,text,effort:st.effort})
- });
- return rows
-}
+ const t=e.setTechnique||"normal",rows=[];if(["dropset","restpause","cluster"].includes(t)){(e.sets||[]).forEach((st,si)=>{if(!st.completed)return;const segs=st.segments||[];let text="";if(t==="cluster"){const weights=segs.map(x=>String(x.weight||"–"));const same=weights.length&&weights.every(x=>x===weights[0]);text=`${same?weights[0]:weights.join(" / ")} kg · ${e.methodData?.blocks||segs.length} × ${e.methodData?.clusterReps||segs[0]?.reps||"–"} Wdh.`}else if(t==="dropset"){text=`${segs.map(x=>String(x.weight||"–")).join(" → ")} kg · ${segs.map(x=>String(x.reps||x.targetReps||"–")).join(" / ")} Wdh.`}else{text=`${String(segs[0]?.weight||"–")} kg · ${segs.map(x=>String(x.reps||x.targetReps||"–")).join(" + ")} Wdh.`}rows.push({n:si+1,text,effort:st.effort})});return rows}(e.sets||[]).forEach((st,si)=>{if(!st.completed)return;const text=(e.measureMode||"reps")==="time"?[`${st.minutes||st.targetMinutes||e.timeMinutes||"–"} Min.`,e.timeLevel?`Stufe ${e.timeLevel}`:"",e.timeWatts?`${e.timeWatts} W`:""].filter(Boolean).join(" · "):`${st.weight||"–"} kg · ${st.reps||st.targetReps||"–"} Wdh.`;rows.push({n:si+1,text,effort:st.effort})});return rows}
 function renderReadonlyClusterExercise(e){
  const sec=document.createElement("section");sec.className="live-exercise workout-method-frame cluster readonly-workout-card compact-cluster-summary";
  const m=e.methodData||{},blocks=m.blocks||3,reps=m.clusterReps||2,rest=m.intraRest||20;
@@ -2824,7 +3014,6 @@ function openWorkoutSummary(w){
  const body=$("workoutSummaryBody");body.innerHTML="";
  const used=new Set();
  (w.exercises||[]).forEach(e=>{
-   if((e.setTechnique||"normal")==="cluster"){body.appendChild(renderReadonlyClusterExercise(e));return}
    if(e.techniqueGroup&&groupedTechniques.has(e.setTechnique||"normal")){
      if(used.has(e.techniqueGroup))return;
      const members=w.exercises.filter(x=>x.techniqueGroup===e.techniqueGroup);
@@ -2921,17 +3110,17 @@ $("createFirstPlan").onclick=newPlan;$("createPlanTop").onclick=newPlan;$("back"
 
    const source=addingExerciseToLiveWorkout?(activeWorkoutData?.exercises||[]):(currentPlan?.exercises||[]);if(groupedTechniques.has(t)){const needed=groupedRequiredCount(t)-1;if(techniqueDraftMembers.length<needed||techniqueDraftMembers.slice(0,needed).some(x=>!x.name))return alert(t==="giantset"?"Bitte Übung B und C auswählen.":"Bitte Übung B auswählen.");}
 
-   created={name:selectedExercise,exerciseKey:selectedExercise,type:"strength",variant:$("variantWrap").classList.contains("config-hidden")?"":$("exerciseVariant").value,measureMode:mode,timeMinutes:mode==="time"?timeMinutes:"",sets,reps:mode==="reps"?reps:"—",rest:parseInt($("rest").value,10)??90,note:$("note").value.trim(),setTechnique:t,methodData,techniqueGroup:""}; if(groupedTechniques.has(t)){created.techniqueGroup=id()}
+   created={name:selectedExercise,exerciseKey:selectedExercise,type:"strength",variant:$("variantWrap").classList.contains("config-hidden")?"":$("exerciseVariant").value,measureMode:mode,timeMinutes:mode==="time"?timeMinutes:"",timeLevel:mode==="time"?$("timeLevel").value.trim():"",timeWatts:mode==="time"?$("timeWatts").value.trim():"",sets,reps:mode==="reps"?reps:"—",rest:parseInt($("rest").value,10)??90,note:$("note").value.trim(),setTechnique:t,methodData,techniqueGroup:""}; if(groupedTechniques.has(t)){created.techniqueGroup=id()}
  }
 
  const groupedCompanions=(!cardio&&groupedTechniques.has(created?.setTechnique||"normal"))?techniqueDraftMembers.slice(0,groupedRequiredCount(created.setTechnique)-1).map(m=>({...structuredClone(created),name:m.name,exerciseKey:m.name,variant:"",reps:m.reps||created.reps,methodData:created.setTechnique==="preexhaust"?{...(created.methodData||{}),role:"second"}:structuredClone(created.methodData||{})})):[]; if(addingExerciseToLiveWorkout){
    ensureDerivedPlanForWorkout();
    const w={
-     name:created.name,exerciseKey:created.exerciseKey||created.name,type:created.type||"strength",variant:created.variant||"",measureMode:created.measureMode||"reps",timeMinutes:created.timeMinutes||"",reps:created.reps||"",targetRepRange:created.reps||"",rest:created.rest??90,note:created.note||"",setTechnique:created.setTechnique||"normal",methodData:structuredClone(created.methodData||{}),techniqueGroup:created.techniqueGroup||"",skipped:false,
+     name:created.name,exerciseKey:created.exerciseKey||created.name,type:created.type||"strength",variant:created.variant||"",measureMode:created.measureMode||"reps",timeMinutes:created.timeMinutes||"",timeLevel:created.timeLevel||"",timeWatts:created.timeWatts||"",reps:created.reps||"",targetRepRange:created.reps||"",rest:created.rest??90,note:created.note||"",setTechnique:created.setTechnique||"normal",methodData:structuredClone(created.methodData||{}),techniqueGroup:created.techniqueGroup||"",skipped:false,
      cardio:{duration:created.duration||"5",distance:created.distance||"",distanceUnit:created.distanceUnit||"km",watts:created.watts||"",pace:created.pace||"",level:created.intensity||created.level||"Moderat"},
      sets:isCardio(created)?[{weight:"",reps:"",completed:false,effort:""}]:buildWorkoutSets(created,null)
    };
-   activeWorkoutData.exercises.push(w);groupedCompanions.forEach(gc=>activeWorkoutData.exercises.push({name:gc.name,exerciseKey:gc.exerciseKey,type:"strength",variant:gc.variant||"",measureMode:gc.measureMode||"reps",timeMinutes:gc.timeMinutes||"",reps:gc.reps||"",targetRepRange:gc.reps||"",rest:gc.rest??90,note:gc.note||"",setTechnique:gc.setTechnique||"normal",methodData:structuredClone(gc.methodData||{}),techniqueGroup:created.techniqueGroup,skipped:false,cardio:{},sets:buildWorkoutSets(gc,null)}));
+   activeWorkoutData.exercises.push(w);groupedCompanions.forEach(gc=>activeWorkoutData.exercises.push({name:gc.name,exerciseKey:gc.exerciseKey,type:"strength",variant:gc.variant||"",measureMode:gc.measureMode||"reps",timeMinutes:gc.timeMinutes||"",timeLevel:gc.timeLevel||"",timeWatts:gc.timeWatts||"",reps:gc.reps||"",targetRepRange:gc.reps||"",rest:gc.rest??90,note:gc.note||"",setTechnique:gc.setTechnique||"normal",methodData:structuredClone(gc.methodData||{}),techniqueGroup:created.techniqueGroup,skipped:false,cardio:{},sets:buildWorkoutSets(gc,null)}));
    syncDerivedPlanFromWorkout();
    saveAll();$("configModal").classList.add("hidden");$("exerciseModal").classList.add("hidden");
    addingExerciseToLiveWorkout=false;editingCardio=false;editingIndex=null;renderLive();toast("Übung hinzugefügt");return
@@ -2964,8 +3153,15 @@ $("actionUp").onclick=()=>{const i=actionIndex;if(i>0)[currentPlan.exercises[i-1
    editingCardio=true;selectedExercise=e.name;$("backConfig").classList.remove("config-hidden");$("configTitle").textContent=e.name;$("strengthConfig").classList.add("hide");$("cardioConfig").classList.add("show");$("confirmExercise").textContent="Änderungen speichern";$("cardioDuration").value=e.duration||"5";$("cardioDistance").value=e.distance||"";$("cardioDistanceUnit").value=e.distanceUnit||"km";$("cardioWatts").value=e.watts||"";$("cardioPace").value=e.pace||"";$("cardioLevel").value=e.intensity||e.level||"Moderat";$("cardioNote").value=e.note||"";$("configModal").classList.remove("hidden")
  }else openStrengthConfigForEdit(editingIndex)
 };
-$("closeEdit").onclick=$("editOverlay").onclick=()=>$("editModal").classList.add("hidden");$("saveEdit").onclick=()=>{const e=currentPlan.exercises[editingIndex],mode=$("editTrackingMode").value||"reps";e.sets=parseInt($("editSets").value,10)||3;e.measureMode=mode;e.reps=mode==="reps"?($("editReps").value.trim()||"8-10"):"—";e.timeMinutes=mode==="time"?$("editTimeMinutes").value.trim():"";e.rest=parseInt($("editRest").value,10);if(!Number.isFinite(e.rest))e.rest=90;e.variant=$("editVariantWrap").classList.contains("config-hidden")?"":$("editVariant").value;e.setTechnique=$("editSetTechnique").value||"normal";e.note=$("editNote").value.trim();$("editModal").classList.add("hidden");renderExercises()};
-$("trainingPlus").onclick=()=>{if(plans.length)openPlanPicker();else newPlan()};$("navPlans").onclick=()=>{clearInterval(workoutClockInterval);show("home");renderPlans()};$("navWorkout").onclick=()=>{clearInterval(workoutClockInterval);show("workoutHome");renderWorkoutHome()};$("navMore").onclick=()=>{clearInterval(workoutClockInterval);show("progressHome");renderProgress()};$("goToPlans").onclick=()=>show("home");$("chooseWorkoutPlan").onclick=openPlanPicker;$("closePlanPicker").onclick=$("planPickerOverlay").onclick=()=>$("planPickerModal").classList.add("hidden");
+$("closeEdit").onclick=$("editOverlay").onclick=()=>$("editModal").classList.add("hidden");$("saveEdit").onclick=()=>{const e=currentPlan.exercises[editingIndex],mode=$("editTrackingMode").value||"reps";e.sets=parseInt($("editSets").value,10)||3;e.measureMode=mode;e.reps=mode==="reps"?($("editReps").value.trim()||"8-10"):"—";e.timeMinutes=mode==="time"?$("editTimeMinutes").value.trim():"";e.timeLevel=mode==="time"?$("editTimeLevel").value.trim():"";e.timeWatts=mode==="time"?$("editTimeWatts").value.trim():"";e.rest=parseInt($("editRest").value,10);if(!Number.isFinite(e.rest))e.rest=90;e.variant=$("editVariantWrap").classList.contains("config-hidden")?"":$("editVariant").value;e.setTechnique=$("editSetTechnique").value||"normal";e.note=$("editNote").value.trim();$("editModal").classList.add("hidden");renderExercises()};
+$("closePlanTap").onclick=$("planTapOverlay").onclick=closePlanTap;$("closePlanLong").onclick=$("planLongOverlay").onclick=closePlanLong;$("planTapEdit").onclick=()=>{const id=selectedPlanActionId;closePlanTap();openPlan(id)};$("planTapPreview").onclick=()=>{const id=selectedPlanActionId;closePlanTap();openPlanPreview(id)};$("planLongDuplicate").onclick=duplicateSelectedPlan;$("planLongDelete").onclick=deleteSelectedPlan;$("navCatalog").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="catalogHome"){resetTab("catalogHome")}else{renderCatalog();navToTab("catalogHome")}};$("catalogSearch").oninput=renderCatalog;
+$("catalogDetailBack").onclick=()=>{show("catalogHome");renderCatalog()};
+$("navFoodIq").onclick=()=>{clearInterval(workoutClockInterval);navToTab("foodIqHome")};
+document.querySelectorAll(".profile-button").forEach(b=>b.onclick=openProfile);
+$("profileBack").onclick=()=>show("workoutHome");
+document.querySelectorAll(".theme-choice").forEach(b=>b.onclick=()=>applyTheme(b.dataset.themeChoice));
+applyTheme(themeMode);
+$("trainingPlus").onclick=()=>{if(plans.length)openPlanPicker();else newPlan()};$("navPlans").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="home")resetTab("home");else{renderPlans();navToTab("home")}};$("navWorkout").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="workoutHome")resetTab("workoutHome");else{renderWorkoutHome();navToTab("workoutHome")}};$("navMore").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="progressHome")resetTab("progressHome");else{renderProgress();navToTab("progressHome")}};$("goToPlans").onclick=()=>show("home");$("chooseWorkoutPlan").onclick=openPlanPicker;$("closePlanPicker").onclick=$("planPickerOverlay").onclick=()=>$("planPickerModal").classList.add("hidden");
 $("resumeWorkoutButton").onclick=openActive;$("discardWorkoutButton").onclick=()=>{if(confirm("Aktives Training verwerfen?")){activeWorkoutData=null;saveAll();renderWorkoutHome();toast("Training verworfen")}};
 $("closeStartWorkout").onclick=$("startWorkoutOverlay").onclick=()=>$("startWorkoutModal").classList.add("hidden");$("confirmStartWorkout").onclick=()=>{primeAudio();const p=plans.find(x=>x.id===pendingWorkoutPlanId);activeWorkoutData=createWorkout(p);saveAll();$("startWorkoutModal").classList.add("hidden");openActive()};
 $("leaveWorkout").onclick=()=>{clearInterval(workoutClockInterval);clearInterval(exerciseTimerInterval);stopRest();show("workoutHome");renderWorkoutHome()};function requestFinishWorkout(){const c=completedSets(activeWorkoutData),t=totalSets(activeWorkoutData);$("finishWorkoutCopy").textContent=`${c} von ${t} Sätzen abgeschlossen. Das Training wird unter „${activePlanDisplayName()}“ gespeichert.`;$("finishWorkoutModal").classList.remove("hidden")}$("finishWorkout").onclick=requestFinishWorkout;$("finishWorkoutBottom").onclick=requestFinishWorkout;$("closeFinishWorkout").onclick=$("finishWorkoutOverlay").onclick=$("cancelFinishWorkout").onclick=()=>$("finishWorkoutModal").classList.add("hidden");$("confirmFinishWorkout").onclick=()=>{activeWorkoutData.finishedAt=Date.now();if(activeWorkoutData.derivedPlanId)syncDerivedPlanFromWorkout();const historyEntry=structuredClone(activeWorkoutData);historyEntry.fullyCompleted=workoutWasFullyCompleted(historyEntry);if(historyEntry.derivedPlanId){historyEntry.planId=historyEntry.derivedPlanId;historyEntry.planName=historyEntry.derivedPlanName||historyEntry.planName;historyEntry.planModified=true}const hp=plans.find(p=>String(p.id)===String(historyEntry.planId));historyEntry.planSnapshot=hp?structuredClone(hp):null;workoutHistory.unshift(historyEntry);activeWorkoutData=null;saveAll();clearInterval(workoutClockInterval);clearInterval(exerciseTimerInterval);stopRest();$("finishWorkoutModal").classList.add("hidden");show("workoutHome");renderWorkoutHome();toast("Training gespeichert");openWorkoutSummary(historyEntry)};
