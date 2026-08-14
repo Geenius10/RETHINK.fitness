@@ -743,6 +743,7 @@ body.modal-open{
 }
 
 .exercise-category-heading{padding:10px 4px 6px;color:#8d8d94;font-size:10px;font-weight:900;letter-spacing:.10em;text-transform:uppercase}
+.advanced-set-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.advanced-remove-set{border:0;background:transparent;color:var(--muted);font-size:25px;line-height:1;padding:6px 8px;min-width:36px;cursor:pointer}
 </style>
 
 
@@ -1178,29 +1179,452 @@ body.modal-open{
 .time-set{grid-template-columns:30px minmax(58px,.72fr) minmax(0,1fr) 54px!important;gap:6px!important}
 .time-set-head{grid-template-columns:30px minmax(58px,.72fr) minmax(0,1fr) 54px!important;gap:6px!important}
 .time-inline-level{min-width:0!important}
-</style><style id="v278-theme-profile">
-:root[data-theme="dark"]{--bg:#09090b;--card:#151518;--card2:#1c1c20;--line:#29292e;--text:#f5f5f7;--muted:#8e8e93}
-:root[data-theme="light"]{--bg:#f5f5f7;--card:#ffffff;--card2:#f0f0f3;--line:#d9d9df;--text:#111114;--muted:#6f6f78;--green:#28a745;--red:#dc3545}
-:root[data-theme="light"] body,:root[data-theme="light"] .app,:root[data-theme="light"] .plan-preview-screen,:root[data-theme="light"] .catalog-detail-screen,:root[data-theme="light"] .profile-screen{background:var(--bg)!important;color:var(--text)!important}
-:root[data-theme="light"] .icon-button,:root[data-theme="light"] .back-button,:root[data-theme="light"] .close-button,:root[data-theme="light"] .workout-close{color:var(--text)!important;background:var(--card2)!important}
-:root[data-theme="light"] input,:root[data-theme="light"] select,:root[data-theme="light"] .set-input,:root[data-theme="light"] .config-input,:root[data-theme="light"] .config-select{color:var(--text)!important;background:var(--card)!important;border-color:var(--line)!important}
-:root[data-theme="light"] .bottom-bar{background:color-mix(in srgb,var(--bg) 94%,transparent)!important;border-color:var(--line)!important}
-:root[data-theme="light"] .nav-button{color:var(--muted)!important}:root[data-theme="light"] .nav-button.active{color:var(--text)!important;background:var(--card2)!important}
-:root[data-theme="light"] .modal .sheet{background:var(--bg)!important;color:var(--text)!important}
-.profile-button{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--card2);border:1px solid var(--line);color:var(--text);font-weight:900;font-size:19px}
-.topbar-actions{display:flex;align-items:center;gap:8px}
-.profile-screen{min-height:100dvh}.profile-header{position:sticky;top:0;z-index:60;display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;padding:max(10px,env(safe-area-inset-top)) 0 14px;background:var(--bg);border-bottom:1px solid var(--line)}.profile-header h2{text-align:center;margin:0;font-size:18px}
-.profile-card{display:flex;align-items:center;gap:14px;padding:18px;margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:18px}.profile-avatar-large{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--card2);font-size:28px}.profile-card strong,.profile-card small{display:block}.profile-card small{margin-top:4px;color:var(--muted)}
-.profile-section{margin-top:22px}.profile-section h3{margin:0 0 10px;font-size:14px}.theme-choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.theme-choice{padding:14px 7px;border-radius:14px;background:var(--card);border:1px solid var(--line);color:var(--text);display:grid;gap:4px;place-items:center}.theme-choice span{font-size:24px}.theme-choice strong{font-size:13px}.theme-choice small{font-size:9px;color:var(--muted);text-align:center}.theme-choice.active{outline:2px solid #8b5cf6;border-color:#8b5cf6}
-.profile-row{width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px 2px;background:transparent;color:var(--text);border-bottom:1px solid var(--line)}
-.catalog-exercise-card.has-image{grid-template-columns:72px minmax(0,1fr) 20px!important}.catalog-generated-thumb{width:72px;height:54px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--card2)}
-.catalog-detail-generated-image{width:100%;max-height:320px;object-fit:cover;border-radius:16px;border:1px solid var(--line);background:var(--card2);margin-bottom:4px}
+</style><style id="v279-nav-filter-fixes">
+#catalogMuscleFilters .filter-btn.active{font-weight:800}
+</style><style id="v282-planner-picker">
+#exerciseModal .sheet{width:min(100%,520px)!important;max-height:94dvh!important}
+#exerciseOptions{display:grid!important;gap:9px!important;padding-bottom:10px}
+.planner-picker-card{position:relative;display:grid!important;grid-template-columns:72px minmax(0,1fr) 18px 42px!important;align-items:center!important;gap:9px!important;width:100%!important;text-align:left!important;padding:11px 10px!important;border:1px solid var(--line)!important;border-radius:15px!important;background:var(--card)!important;color:var(--text)!important}
+.planner-picker-card .catalog-card-copy{min-width:0}.planner-picker-card strong{display:block;font-size:15px;font-weight:850}.planner-picker-card small{display:block;margin-top:3px;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.planner-picker-card .planner-card-params{color:var(--text);font-size:11px;font-weight:700}
+.planner-card-chevron{font-size:20px;color:var(--muted)}
+.planner-inline-add{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#8b5cf6;color:white;font-size:25px;font-weight:700;line-height:1}
+.planner-detail-add{min-width:88px;height:42px;padding:0 12px;border-radius:12px;background:#8b5cf6;color:#fff;font-weight:800}
+.planner-detail-header{grid-template-columns:52px minmax(0,1fr) 96px!important}.planner-detail-header h2{text-align:left!important;padding-left:4px}
+@media(max-width:390px){.planner-picker-card{grid-template-columns:60px minmax(0,1fr) 14px 38px!important;gap:7px!important}.planner-picker-card .catalog-generated-thumb{width:60px!important;height:48px!important}}
+</style><style id="v284-cleanup">
+.bottom-inner-four{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important}
+.plan-card-simple{display:grid!important;grid-template-columns:minmax(0,1fr) 82px!important;padding:0!important;overflow:hidden!important;background:#09090b!important}
+.plan-card-main{width:100%!important;text-align:left!important;padding:18px 16px!important;background:#09090b!important;color:var(--text)!important;border:0!important}.plan-card-main .plan-name{font-weight:900!important;font-size:19px!important;background:transparent!important;border:0!important;box-shadow:none!important}.plan-card-main .plan-count{margin-top:6px!important;color:var(--muted)!important;font-size:12px!important}.plan-card-start{border:0!important;border-left:1px solid var(--line)!important;background:var(--card2)!important;color:var(--text)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important}
+#planTapModal .sheet-title,#planTapTitle{background:#09090b!important;border:0!important;box-shadow:none!important}
+.catalog-detail-screen,.planner-exercise-detail-screen{display:block!important;align-items:stretch!important;justify-content:flex-start!important}.catalog-detail-header,.planner-detail-header{position:sticky!important;top:0!important;margin:0!important}.catalog-detail-header h2,.planner-detail-header h2,.catalog-detail-full-body,.catalog-detail-section,.catalog-detail-copy{text-align:left!important}.catalog-detail-full-body{padding-top:18px!important;margin:0!important}.catalog-detail-section{justify-content:flex-start!important;gap:18px!important}.catalog-detail-section strong{text-align:left!important;max-width:none!important}
+.catalog-exercise-card{grid-template-columns:minmax(0,1fr) 20px!important}.planner-picker-card{grid-template-columns:minmax(0,1fr) 18px 42px!important}
+.advanced-set-card,.segment-list,.preview-advanced-set-card,.unified-set-list,.preview-group-list{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;overflow:hidden!important}
+.advanced-segment-row,.advanced-segment-row.preview-group-row{display:grid!important;grid-template-columns:22px minmax(0,.92fr) 50px 50px 30px!important;gap:2px!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}.advanced-segment-row>*{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}.advanced-segment-row .unified-input,.advanced-segment-row .preview-input-like{width:100%!important;min-width:0!important;max-width:100%!important;padding-left:3px!important;padding-right:3px!important}.advanced-segment-row .unified-small-exercise{font-size:9px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}.unified-set-code{font-size:10px!important}
+.preview-live-set{grid-template-columns:24px minmax(0,1fr) minmax(0,1fr) 38px!important;gap:4px!important}.live-exercise,.workout-method-frame,.plan-preview-card{overflow:hidden!important;padding-left:14px!important;padding-right:14px!important}
+</style><style id="v285-refine-ui">
+/* Library: restore simple clean list, no image placeholders */
+#catalogHome{padding-top:0!important}
+#catalogHome .topbar{align-items:flex-start!important}
+.catalog-exercise-list{display:grid!important;gap:10px!important}
+.catalog-exercise-card{
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 20px!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:15px 16px!important;
+  border:1px solid var(--line)!important;
+  border-radius:16px!important;
+  background:var(--card)!important;
+  color:var(--text)!important;
+  text-align:left!important;
+}
+.catalog-exercise-card .catalog-card-copy{min-width:0!important}
+.catalog-exercise-card strong{display:block!important;font-size:16px!important;font-weight:850!important;text-align:left!important}
+.catalog-exercise-card small{display:block!important;margin-top:4px!important;color:var(--muted)!important;font-size:11px!important;text-align:left!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+
+/* Planner picker mirrors library. Only name/category/muscle info. */
+.planner-picker-card{
+  grid-template-columns:minmax(0,1fr) 38px 18px!important;
+  gap:8px!important;
+  background:#09090b!important;
+  border-color:var(--line)!important;
+  padding:13px 14px!important;
+}
+.planner-picker-card .planner-card-params{display:none!important}
+.planner-inline-add{
+  order:2!important;
+  width:34px!important;
+  height:34px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:10px!important;
+  background:#ffffff!important;
+  color:#111111!important;
+  font-size:20px!important;
+  font-weight:700!important;
+  box-shadow:none!important;
+}
+.planner-card-chevron{
+  order:3!important;
+  font-size:20px!important;
+  color:var(--muted)!important;
+}
+
+/* Planner detail sheet/card should stay black, not gray. */
+#exerciseModal .sheet,
+#configModal .sheet{
+  background:#09090b!important;
+}
+#exerciseModal .sheet-title,
+#configModal .sheet-title{
+  background:#09090b!important;
+}
+.planner-detail-add{
+  min-width:82px!important;
+  height:38px!important;
+  padding:0 12px!important;
+  border-radius:10px!important;
+  background:#ffffff!important;
+  color:#111111!important;
+  border:0!important;
+  font-weight:800!important;
+  box-shadow:none!important;
+}
+
+/* My Plans: one quiet card, play left of chevron */
+.plan-card-simple{
+  display:block!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#09090b!important;
+  border:1px solid var(--line)!important;
+  border-radius:20px!important;
+}
+.plan-card-main{
+  display:block!important;
+  width:100%!important;
+  padding:18px 16px!important;
+  background:#09090b!important;
+  color:var(--text)!important;
+  border:0!important;
+  text-align:left!important;
+}
+.plan-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+}
+.plan-copy{min-width:0!important}
+.plan-row-actions{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  flex:0 0 auto!important;
+}
+.plan-card-start{
+  width:36px!important;
+  height:36px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border-radius:10px!important;
+  border:1px solid var(--line)!important;
+  background:#ffffff!important;
+  color:#111111!important;
+  font-size:16px!important;
+  box-shadow:none!important;
+}
+.plan-chevron{
+  font-size:22px!important;
+  color:var(--muted)!important;
+}
+.plan-card-main .plan-name{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  font-weight:900!important;
+}
+.plan-card-main .plan-count{
+  margin-top:6px!important;
+  color:var(--muted)!important;
+  font-size:12px!important;
+}
+
+/* Exercise detail screens always begin at upper-left */
+.catalog-detail-screen,.planner-exercise-detail-screen{
+  display:block!important;
+  justify-content:flex-start!important;
+  align-items:stretch!important;
+}
+.catalog-detail-header,.planner-detail-header{
+  position:sticky!important;
+  top:0!important;
+  margin:0!important;
+}
+.catalog-detail-header h2,.planner-detail-header h2{
+  text-align:left!important;
+}
+.catalog-detail-full-body{
+  padding-top:16px!important;
+  text-align:left!important;
+  margin:0!important;
+}
+.catalog-detail-copy,.catalog-detail-section,.catalog-detail-section strong{
+  text-align:left!important;
+}
+</style><style id="v286-fixes">
+.hidden{display:none!important}
+#catalogHome{padding-top:0!important}
+#catalogHome .topbar{display:flex!important;align-items:center!important;justify-content:space-between!important}
+.catalog-exercise-list{display:grid!important;gap:10px!important}
+.catalog-exercise-card{display:grid!important;grid-template-columns:minmax(0,1fr) 20px!important;gap:12px!important;align-items:center!important;width:100%!important;padding:16px!important;background:var(--card)!important;border:1px solid var(--line)!important;border-radius:16px!important;color:var(--text)!important;text-align:left!important}
+.catalog-exercise-card strong{display:block!important;font-size:16px!important;font-weight:850!important}.catalog-exercise-card small{display:block!important;margin-top:4px!important;font-size:11px!important;color:var(--muted)!important}
+.catalog-detail-screen:not(.hidden),.planner-exercise-detail-screen:not(.hidden){display:block!important;min-height:100dvh!important;padding:0!important}
+.catalog-detail-header,.planner-detail-header{position:sticky!important;top:0!important;z-index:50!important;margin:0!important}.catalog-detail-header h2,.planner-detail-header h2{text-align:left!important}.catalog-detail-full-body{padding:18px 20px 30px!important;margin:0!important;text-align:left!important}.catalog-detail-copy,.catalog-detail-section,.catalog-detail-section strong{text-align:left!important}
+.plan-card-simple{display:grid!important;grid-template-columns:minmax(0,1fr) 38px 24px!important;align-items:center!important;gap:8px!important;padding:0 14px 0 0!important;background:var(--card)!important;border:1px solid var(--line)!important;border-radius:20px!important;overflow:hidden!important}
+.plan-card-content{display:block!important;width:100%!important;padding:18px 16px!important;text-align:left!important;background:transparent!important;color:var(--text)!important;border:0!important;min-width:0!important}.plan-card-content .plan-name{font-weight:900!important;font-size:19px!important}.plan-card-content .plan-count{margin-top:6px!important;font-size:12px!important;color:var(--muted)!important}
+.plan-card-start{width:34px!important;height:34px!important;padding:0!important;border-radius:10px!important;border:1px solid var(--line)!important;background:var(--card2)!important;color:var(--text)!important;display:grid!important;place-items:center!important;font-size:15px!important}
+.plan-card-open{width:22px!important;height:34px!important;padding:0!important;border:0!important;background:transparent!important;color:var(--muted)!important;font-size:24px!important;display:grid!important;place-items:center!important}
+.exercise-name-link{cursor:pointer!important}.exercise-name-link:active{opacity:.65}
+.planner-picker-card{grid-template-columns:minmax(0,1fr) 38px 18px!important}
+</style><style id="v287-reorder">
+.section-head-actions{display:flex;align-items:center;gap:8px}
+.reorder-mode-button{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);background:var(--card2);color:var(--muted);font-size:19px;display:grid;place-items:center}
+.reorder-mode-button.active{background:#fff!important;color:#111!important;border-color:#fff!important}
+.card-reorder-controls{grid-column:2/-1;display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.card-reorder-controls button,.reorder-toolbar button{height:38px!important;border-radius:10px!important;border:1px solid var(--line)!important;background:var(--card2)!important;color:var(--text)!important;font-size:20px!important;font-weight:800!important}
+.card-reorder-controls button:disabled,.reorder-toolbar button:disabled,.action-item:disabled{opacity:.22!important}
+.live-workout-actions .live-add-exercise{min-width:0}
+.live-reorder-btn{flex:0 0 48px!important;width:48px!important}
+.reorder-toolbar{display:none;grid-template-columns:1fr 1fr;gap:7px;margin:9px 12px 2px}
+.reorder-mode .reorder-toolbar{display:grid!important}
+.reorder-toolbar button{padding:0!important}
+</style>
+<style id="v288-reorder-icon">
+.reorder-mode-button{
+  position:relative;
+}
+.reorder-icon{
+  position:relative;
+  display:block;
+  width:18px;
+  height:20px;
+}
+.reorder-icon::before,
+.reorder-icon::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  width:7px;
+  height:7px;
+  border-left:1.8px solid currentColor;
+  border-top:1.8px solid currentColor;
+}
+.reorder-icon::before{
+  top:2px;
+  transform:translateX(-50%) rotate(45deg);
+}
+.reorder-icon::after{
+  bottom:2px;
+  transform:translateX(-50%) rotate(225deg);
+}
+.reorder-icon{
+  background:
+    linear-gradient(currentColor,currentColor) 50% 5px/1.8px 10px no-repeat;
+}
+</style>
+<style id="v289-method-add-links">
+.exercise-name-link{cursor:pointer!important}
+.exercise-name-link:active{opacity:.62!important}
+.advanced-addset,.series-add-round{width:100%!important;margin-top:10px!important}
+</style>
+<style id="v290-parity-fixes">
+/* v2.90: Preview uses the same visual grammar as the live workout. */
+.plan-preview-card .preview-disabled-control{pointer-events:none!important;opacity:1!important}
+.plan-preview-card .advanced-complete{width:100%!important;margin-top:10px!important}
+.plan-preview-card>.advanced-addset{margin-top:14px!important}
+.plan-preview-card .live-exercise-footer{display:flex!important;margin-top:14px!important}
+.plan-preview-card .addset,.plan-preview-card .advanced-addset{display:inline-flex!important;align-items:center!important;justify-content:center!important}
+/* Never let structured method rows leave the card. */
+.advanced-segment-row,.preview-group-row,.unified-set-row{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+.advanced-segment-row{grid-template-columns:22px minmax(0,1fr) minmax(48px,58px) minmax(48px,58px) 0!important;column-gap:4px!important}
+.advanced-segment-row>div:last-child{display:none!important}
+@media(max-width:390px){.advanced-segment-row{grid-template-columns:20px minmax(0,1fr) 50px 50px 0!important;column-gap:3px!important}}
+/* Plan action sheet header must visually disappear into the sheet. */
+#planTapModal .sheet,#planTapModal .sheet-title,#planTapModal #planTapTitle{background:var(--bg)!important;background-color:var(--bg)!important;border-color:transparent!important;box-shadow:none!important}
+/* Exercise cards always open at the physical top-left of the app content. */
+#catalogDetailScreen,#plannerExerciseDetailScreen{position:absolute!important;inset:0!important;min-height:100dvh!important;background:var(--bg)!important;padding:0!important;margin:0!important}
+#catalogDetailScreen .catalog-detail-header,#plannerExerciseDetailScreen .planner-detail-header{top:0!important;width:100%!important;padding-top:calc(env(safe-area-inset-top) + 12px)!important;padding-left:16px!important;padding-right:16px!important;background:var(--bg)!important}
+#catalogDetailScreen .catalog-detail-full-body,#plannerExerciseDetailScreen .catalog-detail-full-body{padding-left:16px!important;padding-right:16px!important;text-align:left!important}
+#catalogDetailScreen .catalog-detail-section,#plannerExerciseDetailScreen .catalog-detail-section{justify-content:flex-start!important;text-align:left!important}
+</style>
+<style id="v292-consistency">
+.workout-method-frame .live-rest-prescription,
+.plan-preview-card .live-rest-prescription{display:block!important;margin:4px 0 8px!important;font-size:10px!important;line-height:1.25!important;color:var(--muted)!important;font-weight:650!important;opacity:.82!important}
+
+/* Time based rows keep the delete minus on the same line. */
+.live-set.time-set{grid-template-columns:30px minmax(58px,.72fr) minmax(0,1fr) 46px 26px!important;gap:4px!important;align-items:center!important}
+.live-set.time-set .set-number-live{grid-column:1!important;grid-row:1!important}
+.live-set.time-set .timer-row{grid-column:2!important;grid-row:1!important;min-width:0!important}
+.live-set.time-set .time-inline-level{grid-column:3!important;grid-row:1!important}
+.live-set.time-set .complete-set{grid-column:4!important;grid-row:1!important}
+.live-set.time-set .single-remove-set{grid-column:5!important;grid-row:1!important;width:26px!important;min-width:26px!important;margin:0!important}
+@media(max-width:390px){.live-set.time-set{grid-template-columns:26px minmax(54px,.68fr) minmax(54px,1fr) 42px 24px!important;gap:3px!important}}
+
+/* Pressed reorder button remains visually pressed. */
+.reorder-mode-button.active{background:#fff!important;color:#111!important;border-color:#fff!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)!important;transform:scale(.96)!important}
+
+/* Exercise detail: sticky compact name + add control. */
+#plannerExerciseDetailScreen .planner-detail-header{position:sticky!important;top:0!important;z-index:100!important;grid-template-columns:44px minmax(0,1fr) 78px!important;gap:6px!important;min-height:58px!important;padding:calc(env(safe-area-inset-top) + 6px) 12px 8px!important;background:var(--bg)!important;border-bottom:1px solid var(--line)!important}
+#plannerExerciseDetailScreen .planner-detail-header h2{min-width:0!important;margin:0!important;padding:0!important;font-size:16px!important;line-height:1.15!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;text-align:left!important}
+#plannerExerciseDetailScreen .planner-detail-header .back-button{width:40px!important;height:40px!important;min-width:40px!important}
+#plannerExerciseDetailScreen .planner-detail-add{width:78px!important;min-width:78px!important;max-width:78px!important;height:36px!important;min-height:36px!important;padding:0 6px!important;border-radius:9px!important;font-size:11px!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}
+
+/* Rest-pause: one shared load, total reps shown per full set. */
+.restpause .shared-weight{color:var(--muted)!important;opacity:.72!important}
+.restpause-total{display:flex!important;justify-content:flex-end!important;align-items:baseline!important;gap:8px!important;padding:7px 2px 4px!important;color:var(--muted)!important;font-size:10px!important}
+.restpause-total strong{color:var(--text)!important;font-size:12px!important}
+</style><style id="v293-plan-sort-swipe">
+
+.list-swipe-shell{position:relative;overflow:hidden;border-radius:20px;margin:0 0 10px}
+.list-swipe-front{position:relative;z-index:2;transform:translateX(0);transition:transform .18s ease;background:var(--bg);touch-action:pan-y}
+.list-swipe-delete{position:absolute;z-index:1;inset:0 0 0 auto;width:92px;border:0;background:#b4232c;color:#fff;font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center}
+.list-swipe-shell .plan-card,.list-swipe-shell .history-card{margin:0!important}
+.history-list .list-swipe-shell{border-radius:14px}
+</style><style id="v294-sort-toggle">
+.plan-sort-row{
+  display:flex!important;
+  gap:7px!important;
+  margin:4px 0 14px!important;
+  overflow-x:auto!important;
+  scrollbar-width:none!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+.plan-sort-row::-webkit-scrollbar{display:none!important}
+.plan-sort-button{
+  flex:0 0 auto!important;
+  min-height:36px!important;
+  padding:0 11px!important;
+  border-radius:10px!important;
+  border:1px solid var(--line)!important;
+  background:var(--card)!important;
+  color:var(--muted)!important;
+  font-size:11px!important;
+  font-weight:750!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:5px!important;
+}
+.plan-sort-button.active{
+  background:var(--card2)!important;
+  color:var(--text)!important;
+  border-color:rgba(255,255,255,.18)!important;
+}
+.plan-sort-button .sort-arrow{
+  font-size:11px!important;
+  font-weight:900!important;
+}
+</style><style id="v295-editor-method-preview-fixes">
+.editor-reorder-text-button{width:100%!important;min-height:44px!important;margin:0 0 12px!important;padding:0 13px!important;border:1px solid var(--line)!important;border-radius:12px!important;background:var(--card)!important;color:var(--text)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;font-size:12px!important;font-weight:800!important}
+.editor-reorder-text-button.active{background:#fff!important;color:#111!important;border-color:#fff!important}
+.editor-reorder-arrows{position:relative;width:15px;height:18px;display:block;background:linear-gradient(currentColor,currentColor) 7px 4px/1.5px 10px no-repeat}
+.editor-reorder-arrows:before,.editor-reorder-arrows:after{content:"";position:absolute;left:3px;width:8px;height:8px;border-left:1.7px solid currentColor;border-top:1.7px solid currentColor}.editor-reorder-arrows:before{top:1px;transform:rotate(45deg)}.editor-reorder-arrows:after{bottom:1px;transform:rotate(225deg)}
+#exerciseList .set-technique-badge.normal{border-color:rgba(181,156,255,.42)!important;color:#c8b8ff!important}
+.replace-exercise-sheet{max-height:88dvh!important}.replace-exercise-note{margin:0 0 12px;color:var(--muted);font-size:11px;line-height:1.35}.replace-exercise-list{display:grid;gap:8px;margin-top:12px;padding-bottom:8px}.replace-exercise-row{width:100%;min-height:58px;padding:10px 12px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--text);display:grid;grid-template-columns:minmax(0,1fr) 18px;align-items:center;gap:8px;text-align:left}.replace-exercise-row strong{display:block;font-size:14px}.replace-exercise-row small{display:block;margin-top:3px;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.replace-exercise-row>span{color:var(--muted);font-size:20px}
+.advanced-set-card .advanced-segment-row,.preview-advanced-set-card .advanced-segment-row.preview-group-row{display:grid!important;grid-template-columns:22px minmax(0,1fr) 50px 50px 0!important;column-gap:2px!important;row-gap:6px!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
+.advanced-set-card .advanced-segment-row>*,.preview-advanced-set-card .advanced-segment-row.preview-group-row>*{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}.preview-advanced-set-card .preview-done-placeholder{display:none!important}.preview-advanced-set-card .preview-input-like,.advanced-set-card .unified-input{width:100%!important;min-width:0!important;padding-left:3px!important;padding-right:3px!important}
+#planPreviewScreen,.plan-preview-screen-content,#planPreviewWorkout,.plan-preview-card{touch-action:pan-y!important}.plan-preview-card{pointer-events:auto!important}.plan-preview-card .preview-disabled-control{pointer-events:none!important}.plan-preview-screen-content{overflow:visible!important}#planPreviewWorkout{user-select:none;-webkit-user-select:none}#planPreviewWorkout .exercise-name-link{touch-action:pan-y!important}
+@media(max-width:390px){.advanced-set-card .advanced-segment-row,.preview-advanced-set-card .advanced-segment-row.preview-group-row{grid-template-columns:20px minmax(0,1fr) 48px 48px 0!important;column-gap:2px!important}}
+</style><style id="v296-rethink-labels-profile">
+.rethink-kicker{
+  font-weight:900!important;
+  letter-spacing:.02em!important;
+  text-transform:none!important;
+}
+.profile-topbar .topbar-actions{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+.profile-top-button{
+  width:42px!important;
+  height:42px!important;
+  border-radius:12px!important;
+  border:1px solid var(--line)!important;
+  background:var(--card)!important;
+  color:var(--text)!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+}
+.profile-silhouette svg,
+.profile-nav-silhouette svg{
+  width:22px!important;
+  height:22px!important;
+  display:block!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.9!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+.bottom-inner-four .nav-button{
+  font-size:9px!important;
+}
+.bottom-inner-four .nav-icon{
+  min-height:22px!important;
+}
+@media(max-width:390px){
+  .bottom-inner-four .nav-button{font-size:8px!important}
+}
+</style><style id="v2104-safe-integration">
+.profile-extra-hidden{display:none!important}
+.profile-topbar .topbar-actions{display:flex!important;align-items:center!important}
+.profile-top-button,.profile-silhouette,.profile-nav-silhouette{display:flex!important;align-items:center!important;justify-content:center!important}
+.profile-silhouette svg,.profile-nav-silhouette svg{margin:auto!important}
+.profile-settings-sheet{max-height:82dvh!important}
+.profile-setting-row{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(120px,38%)!important;gap:12px!important;align-items:center!important;padding:11px 0!important;border-bottom:1px solid var(--line)!important}
+.profile-setting-row strong{display:block!important;font-size:13px!important}.profile-setting-row small{display:block!important;margin-top:3px!important;color:var(--muted)!important;font-size:10px!important}
+.profile-settings-divider{height:1px;background:var(--line);margin:16px 0}.profile-settings-subtitle{font-size:14px;margin:0 0 8px}.profile-data-note{font-size:11px;color:var(--muted);line-height:1.4;margin:0 0 12px}
+.editor-bottom-actions{display:grid!important;grid-template-columns:minmax(0,1fr) 52px!important;gap:10px!important;align-items:stretch!important;margin-top:12px!important}
+.editor-bottom-actions .add-exercise{width:100%!important;margin:0!important}.editor-reorder-icon{width:52px!important;min-width:52px!important;min-height:52px!important;margin:0!important;border-radius:14px!important}.editor-reorder-icon.active{background:#fff!important;color:#111!important;border-color:#fff!important}
+#exerciseModal .exercise-picker-sticky{position:sticky!important;top:0!important;z-index:80!important;display:grid!important;grid-template-columns:42px minmax(0,1fr) 42px!important;align-items:center!important;background:var(--bg)!important;padding:7px 0!important}
+#exerciseModal .exercise-picker-sticky h2{text-align:center!important;margin:0!important}
+#exerciseModal .sheet{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
+.technique-group-row-flex{display:grid!important;grid-template-columns:28px minmax(0,1fr)!important;gap:8px!important;align-items:start!important}.group-config-body{display:grid!important;gap:7px!important}.group-value-wrap{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}.group-value-wrap>.group-reps-select:only-child{grid-column:1/-1!important}
+body.profile-light{--bg:#f5f5f7;--card:#fff;--card2:#eeeeF2;--text:#111114;--muted:#686871;--line:rgba(0,0,0,.12)}
+</style><style id="v2105-fixes">
+.profile-compat-hidden{display:none!important}
+.workout-note-inline{
+ display:block;width:100%;max-width:100%;border:0!important;background:transparent!important;
+ color:var(--muted)!important;font:inherit;font-size:10px!important;line-height:1.25!important;
+ padding:2px 0 0!important;margin:0!important;min-height:16px!important;outline:none!important;
+ box-shadow:none!important;opacity:.68
+}
+.workout-note-inline::placeholder{color:var(--muted)!important;opacity:.48}
+.workout-note-inline:focus{opacity:1}
+.preview-note{font-size:10px;line-height:1.25;color:var(--muted);opacity:.7;margin-top:2px}
+</style><style id="v2106-standard-color-only">
+:root{--tech-normal:#fbf9fe!important}
+.method-card[data-technique="normal"],
+.method-frame[data-technique="normal"],
+.technique-normal,
+.method-normal{--method-color:#fbf9fe!important;--technique-color:#fbf9fe!important;border-color:#fbf9fe!important}
+</style><style id="v2107-profile-page">
+#profileSettingsModal{position:fixed!important;inset:0!important;z-index:1000!important;background:var(--bg)!important}
+#profileSettingsModal .overlay{display:none!important}
+#profileSettingsModal .profile-settings-sheet{position:absolute!important;inset:0!important;width:100%!important;max-width:none!important;max-height:none!important;height:100dvh!important;border-radius:0!important;margin:0!important;padding:max(10px,env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom))!important;overflow-y:auto!important;background:var(--bg)!important}
+#profileSettingsModal .handle{display:none!important}
+#profileSettingsModal .sheet-title{position:sticky!important;top:0!important;z-index:4!important;background:var(--bg)!important;padding:8px 0 12px!important}
+</style><style id="v2107-notes">
+.workout-note-control{display:block!important;margin:1px 0 0!important;min-height:14px!important;max-width:100%!important}
+.workout-note-add,.workout-note-text{appearance:none!important;-webkit-appearance:none!important;display:block!important;border:0!important;background:transparent!important;box-shadow:none!important;padding:1px 0!important;margin:0!important;color:var(--muted)!important;text-align:left!important;line-height:1.2!important;min-height:14px!important;max-width:100%!important}
+.workout-note-add{font-size:9px!important;opacity:.48!important}
+.workout-note-text{font-size:10px!important;opacity:.72!important;white-space:normal!important;overflow-wrap:anywhere!important}
+.workout-note-editor{box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;height:28px!important;border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;color:var(--text)!important;padding:2px 0!important;margin:0!important;font-size:16px!important;line-height:24px!important;outline:none!important;box-shadow:none!important;transform:scale(.75)!important;transform-origin:left center!important;width:133.333%!important}
+.group-note-anchor{display:none!important}
+html,body{max-width:100%!important;overflow-x:hidden!important;-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}
+input,select,textarea{max-width:100%;box-sizing:border-box}
+</style><style id="v2108-scroll-note">
+.workout-note-add,.workout-note-text{
+  display:flex!important;
+  align-items:center!important;
+  gap:4px!important;
+}
 </style></head>
 <body>
 <div class="app">
 
 <section id="home">
-<header class="topbar"><div><p class="kicker">Training</p><h1>Meine Pläne</h1></div><div class="topbar-actions"><button class="profile-button" aria-label="Profil öffnen">◉</button><button id="createPlanTop" class="plan-create-top" aria-label="Neuen Plan erstellen">＋</button></div></header>
+<header class="topbar"><div><p class="kicker rethink-kicker">ReThink.</p><h1>Meine Pläne</h1></div><div class="topbar-actions"><button id="createPlanTop" class="plan-create-top" aria-label="Neuen Plan erstellen">＋</button></div></header>
+<div class="plan-sort-row">
+  <button class="plan-sort-button" data-sort="created">Hinzugefügt <span class="sort-arrow">↓</span></button>
+  <button class="plan-sort-button" data-sort="used">Genutzt <span class="sort-arrow">↓</span></button>
+  <button class="plan-sort-button" data-sort="modified">Geändert <span class="sort-arrow">↓</span></button>
+  <button class="plan-sort-button" data-sort="name">Name <span class="sort-arrow">A–Z</span></button>
+</div>
 <div id="empty" class="empty"><div class="empty-icon">＋</div><h2>Noch kein Trainingsplan</h2><p>Erstelle deinen ersten Plan und füge deine Übungen hinzu.</p><button id="createFirstPlan" class="primary">Trainingsplan erstellen</button></div>
 <div id="planList" class="plan-list"></div>
 </section>
@@ -1208,13 +1632,14 @@ body.modal-open{
 <section id="editor" class="hidden">
 <header class="editor-top"><button id="back" class="back-button">‹</button><h2 class="editor-title">Trainingsplan</h2><button id="saveTop" class="save-top">✓</button></header>
 <div class="field"><label class="field-label">Name</label><input id="planName" class="text-input" maxlength="40" placeholder="z. B. Push A"></div>
-<div class="section-head"><h2>Übungen</h2><span id="exerciseCount" class="section-count">0</span></div>
+<div class="section-head"><h2>Übungen</h2><div class="section-head-actions"><span id="exerciseCount" class="section-count">0</span></div></div>
+
 <div id="exerciseList" class="exercise-list"></div>
-<button id="addExercise" class="add-exercise">Übung hinzufügen</button><button id="startPlanWorkoutBtn" class="plan-start-workout">Training starten</button>
+<div class="editor-bottom-actions"><button id="addExercise" class="add-exercise">Übung hinzufügen</button><button id="editorReorderBtn" class="reorder-mode-button editor-reorder-icon" aria-label="Reihenfolge ändern" aria-pressed="false"><span class="reorder-icon" aria-hidden="true"></span><span class="editor-reorder-label" hidden></span></button></div><button id="startPlanWorkoutBtn" class="plan-start-workout">Training starten</button>
 </section>
 
 <section id="workoutHome" class="hidden">
-<header class="topbar"><div><p class="kicker">Live</p><h1>Training</h1></div><div class="topbar-actions"><button class="profile-button" aria-label="Profil öffnen">◉</button><button id="trainingPlus" class="plan-create-top" aria-label="Training starten">▶</button></div></header>
+<header class="topbar"><div><p class="kicker rethink-kicker">ReThink.</p><h1>Training</h1></div><div class="topbar-actions"><button id="trainingPlus" class="plan-create-top" aria-label="Training starten">▶</button></div></header>
 <div id="resumeWorkout" class="resume-card hidden"><div class="resume-label">Aktives Training</div><div id="resumeWorkoutTitle" class="resume-title"></div><div id="resumeWorkoutMeta" class="resume-meta"></div><div class="resume-actions"><button id="resumeWorkoutButton" class="primary">Fortsetzen</button><button id="discardWorkoutButton" class="secondary">Verwerfen</button></div></div>
 <div id="workoutEmpty" class="empty hidden"><div class="empty-icon">◉</div><h2>Noch kein Plan</h2><p>Erstelle zuerst unter „Meine Pläne“ einen Trainingsplan.</p><button id="goToPlans" class="primary">Zu meinen Plänen</button></div>
 <div id="workoutStartArea" class="workout-start-card"><h2>Bereit fürs Training?</h2><p>Wähle einen Trainingsplan und starte eine Einheit.</p><button id="chooseWorkoutPlan" class="primary full">Training starten</button></div>
@@ -1226,16 +1651,23 @@ body.modal-open{
 <div class="workout-header-top"><button id="leaveWorkout" class="workout-close">‹</button><div><h2 id="activeWorkoutTitle" class="workout-title">Training</h2><div id="activeWorkoutDuration" class="workout-duration">00:00</div></div><button id="finishWorkout" class="finish-top">✓</button></div>
 <div class="workout-progress-card"><div><div class="workout-progress-label">Fortschritt</div><div id="workoutProgressText" class="workout-progress-value">0 von 0 Sätzen</div></div><div id="progressRing" class="progress-ring"></div></div>
 </header>
-<div id="liveExerciseList" class="live-exercise-list"></div><div id="liveWorkoutActions" class="live-workout-actions"><button id="liveAddExerciseBtn" class="live-add-exercise">Übung hinzufügen</button></div>
+<div id="liveExerciseList" class="live-exercise-list"></div><div id="liveWorkoutActions" class="live-workout-actions"><button id="liveAddExerciseBtn" class="live-add-exercise">Übung hinzufügen</button><button id="liveReorderBtn" class="reorder-mode-button live-reorder-btn" aria-label="Reihenfolge ändern"><span class="reorder-icon" aria-hidden="true"></span></button></div>
 <button id="finishWorkoutBottom" class="workout-finish-bottom">Training beenden</button>
 </section>
 
 <section id="catalogHome" class="hidden">
-<header class="topbar"><div><p class="kicker">Bibliothek</p><h1>Übungen</h1></div><button class="profile-button" aria-label="Profil öffnen">◉</button></header>
+<header class="topbar"><div><p class="kicker rethink-kicker">ReThink.</p><h1>Übungsbibliothek</h1></div><button id="catalogCreatePlan" class="plan-create-top" aria-label="Neuen Trainingsplan erstellen">＋</button></header>
 <input id="catalogSearch" class="search catalog-search" type="search" placeholder="Übung suchen...">
 <div class="filter-axis-label">Trainingsart</div><div id="catalogTypeFilters" class="exercise-filters catalog-filters"></div>
 <div class="filter-axis-label">Muskelgruppe / Bereich</div><div id="catalogMuscleFilters" class="exercise-filters catalog-filters"></div>
-<div id="catalogExerciseList" class="catalog-exercise-list"></div>
+<div id="catalogExerciseCount" class="catalog-exercise-count">122 Übungen</div><div id="catalogExerciseList" class="catalog-exercise-list"></div>
+</section><section id="plannerExerciseDetailScreen" class="hidden catalog-detail-screen planner-exercise-detail-screen">
+<header class="catalog-detail-header planner-detail-header">
+  <button id="plannerExerciseDetailBack" class="back-button">‹</button>
+  <h2 id="plannerExerciseDetailTitle">Übung</h2>
+  <button id="plannerExerciseDetailAdd" class="planner-detail-add">Hinzufügen</button>
+</header>
+<div id="plannerExerciseDetailFullBody" class="catalog-detail-full-body"></div>
 </section><section id="catalogDetailScreen" class="hidden catalog-detail-screen">
 <header class="catalog-detail-header"><button id="catalogDetailBack" class="back-button">‹</button><h2 id="catalogDetailScreenTitle">Übung</h2><div class="catalog-detail-header-spacer"></div></header>
 
@@ -1245,27 +1677,19 @@ body.modal-open{
 <div class="more-card"><h2>Daten</h2><p>Deine Pläne und Workouts werden lokal auf diesem Gerät gespeichert.</p><div class="more-actions"><button id="clearHistory" class="secondary full">Trainingshistorie löschen</button><button id="clearAllData" class="danger-button full">Alle App-Daten löschen</button></div></div>
 </section>
 
-<section id="profileScreen" class="hidden profile-screen">
-<header class="profile-header"><button id="profileBack" class="back-button">‹</button><h2>Profil & Einstellungen</h2><div></div></header>
-<div class="profile-card"><div class="profile-avatar-large">◉</div><div><strong>Profil</strong><small>Persönliche Daten und App-Einstellungen</small></div></div>
-<div class="profile-section"><h3>Darstellung</h3>
-<div class="theme-choice-grid">
-<button class="theme-choice" data-theme-choice="system"><span>◐</span><strong>System</strong><small>Folgt deinem Gerät</small></button>
-<button class="theme-choice" data-theme-choice="light"><span>☀</span><strong>Hell</strong><small>Helles Design</small></button>
-<button class="theme-choice" data-theme-choice="dark"><span>◑</span><strong>Dunkel</strong><small>Dunkles Design</small></button>
-</div></div>
-<div class="profile-section"><h3>Profil</h3>
-<button class="profile-row"><span>Körperdaten & Messungen</span><b>›</b></button>
-<button class="profile-row"><span>Ziele</span><b>›</b></button>
-<button class="profile-row"><span>Einstellungen</span><b>›</b></button>
-</div>
-</section><section id="foodIqHome" class="hidden food-iq-home">
-<header class="topbar"><div><p class="kicker">Nutrition</p><h1>Food IQ</h1></div><button class="profile-button" aria-label="Profil öffnen">◉</button></header>
-<div class="food-iq-empty"><div class="food-iq-icon">◌</div><h2>Food IQ</h2><p>Dieser Bereich ist vorbereitet und bleibt vorerst leer.</p></div>
-</section> <section id="progressHome" class="hidden">
-<header class="topbar"><div><p class="kicker">Fortschritt</p><h1>Körper & Ernährung</h1></div><button id="addMeasurementTop" class="plan-create-top">＋</button><button class="profile-button" aria-label="Profil öffnen">◉</button></header>
+<section id="progressHome" class="hidden">
+<header class="topbar profile-topbar">
+  <div><p class="kicker rethink-kicker">ReThink.</p><h1>Profil</h1></div>
+  <div class="topbar-actions"><button id="addMeasurementTop" class="plan-create-top profile-compat-hidden" aria-hidden="true" tabindex="-1">＋</button>
+    <button id="profileTopButton" class="profile-top-button" aria-label="Profil öffnen">
+      <span class="profile-silhouette" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.25"></circle><path d="M5.5 19c.7-4 3-6 6.5-6s5.8 2 6.5 6"></path></svg>
+      </span>
+    </button>
+  </div>
+</header>
 
-<div class="metric-grid">
+<div class="metric-grid profile-extra-hidden">
   <div class="metric-card"><div class="metric-label">Gewicht</div><div id="latestWeight" class="metric-value">—</div><div id="weightTrend" class="metric-sub">Noch keine Vergleichsdaten</div></div>
   <div class="metric-card"><div class="metric-label">Körperfett</div><div id="latestBodyFat" class="metric-value">—</div><div id="bodyFatTrend" class="metric-sub">Noch keine Vergleichsdaten</div></div>
 </div>
@@ -1371,23 +1795,23 @@ body.modal-open{
 
 </div>
 
-<nav id="bottomBar" class="bottom-bar"><div class="bottom-inner bottom-inner-five">
-<button class="nav-button" id="navCatalog"><span class="nav-icon">⌕</span>Übungen</button>
-<button class="nav-button" id="navPlans"><span class="nav-icon">▦</span>Pläne</button>
-<button class="nav-button active" id="navWorkout"><span class="nav-icon">▶</span>Training</button>
-<button class="nav-button" id="navMore"><span class="nav-icon">◌</span>Fortschritt</button>
-<button class="nav-button" id="navFoodIq"><span class="nav-icon">◇</span>Food IQ</button>
-</div></nav>
+<nav id="bottomBar" class="bottom-bar"><div class="bottom-inner bottom-inner-four"><button class="nav-button" id="navCatalog"><span class="nav-icon">⌕</span>Übungen</button><button class="nav-button" id="navPlans"><span class="nav-icon">▦</span>Pläne</button><button class="nav-button active" id="navWorkout"><span class="nav-icon">▶</span>Training</button><button class="nav-button" id="navMore"><span class="nav-icon profile-nav-silhouette"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.25"></circle><path d="M5.5 19c.7-4 3-6 6.5-6s5.8 2 6.5 6"></path></svg></span>Profil</button></div></nav>
 
-<div id="planTapModal" class="modal hidden"><div id="planTapOverlay" class="overlay"></div><div class="sheet compact-action-sheet"><div class="sheet-title"><h2 id="planTapTitle">Trainingsplan</h2><button id="closePlanTap" class="close-button">×</button></div><div class="plan-choice-grid"><button id="planTapEdit" class="primary">Bearbeiten</button><button id="planTapPreview" class="secondary">Vorschau</button></div></div></div><div id="planLongModal" class="modal hidden"><div id="planLongOverlay" class="overlay"></div><div class="sheet compact-action-sheet"><div class="sheet-title"><h2 id="planLongTitle">Trainingsplan</h2><button id="closePlanLong" class="close-button">×</button></div><div class="plan-choice-grid"><button id="planLongDuplicate" class="secondary">Duplizieren</button><button id="planLongDelete" class="danger-button">Löschen</button></div></div></div><div id="restBarWrap" class="rest-bar-wrap hidden"><div class="rest-bar"><div><div class="rest-label">Pause</div><div id="restTime" class="rest-time">01:30</div></div><button id="restMinus" class="rest-adjust">−15</button><button id="restAdd" class="rest-add">+15</button><button id="restSkip" class="rest-skip">Skip</button></div></div>
+<div id="profileSettingsModal" class="modal hidden"><div id="profileSettingsOverlay" class="overlay"></div><div class="sheet profile-settings-sheet"><div class="handle"></div><div class="sheet-title"><h2>Einstellungen</h2><button id="closeProfileSettings" class="close-button">×</button></div>
+<div class="profile-setting-row"><div><strong>Darstellung</strong><small>System, hell oder dunkel</small></div><select id="profileAppearance" class="config-select"><option value="system">System</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
+<div class="profile-setting-row"><div><strong>Standard-Pause</strong><small>Für neu angelegte Kraftübungen</small></div><select id="profileDefaultRest" class="config-select"><option value="60">1:00</option><option value="90">1:30</option><option value="120">2:00</option><option value="150">2:30</option><option value="180">3:00</option></select></div>
+<div class="profile-settings-divider"></div><h3 class="profile-settings-subtitle">Daten & App</h3>
+<p class="profile-data-note">Pläne und Trainingsdaten bleiben lokal auf diesem Gerät gespeichert.</p>
+<button id="profileSettingsClearHistory" class="secondary full">Trainingsverlauf löschen</button>
+</div></div><div id="planTapModal" class="modal hidden"><div id="planTapOverlay" class="overlay"></div><div class="sheet compact-action-sheet"><div class="sheet-title"><h2 id="planTapTitle">Trainingsplan</h2><button id="closePlanTap" class="close-button">×</button></div><div class="plan-choice-grid"><button id="planTapEdit" class="primary">Bearbeiten</button><button id="planTapPreview" class="secondary">Vorschau</button></div></div></div><div id="planLongModal" class="modal hidden"><div id="planLongOverlay" class="overlay"></div><div class="sheet compact-action-sheet"><div class="sheet-title"><h2 id="planLongTitle">Trainingsplan</h2><button id="closePlanLong" class="close-button">×</button></div><div class="plan-choice-grid"><button id="planLongDuplicate" class="secondary">Duplizieren</button><button id="planLongDelete" class="danger-button">Löschen</button></div></div></div><div id="restBarWrap" class="rest-bar-wrap hidden"><div class="rest-bar"><div><div class="rest-label">Pause</div><div id="restTime" class="rest-time">01:30</div></div><button id="restMinus" class="rest-adjust">−15</button><button id="restAdd" class="rest-add">+15</button><button id="restSkip" class="rest-skip">Skip</button></div></div>
 
-<div id="exerciseModal" class="modal hidden"><div id="exerciseOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2>Übung hinzufügen</h2><button id="closeExercise" class="close-button">×</button></div><input id="search" class="search" type="search" placeholder="Übung suchen..."><div class="filter-axis-label">Trainingsart</div><div id="exerciseFilters" class="exercise-filters"></div><div class="filter-axis-label">Muskelgruppe / Bereich</div><div id="exerciseSubfilters" class="exercise-filters"></div>
+<div id="exerciseModal" class="modal hidden"><div id="exerciseOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title exercise-picker-sticky"><button id="exercisePickerBack" class="close-button" aria-label="Zurück">‹</button><h2>Übung hinzufügen</h2><button id="closeExercise" class="close-button" aria-label="Schließen">×</button></div><input id="search" class="search" type="search" placeholder="Übung suchen..."><div class="filter-axis-label">Trainingsart</div><div id="exerciseFilters" class="exercise-filters"></div><div class="filter-axis-label">Muskelgruppe / Bereich</div><div id="exerciseSubfilters" class="exercise-filters"></div>
 <div id="exerciseOptions" class="exercise-options"></div><button id="createExercise" class="custom-button">+ Eigene Übung erstellen</button></div></div>
 
 <div id="configModal" class="modal hidden"><div id="configOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><div style="display:flex;align-items:center;gap:8px"><button id="backConfig" class="close-button" aria-label="Zurück">‹</button><h2 id="configTitle">Übung</h2><button id="editLibraryExercise" class="catalog-edit-button" aria-label="Übung bearbeiten" title="Übung bearbeiten">✎</button></div></div>
 <div id="strengthConfig" class="strength-config">
 <div id="variantWrap" class="config-hidden"><label class="config-label">Variante</label><select id="exerciseVariant" class="config-select"></select><p class="option-hint">Die Variante wird direkt bei der Übung gespeichert.</p></div>
-<div id="trackingModeWrap" class="config-hidden"><label class="config-label">Tracking</label><select id="trackingMode" class="config-select"><option value="reps">Wiederholungen</option><option value="time">Zeit in Minuten</option></select><p class="option-hint">Für diese Übung kannst du zwischen Wiederholungen und Zeit wechseln.</p></div><div><label class="config-label">Satzmethode</label><select id="setTechnique" class="config-select"><option value="normal">Normal</option><option value="superset">Supersatz</option><option value="dropset">Dropsatz</option><option value="restpause">Rest-Pause</option><option value="cluster">Cluster-Satz</option><option value="pyramid">Pyramide</option><option value="preexhaust">Pre-Exhaust</option><option value="giantset">Giant Set</option><option value="backoff">Back-off Set</option></select><p id="techniqueExplanation" class="technique-help">Klassische Sätze mit regulärer Pause zwischen den Sätzen.</p></div>
+<div id="trackingModeWrap" class="config-hidden"><label class="config-label">Tracking</label><select id="trackingMode" class="config-select"><option value="reps">Wiederholungen</option><option value="time">Zeit in Minuten</option></select><p class="option-hint">Für diese Übung kannst du zwischen Wiederholungen und Zeit wechseln.</p></div><div><label class="config-label">Satzmethode</label><select id="setTechnique" class="config-select"><option value="normal">Standard</option><option value="superset">Supersatz</option><option value="dropset">Dropsatz</option><option value="restpause">Rest-Pause</option><option value="cluster">Cluster-Satz</option><option value="pyramid">Pyramide</option><option value="preexhaust">Pre-Exhaust</option><option value="giantset">Giant Set</option><option value="backoff">Back-off Set</option></select><p id="techniqueExplanation" class="technique-help">Klassische Sätze mit regulärer Pause zwischen den Sätzen.</p></div>
 <div id="techniqueAdvanced" class="technique-advanced">
   <div id="dropFields" class="method-fields config-hidden">
     <div class="grid-2">
@@ -1468,11 +1892,11 @@ body.modal-open{
 <div class="danger-zone"><button id="deleteLibraryFromEdit" class="secondary full">Übung dauerhaft aus Datenbank entfernen</button></div>
 </div></div>
 
-<div id="actionModal" class="modal hidden"><div id="actionOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2 id="actionTitle">Übung</h2><button id="closeAction" class="close-button">×</button></div><div class="action-list"><button id="actionEdit" class="action-item">✎ Übung bearbeiten</button><button id="actionUp" class="action-item">↑ Nach oben</button><button id="actionDown" class="action-item">↓ Nach unten</button><button id="actionDelete" class="action-item danger">× Übung löschen</button></div></div></div>
+<div id="actionModal" class="modal hidden"><div id="actionOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2 id="actionTitle">Übung</h2><button id="closeAction" class="close-button">×</button></div><div class="action-list"><button id="actionReplace" class="action-item">Übung austauschen</button><button id="actionEdit" class="action-item">✎ Übung bearbeiten</button><button id="actionUp" class="action-item">↑ Nach oben</button><button id="actionDown" class="action-item">↓ Nach unten</button><button id="actionDelete" class="action-item danger">× Übung löschen</button></div></div></div>
 
-<div id="editModal" class="modal hidden"><div id="editOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2>Übung bearbeiten</h2><button id="closeEdit" class="close-button">×</button></div>
+<div id="replaceExerciseModal" class="modal hidden"><div id="replaceExerciseOverlay" class="overlay"></div><div class="sheet replace-exercise-sheet"><div class="handle"></div><div class="sheet-title"><h2>Übung austauschen</h2><button id="closeReplaceExercise" class="close-button">×</button></div><p class="replace-exercise-note">Satzmethode, Sätze, Wiederholungen und Pause bleiben erhalten.</p><input id="replaceExerciseSearch" class="search" type="search" placeholder="Übung suchen..."><div id="replaceExerciseList" class="replace-exercise-list"></div></div></div> <div id="editModal" class="modal hidden"><div id="editOverlay" class="overlay"></div><div class="sheet"><div class="handle"></div><div class="sheet-title"><h2>Übung bearbeiten</h2><button id="closeEdit" class="close-button">×</button></div>
 <div id="editVariantWrap" class="config-hidden"><label class="config-label">Variante</label><select id="editVariant" class="config-select"></select></div>
-<div id="editTrackingModeWrap" class="config-hidden"><label class="config-label">Tracking</label><select id="editTrackingMode" class="config-select"><option value="reps">Wiederholungen</option><option value="time">Zeit in Minuten</option></select></div><div><label class="config-label">Satzmethode</label><select id="editSetTechnique" class="config-select"><option value="normal">Normal</option><option value="superset">Supersatz</option><option value="dropset">Dropsatz</option><option value="restpause">Rest-Pause</option><option value="cluster">Cluster-Satz</option><option value="pyramid">Pyramide</option><option value="preexhaust">Pre-Exhaust</option><option value="giantset">Giant Set</option><option value="backoff">Back-off Set</option></select></div>
+<div id="editTrackingModeWrap" class="config-hidden"><label class="config-label">Tracking</label><select id="editTrackingMode" class="config-select"><option value="reps">Wiederholungen</option><option value="time">Zeit in Minuten</option></select></div><div><label class="config-label">Satzmethode</label><select id="editSetTechnique" class="config-select"><option value="normal">Standard</option><option value="superset">Supersatz</option><option value="dropset">Dropsatz</option><option value="restpause">Rest-Pause</option><option value="cluster">Cluster-Satz</option><option value="pyramid">Pyramide</option><option value="preexhaust">Pre-Exhaust</option><option value="giantset">Giant Set</option><option value="backoff">Back-off Set</option></select></div>
 <div class="grid-2"><div><label class="config-label">Sätze</label><select id="editSets" class="config-select"></select></div><div id="editRepsWrap"><label class="config-label">Wiederholungen</label><select id="editReps" class="config-select"><option value="1-4">1–4</option><option value="4-6">4–6</option><option value="6-8">6–8</option><option value="8-12">8–12</option><option value="10-15">10–15</option><option value="10-20">10–20</option><option value="20-30">20–30</option><option value="AMRAP">AMRAP</option></select></div><div id="editTimeWrap" class="config-hidden time-config-wrap"><label class="config-label">Zeit pro Satz (Min.)</label><input id="editTimeMinutes" class="config-input" inputmode="decimal"><div class="time-extra-grid"><div><label class="config-label">Widerstand / Stufe</label><input id="editTimeLevel" class="config-input"></div><div><label class="config-label">Watt</label><input id="editTimeWatts" class="config-input" inputmode="decimal"></div></div></div></div>
 <div class="grid-2"><div><label class="config-label">Pause · Rolltimer</label><select id="editRest" class="config-select"></select></div><div><label class="config-label">Notiz</label><input id="editNote" class="config-input"></div></div><button id="saveEdit" class="primary full">Änderungen speichern</button></div></div>
 
@@ -1510,7 +1934,7 @@ function restoreRestAfterReturn(){
  else{localStorage.removeItem(REST_END_KEY);restTimerEnd=null;alarmSound()}
 }
 
-const sections=["home","editor","workoutHome","activeWorkout","catalogHome","catalogDetailScreen","profileScreen","foodIqHome","moreHome","progressHome","workoutSummaryScreen","planPreviewScreen"];
+const sections=["home","editor","workoutHome","activeWorkout","catalogHome","plannerExerciseDetailScreen","catalogDetailScreen","moreHome","progressHome","workoutSummaryScreen","planPreviewScreen"];
 function readJSON(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch{return f}}
 function saveAll(){localStorage.setItem(STORAGE.plans,JSON.stringify(plans));localStorage.setItem(STORAGE.custom,JSON.stringify(customExercises));localStorage.setItem(STORAGE.library,JSON.stringify(exerciseLibrary));localStorage.setItem(STORAGE.history,JSON.stringify(workoutHistory));localStorage.setItem(STORAGE.measurements,JSON.stringify(measurements));localStorage.setItem(STORAGE.nutrition,JSON.stringify(nutritionGoals));activeWorkoutData?localStorage.setItem(STORAGE.active,JSON.stringify(activeWorkoutData)):localStorage.removeItem(STORAGE.active)}
 function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
@@ -1520,45 +1944,43 @@ function fmtDur(ms){const t=Math.max(0,Math.floor(ms/1000)),h=Math.floor(t/3600)
 function fmtClock(s){return`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
 function toast(msg){document.querySelector(".toast")?.remove();const e=document.createElement("div");e.className="toast";e.textContent=msg;document.body.appendChild(e);setTimeout(()=>e.remove(),1800)}
 
-const THEME_KEY="geeniusapp_theme_mode";
-let themeMode=localStorage.getItem(THEME_KEY)||"system";
-function resolvedTheme(mode=themeMode){
- if(mode==="system")return window.matchMedia?.("(prefers-color-scheme: light)").matches?"light":"dark";
- return mode
-}
-function applyTheme(mode=themeMode){
- themeMode=["system","light","dark"].includes(mode)?mode:"system";
- localStorage.setItem(THEME_KEY,themeMode);
- const resolved=resolvedTheme(themeMode);
- document.documentElement.dataset.theme=resolved;
- document.documentElement.dataset.themeMode=themeMode;
- const meta=document.querySelector('meta[name="theme-color"]:not([media])');
- if(meta)meta.setAttribute("content",resolved==="light"?"#f5f5f7":"#09090b");
- document.querySelectorAll(".theme-choice").forEach(b=>b.classList.toggle("active",b.dataset.themeChoice===themeMode))
-}
-function openProfile(){show("profileScreen",{top:true});applyTheme()}
-window.matchMedia?.("(prefers-color-scheme: light)").addEventListener?.("change",()=>{if(themeMode==="system")applyTheme("system")});
-const tabScrollState={catalogHome:0,home:0,workoutHome:0,progressHome:0,foodIqHome:0};let visibleSection="workoutHome";
-function rememberTabScroll(){if(Object.prototype.hasOwnProperty.call(tabScrollState,visibleSection))tabScrollState[visibleSection]=window.scrollY||document.documentElement.scrollTop||0}
+const tabScrollState={catalogHome:0,home:0,workoutHome:0,progressHome:0};const pageScrollState={};let visibleSection="workoutHome";const pageHistory=[];
+function rememberTabScroll(){const y=window.scrollY||document.documentElement.scrollTop||0;pageScrollState[visibleSection]=y;if(Object.prototype.hasOwnProperty.call(tabScrollState,visibleSection))tabScrollState[visibleSection]=y}
 function show(section,opts={}){
- rememberTabScroll();sections.forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});
+ rememberTabScroll();
+ if(!opts.fromBack&&visibleSection&&visibleSection!==section)pageHistory.push(visibleSection);
+ sections.forEach(x=>{const el=$(x);if(el)el.classList.add("hidden")});
  const target=$(section);if(!target){console.error("Section not found:",section);return}
  target.classList.remove("hidden");visibleSection=section;
- if($("bottomBar"))$("bottomBar").classList.toggle("hidden",section==="editor"||section==="activeWorkout"||section==="catalogDetailScreen"||section==="profileScreen"||section==="workoutSummaryScreen"||section==="planPreviewScreen");
- document.querySelectorAll(".nav-button").forEach(b=>b.classList.remove("active"));if(section==="home")$("navPlans").classList.add("active");if(section==="workoutHome")$("navWorkout").classList.add("active");if(section==="catalogHome"&&$("navCatalog"))$("navCatalog").classList.add("active");if(section==="progressHome")$("navMore").classList.add("active");if(section==="foodIqHome"&&$("navFoodIq"))$("navFoodIq").classList.add("active");
- requestAnimationFrame(()=>window.scrollTo({top:opts.top?0:(tabScrollState[section]||0),behavior:"auto"}))
+ if($("bottomBar"))$("bottomBar").classList.toggle("hidden",section==="editor"||section==="activeWorkout"||section==="catalogDetailScreen"||section==="plannerExerciseDetailScreen"||section==="workoutSummaryScreen"||section==="planPreviewScreen");
+ document.querySelectorAll(".nav-button").forEach(b=>b.classList.remove("active"));
+ if(section==="home")$("navPlans").classList.add("active");
+ if(section==="workoutHome")$("navWorkout").classList.add("active");
+ if(section==="catalogHome"&&$("navCatalog"))$("navCatalog").classList.add("active");
+ if(section==="progressHome")$("navMore").classList.add("active");
+ 
+ 
+ requestAnimationFrame(()=>window.scrollTo({top:opts.top?0:(Object.prototype.hasOwnProperty.call(pageScrollState,section)?pageScrollState[section]:(tabScrollState[section]||0)),behavior:"auto"}))
 }
-function resetTab(section){tabScrollState[section]=0;if(section==="catalogHome"){catalogTypeFilter="Alle";catalogMuscleFilter="Alle";if($("catalogSearch"))$("catalogSearch").value="";renderCatalog()}show(section,{top:true})}
+function goBackPage(fallback="workoutHome"){
+ rememberTabScroll();
+ while(pageHistory.length){
+   const prev=pageHistory.pop();
+   if(prev&&prev!==visibleSection&&$(prev)){show(prev,{fromBack:true});return}
+ }
+ show(fallback,{fromBack:true})
+}
+function resetTab(section){tabScrollState[section]=0;if(section==="catalogHome"){catalogTypeFilter="Alle";catalogMuscleFilters.clear();if($("catalogSearch"))$("catalogSearch").value="";renderCatalog()}show(section,{top:true})}
 function navToTab(section){if(visibleSection===section){resetTab(section);return}show(section)}
 document.addEventListener("click",ev=>{if(ev.clientY<=Math.max(70,(window.visualViewport?.offsetTop||0)+70)&&Object.prototype.hasOwnProperty.call(tabScrollState,visibleSection)){window.scrollTo({top:0,behavior:"smooth"});tabScrollState[visibleSection]=0}});
 function fillNumberSelect(id,min,max,value){const el=$(id);if(!el)return;el.innerHTML="";for(let i=min;i<=max;i++){const o=document.createElement("option");o.value=String(i);o.textContent=String(i);el.appendChild(o)}el.value=String(value)}
 function fillRestRoller(id,value=90){const el=$(id);if(!el)return;const opts=[[0,"Keine"],[30,"30 Sek."],[45,"45 Sek."],[60,"1 Min."],[90,"1:30 Min."],[120,"2 Min."],[150,"2:30 Min."],[180,"3 Min."],[240,"4 Min."],[300,"5 Min."]];el.innerHTML="";opts.forEach(([sec,label])=>{const o=document.createElement("option");o.value=String(sec);o.textContent=label;el.appendChild(o)});el.value=String(opts.some(x=>x[0]===+value)?+value:90)}
-function initPickers(){fillNumberSelect("sets",1,6,3);fillNumberSelect("editSets",1,6,3);fillRestRoller("rest",90);fillRestRoller("editRest",90)}
+function initPickers(){fillNumberSelect("sets",1,10,3);fillNumberSelect("editSets",1,10,3);fillRestRoller("rest",90);fillRestRoller("editRest",90)}
 function setVariantPicker(info,value=""){const has=Array.isArray(info.variants)&&info.variants.length;$("variantWrap").classList.toggle("config-hidden",!has);$("exerciseVariant").innerHTML="";if(has){info.variants.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;$("exerciseVariant").appendChild(o)});$("exerciseVariant").value=value&&info.variants.includes(value)?value:info.variants[0]}}
 function setEditVariantPicker(info,value=""){const has=Array.isArray(info.variants)&&info.variants.length;$("editVariantWrap").classList.toggle("config-hidden",!has);$("editVariant").innerHTML="";if(has){info.variants.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;$("editVariant").appendChild(o)});$("editVariant").value=value&&info.variants.includes(value)?value:info.variants[0]}}
 function updateTrackingFields(prefix=""){const edit=prefix==="edit";const mode=$(edit?"editTrackingMode":"trackingMode").value;$(edit?"editRepsWrap":"repsWrap").classList.toggle("config-hidden",mode==="time");$(edit?"editTimeWrap":"timeWrap").classList.toggle("config-hidden",mode!=="time")}
 function configureTracking(info,mode="reps",edit=false){const flexible=info.tracking==="reps_time";const wrap=$(edit?"editTrackingModeWrap":"trackingModeWrap");const sel=$(edit?"editTrackingMode":"trackingMode");wrap.classList.toggle("config-hidden",!flexible);sel.value=flexible?(mode==="time"?"time":"reps"):"reps";updateTrackingFields(edit?"edit":"")}
-function load(){initPickers();plans=readJSON(STORAGE.plans,[]);customExercises=readJSON(STORAGE.custom,[]).map(x=>{if(typeof x==="string")return {name:x,category:"Körpergewicht",subcategory:"Core",muscles:["Core"],tracking:"reps"};x.category=x.category==="Gewichte"?"Gewichte":x.category;const legacy=x.subcategory==="Hintere Kette"?"Beine":x.subcategory==="Ganzkörper"?"Athletik":x.subcategory==="Olympic Lifts"||x.subcategory==="Kraft & Athletik"?"Athletik":x.subcategory;x.muscles=Array.isArray(x.muscles)&&x.muscles.length?x.muscles:[legacy||"Core"];x.subcategory=x.muscles[0];return x});exerciseLibrary=readJSON(STORAGE.library,{hidden:[],renames:{},meta:{}});exerciseLibrary.hidden=Array.isArray(exerciseLibrary.hidden)?exerciseLibrary.hidden:[];exerciseLibrary.renames=exerciseLibrary.renames||{};exerciseLibrary.meta=exerciseLibrary.meta||{};plans.forEach(p=>p.exercises?.forEach(e=>{if(!e.exerciseKey)e.exerciseKey=e.name}));workoutHistory=readJSON(STORAGE.history,[]);measurements=readJSON(STORAGE.measurements,[]);nutritionGoals=readJSON(STORAGE.nutrition,{calories:"",protein:""});profile=readJSON(STORAGE.profile,{age:"",height:"",sex:"male",activity:"1.55",goal:"cut"});activeWorkoutData=readJSON(STORAGE.active,null);renderPlans();renderWorkoutHome();renderProgress();renderCatalog();sections.forEach(x=>$(x).classList.add("hidden"));$("workoutHome").classList.remove("hidden");show("workoutHome")}
+function load(){initPickers();plans=readJSON(STORAGE.plans,[]);customExercises=readJSON(STORAGE.custom,[]).map(x=>{if(typeof x==="string")return {name:x,category:"Körpergewicht",subcategory:"Core",muscles:["Core"],tracking:"reps"};x.category=x.category==="Gewichte"?"Gewichte":x.category;const legacy=x.subcategory==="Hintere Kette"?"Beine":x.subcategory==="Ganzkörper"?"Athletik":x.subcategory==="Olympic Lifts"||x.subcategory==="Kraft & Athletik"?"Athletik":x.subcategory;x.muscles=Array.isArray(x.muscles)&&x.muscles.length?x.muscles:[legacy||"Core"];x.subcategory=x.muscles[0];return x});exerciseLibrary=readJSON(STORAGE.library,{hidden:[],renames:{},meta:{}});exerciseLibrary.hidden=Array.isArray(exerciseLibrary.hidden)?exerciseLibrary.hidden:[];exerciseLibrary.renames=exerciseLibrary.renames||{};exerciseLibrary.meta=exerciseLibrary.meta||{};plans.forEach(p=>p.exercises?.forEach(e=>{if(!e.exerciseKey)e.exerciseKey=e.name;if((e.setTechnique||"normal")==="restpause"&&(e.reps==="8-12"||e.targetRepRange==="8-12")){e.reps="20-30";e.targetRepRange="20-30"}}));workoutHistory=readJSON(STORAGE.history,[]);measurements=readJSON(STORAGE.measurements,[]);nutritionGoals=readJSON(STORAGE.nutrition,{calories:"",protein:""});profile=readJSON(STORAGE.profile,{age:"",height:"",sex:"male",activity:"1.55",goal:"cut"});activeWorkoutData=readJSON(STORAGE.active,null);renderPlans();renderWorkoutHome();renderProgress();renderCatalog();sections.forEach(x=>$(x).classList.add("hidden"));$("workoutHome").classList.remove("hidden");show("workoutHome")}
 let editorPlanBaseline=null;let editorPlanIsDraft=false;
 function newPlan(){currentPlan={id:id(),name:"",exercises:[]};editorPlanBaseline=null;editorPlanIsDraft=true;$("planName").value="";renderExercises();show("editor");bindPlanStartWorkout();setTimeout(()=>$("planName").focus(),100)}
 function persistCurrentPlan(){
@@ -1572,7 +1994,7 @@ function persistCurrentPlan(){
 }
 function savePlan(){const saved=persistCurrentPlan();if(!saved)return;show("home");toast("Trainingsplan gespeichert")}
 function plannedSetRows(e){
- const count=Math.max(1,Math.min(6,Number(e.sets)||1));
+ const count=Math.max(1,Math.min(10,Number(e.sets)||1));
  return Array.from({length:count},(_,i)=>({index:i+1}))
 }
 function previewPrescription(e){
@@ -1587,7 +2009,7 @@ function previewPrescription(e){
  const t=e.setTechnique||"normal",m=e.methodData||{};
  if(t==="pyramid"){const seq=m.reps||[];return seq.length?`${seq.join(" · ")} Wdh.`:"Pyramide"}
  if(t==="dropset")return `${e.reps||"–"} Wdh. Basis · ${m.dropCount||2} Drops · −${m.dropPercent||20}%`;
- if(t==="restpause")return `${e.reps||"–"} Wdh. Hauptsatz · ${m.blocks||2} RP · ${m.miniRest||20}s`;
+ if(t==="restpause")return `${e.reps||"20-30"} Wdh. gesamt · ${m.blocks||2} RP · ${m.miniRest||20}s`;
  if(t==="cluster")return `${m.blocks||3}×${m.clusterReps||2} Wdh. · ${m.intraRest||20}s`;
  if(t==="backoff")return `${m.topReps||5}/${m.backoffReps||8} Wdh. · −${m.reduction||m.reductionPercent||m.percent||15}%`;
  return `${e.reps||"–"} Wdh.`
@@ -1608,13 +2030,13 @@ function renderPlanPreviewAdvanced(e){
  card.className=`live-exercise workout-method-frame ${t} plan-preview-card`;
  card.innerHTML=`<div class="unified-method-label">${esc(techniqueLabel(t))}</div>
    <div class="unified-method-help">${esc(techniqueDescriptions[t]||"")}</div>
-   <div class="unified-exercise-names"><div class="unified-exercise-name-line"><div><strong>${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</strong><div class="plan-prescription">${esc(previewPrescription(e))}</div></div></div></div>
-   <div class="preview-advanced-sets"></div>
-   <div class="live-rest-prescription">${esc((e.rest??0)>0?`${fmtRest(e.rest)} Pause`:"")}</div>`;
+   <div class="unified-exercise-names"><div class="unified-exercise-name-line"><div><strong>${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</strong><div class="plan-prescription">${esc(previewPrescription(e))}</div><div class="live-rest-prescription">${esc((e.rest??0)>0?`${fmtRest(e.rest)} Pause`:"")}</div>${e.note?`<div class="preview-note">${esc(e.note)}</div>`:""}</div></div></div>
+   <div class="unified-set-header"><span>Satz</span><span></span><span>Gewicht</span><span>Wdh.</span><span></span></div>
+   <div class="preview-advanced-sets"></div>`;
  const box=card.querySelector(".preview-advanced-sets");
  sets.forEach((st,si)=>{
    const sc=document.createElement("div");sc.className="advanced-set-card preview-advanced-set-card";
-   sc.innerHTML=`<div class="advanced-set-head"><div class="advanced-set-title">Satz ${si+1}</div></div><div class="segment-list"></div>`;
+   sc.innerHTML=`<div class="advanced-set-head"><div class="advanced-set-title">Satz ${si+1}</div></div><div class="segment-list"></div><button class="advanced-complete preview-disabled-control">Satz abschließen</button>`;
    const list=sc.querySelector(".segment-list");
    (st.segments||[]).forEach((seg,sj)=>{
      const row=document.createElement("div");row.className="unified-set-row advanced-segment-row preview-group-row";
@@ -1625,15 +2047,27 @@ function renderPlanPreviewAdvanced(e){
      else repText="–";
      row.innerHTML=`<div class="unified-set-code">${si+1}${sj?String.fromCharCode(97+sj):""}</div>
        <div class="unified-small-exercise">${esc(seg.label)}${cue?` · ${esc(cue)}`:""}</div>
-       <div class="preview-input-like muted-value">kg</div>
+       <div class="preview-input-like muted-value">${t==="restpause"&&sj>0?"= kg":"kg"}</div>
        <div class="preview-input-like">${esc(repText)}${t==="cluster"?"":""}</div>
        <div class="preview-done-placeholder">○</div>`;
-     list.appendChild(row)
+     list.appendChild(row);
+     if(sj<(st.segments||[]).length-1&&(t==="restpause"||t==="cluster")){
+       const pr=document.createElement("div");pr.className="segment-rest";
+       const sec=t==="cluster"?(m.intraRest||20):(m.miniRest||20);
+       pr.innerHTML=`<button class="preview-disabled-control">${sec}s interne Pause</button>`;list.appendChild(pr)
+     }
    });
    box.appendChild(sc)
  });
- return card
+ const add=document.createElement("button");add.className="live-small-button advanced-addset preview-disabled-control";add.textContent="+ Satz";card.appendChild(add);
+ linkExerciseNamesInCard(card,e);return card
 }
+function makeExerciseNameLink(el,name){
+ if(!el||!name)return;el.classList.add("exercise-name-link");el.dataset.exerciseName=name;el.setAttribute("role","button");el.setAttribute("tabindex","0");
+ const open=ev=>{ev.preventDefault();ev.stopPropagation();openCatalogDetail(name)};
+ el.onclick=open;el.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" ")open(ev)}
+}
+function linkExerciseNamesInCard(card,e){if(!card||!e)return;card.querySelectorAll(".live-exercise-title,.unified-exercise-name-line strong,.exercise-name").forEach(el=>makeExerciseNameLink(el,e.name))}
 function renderPlanPreviewNormal(e){
  const t=e.setTechnique||"normal";
  if(["dropset","restpause","cluster"].includes(t))return renderPlanPreviewAdvanced(e);
@@ -1645,12 +2079,12 @@ function renderPlanPreviewNormal(e){
    <div class="live-exercise-title">${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</div>
    <div class="plan-prescription">${esc(previewPrescription(e))}</div>
    <div class="live-rest-prescription">${esc((e.rest??0)>0?`${fmtRest(e.rest)} Pause`:"")}</div>
-   <div class="preview-live-sets"></div>`;
+   <div class="preview-live-sets"></div><div class="live-exercise-footer"><button class="live-small-button addset preview-disabled-control">+ Satz</button></div>`;
  const list=card.querySelector(".preview-live-sets");
  if(isCardio(e)){
    const row=document.createElement("div");row.className="preview-cardio-row";
    row.innerHTML=`<div class="readonly-field">${esc(e.duration||"5")} Min.</div><div class="readonly-field">${esc(e.intensity||e.level||"Moderat")}</div>`;
-   list.appendChild(row);return card
+   list.appendChild(row);linkExerciseNamesInCard(card,e);return card
  }
  sets.forEach((st,si)=>{
    const row=document.createElement("div");row.className="live-set preview-live-set";
@@ -1673,14 +2107,15 @@ function renderPlanPreviewGroup(members){
  card.className=`live-exercise workout-method-frame technique-connected-group ${technique} plan-preview-card`;
  card.innerHTML=`<div class="unified-method-label">${esc(techniqueLabel(technique))}</div>
    <div class="unified-method-help">${esc(techniqueDescriptions[technique]||"")}</div>
-   <div class="unified-exercise-names"></div><div class="unified-set-list preview-group-list"></div>
-   <div class="live-rest-prescription">${esc((members[0]?.rest??0)>0?`${fmtRest(members[0].rest)} Pause nach jeder Runde`:"")}</div>`;
+   <div class="unified-exercise-names"></div>
+   <div class="live-rest-prescription">${esc((members[0]?.rest??0)>0?`${fmtRest(members[0].rest)} Pause nach jeder Runde`:"")}</div>
+   <div class="unified-set-list preview-group-list"></div>`;
  const names=card.querySelector(".unified-exercise-names");
  members.forEach((e,mi)=>{
    const line=document.createElement("div");line.className="unified-exercise-name-line";
    line.innerHTML=`<span class="unified-letter">${(letters[mi]||String(mi+1)).toUpperCase()}</span>
      <div class="grouped-exercise-main"><strong>${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</strong><small class="plan-prescription">${esc(previewPrescription(e))}</small></div>`;
-   names.appendChild(line)
+   names.appendChild(line);makeExerciseNameLink(line.querySelector("strong"),e.name)
  });
  const memberSets=members.map(e=>previewWorkoutSets(e));
  const rounds=Math.max(1,...memberSets.map(s=>s.length||1));
@@ -1718,47 +2153,44 @@ function openPlanPreview(pid){
  show("planPreviewScreen")
 }
 function closePlanPreview(){show("home");renderPlans()}
-let catalogTypeFilter="Alle",catalogMuscleFilter="Alle";
+let catalogTypeFilter="Alle",catalogMuscleFilters=new Set();
 function renderCatalogFilterRows(){
  const typeBox=$("catalogTypeFilters"),muscleBox=$("catalogMuscleFilters");if(!typeBox||!muscleBox)return;
- const make=(box,values,current,setter)=>{box.innerHTML="";const vals=["Alle",...values];vals.forEach(v=>{const b=document.createElement("button");b.type="button";b.className="filter-btn"+(v===current?" active":"");b.textContent=v;b.onclick=()=>{setter(v);renderCatalogFilterRows();renderCatalog()};box.appendChild(b)})};
- make(typeBox,trainingTypes,catalogTypeFilter,v=>catalogTypeFilter=v);
- make(muscleBox,muscleGroups,catalogMuscleFilter,v=>catalogMuscleFilter=v)
-}
-function exerciseImagePath(x){
- if(x.name==="90/90 Hip Switch")return "assets/exercise/90-90-hip-switch.jpg";
- const key=String(x.category||"Körpergewicht").toLowerCase().replaceAll("ä","ae").replaceAll("ö","oe").replaceAll("ü","ue").replaceAll("ß","ss");
- return `assets/exercise/${key}.svg`
-}
-
-const generatedExerciseImages={
- "90/90 Hip Switch":"assets/exercise/90-90-hip-switch.jpg",
- "Ab Wheel":"assets/exercise/ab-wheel.jpg",
- "AirBike":"assets/exercise/airbike.jpg",
- "Ankle Dorsiflexion Mobilization":"assets/exercise/ankle-dorsiflexion.jpg",
- "ATG Split Squat":"assets/exercise/atg-split-squat.jpg",
- "Back Lever":"assets/exercise/back-lever.jpg",
- "Barbell Bench Press":"assets/exercise/barbell-bench-press.jpg",
- "Barbell Deadlift":"assets/exercise/barbell-deadlift.jpg"
-};
-function generatedExerciseImage(x,detail=false){
- if(detail&&x.name==="Ab Wheel")return "assets/exercise/ab-wheel-detail.jpg";
- return generatedExerciseImages[x.name]||""
+ typeBox.innerHTML="";
+ ["Alle",...trainingTypes].forEach(v=>{
+   const b=document.createElement("button");b.type="button";
+   b.className="filter-btn"+(v===catalogTypeFilter?" active":"");b.textContent=v;
+   b.onclick=()=>{catalogTypeFilter=(v!=="Alle"&&catalogTypeFilter===v)?"Alle":v;renderCatalogFilterRows();renderCatalog()};
+   typeBox.appendChild(b)
+ });
+ muscleBox.innerHTML="";
+ const allBtn=document.createElement("button");allBtn.type="button";
+ allBtn.className="filter-btn"+(catalogMuscleFilters.size===0?" active":"");allBtn.textContent="Alle";
+ allBtn.onclick=()=>{catalogMuscleFilters.clear();renderCatalogFilterRows();renderCatalog()};
+ muscleBox.appendChild(allBtn);
+ muscleGroups.forEach(v=>{
+   const b=document.createElement("button");b.type="button";
+   b.className="filter-btn"+(catalogMuscleFilters.has(v)?" active":"");b.textContent=v;
+   b.onclick=()=>{
+     if(catalogMuscleFilters.has(v))catalogMuscleFilters.delete(v);
+     else catalogMuscleFilters.add(v);
+     renderCatalogFilterRows();renderCatalog()
+   };
+   muscleBox.appendChild(b)
+ })
 }
 function renderCatalog(){
  const list=$("catalogExerciseList");if(!list)return;renderCatalogFilterRows();
- const q=String($("catalogSearch")?.value||"").trim().toLowerCase();
- let items=allExercises();
+ const q=String($("catalogSearch")?.value||"").trim().toLowerCase();let items=allExercises();
  if(q)items=items.filter(x=>x.name.toLowerCase().includes(q)||String(x.category||"").toLowerCase().includes(q)||String(x.subcategory||"").toLowerCase().includes(q)||(x.muscles||[]).some(m=>m.toLowerCase().includes(q)));
  if(catalogTypeFilter!=="Alle")items=items.filter(x=>x.category===catalogTypeFilter);
- if(catalogMuscleFilter!=="Alle")items=items.filter(x=>(x.muscles||[]).includes(catalogMuscleFilter));
+ if(catalogMuscleFilters.size)items=items.filter(x=>[...catalogMuscleFilters].every(m=>(x.muscles||[]).includes(m)));
+ const countEl=$("catalogExerciseCount");if(countEl){const total=allExercises().length,filtered=q||catalogTypeFilter!=="Alle"||catalogMuscleFilters.size>0;countEl.textContent=filtered?`${items.length} von ${total} Übungen`:`${total} Übungen`}
  const order=["Gewichte","Geräte","Körpergewicht","Calisthenics","Mobilität","Cardio","Explosivität"];
  items.sort((a,b)=>{const ai=order.indexOf(a.category),bi=order.indexOf(b.category);if(ai!==bi)return (ai<0?99:ai)-(bi<0?99:bi);return a.name.localeCompare(b.name,"de",{sensitivity:"base"})});
- list.innerHTML="";
- items.forEach(x=>{const b=document.createElement("button");b.type="button";b.className="catalog-exercise-card";const pic=generatedExerciseImage(x);b.classList.toggle("has-image",!!pic);b.innerHTML=`${pic?`<img class="catalog-generated-thumb" src="${esc(pic)}" alt="">`:""}<div class="catalog-card-copy"><strong>${esc(x.name)}</strong><small>${esc(x.category||"")} · ${esc((x.muscles||[]).join(", "))}</small></div><span>›</span>`;b.onclick=()=>openCatalogDetail(x.name);list.appendChild(b)});
+ list.innerHTML="";items.forEach(x=>{const b=document.createElement("button");b.type="button";b.className="catalog-exercise-card";b.innerHTML=`<div class="catalog-card-copy"><strong>${esc(x.name)}</strong><small>${esc(x.category||"")} · ${esc((x.muscles||[]).join(", "))}</small></div><span>›</span>`;b.onclick=()=>openCatalogDetail(x.name);list.appendChild(b)});
  if(!items.length)list.innerHTML='<div class="history-empty">Keine passende Übung gefunden.</div>'
 }
-
 const exerciseExecutionGuide={
 "90/90 Hip Switch":"Sitze im 90/90-Sitz mit beiden Knien gebeugt. Halte den Oberkörper möglichst aufrecht und rotiere beide Beine kontrolliert zur Gegenseite, ohne die Füße unnötig zu versetzen. Wechsle fließend zwischen beiden 90/90-Positionen.",
 "Ab Wheel":"Knie dich vor das Ab-Wheel, spanne Bauch und Gesäß an und halte das Becken stabil. Rolle langsam nach vorn, während sich Hüfte und Schultern gemeinsam strecken. Gehe nur so weit, wie du die Lendenwirbelsäule neutral halten kannst, und ziehe dich kontrolliert zurück.",
@@ -1799,13 +2231,8 @@ function generatedExerciseExecution(x){
  return "Nimm die für die Übung vorgesehene stabile Ausgangsposition ein. Führe den Widerstand kontrolliert entlang der vorgesehenen Bewegungsbahn bis zur Endposition. Stoppe kurz, ohne die Position zu verlieren, und kehre anschließend langsam entlang derselben Bahn in die Ausgangsposition zurück."
 }
 function openCatalogDetail(name){
- const x=exerciseInfo(name),pic=generatedExerciseImage(x,true);
- $("catalogDetailScreenTitle").textContent=x.name;
- $("catalogDetailFullBody").innerHTML=`${pic?`<img class="catalog-detail-generated-image" src="${esc(pic)}" alt="">`:""}<div class="catalog-detail-category">${esc(x.category||"")}</div>
- <div class="catalog-detail-section"><span>Bereiche</span><strong>${esc((x.muscles||[]).join(", ")||"–")}</strong></div>
- ${Array.isArray(x.variants)&&x.variants.length?`<div class="catalog-detail-section"><span>Varianten</span><strong>${esc(x.variants.join(", "))}</strong></div>`:""}
- <div class="catalog-detail-copy"><h3>Ausführung</h3><p>${esc(generatedExerciseExecution(x))}</p></div>`;
- show("catalogDetailScreen",{top:true})
+ const x=exerciseInfo(name);$("catalogDetailScreenTitle").textContent=x.name;
+ $("catalogDetailFullBody").innerHTML=`<div class="catalog-detail-category">${esc(x.category||"")}</div><div class="catalog-detail-section"><span>Bereiche</span><strong>${esc((x.muscles||[]).join(", ")||"–")}</strong></div>${Array.isArray(x.variants)&&x.variants.length?`<div class="catalog-detail-section"><span>Varianten</span><strong>${esc(x.variants.join(", "))}</strong></div>`:""}<div class="catalog-detail-copy"><h3>Ausführung</h3><p>${esc(generatedExerciseExecution(x))}</p></div>`;show("catalogDetailScreen",{top:true})
 }
 let selectedPlanActionId=null;
 function closePlanTap(){selectedPlanActionId=null;$("planTapModal").classList.add("hidden")}
@@ -1813,9 +2240,83 @@ function closePlanLong(){selectedPlanActionId=null;$("planLongModal").classList.
 function openPlanTapActions(pid){const p=plans.find(x=>x.id===pid);if(!p)return;selectedPlanActionId=pid;$("planTapTitle").textContent=p.name;$("planTapModal").classList.remove("hidden")}
 function openPlanLongActions(pid){const p=plans.find(x=>x.id===pid);if(!p)return;selectedPlanActionId=pid;$("planLongTitle").textContent=p.name;$("planLongModal").classList.remove("hidden")}
 function duplicateSelectedPlan(){const p=plans.find(x=>x.id===selectedPlanActionId);if(!p)return;const cp=structuredClone(p);cp.id=id();cp.name=`${p.name} Kopie`;plans.push(cp);saveAll();renderPlans();closePlanLong();toast("Plan dupliziert")}
-function deleteSelectedPlan(){const p=plans.find(x=>x.id===selectedPlanActionId);if(!p)return;if(!confirm(`„${p.name}“ wirklich löschen?`))return;plans=plans.filter(x=>x.id!==p.id);saveAll();renderPlans();renderWorkoutHome();closePlanLong();toast("Plan gelöscht")}
+function deleteSelectedPlan(){const pid=selectedPlanActionId;closePlanLong();deletePlanById(pid)}
 function attachPlanLongPress(card,pid){let timer=null,longFired=false,startX=0,startY=0;const clear=()=>{if(timer){clearTimeout(timer);timer=null}};card.addEventListener("pointerdown",ev=>{if(ev.pointerType==="mouse"&&ev.button!==0)return;longFired=false;startX=ev.clientX;startY=ev.clientY;timer=setTimeout(()=>{longFired=true;openPlanLongActions(pid);navigator.vibrate?.(25)},550)});card.addEventListener("pointermove",ev=>{if(Math.abs(ev.clientX-startX)>10||Math.abs(ev.clientY-startY)>10)clear()});card.addEventListener("pointerup",clear);card.addEventListener("pointercancel",clear);card.addEventListener("click",ev=>{if(longFired){ev.preventDefault();ev.stopPropagation();longFired=false;return}openPlanTapActions(pid)})}
-function renderPlans(){$("planList").innerHTML="";$("empty").classList.toggle("hidden",plans.length>0);plans.forEach(p=>{const c=document.createElement("button");c.type="button";c.className="plan-card plan-card-simple";c.innerHTML=`<div class="plan-head"><div><div class="plan-name">${esc(p.name)}</div><div class="plan-count">${p.exercises.length} ${p.exercises.length===1?"Übung":"Übungen"}</div></div><span class="plan-chevron">›</span></div>`;attachPlanLongPress(c,p.id);$("planList").appendChild(c)})}
+function plannedSetCount(plan){return (plan?.exercises||[]).reduce((sum,e)=>{const t=e.setTechnique||"normal",m=e.methodData||{};if(t==="pyramid"&&Array.isArray(m.reps)&&m.reps.length)return sum+m.reps.length;return sum+Math.max(1,Number(e.sets)||1)},0)}
+function startPlanDirect(pid,ev){ev?.preventDefault();ev?.stopPropagation();const p=plans.find(x=>x.id===pid);if(!p)return;if(!confirm("Training wirklich starten?"))return;p.lastUsedAt=Date.now();saveAll();activeWorkoutData=createWorkout(p);workoutStartedAt=Date.now();saveAll();openActive()}
+const PLAN_SORT_KEY="geeniusapp_plan_sort_v2";
+let planSortState=(()=>{try{return JSON.parse(localStorage.getItem(PLAN_SORT_KEY)||'{"key":"created","dir":"desc"}')}catch{return {key:"created",dir:"desc"}}})();
+function planTimestamp(p,key){
+ const fallback=Number(p?.createdAt)||Number(p?.id)||0;
+ if(key==="used")return Number(p?.lastUsedAt)||fallback;
+ if(key==="modified")return Number(p?.updatedAt)||Number(p?.modifiedAt)||fallback;
+ return fallback
+}
+function sortedPlans(){
+ const arr=[...plans],{key,dir}=planSortState;
+ if(key==="name"){
+   return arr.sort((a,b)=>{
+     const cmp=String(a.name||"").localeCompare(String(b.name||""),"de",{sensitivity:"base"});
+     return dir==="asc"?cmp:-cmp
+   })
+ }
+ return arr.sort((a,b)=>{
+   const av=planTimestamp(a,key),bv=planTimestamp(b,key);
+   return dir==="asc"?av-bv:bv-av
+ })
+}
+function savePlanSortState(){localStorage.setItem(PLAN_SORT_KEY,JSON.stringify(planSortState))}
+function bindPlanSort(){
+ document.querySelectorAll(".plan-sort-button").forEach(btn=>{
+   const key=btn.dataset.sort,arrow=btn.querySelector(".sort-arrow"),active=planSortState.key===key;
+   btn.classList.toggle("active",active);
+   if(key==="name")arrow.textContent=active?(planSortState.dir==="asc"?"A–Z":"Z–A"):"A–Z";
+   else arrow.textContent=active?(planSortState.dir==="asc"?"↑":"↓"):"↓";
+   btn.onclick=()=>{
+     if(planSortState.key===key)planSortState.dir=planSortState.dir==="asc"?"desc":"asc";
+     else{
+       planSortState.key=key;
+       planSortState.dir=key==="name"?"asc":"desc";
+     }
+     savePlanSortState();renderPlans()
+   }
+ })
+}
+function swipeDeleteShell(node,onDelete,label="Löschen"){
+ const shell=document.createElement("div");shell.className="list-swipe-shell";
+ const bg=document.createElement("button");bg.type="button";bg.className="list-swipe-delete";bg.textContent=label;
+ const front=document.createElement("div");front.className="list-swipe-front";
+ front.appendChild(node);shell.appendChild(bg);shell.appendChild(front);
+ let sx=0,sy=0,dx=0,dy=0,moved=false;
+ const close=()=>{front.style.transform="";front.classList.remove("swiped")};
+ front.addEventListener("touchstart",ev=>{const t=ev.touches?.[0];if(!t)return;sx=t.clientX;sy=t.clientY;dx=dy=0;moved=false;front.style.transition="none"},{passive:true});
+ front.addEventListener("touchmove",ev=>{const t=ev.touches?.[0];if(!t)return;dx=t.clientX-sx;dy=t.clientY-sy;if(Math.abs(dx)>10&&Math.abs(dx)>Math.abs(dy)){moved=true;if(dx<0)front.style.transform=`translateX(${Math.max(-92,dx)}px)`}},{passive:true});
+ front.addEventListener("touchend",()=>{front.style.transition="";if(moved&&dx<-52){front.style.transform="translateX(-86px)";front.classList.add("swiped")}else close()});
+ bg.onclick=ev=>{ev.stopPropagation();close();onDelete()};
+ node.addEventListener("click",ev=>{if(front.classList.contains("swiped")){ev.preventDefault();ev.stopPropagation();close()}},true);
+ return shell
+}
+function deletePlanById(pid){
+ const p=plans.find(x=>String(x.id)===String(pid));if(!p)return;
+ if(!confirm(`„${p.name}“ wirklich löschen?`))return;
+ plans=plans.filter(x=>String(x.id)!==String(pid));saveAll();renderPlans();renderWorkoutHome();toast("Plan gelöscht")
+}
+function deleteHistoryById(wid){
+ workoutHistory=workoutHistory.filter(x=>String(x.id)!==String(wid));saveAll();renderHistory();toast("Verlaufseintrag gelöscht")
+}
+function renderPlans(){
+ $("planList").innerHTML="";$("empty").classList.toggle("hidden",plans.length>0);
+ bindPlanSort();
+ sortedPlans().forEach(p=>{
+   const sets=plannedSetCount(p),c=document.createElement("div");c.className="plan-card plan-card-simple";
+   c.innerHTML=`<button type="button" class="plan-card-content"><div class="plan-name">${esc(p.name)}</div><div class="plan-count">${p.exercises.length} ${p.exercises.length===1?"Übung":"Übungen"} · ${sets} ${sets===1?"Satz":"Sätze"}</div></button><button type="button" class="plan-card-start" aria-label="${esc(p.name)} starten">▶</button><button type="button" class="plan-card-open" aria-label="${esc(p.name)} öffnen">›</button>`;
+   const content=c.querySelector(".plan-card-content"),open=c.querySelector(".plan-card-open");
+   attachPlanLongPress(content,p.id);
+   open.onclick=ev=>{ev.preventDefault();ev.stopPropagation();openPlanTapActions(p.id)};
+   c.querySelector(".plan-card-start").onclick=ev=>startPlanDirect(p.id,ev);
+   $("planList").appendChild(swipeDeleteShell(c,()=>deletePlanById(p.id)))
+ })
+}
 function bindPlanStartWorkout(){
  const b=$("startPlanWorkoutBtn");if(!b)return;
  b.onclick=()=>{
@@ -1845,32 +2346,67 @@ function exerciseInfo(name){
 }
 function exerciseBaseKey(e){return e?.exerciseKey||e?.name||""}
 function isCardio(e){return e.type==="cardio"||exerciseInfo(exerciseBaseKey(e)).category==="Cardio"}
+let editorReorderMode=false;
+function reorderUnitsFor(arr){
+ const units=[],seen=new Set();
+ (arr||[]).forEach(e=>{
+   const g=e?.techniqueGroup||"",isGroup=g&&groupedTechniques.has(e?.setTechnique||"normal");
+   if(isGroup){
+     if(seen.has(g))return;seen.add(g);
+     units.push({items:arr.filter(x=>x.techniqueGroup===g),group:g});
+   }else units.push({items:[e],group:""})
+ });
+ return units
+}
+function unitPositionForIndex(arr,index){
+ const target=arr?.[index];if(!target)return -1;
+ return reorderUnitsFor(arr).findIndex(u=>u.items.includes(target))
+}
+function canMoveExerciseUnit(arr,index,dir){
+ const units=reorderUnitsFor(arr),pos=unitPositionForIndex(arr,index);
+ return pos>=0&&pos+dir>=0&&pos+dir<units.length
+}
+function moveExerciseUnit(arr,index,dir){
+ const units=reorderUnitsFor(arr),pos=unitPositionForIndex(arr,index),next=pos+dir;
+ if(pos<0||next<0||next>=units.length)return false;
+ [units[pos],units[next]]=[units[next],units[pos]];
+ arr.splice(0,arr.length,...units.flatMap(u=>u.items));return true
+}
+function isFirstGroupMember(arr,index){
+ const e=arr?.[index],g=e?.techniqueGroup||"";
+ if(!g||!groupedTechniques.has(e?.setTechnique||"normal"))return true;
+ return arr.findIndex(x=>x.techniqueGroup===g)===index
+}
 function renderExercises(){
  $("exerciseList").innerHTML="";$("exerciseCount").textContent=currentPlan?.exercises.length||0;
- (currentPlan?.exercises||[]).forEach((e,i)=>{
+ const arr=currentPlan?.exercises||[];
+ arr.forEach((e,i)=>{
    const cardio=isCardio({...e,name:exerciseBaseKey(e)}),c=document.createElement("div");c.className=`exercise-card ${cardio?"cardio":""}`;
    const special=techniqueSummary(e);
    const meta=cardio?`${e.duration?esc(e.duration)+" Min.":"Dauer offen"}${e.intensity||e.level?` · ${esc(e.intensity||e.level)}`:""}${e.distance?` · ${esc(e.distance)} ${esc(e.distanceUnit||"km")}`:""}`
-     :special|| (e.measureMode==="time"?`${e.sets} Sätze · ${esc(e.timeMinutes||"–")} Min. · ${fmtRest(e.rest??90)}`:`${e.sets} Sätze · ${esc(e.reps)} Wdh. · ${fmtRest(e.rest??90)}`);
+     :special||(e.measureMode==="time"?`${e.sets} Sätze · ${esc(e.timeMinutes||"–")} Min. · ${fmtRest(e.rest??90)}`:`${e.sets} Sätze · ${esc(e.reps)} Wdh. · ${fmtRest(e.rest??90)}`);
    c.dataset.techniqueGroup=e.techniqueGroup||"";c.dataset.technique=e.setTechnique||"normal";
-   c.innerHTML=`<div class="exercise-number">${i+1}</div><div><div class="exercise-name">${esc(e.name)}</div><div class="exercise-meta">${meta}</div>${setTechniqueBadge(e)}${e.variant?`<span class="variant-badge">${esc(e.variant)}</span>`:""}${e.note?`<div class="exercise-note">${esc(e.note)}</div>`:""}</div><button class="more-button" aria-label="Bearbeiten">✎</button>`;
-   c.onclick=(ev)=>{if(ev.target.closest("button"))return;openActions(i)};c.querySelector(".more-button").onclick=()=>openActions(i);$("exerciseList").appendChild(c)
+   const anchor=isFirstGroupMember(arr,i);
+   c.innerHTML=`<div class="exercise-number">${i+1}</div><div class="exercise-card-copy"><div class="exercise-name">${esc(e.name)}</div><div class="exercise-meta">${meta}</div>${editorTechniqueBadge(e)}${e.variant?`<span class="variant-badge">${esc(e.variant)}</span>`:""}${e.note?`<div class="exercise-note">${esc(e.note)}</div>`:""}</div><button class="more-button" aria-label="Bearbeiten">✎</button>${editorReorderMode&&anchor?`<div class="card-reorder-controls"><button class="reorder-up" ${canMoveExerciseUnit(arr,i,-1)?"":"disabled"} aria-label="Nach oben">↑</button><button class="reorder-down" ${canMoveExerciseUnit(arr,i,1)?"":"disabled"} aria-label="Nach unten">↓</button></div>`:""}`;
+   c.onclick=ev=>{if(ev.target.closest("button"))return;openActions(i)};
+   c.querySelector(".more-button").onclick=()=>openActions(i);const exerciseNameLink=c.querySelector(".exercise-name");if(exerciseNameLink)makeExerciseNameLink(exerciseNameLink,e.name);
+   const up=c.querySelector(".reorder-up"),down=c.querySelector(".reorder-down");
+   if(up)up.onclick=ev=>{ev.stopPropagation();if(moveExerciseUnit(currentPlan.exercises,i,-1))renderExercises()};
+   if(down)down.onclick=ev=>{ev.stopPropagation();if(moveExerciseUnit(currentPlan.exercises,i,1))renderExercises()};
+   $("exerciseList").appendChild(c)
  });
- connectTechniqueGroups("exerciseList")
+ connectTechniqueGroups("exerciseList");$("exerciseList").classList.toggle("reorder-mode",editorReorderMode);
+ if($("editorReorderBtn")){const b=$("editorReorderBtn");b.classList.toggle("active",editorReorderMode);b.setAttribute("aria-pressed",editorReorderMode?"true":"false");const l=b.querySelector(".editor-reorder-label");if(l)l.textContent=editorReorderMode?"Reihenfolge fertig":"Übungsreihenfolge ändern"}
 }
-let exerciseCategoryFilter="Alle",exerciseSubcategoryFilter="Alle";
+let exerciseCategoryFilter="Alle",exerciseSubcategoryFilter="Alle";const plannerMuscleFilters=new Set();
 const trainingTypes=["Gewichte","Geräte","Körpergewicht","Calisthenics","Mobilität","Cardio","Explosivität"];
 const muscleGroups=["Brust","Schulter","Rücken","Arme/Hände","Beine/Füße","Gesäß/Hüfte","Core","Sprünge","Athletik"];
 function renderFilterRow(){
- const primary=$("exerciseFilters"),secondary=$("exerciseSubfilters");
- primary.innerHTML=""; secondary.innerHTML=""; secondary.classList.remove("hidden");
- const make=(container,values,current,onSelect)=>{
-  const all=document.createElement("button");all.className="filter-btn"+(current==="Alle"?" active":"");all.textContent="Alle";all.onclick=()=>{onSelect("Alle");renderFilterRow();renderExerciseOptions($("search").value)};container.appendChild(all);
-  values.forEach(v=>{const b=document.createElement("button");b.className="filter-btn"+(v===current?" active":"");b.textContent=v;b.onclick=()=>{onSelect(v);renderFilterRow();renderExerciseOptions($("search").value)};container.appendChild(b)});
- };
- make(primary,trainingTypes,exerciseCategoryFilter,v=>exerciseCategoryFilter=v);
- make(secondary,muscleGroups,exerciseSubcategoryFilter,v=>exerciseSubcategoryFilter=v);
-
+ const primary=$("exerciseFilters"),secondary=$("exerciseSubfilters");primary.innerHTML="";secondary.innerHTML="";secondary.classList.remove("hidden");
+ const allType=document.createElement("button");allType.className="filter-btn"+(exerciseCategoryFilter==="Alle"?" active":"");allType.textContent="Alle";allType.onclick=()=>{exerciseCategoryFilter="Alle";renderFilterRow();renderExerciseOptions($("search").value)};primary.appendChild(allType);
+ trainingTypes.forEach(v=>{const b=document.createElement("button");b.className="filter-btn"+(exerciseCategoryFilter===v?" active":"");b.textContent=v;b.onclick=()=>{exerciseCategoryFilter=exerciseCategoryFilter===v?"Alle":v;renderFilterRow();renderExerciseOptions($("search").value)};primary.appendChild(b)});
+ const allMuscle=document.createElement("button");allMuscle.className="filter-btn"+(!plannerMuscleFilters.size?" active":"");allMuscle.textContent="Alle";allMuscle.onclick=()=>{plannerMuscleFilters.clear();exerciseSubcategoryFilter="Alle";renderFilterRow();renderExerciseOptions($("search").value)};secondary.appendChild(allMuscle);
+ muscleGroups.forEach(v=>{const b=document.createElement("button");b.className="filter-btn"+(plannerMuscleFilters.has(v)?" active":"");b.textContent=v;b.onclick=()=>{plannerMuscleFilters.has(v)?plannerMuscleFilters.delete(v):plannerMuscleFilters.add(v);exerciseSubcategoryFilter=plannerMuscleFilters.size?[...plannerMuscleFilters][0]:"Alle";renderFilterRow();renderExerciseOptions($("search").value)};secondary.appendChild(b)})
 }
 function setExerciseFilterOrder(order){ renderFilterRow();renderExerciseOptions($("search").value); }
 function allExercises(){
@@ -1919,9 +2455,10 @@ function cancelExerciseConfig(){
   document.body.classList.remove("modal-open");
 }
 function bindExerciseModalControls(){
-  const close=$("closeExercise"), overlay=$("exerciseOverlay"),
+  const close=$("closeExercise"), back=$("exercisePickerBack"), overlay=$("exerciseOverlay"),
         cancel=$("cancelConfig"), configOverlay=$("configOverlay");
   if(close)close.onclick=closeExerciseFlow;
+  if(back)back.onclick=()=>{$("exerciseModal")?.classList.add("hidden");document.body.classList.remove("modal-open")};
   if(overlay)overlay.onclick=closeExerciseFlow;
   if(cancel)cancel.onclick=cancelExerciseConfig;
   if(configOverlay)configOverlay.onclick=cancelExerciseConfig;
@@ -1929,8 +2466,30 @@ function bindExerciseModalControls(){
 window.addEventListener("DOMContentLoaded",bindExerciseModalControls);
 
 function openExerciseModal(){
- $("search").value="";exerciseCategoryFilter="Alle";exerciseSubcategoryFilter="Alle";renderFilterRow();renderExerciseOptions("");$("exerciseModal").classList.remove("hidden")
+ $("search").value="";exerciseCategoryFilter="Alle";exerciseSubcategoryFilter="Alle";plannerMuscleFilters.clear();renderFilterRow();renderExerciseOptions("");$("exerciseModal").classList.remove("hidden")
 ;bindExerciseBackButton();;document.body.classList.add("modal-open");bindExerciseModalControls();;bindLiveExerciseSearch();}
+
+function pickerExerciseParameters(x){
+ const d=defaultExerciseSetup(x.name),parts=[];
+ if(x.tracking==="cardio"||x.category==="Cardio"){
+   parts.push(`${d.time||5} Min.`);
+   parts.push("Stufe/Watt");
+ }else{
+   if(x.tracking==="reps_time")parts.push("Wdh. / Zeit");
+   else parts.push(`${d.reps||"8-12"} Wdh.`);
+   parts.push(`${d.sets||3} Sätze`);
+   if(Number.isFinite(Number(d.rest)))parts.push(`${fmtRest(Number(d.rest))} Pause`)
+ }
+ return parts.join(" · ")
+}
+function inlineAddExerciseFromPicker(name,ev){
+ ev?.preventDefault();ev?.stopPropagation();selectExercise(name)
+}
+let plannerDetailExerciseName=null;
+function openPlannerExerciseDetail(name){
+ const x=exerciseInfo(name);plannerDetailExerciseName=name;$("plannerExerciseDetailTitle").textContent=x.name;
+ $("plannerExerciseDetailFullBody").innerHTML=`<div class="catalog-detail-category">${esc(x.category||"")}</div><div class="catalog-detail-section"><span>Parameter</span><strong>${esc(pickerExerciseParameters(x))}</strong></div><div class="catalog-detail-section"><span>Bereiche</span><strong>${esc((x.muscles||[]).join(", ")||"–")}</strong></div>${Array.isArray(x.variants)&&x.variants.length?`<div class="catalog-detail-section"><span>Varianten</span><strong>${esc(x.variants.join(", "))}</strong></div>`:""}<div class="catalog-detail-copy"><h3>Ausführung</h3><p>${esc(generatedExerciseExecution(x))}</p></div>`;$("exerciseModal").classList.add("hidden");show("plannerExerciseDetailScreen",{top:true})
+}
 function renderExerciseOptions(q){
  const box=$("exerciseOptions");
  box.innerHTML="";
@@ -1955,9 +2514,7 @@ function renderExerciseOptions(q){
  }
 
  // 3. Danach ggf. die Muskelgruppe / den Bereich einschränken.
- if(exerciseSubcategoryFilter!=="Alle"){
-   items=items.filter(x=>(x.muscles||[]).includes(exerciseSubcategoryFilter));
- }
+ if(plannerMuscleFilters.size){items=items.filter(x=>[...plannerMuscleFilters].every(m=>(x.muscles||[]).includes(m)))}
 
  // Feste Bereichsreihenfolge; Übungen innerhalb des Bereichs alphabetisch.
  items.sort((a,b)=>{
@@ -1969,21 +2526,12 @@ function renderExerciseOptions(q){
 
  let lastCategory="";
  items.forEach(x=>{
-   if(exerciseCategoryFilter==="Alle" && x.category!==lastCategory){
-     const h=document.createElement("div");
-     h.className="exercise-category-heading";
-     h.textContent=x.category;
-     box.appendChild(h);
-     lastCategory=x.category;
-   }
-   const b=document.createElement("button");
-   b.className="exercise-option clean-exercise-option";
-   b.innerHTML=`<strong>${esc(x.name)}</strong>`;
-   b.onclick=()=>selectExercise(x.name);
-   box.appendChild(b);
- });
-
- // Bei Suche ohne Treffer darf die Liste einfach leer bleiben.
+ if(exerciseCategoryFilter==="Alle"&&x.category!==lastCategory){const heading=document.createElement("div");heading.className="exercise-category-heading";heading.textContent=x.category;box.appendChild(heading);lastCategory=x.category}
+ const b=document.createElement("button");b.type="button";b.className="catalog-exercise-card planner-picker-card";
+ b.innerHTML=`<div class="catalog-card-copy"><strong>${esc(x.name)}</strong><small>${esc(x.category||"")} · ${esc((x.muscles||[]).join(", "))}</small></div><span class="planner-inline-add" role="button" tabindex="0" aria-label="${esc(x.name)} hinzufügen">＋</span><span class="planner-card-chevron">›</span>`;
+ b.onclick=()=>openPlannerExerciseDetail(x.name);const add=b.querySelector(".planner-inline-add");add.onclick=ev=>inlineAddExerciseFromPicker(x.name,ev);add.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" "){inlineAddExerciseFromPicker(x.name,ev)}};box.appendChild(b)
+});
+// Bei Suche ohne Treffer darf die Liste einfach leer bleiben.
 }
 function openLibraryActions(name){
  const ok=confirm(`„${name}“ verwalten?\n\nOK = umbenennen\nAbbrechen = löschen oder nichts tun`);
@@ -1994,7 +2542,7 @@ function openLibraryActions(name){
 
 
 const techniqueDescriptions={
- normal:"Klassische Arbeitssätze mit regulärer Pause.",
+ normal:"Standard-Arbeitssätze mit regulärer Pause.",
  superset:"Zwei Übungen direkt nacheinander, Pause erst nach beiden.",
  dropset:"Nach dem Startsatz wird die Last schrittweise reduziert und direkt weitertrainiert.",
  restpause:"Ein harter Satz wird nach kurzen Mini-Pausen mehrfach fortgesetzt.",
@@ -2004,12 +2552,12 @@ const techniqueDescriptions={
  giantset:"Drei oder mehr Übungen werden pro Runde nahezu ohne Pause nacheinander ausgeführt.",
  backoff:"Auf ein schweres Top-Set folgen leichtere Sätze mit reduzierter Last."
 };
-const setTechniqueLabels={normal:"Normal",superset:"Supersatz",dropset:"Dropsatz",restpause:"Rest-Pause",cluster:"Cluster",pyramid:"Pyramide",preexhaust:"Pre-Exhaust",giantset:"Giant Set",backoff:"Back-off"};
+const setTechniqueLabels={normal:"Standard",superset:"Supersatz",dropset:"Dropsatz",restpause:"Rest-Pause",cluster:"Cluster",pyramid:"Pyramide",preexhaust:"Pre-Exhaust",giantset:"Giant Set",backoff:"Back-off"};
 const groupedTechniques=new Set(["superset","giantset","preexhaust"]);
-function techniqueLabel(v){return setTechniqueLabels[v]||"Normal"}
+function techniqueLabel(v){return setTechniqueLabels[v]||"Standard"}
 function techniqueClass(v){return v==="dropset"?"drop":v||""}
 function setTechniqueBadge(e){const t=e.setTechnique||"normal";if(t==="normal")return "";return `<span class="set-technique-badge ${techniqueClass(t)}">${esc(techniqueLabel(t))}</span>`}
-function updateTechniqueExplanation(){const el=$("techniqueExplanation");if(el)el.textContent=techniqueDescriptions[$("setTechnique").value]||techniqueDescriptions.normal}
+function editorTechniqueBadge(e){const t=e?.setTechnique||"normal";return `<span class="set-technique-badge ${techniqueClass(t)}">${esc(techniqueLabel(t))}</span>`} function updateTechniqueExplanation(){const el=$("techniqueExplanation");if(el)el.textContent=techniqueDescriptions[$("setTechnique").value]||techniqueDescriptions.normal}
 function parseRepScheme(v){return String(v||"").split(/[,\-–;\/ ]+/).map(x=>parseInt(x,10)).filter(x=>Number.isFinite(x)&&x>0).slice(0,9)}
 function techniqueSummary(e){
  const t=e.setTechnique||"normal",m=e.methodData||{};
@@ -2051,7 +2599,7 @@ function fillMethodForm(e={}){
 }
 function syncStructuredSetCount(){
  const t=$("setTechnique").value;
- if(t==="pyramid"){const a=parseRepScheme($("pyramidReps").value);if(a.length)$("sets").value=String(Math.min(6,a.length))}
+ if(t==="pyramid"){const a=parseRepScheme($("pyramidReps").value);if(a.length)$("sets").value=String(Math.min(10,a.length))}
  if(t==="backoff")$("sets").value=String(1+(+$("backoffCount").value||3))
 }
 function applyTechniqueUI(){
@@ -2070,24 +2618,23 @@ function groupedRequiredCount(t){return t==="giantset"?3:groupedTechniques.has(t
 function resetTechniqueDraft(){techniqueDraftMembers=[]}
 function groupedExerciseChoices(){return allExercises().filter(x=>x.tracking!=="cardio"&&x.category!=="Cardio"&&x.name!==selectedExercise).sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""),"de",{sensitivity:"base"}))}
 function updateTechniquePartner(){
- const t=$("setTechnique").value,show=groupedTechniques.has(t),wrap=$("techniquePartnerWrap"),box=$("techniqueGroupBuilder");
- wrap.classList.toggle("config-hidden",!show);
- if(!show){if(box)box.innerHTML="";resetTechniqueDraft();return}
- if(!box)return;
- const count=groupedRequiredCount(t),letters="ABC";
- while(techniqueDraftMembers.length<count-1)techniqueDraftMembers.push({name:"",reps:$("reps").value||"8-12"});
- techniqueDraftMembers=techniqueDraftMembers.slice(0,count-1);
- box.innerHTML="";  const choices=groupedExerciseChoices();
- techniqueDraftMembers.forEach((m,i)=>{
-   const row=document.createElement("div");row.className="technique-group-row";
-   const lab=document.createElement("span");lab.className="group-letter";lab.textContent=letters[i+1];
-   const ex=document.createElement("select");ex.className="config-select group-exercise-select";ex.innerHTML='<option value="">Übung wählen</option>';
-   choices.forEach(x=>{const o=document.createElement("option");o.value=x.name;o.textContent=x.name;o.selected=x.name===m.name;ex.appendChild(o)});
-   const reps=document.createElement("select");reps.className="config-select group-reps-select";
-   ["1-4","4-6","6-8","8-12","10-15","10-20","20-30","AMRAP"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;o.selected=v===(m.reps||"8-12");reps.appendChild(o)});
-   ex.onchange=()=>{const chosen=ex.value;if(chosen&&techniqueDraftMembers.some((x,j)=>j!==i&&x.name===chosen)){ex.value=m.name||"";return alert("Diese Übung ist im Block bereits gewählt.")}m.name=chosen};reps.onchange=()=>{m.reps=reps.value};row.append(lab,ex,reps);box.appendChild(row)
+ const t=$("setTechnique").value,show=groupedTechniques.has(t),wrap=$("techniquePartnerWrap"),box=$("techniqueGroupBuilder");wrap.classList.toggle("config-hidden",!show);
+ if(!show){if(box)box.innerHTML="";resetTechniqueDraft();return}if(!box)return;
+ const count=groupedRequiredCount(t),letters="ABC";while(techniqueDraftMembers.length<count-1)techniqueDraftMembers.push({name:"",mode:"reps",reps:"8-12",timeMinutes:"1",timeLevel:"",timeWatts:""});techniqueDraftMembers=techniqueDraftMembers.slice(0,count-1);box.innerHTML="";
+ const choices=groupedExerciseChoices();
+ techniqueDraftMembers.forEach((m,i)=>{m.mode=m.mode||"reps";m.reps=m.reps||"8-12";m.timeMinutes=m.timeMinutes||"1";
+  const row=document.createElement("div");row.className="technique-group-row technique-group-row-flex";
+  const lab=document.createElement("span");lab.className="group-letter";lab.textContent=letters[i+1];
+  const body=document.createElement("div");body.className="group-config-body";
+  const ex=document.createElement("select");ex.className="config-select group-exercise-select";ex.innerHTML='<option value="">Übung wählen</option>';
+  choices.forEach(x=>{const o=document.createElement("option");o.value=x.name;o.textContent=x.name;o.selected=x.name===m.name;ex.appendChild(o)});
+  const mode=document.createElement("select");mode.className="config-select group-mode-select";mode.innerHTML='<option value="reps">Wiederholungen</option><option value="time">Zeit</option>';mode.value=m.mode;
+  const value=document.createElement("div");value.className="group-value-wrap";
+  const draw=()=>{value.innerHTML="";if(m.mode==="time"){const tm=document.createElement("input");tm.className="config-input";tm.inputMode="decimal";tm.placeholder="Min.";tm.value=m.timeMinutes||"1";tm.oninput=()=>m.timeMinutes=tm.value;const lvl=document.createElement("input");lvl.className="config-input";lvl.placeholder="Stufe / Widerstand";lvl.value=m.timeLevel||"";lvl.oninput=()=>m.timeLevel=lvl.value;value.append(tm,lvl)}else{const reps=document.createElement("select");reps.className="config-select group-reps-select";["1-4","4-6","6-8","8-12","10-15","10-20","20-30","AMRAP"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;o.selected=v===(m.reps||"8-12");reps.appendChild(o)});reps.onchange=()=>m.reps=reps.value;value.appendChild(reps)}};
+  ex.onchange=()=>{const chosen=ex.value;if(chosen&&techniqueDraftMembers.some((x,j)=>j!==i&&x.name===chosen)){ex.value=m.name||"";return alert("Diese Übung ist im Block bereits gewählt.")}m.name=chosen};
+  mode.onchange=()=>{m.mode=mode.value;draw()};draw();body.append(ex,mode,value);row.append(lab,body);box.appendChild(row)
  });
- $("techniqueGroupHelp").textContent=t==="giantset"?"Giant Set: Übung B und C direkt auswählen und jeweils die Wiederholungen festlegen.":"Übung B direkt auswählen und die Wiederholungen festlegen."
+ $("techniqueGroupHelp").textContent=t==="giantset"?"Giant Set: B und C auswählen und pro Übung Wiederholungen oder Zeit festlegen.":"B auswählen und Wiederholungen oder Zeit separat festlegen."
 }
 function detachTechniqueGroup(e){
  const g=e?.techniqueGroup;if(!g)return;
@@ -2122,26 +2669,12 @@ function shouldStartGroupRest(e,st){
  return members.length<2||members.every(x=>x.sets?.[si]?.completed);
 }
 function defaultExerciseSetup(name){
- const info=exerciseInfo(name), cat=info.category;
- const timeDefaults={
-  "Hollow Body Hold":{sets:3,mode:"time",time:"0.5"},"Plank":{sets:3,mode:"time",time:"1"},"Side Plank":{sets:3,mode:"time",time:"0.5"},
-  "Handstand":{sets:3,mode:"time",time:"0.5"},"Planche":{sets:3,mode:"time",time:"0.25"},"L-Sit/V-Sit":{sets:3,mode:"time",time:"0.5"},
-  "Front Lever":{sets:3,mode:"time",time:"0.25"},"Back Lever":{sets:3,mode:"time",time:"0.25"},"Human Flag":{sets:3,mode:"time",time:"0.25"}
- };
- if(info.tracking==="cardio"||cat==="Cardio") return {sets:1,mode:"time",time:"5",reps:"—",rest:0};
- if(cat==="Explosivität") return {sets:3,mode:"reps",reps:"4-6",time:"5",rest:120};
- if(timeDefaults[name]) return {...timeDefaults[name],reps:"—",rest:120};
- const heavy=new Set(["Barbell Bench Press","Standing Shoulder Press","Barbell Row","T-Bar Row","Barbell Squat","Front Squat","Barbell Deadlift","Romanian Deadlift","Barbell Hip Thrust","Chest Press","Leg Press","Hip Thrust Machine"]);
- const skillLow=new Set(["Muscle-Up","Handstand Push-Up","Planche Push-Up","Dragon Flag","Pistol Squat","Sissy Squat","Pull-Up","Chin-Up","Dip","Nordic Hamstring Curl","Ab Wheel"]);
- const accessoryHigh=new Set(["Dumbbell Fly","Cable-Fly","Dumbbell Lateral Raise","Face-Pull","Triceps Extension","Biceps Curl","Dumbbell Shoulder Rotation","Butterfly Machine","Cable Fly","Reverse Fly","Cable Lateral Raise","Cable Shoulder Rotation","Cable Triceps Extension","Cable Biceps Curl","Leg Extension","Leg Curl","Hip Adduction Machine","Hip Abduction Machine","Calf Machine","Crunch Machine","Tibialis Raise","Clamshell"]);
- const unilateral=new Set(["ATG Split Squat","Bulgarian Split Squat","Step-Up","Step-Down","Lunge","Reverse Lunge","Curtsy Lunge"]);
- if(heavy.has(name)) return {sets:3,mode:"reps",reps:"4-6",time:"5",rest:120};
- if(skillLow.has(name)) return {sets:3,mode:"reps",reps:"4-6",time:"5",rest:120};
- if(accessoryHigh.has(name)) return {sets:3,mode:"reps",reps:"10-12",time:"5",rest:120};
- if(unilateral.has(name)) return {sets:3,mode:"reps",reps:"8-12",time:"5",rest:120};
- if(cat==="Körpergewicht") return {sets:3,mode:"reps",reps:"8-12",time:"5",rest:120};
- if(cat==="Calisthenics") return {sets:3,mode:"reps",reps:"4-6",time:"5",rest:120};
- return {sets:3,mode:"reps",reps:"6-8",time:"5",rest:120};
+ const info=exerciseInfo(name),cat=info.category;
+ const timeDefaults={"Hollow Body Hold":{sets:3,mode:"time",time:"0.5"},"Plank":{sets:3,mode:"time",time:"1"},"Side Plank":{sets:3,mode:"time",time:"0.5"},"Handstand":{sets:3,mode:"time",time:"0.5"},"Planche":{sets:3,mode:"time",time:"0.25"},"L-Sit/V-Sit":{sets:3,mode:"time",time:"0.5"},"Front Lever":{sets:3,mode:"time",time:"0.25"},"Back Lever":{sets:3,mode:"time",time:"0.25"},"Human Flag":{sets:3,mode:"time",time:"0.25"}};
+ const rest=Number(localStorage.getItem("rethink_default_rest")||120);
+ if(info.tracking==="cardio"||cat==="Cardio")return {sets:1,mode:"time",time:"5",reps:"—",rest:0};
+ if(timeDefaults[name])return {...timeDefaults[name],reps:"—",rest};
+ return {sets:3,mode:"reps",reps:"8-12",time:"5",rest}
 }
 function selectExercise(n){
  selectedExercise=n;editingIndex=null;resetTechniqueDraft();
@@ -2161,10 +2694,33 @@ function openStrengthConfigForEdit(i){
  $("reps").value=e.reps&&e.reps!=="—"?e.reps:"8-12";$("timeMinutes").value=e.timeMinutes||"5";$("timeLevel").value=e.timeLevel||"";$("timeWatts").value=e.timeWatts||"";fillRestRoller("rest",e.rest??90);$("note").value=e.note||"";
  setVariantPicker(info);if(e.variant&&!$("variantWrap").classList.contains("config-hidden"))$("exerciseVariant").value=e.variant;
  configureTracking(info,e.measureMode||"reps",false);applyTechniqueUI();
- if(groupedTechniques.has(e.setTechnique||"normal")&&e.techniqueGroup){const members=currentPlan.exercises.filter((x,idx)=>idx!==i&&x.techniqueGroup===e.techniqueGroup);techniqueDraftMembers=members.map(x=>({name:x.name,reps:x.reps||"8-12"}));updateTechniquePartner()}
+ if(groupedTechniques.has(e.setTechnique||"normal")&&e.techniqueGroup){const members=currentPlan.exercises.filter((x,idx)=>idx!==i&&x.techniqueGroup===e.techniqueGroup);techniqueDraftMembers=members.map(x=>({name:x.name,mode:x.measureMode||"reps",reps:x.reps||"8-12",timeMinutes:x.timeMinutes||"1",timeLevel:x.timeLevel||"",timeWatts:x.timeWatts||""}));updateTechniquePartner()}
  $("confirmExercise").textContent="Änderungen speichern";$("configModal").classList.remove("hidden")
 }
-function openActions(i){actionIndex=i;$("actionTitle").textContent=currentPlan.exercises[i].name;$("actionModal").classList.remove("hidden")}
+let replacementTargetIndex=null;
+function renderReplacementExercises(q=""){
+ const box=$("replaceExerciseList");if(!box)return;box.innerHTML="";
+ const query=String(q||"").trim().toLowerCase(),current=currentPlan?.exercises?.[replacementTargetIndex];if(!current)return;
+ const currentCardio=isCardio(current);
+ allExercises().filter(x=>{
+   const candidateCardio=x.tracking==="cardio"||x.category==="Cardio";
+   if(candidateCardio!==currentCardio)return false;
+   return !query||x.name.toLowerCase().includes(query)||String(x.category||"").toLowerCase().includes(query)||(x.muscles||[]).some(m=>m.toLowerCase().includes(query))
+ }).sort((a,b)=>a.name.localeCompare(b.name,"de",{sensitivity:"base"})).forEach(x=>{
+   const b=document.createElement("button");b.type="button";b.className="replace-exercise-row";
+   b.innerHTML=`<div><strong>${esc(x.name)}</strong><small>${esc(x.category||"")} · ${esc((x.muscles||[]).join(", "))}</small></div><span>›</span>`;
+   b.onclick=()=>replaceExerciseAt(replacementTargetIndex,x.name);box.appendChild(b)
+ });
+ if(!box.children.length)box.innerHTML='<div class="history-empty">Keine passende Übung gefunden.</div>'
+}
+function openReplaceExercise(i){replacementTargetIndex=i;closeActions();$("replaceExerciseSearch").value="";renderReplacementExercises("");$("replaceExerciseModal").classList.remove("hidden")}
+function closeReplaceExercise(){$("replaceExerciseModal").classList.add("hidden");replacementTargetIndex=null}
+function replaceExerciseAt(i,name){
+ const e=currentPlan?.exercises?.[i];if(!e)return;const was=e.name,info=exerciseInfo(name);
+ e.name=name;e.exerciseKey=libraryOriginalName(name);e.variant="";e.type=(info.tracking==="cardio"||info.category==="Cardio")?"cardio":"strength";currentPlan.updatedAt=Date.now();
+ closeReplaceExercise();renderExercises();toast(`„${was}“ durch „${name}“ ersetzt`)
+}
+function openActions(i){actionIndex=i;$("actionTitle").textContent=currentPlan.exercises[i].name;$("actionUp").disabled=!canMoveExerciseUnit(currentPlan.exercises,i,-1);$("actionDown").disabled=!canMoveExerciseUnit(currentPlan.exercises,i,1);$("actionModal").classList.remove("hidden")}
 function closeActions(){$("actionModal").classList.add("hidden")}
 function renderWorkoutHome(){const hasPlans=plans.length>0;$("workoutEmpty").classList.toggle("hidden",hasPlans);$("workoutStartArea").classList.toggle("hidden",!hasPlans);$("resumeWorkout").classList.toggle("hidden",!activeWorkoutData);if(activeWorkoutData){$("resumeWorkoutTitle").textContent=activePlanDisplayName();$("resumeWorkoutMeta").textContent=`${completedSets(activeWorkoutData)} von ${totalSets(activeWorkoutData)} Sätzen · ${fmtDur(Date.now()-activeWorkoutData.startedAt)}`};renderHistory()}
 function openPlanPicker(){if(activeWorkoutData)return openActive();if(!plans.length){show("home");return}const list=$("planPickerList");list.innerHTML="";plans.forEach(p=>{const b=document.createElement("button");b.className="plan-picker-card";b.innerHTML=`<strong>${esc(p.name)}</strong><span>${p.exercises.length} ${p.exercises.length===1?"Übung":"Übungen"}</span>`;b.onclick=()=>{$("planPickerModal").classList.add("hidden");openStart(p.id)};list.appendChild(b)});$("planPickerModal").classList.remove("hidden")}
@@ -2226,7 +2782,7 @@ function buildWorkoutSets(e,prevE){
       segments:Array.from({length:(m.blocks||2)+1},(_,j)=>({
         label:j===0?"Haupt":`RP ${j}`,
         weight:"",reps:"",
-        targetReps:j===0?(e.reps||e.targetRepRange||""):"",
+        targetReps:j===0?"10-15":"",
         prevWeight:previous[si]?.segments?.[j]?.weight??"",
         prevReps:previous[si]?.segments?.[j]?.reps??""
       }))
@@ -2270,7 +2826,7 @@ function openActive(){if(!activeWorkoutData)return;
    });
    saveAll()
  }
- show("activeWorkout");$("activeWorkoutTitle").textContent=activePlanDisplayName();renderLive();clearInterval(workoutClockInterval);const tick=()=>$("activeWorkoutDuration").textContent=fmtDur(Date.now()-activeWorkoutData.startedAt);tick();workoutClockInterval=setInterval(tick,1000)}
+ show("activeWorkout");$("activeWorkoutTitle").textContent=activePlanDisplayName();renderLive();setTimeout(()=>scrollLiveExerciseToIndex(0,"auto"),80);clearInterval(workoutClockInterval);const tick=()=>$("activeWorkoutDuration").textContent=fmtDur(Date.now()-activeWorkoutData.startedAt);tick();workoutClockInterval=setInterval(tick,1000)}
 function previousRatingClass(v){
  const e=v==="right"?"perfect":v==="okay"?"limit":v==="hard"?"heavy":v;
  return e==="perfect"?"prev-rating-perfect":e==="limit"?"prev-rating-limit":e==="heavy"?"prev-rating-heavy":e==="easy"?"prev-rating-easy":""
@@ -2394,7 +2950,7 @@ function removeWorkoutExerciseObject(e){
 
 function normalizeGroupedWorkoutRounds(members){
  if(!Array.isArray(members)||!members.length)return;
- const rounds=Math.max(1,Math.min(6,...members.map(e=>e.sets?.length||1)));
+ const rounds=Math.max(1,Math.max(...members.map(e=>e.sets?.length||1)));
  members.forEach(e=>{
    e.sets=e.sets||[];
    while(e.sets.length<rounds){
@@ -2419,6 +2975,7 @@ function renderGroupedWorkoutBlock(group,members){
    <div class="unified-method-help">${esc(techniqueDescriptions[technique]||"")}</div>
    <div class="unified-exercise-names"></div>
    <div class="unified-recommendations"></div>
+   <div class="live-rest-prescription">${esc((members[0]?.rest??0)>0?`${fmtRest(members[0].rest)} Pause nach jeder Runde`:"")}</div>
    <div class="unified-set-header">
      <span>Satz</span><span>Übung</span><span>Gewicht</span><span>Wdh.</span><span></span>
    </div>
@@ -2430,10 +2987,12 @@ function renderGroupedWorkoutBlock(group,members){
    const line=document.createElement("div");line.className="unified-exercise-name-line";
    line.innerHTML=`<span class="unified-letter">${(letters[mi]||String(mi+1)).toUpperCase()}</span><div class="grouped-exercise-main"><strong>${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</strong><small class="plan-prescription">${esc(planPrescriptionText(e))}</small></div><button class="series-remove-exercise unified-exercise-delete-inline" aria-label="Übung entfernen">×</button>`;
    line.querySelector(".series-remove-exercise").onclick=()=>removeWorkoutExerciseObject(e);
-   names.appendChild(line);
+   names.appendChild(line);makeExerciseNameLink(line.querySelector("strong"),e.name);
 
    const rawPrev=previousWorkout?.exercises?.find(x=>sameExercise(x,e));const prev=rawPrev?{...rawPrev,_workout:previousWorkout}:null;const recHtml=liveRecommendationBlock(e,prev);if(recHtml){const r=document.createElement("div");r.innerHTML=recHtml;if(r.firstElementChild)recs.appendChild(r.firstElementChild)}
  });
+ if(!wrap.querySelector(".group-note-anchor")){const na=document.createElement("div");na.className="group-note-anchor plan-prescription";wrap.insertBefore(na,wrap.querySelector(".unified-set-list"))}
+ attachWorkoutNoteEditor(wrap,members[0]);
 
  const list=wrap.querySelector(".unified-set-list");
  for(let si=0;si<rounds;si++){
@@ -2455,7 +3014,7 @@ function renderGroupedWorkoutBlock(group,members){
    })
  }
  const add=document.createElement("button");add.className="series-add-round";add.textContent="+ Runde";
- add.onclick=()=>{if(members.some(e=>(e.sets?.length||0)>=6))return toast("Maximal 6 Sätze");ensureDerivedPlanForWorkout();members.forEach(e=>{e.sets.push(e.measureMode==="time"?{minutes:"",prevMinutes:"",prevEffort:"",completed:false,effort:"",isNewSet:true}:{weight:"",reps:"",prevWeight:"",prevReps:"",prevEffort:"",completed:false,effort:"",isNewSet:true})});syncDerivedPlanFromWorkout();saveAll();renderLive()};
+ add.onclick=()=>{ensureDerivedPlanForWorkout();members.forEach(e=>{e.sets.push(e.measureMode==="time"?{minutes:"",prevMinutes:"",prevEffort:"",completed:false,effort:"",isNewSet:true}:{weight:"",reps:"",prevWeight:"",prevReps:"",prevEffort:"",completed:false,effort:"",isNewSet:true})});syncDerivedPlanFromWorkout();saveAll();renderLive()};
  list.appendChild(add);
  return wrap
 }
@@ -2494,11 +3053,7 @@ function removeLiveExercise(index){
  }
  activeWorkoutData.exercises.splice(index,1);saveAll();renderLive();toast("Übung entfernt")
 }
-function moveLiveExercise(index,dir){
- const next=index+dir;if(next<0||next>=activeWorkoutData.exercises.length)return;
- const [e]=activeWorkoutData.exercises.splice(index,1);activeWorkoutData.exercises.splice(next,0,e);saveAll();renderLive()
-}
-function attachSwipe(shell,index){
+function moveLiveExercise(index,dir){if(!activeWorkoutData?.exercises)return;if(moveExerciseUnit(activeWorkoutData.exercises,index,dir)){ensureDerivedPlanForWorkout();syncDerivedPlanFromWorkout();saveAll();renderLive()}} function attachSwipe(shell,index){
  const front=shell.querySelector(".swipe-front");let sx=0,dx=0;
  shell.addEventListener("touchstart",ev=>{if(liveReorderMode)return;sx=ev.touches[0].clientX;dx=0},{passive:true});
  shell.addEventListener("touchmove",ev=>{if(liveReorderMode)return;dx=ev.touches[0].clientX-sx;if(dx<-8){front.style.transition="none";front.style.transform=`translateX(${Math.max(-92,dx)}px)`}},{passive:true});
@@ -2509,11 +3064,12 @@ function wrapLiveNode(node,index){
  const del=document.createElement("button");del.className="swipe-delete-bg";del.textContent="Löschen";
  const front=document.createElement("div");front.className="swipe-front";
  node.parentNode.insertBefore(shell,node);front.appendChild(node);shell.appendChild(del);shell.appendChild(front);
- const tb=document.createElement("div");tb.className="reorder-toolbar";tb.innerHTML='<button class="up">↑ hoch</button><button class="down">↓ runter</button>';front.appendChild(tb);
- tb.querySelector(".up").onclick=()=>moveLiveExercise(index,-1);tb.querySelector(".down").onclick=()=>moveLiveExercise(index,1);
+ const tb=document.createElement("div");tb.className="reorder-toolbar";tb.innerHTML='<button class="up" aria-label="Nach oben">↑</button><button class="down" aria-label="Nach unten">↓</button>';front.appendChild(tb);
+ const up=tb.querySelector(".up"),down=tb.querySelector(".down");
+ up.disabled=!canMoveExerciseUnit(activeWorkoutData.exercises,index,-1);down.disabled=!canMoveExerciseUnit(activeWorkoutData.exercises,index,1);
+ up.onclick=()=>moveLiveExercise(index,-1);down.onclick=()=>moveLiveExercise(index,1);
  del.onclick=()=>removeLiveExercise(index);attachSwipe(shell,index)
-}
-function makeLiveEditable(){
+} function makeLiveEditable(){
  const list=$("liveExerciseList");let searchFrom=0;
  [...list.children].filter(n=>n.matches(".live-exercise,.technique-connected-group")).forEach(node=>{
    if(node.classList.contains("technique-connected-group")&&node.dataset.techniqueGroup){
@@ -2528,7 +3084,8 @@ function makeLiveEditable(){
      if(index<0)index=searchFrom;searchFrom=index+1;wrapLiveNode(node,index)
    }
  });
- list.classList.toggle("reorder-mode",liveReorderMode)
+ list.classList.toggle("reorder-mode",liveReorderMode);
+ if($("liveReorderBtn"))$("liveReorderBtn").classList.toggle("active",liveReorderMode)
 }
 
 function autoBackoffWeights(e,changedIndex=0){
@@ -2573,6 +3130,12 @@ function renderLiveGroupedFirst(){
  return used
 }
 
+function updateRestPauseTotal(sc,st,t){
+ if(t!=="restpause"||!sc)return;
+ const total=(st?.segments||[]).reduce((sum,x)=>sum+(parseInt(String(x.reps||"0"),10)||0),0);
+ const el=sc.querySelector(".restpause-total");
+ if(el)el.innerHTML=`<span>Gesamt</span><strong>${total} Wdh.</strong>`
+}
 function renderAdvancedSegments(c,e,ei){
  const t=e.setTechnique||"normal";
  if(!["dropset","restpause","cluster"].includes(t))return false;
@@ -2582,27 +3145,42 @@ function renderAdvancedSegments(c,e,ei){
    <div class="unified-method-label">${esc(techniqueLabel(t))}</div>
    <div class="unified-method-help">${esc(techniqueDescriptions[t]||"")}</div>
    <div class="unified-exercise-names">
-     <div class="unified-exercise-name-line"><div><strong>${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</strong><div class="plan-prescription">${esc(planPrescriptionText(e))}</div></div></div>
+     <div class="unified-exercise-name-line"><div><strong>${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</strong><div class="plan-prescription">${esc(planPrescriptionText(e))}</div><div class="live-rest-prescription">${esc(workoutRestText(e))}</div></div></div>
    </div>
    ${liveRecommendationBlock(e,prev)}
    <div class="unified-set-header">
      <span>Satz</span><span></span><span>Gewicht</span><span>Wdh.</span><span></span>
    </div>
-   <div class="advanced-sets"></div>`;
- const box=c.querySelector(".advanced-sets");
+   <div class="advanced-sets"></div><div class="live-exercise-footer"><button class="live-small-button advanced-addset">+ Satz</button></div>`;
+ attachWorkoutNoteEditor(c,e);const box=c.querySelector(".advanced-sets");makeExerciseNameLink(c.querySelector(".unified-exercise-name-line strong"),e.name);
 
  e.sets.forEach((st,si)=>{
    const sc=document.createElement("div");sc.className="advanced-set-card";
-   sc.innerHTML=`<div class="advanced-set-head"><div class="advanced-set-title">Satz ${si+1}</div></div><div class="segment-list"></div><button class="advanced-complete ${ratingClass(st)}">${st.completed?ratingSymbol(st)+" Satz abgeschlossen":"Satz abschließen"}</button>`;
+   sc.innerHTML=`<div class="advanced-set-head"><div class="advanced-set-title">Satz ${si+1}</div><button class="advanced-remove-set" aria-label="Satz entfernen">−</button></div><div class="segment-list"></div>${t==="restpause"?'<div class="restpause-total"></div>':""}<button class="advanced-complete ${ratingClass(st)}">${st.completed?ratingSymbol(st)+" Satz abgeschlossen":"Satz abschließen"}</button>`;
+   sc.querySelector(".advanced-remove-set").onclick=()=>removeWorkoutSet(e,si);
    const list=sc.querySelector(".segment-list");
-   (st.segments||[]).forEach((seg,sj)=>{
+   (st.segments||[]).forEach((sg,sj)=>{
      const row=document.createElement("div");row.className="unified-set-row advanced-segment-row";
      const cue=t==="dropset"&&sj>0?`−${m.dropPercent||20}%`:t==="cluster"?`${m.clusterReps||2} Wdh.`:sj>0?`nach ${m.miniRest||20}s`:"";
-      const repPlaceholder=seg.prevReps||seg.targetReps||"Wdh.";
-      const repReadonly=t==="cluster"?" readonly aria-readonly=\"true\"":"";
-     row.innerHTML=`<div class="unified-set-code">${st.isNewSet?`<span class="new-set-dot">Neu</span>`:previousRatingDot(st)}${si+1}${sj?String.fromCharCode(97+sj):""}</div><div class="unified-small-exercise">${esc(seg.label)}${cue?` · ${esc(cue)}`:""}</div><input class="unified-input kg ${st.completed?"current-value":""}" inputmode="decimal" value="${esc(seg.weight||"")}" placeholder="${esc(seg.prevWeight||"kg")}"><input class="unified-input reps ${st.completed?"current-value":""}" inputmode="numeric" value="${esc(seg.reps||"")}" placeholder="${esc(repPlaceholder)}"${repReadonly}><div></div>`;
-     row.querySelector(".kg").oninput=ev=>{seg.weight=ev.target.value;if(t==="dropset"){autoDropsetWeights(e,st,sj);list.querySelectorAll(".advanced-segment-row .kg").forEach((input,j)=>{if(j!==sj&&st.segments[j])input.value=st.segments[j].weight||""})}saveAll()};
-     if(t!=="cluster")row.querySelector(".reps").oninput=ev=>{seg.reps=ev.target.value;saveAll()};
+     const repPlaceholder=sg.prevReps||sg.targetReps||"Wdh.";
+     const repReadonly=t==="cluster"?" readonly aria-readonly=\"true\"":"";
+     const weightReadonly=t==="restpause"&&sj>0;
+     const sharedWeight=t==="restpause"?(st.segments?.[0]?.weight||""):(sg.weight||"");
+     row.innerHTML=`<div class="unified-set-code">${st.isNewSet?`<span class="new-set-dot">Neu</span>`:previousRatingDot(st)}${si+1}${sj?String.fromCharCode(97+sj):""}</div><div class="unified-small-exercise">${esc(sg.label)}${cue?` · ${esc(cue)}`:""}</div><input class="unified-input kg ${st.completed?"current-value":""} ${weightReadonly?"shared-weight":""}" inputmode="decimal" value="${esc(sharedWeight)}" placeholder="${esc(sg.prevWeight||"kg")}"${weightReadonly?' readonly aria-readonly="true"':''}><input class="unified-input reps ${st.completed?"current-value":""}" inputmode="numeric" value="${esc(sg.reps||"")}" placeholder="${esc(repPlaceholder)}"${repReadonly}><div></div>`;
+     const kg=row.querySelector(".kg");
+     if(!weightReadonly)kg.oninput=ev=>{
+       sg.weight=ev.target.value;
+       if(t==="restpause"){
+         (st.segments||[]).forEach(x=>x.weight=ev.target.value);
+         [...list.querySelectorAll(".advanced-segment-row .kg")].forEach(input=>input.value=ev.target.value)
+       }
+       if(t==="dropset"){
+         autoDropsetWeights(e,st,sj);
+         list.querySelectorAll(".advanced-segment-row .kg").forEach((input,j)=>{if(j!==sj&&st.segments[j])input.value=st.segments[j].weight||""})
+       }
+       saveAll()
+     };
+     if(t!=="cluster")row.querySelector(".reps").oninput=ev=>{sg.reps=ev.target.value;updateRestPauseTotal(sc,st,t);saveAll()};
      list.appendChild(row);
      if(sj<(st.segments||[]).length-1&&(t==="restpause"||t==="cluster")){
        const pr=document.createElement("div");pr.className="segment-rest";
@@ -2611,12 +3189,25 @@ function renderAdvancedSegments(c,e,ei){
        pr.querySelector("button").onclick=()=>startRest(sec);list.appendChild(pr)
      }
    });
+   updateRestPauseTotal(sc,st,t);
    sc.querySelector(".advanced-complete").onclick=()=>openRating(e,st);
    box.appendChild(sc)
  });
+ const add=c.querySelector(".advanced-addset");
+ if(add)add.onclick=()=>{
+   ensureDerivedPlanForWorkout();
+   const template=e.sets?.[e.sets.length-1]||e.sets?.[0];
+   const segments=(template?.segments||[]).map((sg,sj)=>({
+     label:sg.label||e.name,weight:"",
+     reps:t==="cluster"?String(e.methodData?.clusterReps||sg.targetReps||2):"",
+     targetReps:sg.targetReps||(t==="cluster"?String(e.methodData?.clusterReps||2):(sj===0?(e.targetRepRange||e.reps||""):"")),
+     prevWeight:"",prevReps:""
+   }));
+   e.sets.push({weight:"",reps:"",prevWeight:"",prevReps:"",prevEffort:"",completed:false,effort:"",isNewSet:true,segments});
+   syncDerivedPlanFromWorkout();saveAll();renderLive()
+ };
  return true
 }
-
 
 function normalizeSingleWorkoutHierarchy(c,e){
  if(!c||!e||c.dataset.techniqueGroup)return;
@@ -2639,7 +3230,7 @@ function normalizeSingleWorkoutHierarchy(c,e){
 
  const name=document.createElement("div");
  name.className="unified-exercise-names";
- name.innerHTML=`<div class="unified-exercise-name-line"><strong>${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</strong></div>`;
+ name.innerHTML=`<div class="unified-exercise-name-line"><strong>${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</strong></div>`;makeExerciseNameLink(name.querySelector("strong"),e.name);
 
  const recHtml=liveRecommendationBlock(e,prev);
  if(recHtml){const rec=document.createElement("div");rec.innerHTML=recHtml;if(rec.firstElementChild)c.insertBefore(rec.firstElementChild,head)}
@@ -2681,10 +3272,38 @@ function cleanStructuredDeleteControls(c,e){
   xs.slice(1).forEach(x=>x.remove());
 }
 
+
+function attachWorkoutNoteEditor(card,e){
+ if(!card||!e||card.querySelector(".workout-note-control"))return;
+ const anchor=card.querySelector(".live-rest-prescription")||card.querySelector(".plan-prescription");
+ if(!anchor)return;
+ const wrap=document.createElement("div");wrap.className="workout-note-control";
+ const render=()=>{
+   wrap.innerHTML="";
+   const note=(e.note||"").trim();
+   if(note){
+     const text=document.createElement("button");text.type="button";text.className="workout-note-text";text.textContent=`✎ ${note}`;text.title="Notiz bearbeiten";
+     text.onclick=()=>edit();
+     wrap.appendChild(text)
+   }else{
+     const add=document.createElement("button");add.type="button";add.className="workout-note-add";add.textContent="✎ Notiz";
+     add.onclick=()=>edit();wrap.appendChild(add)
+   }
+ };
+ const edit=()=>{
+   wrap.innerHTML="";
+   const input=document.createElement("input");input.className="workout-note-editor";input.type="text";input.maxLength=120;input.placeholder="Notiz …";input.value=e.note||"";
+   // >=16px prevents iOS Safari/PWA focus zoom.
+   const commit=()=>{e.note=input.value.trim();ensureDerivedPlanForWorkout();syncDerivedPlanFromWorkout();saveAll();render()};
+   input.onkeydown=ev=>{if(ev.key==="Enter"){ev.preventDefault();input.blur()}};
+   input.onblur=commit;wrap.appendChild(input);input.focus();const n=input.value.length;input.setSelectionRange(n,n)
+ };
+ anchor.insertAdjacentElement("afterend",wrap);render()
+}
 function enhanceSingleWorkoutCard(c,e){
  if(!c||!e)return;
  ensureUnifiedExerciseDelete(c,e);cleanStructuredDeleteControls(c,e);cleanNormalDeleteControls(c,e);
- normalizeSingleWorkoutHierarchy(c,e);
+ normalizeSingleWorkoutHierarchy(c,e);attachWorkoutNoteEditor(c,e);
  const head=c.querySelector(".live-exercise-head");
  if(head&&!head.querySelector(".single-remove-exercise")){
    const b=document.createElement("button");b.className="single-remove-exercise";b.textContent="×";b.setAttribute("aria-label","Übung entfernen");
@@ -2809,7 +3428,7 @@ function planPrescriptionText(e){
  }
  if((e.setTechnique||"normal")==="pyramid"){const seq=e.methodData?.reps||[];return seq.length?`${seq.join(" · ")} Wdh.`:""}
  if((e.setTechnique||"normal")==="dropset"){const m=e.methodData||{};return `${e.reps||e.targetRepRange||"–"} Wdh. im Basissatz · ${m.dropCount||2} Drops · −${m.dropPercent||20}%`}
-  if((e.setTechnique||"normal")==="restpause"){const m=e.methodData||{};return `${e.reps||e.targetRepRange||"–"} Wdh. im Hauptsatz · ${m.blocks||2} RP-Blöcke · ${m.miniRest||20}s`}
+  if((e.setTechnique||"normal")==="restpause"){const m=e.methodData||{};return `${e.reps||e.targetRepRange||"20-30"} Wdh. gesamt · ${m.blocks||2} RP-Blöcke · ${m.miniRest||20}s`}
   if((e.setTechnique||"normal")==="cluster"){const m=e.methodData||{};return `${m.blocks||3}×${m.clusterReps||2} Wdh. · ${m.intraRest||20}s`}
  if((e.setTechnique||"normal")==="backoff"){const m=e.methodData||{};return `${m.topReps||5} / ${m.backoffReps||8} Wdh. · −${m.reduction||m.reductionPercent||m.percent||15}%`}
  const reps=e.targetRepRange||e.reps||"";
@@ -2872,22 +3491,83 @@ function discardActiveWorkout(){
  const modal=$("finishWorkoutModal")||$("finishModal");if(modal)modal.classList.add("hidden");
  show("workoutHome");renderWorkoutHome();toast("Training verworfen")
 }
+function nextPyramidRep(seq){
+ const a=(seq||[]).map(Number).filter(Number.isFinite);
+ if(!a.length)return 12;if(a.length===1)return a[0];
+ const min=Math.min(...a),peak=a.lastIndexOf(min),right=a.slice(peak);
+ if(right.length>=2){const d=right[right.length-1]-right[right.length-2];if(d!==0)return Math.max(1,right[right.length-1]+d)}
+ const left=a.slice(0,peak+1);if(left.length>=2){const d=Math.abs(left[left.length-1]-left[left.length-2]);return Math.max(1,a[a.length-1]+(d||2))}
+ const diffs=[];for(let i=1;i<a.length;i++){const d=Math.abs(a[i]-a[i-1]);if(d)diffs.push(d)}
+ return Math.max(1,a[a.length-1]+(diffs[diffs.length-1]||2))
+}
+
+function liveExerciseNodes(){
+ return [...document.querySelectorAll("#liveExerciseList > .live-exercise-card,#liveExerciseList > .workout-method-frame,#liveExerciseList > .technique-connected-group")].filter(el=>el.offsetParent!==null)
+}
+function scrollLiveExerciseToIndex(index,behavior="smooth"){
+ requestAnimationFrame(()=>{
+   const nodes=liveExerciseNodes();
+   const node=nodes[index];
+   if(!node)return;
+   const header=document.querySelector("#activeWorkout .workout-header");
+   const headerH=header?header.getBoundingClientRect().height:0;
+   const y=window.scrollY+node.getBoundingClientRect().top-headerH-6;
+   window.scrollTo({top:Math.max(0,y),behavior})
+ })
+}
+function activeWorkoutExerciseVisualIndex(e){
+ const exercises=activeWorkoutData?.exercises||[];
+ let visualIndex=0;
+ const seenGroups=new Set();
+ for(const x of exercises){
+   if(x.techniqueGroup){
+     if(seenGroups.has(x.techniqueGroup))continue;
+     seenGroups.add(x.techniqueGroup);
+   }
+   if(x===e)return visualIndex;
+   visualIndex++
+ }
+ return -1
+}
+function exerciseFullyCompleted(e){
+ if(!e)return false;
+ if(isCardio(e))return !!e.completed||!!e.cardio?.completed;
+ const sets=e.sets||[];
+ return sets.length>0&&sets.every(s=>!!s.completed)
+}
+function maybeScrollToNextExerciseAfterSet(e,st){
+ if(!e||!st||!st.completed||!exerciseFullyCompleted(e))return;
+ const exercises=activeWorkoutData?.exercises||[];
+ let next=null;
+ if(e.techniqueGroup){
+   const members=exercises.filter(x=>x.techniqueGroup===e.techniqueGroup);
+   if(!members.every(ex=>exerciseFullyCompleted(ex)))return;
+   const lastMemberIndex=Math.max(...members.map(ex=>exercises.indexOf(ex)));
+   next=exercises.slice(lastMemberIndex+1).find(ex=>!ex.skipped)||null;
+ }else{
+   const idx=exercises.indexOf(e);
+   next=exercises.slice(idx+1).find(ex=>!ex.skipped)||null;
+ }
+ if(!next)return;
+ const idx=activeWorkoutExerciseVisualIndex(next);
+ if(idx>=0)setTimeout(()=>scrollLiveExerciseToIndex(idx,"smooth"),120)
+}
 function renderLive(){$("liveExerciseList").innerHTML="";const groupedRendered=renderLiveGroupedFirst();activeWorkoutData.exercises.forEach((e,ei)=>{if(e.techniqueGroup&&groupedRendered.has(e.techniqueGroup))return;const c=document.createElement("section");c.className=`live-exercise workout-method-frame ${e.setTechnique||"normal"}`;c.dataset.techniqueGroup=e.techniqueGroup||"";c.dataset.technique=e.setTechnique||"normal";const cardio=e.type==="cardio",timeMode=e.measureMode==="time";const prev=previousExerciseFor(e);
-if(cardio){const d=e.cardio||{},st=e.sets[0]||(e.sets[0]={completed:false,effort:""}),prevCardio=previousExerciseFor(e),timerId=`cardioTimer-${ei}`,seconds=Math.max(1,Math.round((parseFloat(String(d.duration).replace(",","."))||5)*60));const running=!!st.timerRunning,done=!!st.completed;c.innerHTML=`<div class="live-exercise-head"><div><div class="live-exercise-title">${esc(e.name)}</div><div class="plan-prescription">${esc(planPrescriptionText(e))}</div><div class="live-rest-prescription">${esc(workoutRestText(e))}</div><div class="live-exercise-sub">Cardio · ${d.duration?esc(d.duration)+" Min.":"5 Min."} · ${esc(d.level||"Moderat")}${d.distance?` · ${esc(d.distance)} ${esc(d.distanceUnit||"km")}`:""}</div></div></div>${compactCardioRecommendation(e,prevCardio)}<div class="cardio-grid"><div><label class="config-label">Dauer (Min.)</label><input class="set-input cardio-duration" inputmode="decimal" value="${esc(d.duration||5)}" placeholder="Min."></div><div><label class="config-label">Distanz</label><input class="set-input cardio-distance" inputmode="decimal" value="${esc(d.distance)}" placeholder="km"></div><div><label class="config-label">Watt</label><input class="set-input cardio-watts" inputmode="decimal" value="${esc(d.watts)}" placeholder="W"></div><div><label class="config-label">Intensität</label><select class="set-input cardio-level"><option ${d.level==="Locker"?"selected":""}>Locker</option><option ${!d.level||d.level==="Moderat"?"selected":""}>Moderat</option><option ${d.level==="Hart"?"selected":""}>Hart</option><option ${d.level==="Sehr hart"?"selected":""}>Sehr hart</option></select></div></div><div class="timer-row"><button class="timer-start ${running?"running":done?"done":""}">${running?"● Läuft":done?"✓ Beendet":"▶ Start"}</button><span id="${timerId}" class="timer-display">${running&&st.timerEnd?fmtClock(Math.max(0,Math.ceil((st.timerEnd-Date.now())/1000))):done?"00:00":fmtClock(seconds)}</span></div><button class="complete-cardio ${ratingClass(st)}">${done?`${ratingSymbol(st)} Cardio abgeschlossen`:"Cardioeinheit abschließen"}</button>`;c.querySelector(".cardio-duration").oninput=ev=>{e.cardio.duration=ev.target.value;saveAll()};c.querySelector(".cardio-distance").oninput=ev=>{e.cardio.distance=ev.target.value;saveAll()};c.querySelector(".cardio-watts").oninput=ev=>{e.cardio.watts=ev.target.value;saveAll()};c.querySelector(".cardio-level").onchange=ev=>{e.cardio.level=ev.target.value;saveAll()};c.querySelector(".timer-start").onclick=()=>{if(st.completed)return openRating(e,st);const mins=parseFloat(String(c.querySelector(".cardio-duration").value).replace(",","."))||5;startExerciseTimer(e,st,mins*60,timerId,()=>{if((e.rest??0)>0)startRest(e.rest);openRating(e,st,true);renderLive()})};c.querySelector(".complete-cardio").onclick=()=>{if(st.timerRunning)stopExerciseTimer(st,timerId,true);const already=!!st.completed;if(!already&&(e.rest??0)>0)startRest(e.rest);openRating(e,st,!already&&(e.rest??0)>0)};enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return}
+if(cardio){const d=e.cardio||{},st=e.sets[0]||(e.sets[0]={completed:false,effort:""}),prevCardio=previousExerciseFor(e),timerId=`cardioTimer-${ei}`,seconds=Math.max(1,Math.round((parseFloat(String(d.duration).replace(",","."))||5)*60));const running=!!st.timerRunning,done=!!st.completed;c.innerHTML=`<div class="live-exercise-head"><div><div class="live-exercise-title">${esc(e.name)}</div><div class="plan-prescription">${esc(planPrescriptionText(e))}</div><div class="live-rest-prescription">${esc(workoutRestText(e))}</div><div class="live-exercise-sub">Cardio · ${d.duration?esc(d.duration)+" Min.":"5 Min."} · ${esc(d.level||"Moderat")}${d.distance?` · ${esc(d.distance)} ${esc(d.distanceUnit||"km")}`:""}</div></div></div>${compactCardioRecommendation(e,prevCardio)}<div class="cardio-grid"><div><label class="config-label">Dauer (Min.)</label><input class="set-input cardio-duration" inputmode="decimal" value="${esc(d.duration||5)}" placeholder="Min."></div><div><label class="config-label">Distanz</label><input class="set-input cardio-distance" inputmode="decimal" value="${esc(d.distance)}" placeholder="km"></div><div><label class="config-label">Watt</label><input class="set-input cardio-watts" inputmode="decimal" value="${esc(d.watts)}" placeholder="W"></div><div><label class="config-label">Intensität</label><select class="set-input cardio-level"><option ${d.level==="Locker"?"selected":""}>Locker</option><option ${!d.level||d.level==="Moderat"?"selected":""}>Moderat</option><option ${d.level==="Hart"?"selected":""}>Hart</option><option ${d.level==="Sehr hart"?"selected":""}>Sehr hart</option></select></div></div><div class="timer-row"><button class="timer-start ${running?"running":done?"done":""}">${running?"● Läuft":done?"✓ Beendet":"▶ Start"}</button><span id="${timerId}" class="timer-display">${running&&st.timerEnd?fmtClock(Math.max(0,Math.ceil((st.timerEnd-Date.now())/1000))):done?"00:00":fmtClock(seconds)}</span></div><button class="complete-cardio ${ratingClass(st)}">${done?`${ratingSymbol(st)} Cardio abgeschlossen`:"Cardioeinheit abschließen"}</button>`;c.querySelector(".cardio-duration").oninput=ev=>{e.cardio.duration=ev.target.value;saveAll()};c.querySelector(".cardio-distance").oninput=ev=>{e.cardio.distance=ev.target.value;saveAll()};c.querySelector(".cardio-watts").oninput=ev=>{e.cardio.watts=ev.target.value;saveAll()};c.querySelector(".cardio-level").onchange=ev=>{e.cardio.level=ev.target.value;saveAll()};c.querySelector(".timer-start").onclick=()=>{if(st.completed)return openRating(e,st);const mins=parseFloat(String(c.querySelector(".cardio-duration").value).replace(",","."))||5;startExerciseTimer(e,st,mins*60,timerId,()=>{if((e.rest??0)>0)startRest(e.rest);openRating(e,st,true);renderLive()})};c.querySelector(".complete-cardio").onclick=()=>{if(st.timerRunning)stopExerciseTimer(st,timerId,true);const already=!!st.completed;if(!already&&(e.rest??0)>0)startRest(e.rest);openRating(e,st,!already&&(e.rest??0)>0)};enhanceSingleWorkoutCard(c,e);linkExerciseNamesInCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return}
 if(timeMode){
  c.innerHTML=`<div class="single-method-label">${esc(techniqueLabel(e.setTechnique||"normal"))}</div><div class="single-method-help">${esc(techniqueDescriptions[e.setTechnique||"normal"]||"")}</div><div class="live-exercise-head"><div><div class="live-exercise-title">${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</div><div class="plan-prescription">${esc(`${e.timeMinutes||5} Min. pro Satz`)}</div><div class="live-rest-prescription">${esc(workoutRestText(e))}</div></div></div><div class="set-table-head time-set-head"><span>Satz</span><span>Zeit</span><span>Widerstand / Stufe</span><span>✓</span></div><div class="live-sets"></div><div class="live-exercise-footer"><button class="live-small-button addset">+ Satz</button></div>`;
 
  const box=c.querySelector(".live-sets");
  e.sets.forEach((st,si)=>{const r=document.createElement("div");r.className=`live-set time-set ${st.completed?"completed":""}`;const timerId=`timeTimer-${ei}-${si}`,mins=parseFloat(String(st.minutes??e.timeMinutes??5).replace(",","."))||5,running=!!st.timerRunning,done=!!st.completed;r.innerHTML=`<div class="set-number-live">${st.isNewSet?`<span class="new-set-dot">Neu</span>`:previousRatingDot(st)}${si+1}</div><div class="timer-row"><button class="timer-start ${running?"running":done?"done":""}">${running?"●":done?"✓":"▶"}</button><span id="${timerId}" class="timer-display">${running&&st.timerEnd?fmtClock(Math.max(0,Math.ceil((st.timerEnd-Date.now())/1000))):done?"00:00":fmtClock(Math.round(mins*60))}</span></div><input class="set-input time-inline-level" value="${esc(st.level??e.timeLevel??"")}" placeholder="${e.timeWatts?esc(e.timeWatts+" W"):"Stufe"}"><button class="complete-set ${ratingClass(st)}">${ratingSymbol(st)}</button>`;r.querySelector(".time-inline-level").oninput=ev=>{st.level=ev.target.value;saveAll()};r.querySelector(".timer-start").onclick=()=>{if(st.completed)return openRating(e,st);const mm=parseFloat(String(st.minutes??e.timeMinutes??5).replace(",","."))||5;startExerciseTimer(e,st,mm*60,timerId,()=>{openRating(e,st,false);renderLive()})};r.querySelector(".complete-set").onclick=()=>{if(st.timerRunning)stopExerciseTimer(st,timerId,true);openRating(e,st,false)};box.appendChild(r)});
- c.querySelector(".addset").onclick=()=>{if(e.sets.length>=6)return toast("Maximal 6 Sätze");ensureDerivedPlanForWorkout();e.sets.push({minutes:"",prevMinutes:"",prevEffort:"",completed:false,effort:"",isNewSet:true});syncDerivedPlanFromWorkout();saveAll();renderLive()};enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return
-} if(renderAdvancedSegments(c,e,ei)){enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return}
+ c.querySelector(".addset").onclick=()=>{ensureDerivedPlanForWorkout();e.sets.push({minutes:"",prevMinutes:"",prevEffort:"",completed:false,effort:"",isNewSet:true});syncDerivedPlanFromWorkout();saveAll();renderLive()};enhanceSingleWorkoutCard(c,e);linkExerciseNamesInCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return
+} if(renderAdvancedSegments(c,e,ei)){enhanceSingleWorkoutCard(c,e);linkExerciseNamesInCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c);return}
 c.innerHTML=`<div class="live-exercise-head"><div><div class="live-exercise-title">${esc(e.name)}${e.variant?` · ${esc(e.variant)}`:""}</div><div class="single-method-label">${esc(techniqueLabel(e.setTechnique||"normal"))}</div><div class="single-method-help">${esc(techniqueDescriptions[e.setTechnique||"normal"]||"")}</div><div class="plan-prescription">${esc(planPrescriptionText(e))}</div><div class="live-rest-prescription">${esc(workoutRestText(e))}</div><div class="live-exercise-sub">${e.note?esc(e.note):""}</div></div></div><div class="set-table-head"><span>Satz</span><span>kg</span><span>Wdh.</span><span>✓</span></div><div class="live-sets"></div><div class="live-exercise-footer"><button class="live-small-button addset">+ Satz</button></div>`;const box=c.querySelector(".live-sets");e.sets.forEach((st,si)=>{const r=document.createElement("div");r.className=`live-set ${st.completed?"completed":""}`;r.innerHTML=`<div class="set-number-live">${st.isNewSet?`<span class="new-set-dot">Neu</span>`:previousRatingDot(st)}${si+1}${st.loadCue?`<small>${esc(st.loadCue)}</small>`:""}</div><input class="set-input kg" inputmode="decimal" value="${esc(st.weight)}" placeholder="${esc(st.isNewSet?"kg":(st.prevWeight||"kg"))}"><input class="set-input reps" inputmode="numeric" value="${esc(st.reps)}" placeholder="${esc(st.isNewSet?(st.targetReps||e.targetRepRange||e.reps||"Wdh."):(st.prevReps||st.targetReps||e.targetRepRange||e.reps||"Wdh."))}"><button class="complete-set ${ratingClass(st)}">${ratingSymbol(st)}</button>`;r.querySelector(".kg").oninput=ev=>{
  st.weight=ev.target.value;
  if(e.setTechnique==="pyramid")autoPyramidWeights(e,si);
  if(e.setTechnique==="backoff")autoBackoffWeights(e,si);
  saveAll();
  if(e.setTechnique==="pyramid"||e.setTechnique==="backoff"){c.querySelectorAll(".live-set .kg").forEach((input,j)=>{if(j!==si&&e.sets[j])input.value=e.sets[j].weight||""})}
-};r.querySelector(".reps").oninput=ev=>{st.reps=ev.target.value;saveAll()};r.querySelector(".complete-set").onclick=()=>openRating(e,st);box.appendChild(r)});if(["pyramid","backoff"].includes(e.setTechnique||"normal"))c.querySelector(".addset").classList.add("hidden");else c.querySelector(".addset").onclick=()=>{if(e.sets.length>=6)return toast("Maximal 6 Sätze");ensureDerivedPlanForWorkout();e.sets.push({weight:"",reps:"",prevWeight:"",prevReps:"",prevEffort:"",completed:false,effort:"",isNewSet:true});syncDerivedPlanFromWorkout();saveAll();renderLive()};enhanceSingleWorkoutCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c)});connectTechniqueGroups("liveExerciseList");makeLiveEditable();updateProgress()}
+};r.querySelector(".reps").oninput=ev=>{st.reps=ev.target.value;saveAll()};r.querySelector(".complete-set").onclick=()=>openRating(e,st);box.appendChild(r)});c.querySelector(".addset").onclick=()=>{ensureDerivedPlanForWorkout();const t=e.setTechnique||"normal";let target="";if(t==="pyramid"){const seq=(e.methodData?.reps||[]).map(Number).filter(Number.isFinite);target=String(nextPyramidRep(seq))}else if(t==="backoff")target=String(e.methodData?.backoffReps||e.targetRepRange||e.reps||"");e.sets.push({weight:"",reps:"",targetReps:target,prevWeight:"",prevReps:"",prevEffort:"",completed:false,effort:"",isNewSet:true});if(t==="pyramid"&&Array.isArray(e.methodData?.reps))e.methodData.reps.push(Number(target)||target||"");syncDerivedPlanFromWorkout();saveAll();renderLive()};enhanceSingleWorkoutCard(c,e);linkExerciseNamesInCard(c,e);cleanStructuredDeleteControls(c,e);$("liveExerciseList").appendChild(c)});connectTechniqueGroups("liveExerciseList");makeLiveEditable();updateProgress()}
 function totalSets(w){return w.exercises.reduce((a,e)=>a+(e.skipped?0:e.sets.length),0)}
 function completedSets(w){return w.exercises.reduce((a,e)=>a+(e.skipped?0:e.sets.filter(s=>s.completed).length),0)}
 function updateProgress(){const t=totalSets(activeWorkoutData),c=completedSets(activeWorkoutData),p=t?Math.round(c/t*100):0;$("workoutProgressText").textContent=`${c} von ${t} ${t===1?"Satz":"Sätzen"}`;$("progressRing").style.setProperty("--progress",`${p}%`)}
@@ -2956,7 +3636,7 @@ function renderReadonlyNormalExercise(e){
    box.appendChild(row)
  });
  if(!rows.length)box.innerHTML='<div class="muted">Keine abgeschlossenen Sätze</div>';
- return sec
+ linkExerciseNamesInCard(sec,e);return sec
 }
 function renderReadonlyGroupedExercise(group,members){
  const technique=members[0]?.setTechnique||"superset";
@@ -2971,7 +3651,7 @@ function renderReadonlyGroupedExercise(group,members){
  members.forEach((e,mi)=>{
    const line=document.createElement("div");line.className="unified-exercise-name-line";
    line.innerHTML=`<span class="unified-letter">${(letters[mi]||String(mi+1)).toUpperCase()}</span><div class="grouped-exercise-main"><strong>${esc(e.name)}</strong><small class="plan-prescription">${esc(summaryPlanPrescription(e))}</small></div>`;
-   names.appendChild(line)
+   names.appendChild(line);makeExerciseNameLink(line.querySelector("strong"),e.name)
  });
  const rounds=Math.max(...members.map(e=>e.sets?.length||0),0);
  const list=sec.querySelector(".readonly-group-list");
@@ -3001,7 +3681,7 @@ function renderReadonlyCardio(e){
    <div><label class="config-label">Intensität</label><div class="readonly-field">${esc(d.level||"Moderat")}</div></div>
  </div>
  <div class="readonly-cardio-rating ${summaryRatingClass(st.effort)}">${summaryRatingSymbol(st.effort)} ${esc(summaryRatingLabel(st.effort))}</div>`;
- return sec
+ linkExerciseNamesInCard(sec,e);return sec
 }
 function openWorkoutSummary(w){
  if(!w)return;summaryWorkoutRef=w;
@@ -3038,20 +3718,17 @@ function createPlanFromSummary(){
  toast("Planentwurf geöffnet – noch nicht gespeichert")
 }
 function renderHistory(){
- $("historyList").innerHTML="";
- $("historyCount").textContent=workoutHistory.length;
+ $("historyList").innerHTML="";$("historyCount").textContent=workoutHistory.length;
  if(!workoutHistory.length){$("historyList").innerHTML='<div class="history-empty">Noch keine abgeschlossenen Trainings.</div>';return}
  workoutHistory.slice(0,8).forEach(w=>{
-   const plan=plans.find(p=>String(p.id)===String(w.planId));
-   const d=document.createElement("div");
+   const plan=plans.find(p=>String(p.id)===String(w.planId)),d=document.createElement("div");
    d.className="history-card"+(plan?"":" history-missing");
-   d.innerHTML=`<button class="history-open" ><div class="history-top"><div class="history-name">${esc(w.planName)}</div><div class="history-date">${new Date(w.finishedAt).toLocaleDateString("de-DE")}</div></div><div class="history-meta">${completedSets(w)} Sätze · ${fmtDur(w.finishedAt-w.startedAt)}</div><div class="history-plan-state">${plan?(w.planModified?"Plan während des Trainings angepasst":""):"Plan existiert nicht mehr"}</div></button><button class="history-delete-one" aria-label="Verlaufseintrag löschen">×</button>`;
+   d.innerHTML=`<button class="history-open"><div class="history-top"><div class="history-name">${esc(w.planName)}</div><div class="history-date">${new Date(w.finishedAt).toLocaleDateString("de-DE")}</div></div><div class="history-meta">${completedSets(w)} Sätze · ${fmtDur(w.finishedAt-w.startedAt)}</div><div class="history-plan-state">${plan?(w.planModified?"Plan während des Trainings angepasst":""):"Plan existiert nicht mehr"}</div></button><button class="history-delete-one" aria-label="Verlaufseintrag löschen">×</button>`;
    d.querySelector(".history-open").onclick=()=>openWorkoutSummary(w);
-   d.querySelector(".history-delete-one").onclick=e=>{e.stopPropagation();workoutHistory=workoutHistory.filter(x=>x.id!==w.id);saveAll();renderHistory();toast("Verlaufseintrag gelöscht")};
-   $("historyList").appendChild(d)
+   d.querySelector(".history-delete-one").onclick=ev=>{ev.stopPropagation();deleteHistoryById(w.id)};
+   $("historyList").appendChild(swipeDeleteShell(d,()=>deleteHistoryById(w.id)))
  })
 }
-
 function nextDerivedPlanName(name){
  const raw=String(name||"Trainingsplan").trim()||"Trainingsplan";
  const m=raw.match(/^(.*?)(?:\s+(\d+))?$/),base=(m?.[1]||raw).trim();
@@ -3060,7 +3737,7 @@ function nextDerivedPlanName(name){
 }
 function workoutExerciseToPlanExercise(e){
  if(e.type==="cardio")return {name:e.name,exerciseKey:e.exerciseKey||e.name,type:"cardio",sets:1,reps:"—",rest:0,note:e.note||"",duration:e.cardio?.duration||"5",distance:e.cardio?.distance||"",distanceUnit:e.cardio?.distanceUnit||"km",watts:e.cardio?.watts||"",pace:e.cardio?.pace||"",intensity:e.cardio?.level||"Moderat",level:e.cardio?.level||"Moderat"};
- return {name:e.name,exerciseKey:e.exerciseKey||e.name,type:"strength",variant:e.variant||"",measureMode:e.measureMode||"reps",timeMinutes:e.timeMinutes||"",sets:Array.isArray(e.sets)?Math.max(1,Math.min(6,e.sets.length)):3,reps:e.targetRepRange||e.reps||"8-12",rest:e.rest??90,note:e.note||"",setTechnique:e.setTechnique||"normal",methodData:structuredClone(e.methodData||{}),techniqueGroup:e.techniqueGroup||""}
+ return {name:e.name,exerciseKey:e.exerciseKey||e.name,type:"strength",variant:e.variant||"",measureMode:e.measureMode||"reps",timeMinutes:e.timeMinutes||"",sets:Array.isArray(e.sets)?Math.max(1,Math.min(10,e.sets.length)):3,reps:e.targetRepRange||e.reps||"8-12",rest:e.rest??90,note:e.note||"",setTechnique:e.setTechnique||"normal",methodData:structuredClone(e.methodData||{}),techniqueGroup:e.techniqueGroup||""}
 }
 function activePlanDisplayName(){return activeWorkoutData?.derivedPlanName||activeWorkoutData?.planName||"Training"}
 function syncDerivedPlanFromWorkout(){
@@ -3083,10 +3760,10 @@ function editorPlanChanged(){
  return JSON.stringify(now)!==JSON.stringify(editorPlanBaseline)
 }
 function leavePlanEditor(){
- if(!editorPlanChanged()){show("home");return}
+ if(!editorPlanChanged()){goBackPage("home");return}
  const save=confirm("Änderungen am Trainingsplan speichern?\n\nOK = Speichern\nAbbrechen = Änderungen verwerfen");
  if(save){const p=persistCurrentPlan();if(!p)return}
- currentPlan=null;editorPlanBaseline=null;editorPlanIsDraft=false;show("home");renderPlans()
+ currentPlan=null;editorPlanBaseline=null;editorPlanIsDraft=false;goBackPage("home");if(visibleSection==="home")renderPlans()
 }
 $("createFirstPlan").onclick=newPlan;$("createPlanTop").onclick=newPlan;$("back").onclick=leavePlanEditor;$("saveTop").onclick=savePlan;$("confirmExercise").onclick=()=>{
  const info=exerciseInfo(selectedExercise),cardio=info.tracking==="cardio"||info.category==="Cardio";
@@ -3101,7 +3778,7 @@ $("createFirstPlan").onclick=newPlan;$("createPlanTop").onclick=newPlan;$("back"
  }else{
    const t=$("setTechnique").value||"normal",mode=$("trackingMode").value||"reps",methodData=methodDataFromForm();
    syncStructuredSetCount();
-   let sets=Math.max(1,Math.min(6,parseInt($("sets").value,10)||3)),reps=$("reps").value.trim(),timeMinutes=$("timeMinutes").value.trim();
+   let sets=Math.max(1,Math.min(10,parseInt($("sets").value,10)||3)),reps=$("reps").value.trim(),timeMinutes=$("timeMinutes").value.trim();
    if(t==="pyramid")sets=methodData.reps.length;
    if(t==="backoff")sets=1+methodData.backoffCount;
    if(t==="cluster")reps=`${methodData.blocks}×${methodData.clusterReps}`;
@@ -3113,7 +3790,7 @@ $("createFirstPlan").onclick=newPlan;$("createPlanTop").onclick=newPlan;$("back"
    created={name:selectedExercise,exerciseKey:selectedExercise,type:"strength",variant:$("variantWrap").classList.contains("config-hidden")?"":$("exerciseVariant").value,measureMode:mode,timeMinutes:mode==="time"?timeMinutes:"",timeLevel:mode==="time"?$("timeLevel").value.trim():"",timeWatts:mode==="time"?$("timeWatts").value.trim():"",sets,reps:mode==="reps"?reps:"—",rest:parseInt($("rest").value,10)??90,note:$("note").value.trim(),setTechnique:t,methodData,techniqueGroup:""}; if(groupedTechniques.has(t)){created.techniqueGroup=id()}
  }
 
- const groupedCompanions=(!cardio&&groupedTechniques.has(created?.setTechnique||"normal"))?techniqueDraftMembers.slice(0,groupedRequiredCount(created.setTechnique)-1).map(m=>({...structuredClone(created),name:m.name,exerciseKey:m.name,variant:"",reps:m.reps||created.reps,methodData:created.setTechnique==="preexhaust"?{...(created.methodData||{}),role:"second"}:structuredClone(created.methodData||{})})):[]; if(addingExerciseToLiveWorkout){
+ const groupedCompanions=(!cardio&&groupedTechniques.has(created?.setTechnique||"normal"))?techniqueDraftMembers.slice(0,groupedRequiredCount(created.setTechnique)-1).map(m=>({...structuredClone(created),name:m.name,exerciseKey:m.name,variant:"",measureMode:m.mode||"reps",reps:(m.mode||"reps")==="reps"?(m.reps||"8-12"):"—",timeMinutes:(m.mode||"reps")==="time"?(m.timeMinutes||"1"):"",timeLevel:(m.mode||"reps")==="time"?(m.timeLevel||""):"",timeWatts:(m.mode||"reps")==="time"?(m.timeWatts||""):"",methodData:created.setTechnique==="preexhaust"?{...(created.methodData||{}),role:"second"}:structuredClone(created.methodData||{})})):[]; if(addingExerciseToLiveWorkout){
    ensureDerivedPlanForWorkout();
    const w={
      name:created.name,exerciseKey:created.exerciseKey||created.name,type:created.type||"strength",variant:created.variant||"",measureMode:created.measureMode||"reps",timeMinutes:created.timeMinutes||"",timeLevel:created.timeLevel||"",timeWatts:created.timeWatts||"",reps:created.reps||"",targetRepRange:created.reps||"",rest:created.rest??90,note:created.note||"",setTechnique:created.setTechnique||"normal",methodData:structuredClone(created.methodData||{}),techniqueGroup:created.techniqueGroup||"",skipped:false,
@@ -3147,20 +3824,39 @@ $("saveLibraryEdit").onclick=()=>{const oldDisplay=libraryEditingName,original=l
 $("deleteLibraryFromEdit").onclick=()=>{const name=libraryEditingName;if(!confirm(`„${name}“ wirklich dauerhaft aus der Übungsdatenbank entfernen?`))return;deleteLibraryExercise(name);$("libraryEditModal").classList.add("hidden");$("configModal").classList.add("hidden");$("exerciseModal").classList.remove("hidden")};
 $("closeAction").onclick=$("actionOverlay").onclick=closeActions;
 
-$("actionUp").onclick=()=>{const i=actionIndex;if(i>0)[currentPlan.exercises[i-1],currentPlan.exercises[i]]=[currentPlan.exercises[i],currentPlan.exercises[i-1]];closeActions();renderExercises()};$("actionDown").onclick=()=>{const i=actionIndex;if(i<currentPlan.exercises.length-1)[currentPlan.exercises[i+1],currentPlan.exercises[i]]=[currentPlan.exercises[i],currentPlan.exercises[i+1]];closeActions();renderExercises()};$("actionDelete").onclick=()=>{const i=actionIndex;closeActions();if(confirm(`„${currentPlan.exercises[i].name}“ entfernen?`)){const g=currentPlan.exercises[i].techniqueGroup||"",t=currentPlan.exercises[i].setTechnique||"normal";currentPlan.exercises.splice(i,1);if(g){const remain=currentPlan.exercises.filter(x=>x.techniqueGroup===g),min=groupedRequiredCount(t);if(remain.length<min)remain.forEach(x=>{x.techniqueGroup="";x.setTechnique="normal";x.methodData={}})}renderExercises()}};$("actionEdit").onclick=()=>{
+$("actionUp").onclick=()=>{const i=actionIndex;moveExerciseUnit(currentPlan.exercises,i,-1);closeActions();renderExercises()};$("actionDown").onclick=()=>{const i=actionIndex;moveExerciseUnit(currentPlan.exercises,i,1);closeActions();renderExercises()};$("actionDelete").onclick=()=>{const i=actionIndex;closeActions();if(confirm(`„${currentPlan.exercises[i].name}“ entfernen?`)){const g=currentPlan.exercises[i].techniqueGroup||"",t=currentPlan.exercises[i].setTechnique||"normal";currentPlan.exercises.splice(i,1);if(g){const remain=currentPlan.exercises.filter(x=>x.techniqueGroup===g),min=groupedRequiredCount(t);if(remain.length<min)remain.forEach(x=>{x.techniqueGroup="";x.setTechnique="normal";x.methodData={}})}renderExercises()}};$("actionReplace").onclick=()=>openReplaceExercise(actionIndex);
+$("closeReplaceExercise").onclick=$("replaceExerciseOverlay").onclick=closeReplaceExercise;
+$("replaceExerciseSearch").oninput=ev=>renderReplacementExercises(ev.target.value);
+$("actionEdit").onclick=()=>{
  editingIndex=actionIndex;const e=currentPlan.exercises[editingIndex];closeActions();
  if(isCardio(e)){
    editingCardio=true;selectedExercise=e.name;$("backConfig").classList.remove("config-hidden");$("configTitle").textContent=e.name;$("strengthConfig").classList.add("hide");$("cardioConfig").classList.add("show");$("confirmExercise").textContent="Änderungen speichern";$("cardioDuration").value=e.duration||"5";$("cardioDistance").value=e.distance||"";$("cardioDistanceUnit").value=e.distanceUnit||"km";$("cardioWatts").value=e.watts||"";$("cardioPace").value=e.pace||"";$("cardioLevel").value=e.intensity||e.level||"Moderat";$("cardioNote").value=e.note||"";$("configModal").classList.remove("hidden")
  }else openStrengthConfigForEdit(editingIndex)
 };
 $("closeEdit").onclick=$("editOverlay").onclick=()=>$("editModal").classList.add("hidden");$("saveEdit").onclick=()=>{const e=currentPlan.exercises[editingIndex],mode=$("editTrackingMode").value||"reps";e.sets=parseInt($("editSets").value,10)||3;e.measureMode=mode;e.reps=mode==="reps"?($("editReps").value.trim()||"8-10"):"—";e.timeMinutes=mode==="time"?$("editTimeMinutes").value.trim():"";e.timeLevel=mode==="time"?$("editTimeLevel").value.trim():"";e.timeWatts=mode==="time"?$("editTimeWatts").value.trim():"";e.rest=parseInt($("editRest").value,10);if(!Number.isFinite(e.rest))e.rest=90;e.variant=$("editVariantWrap").classList.contains("config-hidden")?"":$("editVariant").value;e.setTechnique=$("editSetTechnique").value||"normal";e.note=$("editNote").value.trim();$("editModal").classList.add("hidden");renderExercises()};
-$("closePlanTap").onclick=$("planTapOverlay").onclick=closePlanTap;$("closePlanLong").onclick=$("planLongOverlay").onclick=closePlanLong;$("planTapEdit").onclick=()=>{const id=selectedPlanActionId;closePlanTap();openPlan(id)};$("planTapPreview").onclick=()=>{const id=selectedPlanActionId;closePlanTap();openPlanPreview(id)};$("planLongDuplicate").onclick=duplicateSelectedPlan;$("planLongDelete").onclick=deleteSelectedPlan;$("navCatalog").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="catalogHome"){resetTab("catalogHome")}else{renderCatalog();navToTab("catalogHome")}};$("catalogSearch").oninput=renderCatalog;
-$("catalogDetailBack").onclick=()=>{show("catalogHome");renderCatalog()};
-$("navFoodIq").onclick=()=>{clearInterval(workoutClockInterval);navToTab("foodIqHome")};
-document.querySelectorAll(".profile-button").forEach(b=>b.onclick=openProfile);
-$("profileBack").onclick=()=>show("workoutHome");
-document.querySelectorAll(".theme-choice").forEach(b=>b.onclick=()=>applyTheme(b.dataset.themeChoice));
-applyTheme(themeMode);
+$("closePlanTap").onclick=$("planTapOverlay").onclick=closePlanTap;$("closePlanLong").onclick=$("planLongOverlay").onclick=closePlanLong;$("planTapEdit").onclick=()=>{const id=selectedPlanActionId;closePlanTap();openPlan(id)};$("planTapPreview").onclick=()=>{const id=selectedPlanActionId;closePlanTap();openPlanPreview(id)};$("planLongDuplicate").onclick=duplicateSelectedPlan;$("planLongDelete").onclick=deleteSelectedPlan;const PROFILE_APPEARANCE_KEY="rethink_profile_appearance",PROFILE_DEFAULT_REST_KEY="rethink_default_rest";
+function applyLocalAppearance(mode){const light=mode==="light"||(mode==="system"&&window.matchMedia?.("(prefers-color-scheme: light)")?.matches);document.body.classList.toggle("profile-light",!!light)}
+function openProfileSettings(){const m=$("profileSettingsModal");if(!m)return;const a=$("profileAppearance"),r=$("profileDefaultRest");if(a){a.value=localStorage.getItem(PROFILE_APPEARANCE_KEY)||"system"}if(r){r.value=localStorage.getItem(PROFILE_DEFAULT_REST_KEY)||"120"}m.classList.remove("hidden");document.body.classList.add("modal-open")}
+function closeProfileSettings(){$("profileSettingsModal")?.classList.add("hidden");document.body.classList.remove("modal-open")}
+$("profileTopButton").onclick=openProfileSettings;
+$("closeProfileSettings").onclick=$("profileSettingsOverlay").onclick=closeProfileSettings;
+$("profileAppearance").onchange=()=>{localStorage.setItem(PROFILE_APPEARANCE_KEY,$("profileAppearance").value);applyLocalAppearance($("profileAppearance").value)};
+$("profileDefaultRest").onchange=()=>localStorage.setItem(PROFILE_DEFAULT_REST_KEY,$("profileDefaultRest").value);
+$("profileSettingsClearHistory").onclick=()=>{if(confirm("Trainingsverlauf wirklich löschen?")){$("clearHistoryBtn")?.click();closeProfileSettings()}};
+window.addEventListener("DOMContentLoaded",()=>applyLocalAppearance(localStorage.getItem(PROFILE_APPEARANCE_KEY)||"system"));
+$("navCatalog").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="catalogHome"){resetTab("catalogHome")}else{renderCatalog();navToTab("catalogHome")}};$("catalogSearch").oninput=renderCatalog;
+$("catalogDetailBack").onclick=()=>{goBackPage("catalogHome");if(visibleSection==="catalogHome")renderCatalog()};
+
+
+
+
+
+
+$("plannerExerciseDetailBack").onclick=()=>{show("editor");$("exerciseModal").classList.remove("hidden")};
+$("plannerExerciseDetailAdd").onclick=()=>{if(!plannerDetailExerciseName)return;show("editor");selectExercise(plannerDetailExerciseName)};
+$("catalogCreatePlan").onclick=()=>newPlan();
+$("editorReorderBtn").onclick=()=>{editorReorderMode=!editorReorderMode;renderExercises()};
+$("liveReorderBtn").onclick=()=>{liveReorderMode=!liveReorderMode;renderLive()};
 $("trainingPlus").onclick=()=>{if(plans.length)openPlanPicker();else newPlan()};$("navPlans").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="home")resetTab("home");else{renderPlans();navToTab("home")}};$("navWorkout").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="workoutHome")resetTab("workoutHome");else{renderWorkoutHome();navToTab("workoutHome")}};$("navMore").onclick=()=>{clearInterval(workoutClockInterval);if(visibleSection==="progressHome")resetTab("progressHome");else{renderProgress();navToTab("progressHome")}};$("goToPlans").onclick=()=>show("home");$("chooseWorkoutPlan").onclick=openPlanPicker;$("closePlanPicker").onclick=$("planPickerOverlay").onclick=()=>$("planPickerModal").classList.add("hidden");
 $("resumeWorkoutButton").onclick=openActive;$("discardWorkoutButton").onclick=()=>{if(confirm("Aktives Training verwerfen?")){activeWorkoutData=null;saveAll();renderWorkoutHome();toast("Training verworfen")}};
 $("closeStartWorkout").onclick=$("startWorkoutOverlay").onclick=()=>$("startWorkoutModal").classList.add("hidden");$("confirmStartWorkout").onclick=()=>{primeAudio();const p=plans.find(x=>x.id===pendingWorkoutPlanId);activeWorkoutData=createWorkout(p);saveAll();$("startWorkoutModal").classList.add("hidden");openActive()};
@@ -3715,10 +4411,21 @@ function ensureCommonDrinks(){
 }
 window.addEventListener("DOMContentLoaded",()=>{ensureCommonDrinks();if(typeof renderHydration==="function")renderHydration()});
 
+
+const METHOD_REP_DEFAULTS={
+ normal:"8-12",superset:"8-12",dropset:"8-12",restpause:"20-30",
+ cluster:"",pyramid:"",preexhaust:"8-12",giantset:"10-15",backoff:""
+};
+function applyMethodRepDefault(){
+ const t=$("setTechnique")?.value||"normal", mode=$("trackingMode")?.value||"reps";
+ if(mode!=="reps")return;
+ const target=METHOD_REP_DEFAULTS[t];
+ if(target&&$("reps"))$("reps").value=target
+}
 function bindExerciseConfigDynamics(){
  const tracking=$("trackingMode"),technique=$("setTechnique"),editTracking=$("editTrackingMode");
  if(tracking)tracking.onchange=()=>{updateTrackingFields("");applyTechniqueUI()};
- if(technique)technique.onchange=()=>applyTechniqueUI();
+ if(technique)technique.onchange=()=>{applyMethodRepDefault();applyTechniqueUI()};
  if(editTracking)editTracking.onchange=()=>updateTrackingFields("edit");
 }
 window.addEventListener("DOMContentLoaded",bindExerciseConfigDynamics);
@@ -3861,5 +4568,21 @@ window.addEventListener("DOMContentLoaded",bindPyramidConfigControls);
     <div id="workoutSummaryBody" class="workout-summary-body workout-readonly"></div>
     <button type="button" id="summaryEditPlan" class="summary-edit-plan-button">Plan bearbeiten</button>
   </main>
-</section></body>
+</section><script id="v2105-save-fallback">
+window.addEventListener("DOMContentLoaded",()=>{
+ const b=document.getElementById("saveTop");
+ if(b)b.addEventListener("click",ev=>{
+   if(typeof persistCurrentPlan!=="function")return;
+   // Existing onclick normally handles this. This fallback only persists if it did not.
+   setTimeout(()=>{
+     try{
+       if(currentPlan&&document.getElementById("planName")?.value.trim()){
+         const found=plans.some(p=>String(p.id)===String(currentPlan.id));
+         if(!found){persistCurrentPlan()}
+       }
+     }catch(err){console.error("Plan save fallback",err)}
+   },0)
+ },true)
+});
+</script></body>
 </html>
