@@ -268,19 +268,115 @@ body{font-size:16px}
 .week-scheduled,.week-scheduled strong,.week-scheduled .week-card-date{color:#e9f0f6!important}
 .week-scheduled small{color:#b8c8d7!important}
 .week-completed{border-color:#7fcf9b!important;background:rgba(91,178,119,.12)!important}
+</style><style id="v26-stability">
+/* rating colors are universal */
+.set-check.rating-red{background:#b84d55!important;border-color:#d86a72!important;color:#fff!important}
+.set-check.rating-yellow{background:#b99a43!important;border-color:#d7ba64!important;color:#fff!important}
+.set-check.rating-green{background:#4f9d68!important;border-color:#74be8a!important;color:#fff!important}
+.set-check.rating-blue{background:#6aa9c7!important;border-color:#8fc7df!important;color:#fff!important}
+.group-ex-rated{grid-template-columns:minmax(82px,1fr) minmax(52px,64px) minmax(52px,64px) 36px!important}
+.group-rating-row{margin-left:0!important;margin-bottom:6px!important}
+
+/* Training start card more prominent */
+#startTrainingCard{padding:18px!important;min-height:104px!important;border-radius:18px!important}
+#startTrainingCard strong{font-size:19px!important}#startTrainingCard .small{margin-top:5px!important}
+#startTrainingCard .plus-btn{width:48px!important;height:48px!important;min-width:48px!important;font-size:18px!important}
+
+/* Scheduled week mirrors completed visual strength, in cool indigo instead of pink/blue outline only */
+.week-scheduled{border-color:#9d98c7!important;background:rgba(117,108,166,.22)!important;box-shadow:inset 0 0 0 1px rgba(190,184,225,.18)!important}
+.week-scheduled,.week-scheduled strong,.week-scheduled .week-card-date{color:#f4f1ff!important}.week-scheduled small{color:#d6d0eb!important}
+.week-completed{border-color:#7fcf9b!important;background:rgba(91,178,119,.18)!important;box-shadow:inset 0 0 0 1px rgba(127,207,155,.22)!important}
+
+/* Profile charts and measurement delete */
+.measurement-charts{margin-top:12px}.profile-chart{padding:12px;margin-top:8px}.profile-chart svg{width:100%;height:76px;color:#c9c4e7;display:block;margin-top:6px}.chart-range{display:flex;justify-content:space-between;color:var(--muted);font-size:10px}.measurement-card{display:grid!important;grid-template-columns:minmax(0,1fr) 36px;gap:8px;align-items:center}.measurement-main{border:0;background:transparent;color:inherit;text-align:left;padding:0;min-width:0}.measurement-delete{width:34px!important;height:34px!important;min-width:34px!important}.nutrition-mini-counter{font-size:10.5px;color:var(--muted);margin-top:3px}
+
+/* Swipe action closes cleanly */
+.plan-card{transition:transform .18s ease}.plan-card:not(.swipe-open) .plan-swipe-delete{pointer-events:none}.plan-card.swipe-open .plan-swipe-delete{pointer-events:auto}
+</style>
+<style id="v27-stability">
+#startTrainingCard{padding:20px 18px!important;min-height:96px!important;border-radius:20px!important}
+#startTrainingCard strong{font-size:19px!important}
+#startTrainingCard .small{font-size:13px!important;margin-top:4px}
+#startTrainingCard .plus-btn{width:48px!important;height:48px!important;min-width:48px!important;font-size:20px!important}
+
+/* Planned week cards use the same strong visual system as completed cards. */
+.week-scheduled{
+ border:2px solid #91adc8!important;
+ background:rgba(92,126,158,.24)!important;
+ box-shadow:inset 0 0 0 1px rgba(183,210,234,.16)!important
+}
+.week-scheduled strong{color:#d8e9f7!important}
+.week-scheduled .week-card-date,.week-scheduled small{color:#b8d2e7!important}
+.week-completed{border-width:2px!important}
+.summary-incomplete{margin-top:6px;color:#8f8f8f!important}
+
+/* Rating colors are identical and visible in every live method. */
+.set-check.rating-red{background:#b84d55!important;border-color:#e07a82!important;color:#fff!important}
+.set-check.rating-yellow{background:#b99a43!important;border-color:#e0c66d!important;color:#fff!important}
+.set-check.rating-green{background:#4f9d68!important;border-color:#79c993!important;color:#fff!important}
+.set-check.rating-blue{background:#6aa9c7!important;border-color:#9bd5ed!important;color:#fff!important}
+</style>
+<style id="v28-progress-week-drinks">
+.week-motivation{margin-bottom:12px;padding:16px 17px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
+.week-motivation .small{font-size:9px!important;letter-spacing:.08em;font-weight:900;margin-bottom:5px}
+.week-motivation strong{font-size:15px;line-height:1.35}
+.drink-manage-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.profile-progress-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.progress-stat{padding:12px!important;min-width:0}
+.progress-stat strong{font-size:19px;display:block;margin-top:3px}
+.progress-stat .goal-line{font-size:9px!important}
+.chart-dates{font-size:9px!important;line-height:1.3}.chart-dates span:last-child{text-align:right}.chart-dates b{color:#eee;font-weight:800}
+@media(max-width:390px){.profile-progress-grid{grid-template-columns:1fr 1fr}.profile-progress-grid .progress-stat:last-child{grid-column:1/-1}}
+</style>
+<style id="v29-navigation-preview">
+.preview-live-shell{user-select:none;-webkit-user-select:none}
+.preview-live-shell button,.preview-live-shell input,.preview-live-shell textarea,.preview-live-shell select{pointer-events:none!important}
+.preview-static-row .preview-value{
+ height:40px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);
+ color:#a8a8a8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:750;min-width:0
+}
+.preview-live-shell .preview-static-row{pointer-events:none!important}
+</style>
+<style id="v30-nutrition-drinks">
+.subtle-reorder-btn{width:34px!important;height:34px!important;min-width:34px!important;background:transparent!important;border:1px solid rgba(255,255,255,.10)!important;color:var(--muted)!important;font-size:16px!important}
+.subtle-reorder-btn.active{color:#fff!important;border-color:rgba(255,255,255,.28)!important;background:rgba(255,255,255,.04)!important}
+.daily-nutrition-entry{padding:14px!important}
+</style>
+<style id="v31-target-weight">
+.target-weight-line{stroke:rgba(255,255,255,.45);stroke-width:1.3;stroke-dasharray:5 4}
+.target-weight-label{fill:#cfcfcf;font-size:8px;font-weight:800}
+</style>
+<style id="v32-food-navigation">
+.food-add-btn{padding:8px 10px!important;font-size:10px!important}
+.nutrition-counter{margin-top:13px}.nutrition-counter>div:first-child{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.nutrition-counter span{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.nutrition-counter strong{font-size:12px}.mini-progress{height:6px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:5px}
+.mini-progress i{display:block;height:100%;width:0;border-radius:inherit;background:#e7b86a}.protein-counter .mini-progress i{background:#9cb8d8}
+.today-food-list{display:grid;gap:7px;margin-top:13px}.food-log-row,.food-result,.food-selected{border:1px solid var(--line);border-radius:13px;padding:10px 11px;background:var(--surface2)}
+.food-log-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.food-log-row small,.food-result small{display:block;margin-top:2px;color:var(--muted)}
+.food-result{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;color:inherit;margin-bottom:6px}.food-result>span{font-size:10px;color:var(--muted);white-space:nowrap}
+.food-fruit{border-left:3px solid #b7d6a3;background:rgba(183,214,163,.06)}.food-veg{border-left:3px solid #8fc7b5;background:rgba(143,199,181,.06)}
+.food-carb{border-left:3px solid #e1c58b;background:rgba(225,197,139,.06)}.food-dairy{border-left:3px solid #d7cfb8;background:rgba(215,207,184,.06)}
+.food-protein{border-left:3px solid #9cb8d8;background:rgba(156,184,216,.06)}.food-legume{border-left:3px solid #c0a9d8;background:rgba(192,169,216,.06)}
+.food-other{border-left:3px solid #d7a9ad;background:rgba(215,169,173,.06)}
+.food-search{position:relative}.food-search .field{padding-left:34px;padding-right:34px}.search-loupe{position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:2;color:var(--muted);font-size:18px}
+.food-source-note{margin:6px 2px 10px}.empty-food-note{padding:8px 1px}
+</style><style id="v33-day-nav">
+.profile-day-nav{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;margin:-2px 0 12px;padding:3px 2px}.profile-day-nav>div{text-align:center}.profile-day-nav strong{display:block;font-size:14px}.profile-day-nav small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
 </style></head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
 <main id="tab-plans" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Meine Pläne</h1></div><div class="plan-header-actions"><button id="plansEditBtn" class="secondary plan-edit-toggle">Bearbeiten</button><button id="newPlanBtn" class="icon-btn plus-btn">+</button></div></div><div class="chips" id="planSortChips"></div><div id="planList"></div></main>
 <main id="tab-training" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Training</h1></div></div><div id="activeBanner"></div><div id="startTrainingCard" class="card"><div class="space"><div><strong>Training starten</strong><div class="small">Wähle einen Plan.</div></div><button id="choosePlanStart" class="icon-btn plus-btn" aria-label="Training starten">▶</button></div></div><div class="space" style="margin:18px 0 8px"><h2>Zuletzt</h2><button id="clearHistoryBtn" class="text-action danger">Verlauf löschen</button></div><div id="historyList"></div></main>
-<main id="tab-week" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Wochenplan</h1></div></div><div class="week-nav"><button id="weekPrevBtn" class="icon-btn">‹</button><div class="week-range"><strong id="weekRangeLabel"></strong><span id="weekOffsetLabel" class="small"></span></div><button id="weekNextBtn" class="icon-btn">›</button></div><div id="weekList" class="week-list"></div></main>
+<main id="tab-week" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Wochenplan</h1></div></div><div id="weekMotivation" class="card week-motivation"></div><div class="week-nav"><button id="weekPrevBtn" class="icon-btn">‹</button><div class="week-range"><strong id="weekRangeLabel"></strong><span id="weekOffsetLabel" class="small"></span></div><button id="weekNextBtn" class="icon-btn">›</button></div><div id="weekList" class="week-list"></div></main>
 <main id="tab-profile" class="tab-screen hidden">
-<div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Körper und Ernährung</h1></div><button id="settingsBtn" class="icon-btn profile-settings-icon" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c.7-4 3-6 6.5-6s5.8 2 6.5 6"/></svg></button></div>
+<div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Körper und Ernährung</h1></div><button id="settingsBtn" class="icon-btn profile-settings-icon" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></button></div>
+<div class="profile-day-nav"><button id="profilePrevDay" class="icon-btn" aria-label="Vorheriger Tag">‹</button><div><strong id="profileDayLabel">Heute</strong><small id="profileDayDate"></small></div><button id="profileNextDay" class="icon-btn" aria-label="Nächster Tag">›</button></div>
 
 <div class="card profile-identity-card"><div class="space"><div><div class="small">Mein Profil</div><strong id="profileSummary">Noch nicht eingerichtet</strong><div class="goal-line" id="profileGoalSummary">Persönliche Werte und Ziele</div></div><button id="editProfileBtn" class="secondary compact-profile-edit">Bearbeiten</button></div></div>
 
 <div class="space section-head"><h2>Messungen</h2><button id="addMeasurementBtn" class="icon-btn plus-btn">+</button></div>
-<div id="measurementList"></div>
+<div id="measurementList"></div><div id="measurementCharts" class="measurement-charts"></div><div id="profileProgressOverview"></div>
 
 <div class="section-head"><h2>Hydrierung heute</h2></div>
 <div class="card profile-hydration">
@@ -289,17 +385,17 @@ body{font-size:16px}
   <div class="today-drinks-section"><div class="mini-section-title">Heute getrunken</div><div id="todayDrinkList"></div></div>
   <details id="drinksDetails" class="drink-details">
     <summary><span>Meine Getränke</span><span class="drink-summary-chevron">⌄</span></summary>
-    <div class="space drink-details-actions"><div class="small">Getränke verwalten</div><button id="newDrinkBtn" class="secondary create-drink-btn">Getränk erstellen</button></div>
+    <div class="space drink-details-actions"><div class="small">Getränke verwalten</div><div class="drink-manage-actions"><button id="reorderDrinksBtn" class="icon-btn subtle-reorder-btn" aria-label="Reihenfolge ändern">⇅</button><button id="newDrinkBtn" class="secondary create-drink-btn">Getränk erstellen</button></div></div>
     <div id="drinkList"></div>
   </details>
 </div>
 
 <div class="space section-head"><h2>Ernährung</h2><button id="editGoalsBtn" class="secondary compact-profile-edit">Bearbeiten</button></div>
 <div class="profile-grid">
-  <div class="card"><div class="small">Kalorien heute</div><strong id="calorieTodayView">0 kcal</strong><div class="goal-line" id="calorieGoalView">Ziel –</div></div>
+  <div class="card"><div class="small">Kalorien heute</div><strong id="calorieTodayView">0 kcal</strong><div class="nutrition-mini-counter" id="proteinTodayView">davon Protein 0 g</div><div class="goal-line" id="calorieGoalView">Ziel –</div></div>
   <div class="card"><div class="small">Protein-Ziel</div><strong id="proteinGoalView">–</strong><div class="goal-line">Orientierung 1,6 g/kg</div></div>
 </div>
-<div class="card nutrition-target-card" style="margin-top:10px"><div class="profile-grid"><div><div class="small">Kalorienziel</div><strong id="nutritionCalTarget">–</strong></div><div><div class="small">Proteinziel</div><strong id="nutritionProteinTarget">–</strong></div></div><div class="goal-line" id="nutritionHydrationTarget">Flüssigkeit –</div><button id="calculateGoalsBtn" class="secondary" style="width:100%;margin-top:10px">Persönlichen Startwert berechnen</button></div>
+<div class="card daily-nutrition-entry nutrition-today-card" style="margin-top:10px"><div class="space"><div><div class="small">ERNÄHRUNG HEUTE</div><strong>Kalorien & Protein</strong></div><button id="addFoodTodayBtn" class="secondary food-add-btn">Lebensmittel hinzufügen</button></div><div class="nutrition-counter"><div><span>Kalorien</span><strong id="foodCaloriesCounter">0 / – kcal</strong></div><div class="mini-progress"><i id="foodCaloriesProgress"></i></div></div><div class="nutrition-counter protein-counter"><div><span>Protein</span><strong id="foodProteinCounter">0 / – g</strong></div><div class="mini-progress"><i id="foodProteinProgress"></i></div></div><div id="todayFoodList" class="today-food-list"></div></div><div class="card nutrition-target-card" style="margin-top:10px"><div class="profile-grid"><div><div class="small">Kalorienziel</div><strong id="nutritionCalTarget">–</strong></div><div><div class="small">Flüssigkeitsziel</div><strong id="nutritionHydrationTarget">–</strong></div></div><button id="calculateGoalsBtn" class="secondary" style="width:100%;margin-top:10px">Persönlichen Startwert berechnen</button></div>
 </main>
 </div>
 <nav id="bottomNav" class="nav">
@@ -346,8 +442,16 @@ function fmtShortDate(d){return d.toLocaleDateString("de-DE",{day:"2-digit",mont
 function markEditorDirty(){editorDirty=true;persistUI()}
 function setEditorBaseline(){editorOriginalSnapshot=JSON.stringify(currentPlan||null);editorDirty=false}
 function editorHasChanges(){return editorDirty||JSON.stringify(currentPlan||null)!==editorOriginalSnapshot}
-function persistRestEnd(){if(restEnd>Date.now())localStorage.setItem(REST_END_KEY,String(restEnd));else localStorage.removeItem(REST_END_KEY)}
-function restoreRestTimer(){const saved=Number(localStorage.getItem(REST_END_KEY)||0);if(!activeWorkout||saved<=Date.now()){if(saved)localStorage.removeItem(REST_END_KEY);return}restEnd=saved;startRest(Math.ceil((saved-Date.now())/1000),true)}
+function persistRestEnd(){
+ if(restEnd>Date.now()){localStorage.setItem(REST_END_KEY,String(restEnd));if(activeWorkout)activeWorkout.restEnd=restEnd}
+ else{localStorage.removeItem(REST_END_KEY);if(activeWorkout)activeWorkout.restEnd=0}
+ if(activeWorkout)write(STORAGE.active,activeWorkout)
+}
+function restoreRestTimer(){
+ const saved=Math.max(Number(localStorage.getItem(REST_END_KEY)||0),Number(activeWorkout?.restEnd||0));
+ if(!activeWorkout||saved<=Date.now()){if(saved)localStorage.removeItem(REST_END_KEY);return}
+ restEnd=saved;startRest(Math.ceil((saved-Date.now())/1000),true)
+}
 function groupMethod(m){return["superset","giant","preexhaust"].includes(m)}
 function groupMembers(e){return[e.name,...(e.linkedExerciseNames||[])].filter(Boolean)}
 function repTop(reps){const m=String(reps||"").match(/(\d+)\s*-\s*(\d+)/);return m?Number(m[2]):null}
@@ -409,14 +513,59 @@ function restoreUI(){
  else if(s.page==="exerciseDetailPage"&&s.currentExerciseName){const found=allExercises().find(x=>x.name===s.currentExerciseName);if(found){openExerciseDetail(found.name);requestAnimationFrame(()=>{$("exerciseDetailPage").scrollTop=s.pageScroll||0})}}
  else if(s.page==="preStartPage"&&s.pendingStartPlanId){const p=plans.find(x=>String(x.id)===String(s.pendingStartPlanId));if(p){openPreStart(p.id);requestAnimationFrame(()=>{$("preStartPage").scrollTop=s.pageScroll||0})}}
 }
+let profileDayOffset=0;
+function profileDate(offset=profileDayOffset){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d}
+function profileDateKey(offset=profileDayOffset){const d=profileDate(offset);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function profileDayLabel(){if(profileDayOffset===0)return"Heute";if(profileDayOffset===-1)return"Gestern";if(profileDayOffset===1)return"Morgen";return profileDate().toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})}
+function profileDayBounds(){const d=profileDate();d.setHours(0,0,0,0);return{start:d.getTime(),end:d.getTime()+86400000}}
+function changeProfileDay(delta){profileDayOffset+=delta;renderProfile();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"auto"}))}
 function dailyReset(){
  const today=new Date().toISOString().slice(0,10),d=read(DAY_KEY,{date:today});
- if(d.date!==today){nutrition.hydration=0;nutrition.consumedCalories=0;d.date=today;write(DAY_KEY,d);saveAll()}
+ if(d.date!==today){nutrition.hydration=0;nutrition.consumedCalories=0;nutrition.consumedProtein=0;d.date=today;write(DAY_KEY,d);saveAll()}
 }
 function hydrateGoal(){
  if(Number(nutrition.waterGoal)>0)return Number(nutrition.waterGoal);
- const w=Number(profile.weight)||Number(measurements.at(-1)?.weight)||70;
- return Math.round((w*35)/50)*50
+ const w=Number(profile.weight)||Number(measurements.at(-1)?.weight)||0;
+ if(!w)return 0;
+ return 0
+}
+const FOOD_DB=[{"name":"Apfel","category":"Obst","kcal":52,"protein":0.3,"water":85.6},{"name":"Banane","category":"Obst","kcal":89,"protein":1.1,"water":74.9},{"name":"Orange","category":"Obst","kcal":47,"protein":0.9,"water":86.8},{"name":"Mandarine","category":"Obst","kcal":53,"protein":0.8,"water":86},{"name":"Clementine","category":"Obst","kcal":47,"protein":0.9,"water":86},{"name":"Birne","category":"Obst","kcal":57,"protein":0.4,"water":86},{"name":"Pfirsich","category":"Obst","kcal":39,"protein":0.9,"water":86},{"name":"Nektarine","category":"Obst","kcal":44,"protein":1.1,"water":86},{"name":"Aprikose","category":"Obst","kcal":48,"protein":1.4,"water":86},{"name":"Pflaume","category":"Obst","kcal":46,"protein":0.7,"water":86},{"name":"Kirschen","category":"Obst","kcal":63,"protein":1.1,"water":86},{"name":"Erdbeeren","category":"Obst","kcal":32,"protein":0.7,"water":91},{"name":"Himbeeren","category":"Obst","kcal":52,"protein":1.2,"water":86},{"name":"Blaubeeren","category":"Obst","kcal":57,"protein":0.7,"water":86},{"name":"Brombeeren","category":"Obst","kcal":43,"protein":1.4,"water":86},{"name":"Weintrauben","category":"Obst","kcal":69,"protein":0.7,"water":86},{"name":"Wassermelone","category":"Obst","kcal":30,"protein":0.6,"water":91.5},{"name":"Honigmelone","category":"Obst","kcal":36,"protein":0.5,"water":90.2},{"name":"Ananas","category":"Obst","kcal":50,"protein":0.5,"water":86},{"name":"Mango","category":"Obst","kcal":60,"protein":0.8,"water":86},{"name":"Papaya","category":"Obst","kcal":43,"protein":0.5,"water":86},{"name":"Kiwi","category":"Obst","kcal":61,"protein":1.1,"water":86},{"name":"Grapefruit","category":"Obst","kcal":42,"protein":0.8,"water":86},{"name":"Granatapfel","category":"Obst","kcal":83,"protein":1.7,"water":86},{"name":"Feige frisch","category":"Obst","kcal":74,"protein":0.8,"water":86},{"name":"Datteln","category":"Obst","kcal":282,"protein":2.5,"water":20},{"name":"Rosinen","category":"Obst","kcal":299,"protein":3.1,"water":20},{"name":"Cranberries getrocknet","category":"Obst","kcal":325,"protein":0.1,"water":20},{"name":"Kokosnuss frisch","category":"Obst","kcal":354,"protein":3.3,"water":47},{"name":"Avocado","category":"Obst","kcal":160,"protein":2.0,"water":73.2},{"name":"Maracuja","category":"Obst","kcal":97,"protein":2.2,"water":86},{"name":"Guave","category":"Obst","kcal":68,"protein":2.6,"water":86},{"name":"Litschi","category":"Obst","kcal":66,"protein":0.8,"water":86},{"name":"Kaki","category":"Obst","kcal":70,"protein":0.6,"water":86},{"name":"Johannisbeeren rot","category":"Obst","kcal":56,"protein":1.4,"water":86},{"name":"Johannisbeeren schwarz","category":"Obst","kcal":63,"protein":1.4,"water":86},{"name":"Stachelbeeren","category":"Obst","kcal":44,"protein":0.9,"water":86},{"name":"Rhabarber","category":"Obst","kcal":21,"protein":0.9,"water":86},{"name":"Zitrone","category":"Obst","kcal":29,"protein":1.1,"water":86},{"name":"Limette","category":"Obst","kcal":30,"protein":0.7,"water":86},{"name":"Brokkoli roh","category":"Gemüse","kcal":34,"protein":2.8,"water":91},{"name":"Brokkoli gekocht","category":"Gemüse","kcal":35,"protein":2.4,"water":91},{"name":"Blumenkohl roh","category":"Gemüse","kcal":25,"protein":1.9,"water":91},{"name":"Blumenkohl gekocht","category":"Gemüse","kcal":23,"protein":1.8,"water":91},{"name":"Karotte roh","category":"Gemüse","kcal":41,"protein":0.9,"water":91},{"name":"Karotte gekocht","category":"Gemüse","kcal":35,"protein":0.8,"water":91},{"name":"Paprika rot","category":"Gemüse","kcal":31,"protein":1.0,"water":91},{"name":"Paprika gelb","category":"Gemüse","kcal":27,"protein":1.0,"water":91},{"name":"Paprika grün","category":"Gemüse","kcal":20,"protein":0.9,"water":91},{"name":"Tomate","category":"Gemüse","kcal":18,"protein":0.9,"water":94.5},{"name":"Cherrytomaten","category":"Gemüse","kcal":18,"protein":0.9,"water":91},{"name":"Gurke","category":"Gemüse","kcal":15,"protein":0.7,"water":95.2},{"name":"Zucchini","category":"Gemüse","kcal":17,"protein":1.2,"water":94.8},{"name":"Aubergine","category":"Gemüse","kcal":25,"protein":1.0,"water":91},{"name":"Spinat roh","category":"Gemüse","kcal":23,"protein":2.9,"water":91},{"name":"Spinat gekocht","category":"Gemüse","kcal":23,"protein":3.0,"water":91},{"name":"Grünkohl","category":"Gemüse","kcal":49,"protein":4.3,"water":91},{"name":"Mangold","category":"Gemüse","kcal":19,"protein":1.8,"water":91},{"name":"Feldsalat","category":"Gemüse","kcal":21,"protein":2.0,"water":91},{"name":"Kopfsalat","category":"Gemüse","kcal":15,"protein":1.4,"water":95.6},{"name":"Rucola","category":"Gemüse","kcal":25,"protein":2.6,"water":91},{"name":"Eisbergsalat","category":"Gemüse","kcal":14,"protein":0.9,"water":95.6},{"name":"Weißkohl","category":"Gemüse","kcal":25,"protein":1.3,"water":91},{"name":"Rotkohl","category":"Gemüse","kcal":31,"protein":1.4,"water":91},{"name":"Wirsing","category":"Gemüse","kcal":27,"protein":2.0,"water":91},{"name":"Rosenkohl","category":"Gemüse","kcal":43,"protein":3.4,"water":91},{"name":"Sauerkraut","category":"Gemüse","kcal":19,"protein":0.9,"water":91},{"name":"Fenchel","category":"Gemüse","kcal":31,"protein":1.2,"water":91},{"name":"Sellerie Stange","category":"Gemüse","kcal":14,"protein":0.7,"water":95.4},{"name":"Knollensellerie","category":"Gemüse","kcal":42,"protein":1.5,"water":91},{"name":"Lauch","category":"Gemüse","kcal":61,"protein":1.5,"water":91},{"name":"Frühlingszwiebel","category":"Gemüse","kcal":32,"protein":1.8,"water":91},{"name":"Zwiebel","category":"Gemüse","kcal":40,"protein":1.1,"water":91},{"name":"Rote Zwiebel","category":"Gemüse","kcal":42,"protein":1.0,"water":91},{"name":"Knoblauch","category":"Gemüse","kcal":149,"protein":6.4,"water":59},{"name":"Champignons","category":"Gemüse","kcal":22,"protein":3.1,"water":91},{"name":"Austernpilze","category":"Gemüse","kcal":33,"protein":3.3,"water":91},{"name":"Steinpilze","category":"Gemüse","kcal":34,"protein":3.7,"water":91},{"name":"Spargel grün","category":"Gemüse","kcal":20,"protein":2.2,"water":91},{"name":"Spargel weiß","category":"Gemüse","kcal":20,"protein":2.2,"water":91},{"name":"Grüne Bohnen","category":"Gemüse","kcal":31,"protein":1.8,"water":91},{"name":"Erbsen grün","category":"Gemüse","kcal":81,"protein":5.4,"water":91},{"name":"Mais gekocht","category":"Gemüse","kcal":96,"protein":3.4,"water":91},{"name":"Rote Bete","category":"Gemüse","kcal":43,"protein":1.6,"water":91},{"name":"Radieschen","category":"Gemüse","kcal":16,"protein":0.7,"water":91},{"name":"Kürbis Hokkaido","category":"Gemüse","kcal":63,"protein":1.7,"water":91},{"name":"Butternut Kürbis","category":"Gemüse","kcal":45,"protein":1.0,"water":91},{"name":"Süßkartoffel","category":"Gemüse","kcal":86,"protein":1.6,"water":91},{"name":"Pastinake","category":"Gemüse","kcal":75,"protein":1.2,"water":91},{"name":"Artischocke","category":"Gemüse","kcal":47,"protein":3.3,"water":91},{"name":"Kartoffeln gekocht","category":"Getreide & Beilagen","kcal":87,"protein":1.9,"water":77},{"name":"Kartoffeln Ofen","category":"Getreide & Beilagen","kcal":93,"protein":2.5,"water":68},{"name":"Kartoffelpüree","category":"Getreide & Beilagen","kcal":88,"protein":1.7,"water":68},{"name":"Pommes frites","category":"Getreide & Beilagen","kcal":312,"protein":3.4,"water":68},{"name":"Reis weiß gekocht","category":"Getreide & Beilagen","kcal":130,"protein":2.7,"water":68.4},{"name":"Reis braun gekocht","category":"Getreide & Beilagen","kcal":123,"protein":2.7,"water":68},{"name":"Basmatireis gekocht","category":"Getreide & Beilagen","kcal":121,"protein":3.5,"water":68},{"name":"Jasminreis gekocht","category":"Getreide & Beilagen","kcal":129,"protein":2.7,"water":68},{"name":"Wildreis gekocht","category":"Getreide & Beilagen","kcal":101,"protein":4.0,"water":68},{"name":"Quinoa gekocht","category":"Getreide & Beilagen","kcal":120,"protein":4.4,"water":68},{"name":"Couscous gekocht","category":"Getreide & Beilagen","kcal":112,"protein":3.8,"water":68},{"name":"Bulgur gekocht","category":"Getreide & Beilagen","kcal":83,"protein":3.1,"water":68},{"name":"Hirse gekocht","category":"Getreide & Beilagen","kcal":119,"protein":3.5,"water":68},{"name":"Buchweizen gekocht","category":"Getreide & Beilagen","kcal":92,"protein":3.4,"water":68},{"name":"Polenta gekocht","category":"Getreide & Beilagen","kcal":70,"protein":1.5,"water":68},{"name":"Haferflocken","category":"Getreide & Beilagen","kcal":379,"protein":13.2,"water":10},{"name":"Haferkleie","category":"Getreide & Beilagen","kcal":246,"protein":17.3,"water":10},{"name":"Müsli ungesüßt","category":"Getreide & Beilagen","kcal":360,"protein":10.0,"water":10},{"name":"Cornflakes","category":"Getreide & Beilagen","kcal":357,"protein":7.5,"water":10},{"name":"Weizenmehl Type 405","category":"Getreide & Beilagen","kcal":364,"protein":10.0,"water":10},{"name":"Dinkelmehl","category":"Getreide & Beilagen","kcal":338,"protein":13.0,"water":10},{"name":"Vollkornmehl","category":"Getreide & Beilagen","kcal":340,"protein":13.2,"water":10},{"name":"Weißbrot","category":"Getreide & Beilagen","kcal":266,"protein":8.9,"water":10},{"name":"Vollkornbrot","category":"Getreide & Beilagen","kcal":247,"protein":12.5,"water":10},{"name":"Roggenbrot","category":"Getreide & Beilagen","kcal":259,"protein":8.5,"water":10},{"name":"Dinkelbrot","category":"Getreide & Beilagen","kcal":250,"protein":10.0,"water":10},{"name":"Toastbrot","category":"Getreide & Beilagen","kcal":265,"protein":9.0,"water":10},{"name":"Knäckebrot","category":"Getreide & Beilagen","kcal":350,"protein":10.0,"water":10},{"name":"Baguette","category":"Getreide & Beilagen","kcal":274,"protein":8.8,"water":10},{"name":"Ciabatta","category":"Getreide & Beilagen","kcal":271,"protein":8.8,"water":10},{"name":"Brezel","category":"Getreide & Beilagen","kcal":338,"protein":9.0,"water":10},{"name":"Wrap Weizen","category":"Getreide & Beilagen","kcal":312,"protein":8.3,"water":10},{"name":"Pita Brot","category":"Getreide & Beilagen","kcal":275,"protein":9.1,"water":10},{"name":"Nudeln gekocht","category":"Getreide & Beilagen","kcal":158,"protein":5.8,"water":62.1},{"name":"Vollkornnudeln gekocht","category":"Getreide & Beilagen","kcal":149,"protein":5.5,"water":68},{"name":"Spaghetti gekocht","category":"Getreide & Beilagen","kcal":158,"protein":5.8,"water":68},{"name":"Gnocchi","category":"Getreide & Beilagen","kcal":150,"protein":4.0,"water":68},{"name":"Spätzle gekocht","category":"Getreide & Beilagen","kcal":157,"protein":5.7,"water":68},{"name":"Lasagneblätter gekocht","category":"Getreide & Beilagen","kcal":131,"protein":4.8,"water":68},{"name":"Reiswaffeln","category":"Getreide & Beilagen","kcal":387,"protein":8.0,"water":10},{"name":"Maiswaffeln","category":"Getreide & Beilagen","kcal":381,"protein":8.1,"water":10},{"name":"Semmelknödel","category":"Getreide & Beilagen","kcal":168,"protein":5.3,"water":68},{"name":"Kartoffelknödel","category":"Getreide & Beilagen","kcal":130,"protein":2.5,"water":68},{"name":"Schupfnudeln","category":"Getreide & Beilagen","kcal":170,"protein":4.0,"water":68},{"name":"Haferbrei mit Wasser","category":"Getreide & Beilagen","kcal":71,"protein":2.5,"water":68},{"name":"Grießbrei","category":"Getreide & Beilagen","kcal":101,"protein":3.2,"water":68},{"name":"Couscous trocken","category":"Getreide & Beilagen","kcal":376,"protein":12.8,"water":10},{"name":"Quinoa trocken","category":"Getreide & Beilagen","kcal":368,"protein":14.1,"water":10},{"name":"Reis weiß trocken","category":"Getreide & Beilagen","kcal":365,"protein":7.1,"water":10},{"name":"Nudeln trocken","category":"Getreide & Beilagen","kcal":371,"protein":13.0,"water":10},{"name":"Vollmilch 3,5%","category":"Milchprodukte & Eier","kcal":61,"protein":3.2,"water":88},{"name":"Milch 1,5%","category":"Milchprodukte & Eier","kcal":46,"protein":3.4,"water":82},{"name":"Magermilch","category":"Milchprodukte & Eier","kcal":34,"protein":3.4,"water":82},{"name":"Joghurt natur 3,5%","category":"Milchprodukte & Eier","kcal":61,"protein":3.5,"water":82},{"name":"Joghurt natur 1,5%","category":"Milchprodukte & Eier","kcal":47,"protein":4.3,"water":82},{"name":"Griechischer Joghurt 10%","category":"Milchprodukte & Eier","kcal":133,"protein":6.0,"water":82},{"name":"Skyr natur","category":"Milchprodukte & Eier","kcal":63,"protein":11.0,"water":85},{"name":"Magerquark","category":"Milchprodukte & Eier","kcal":67,"protein":12.0,"water":82.5},{"name":"Speisequark 20%","category":"Milchprodukte & Eier","kcal":109,"protein":12.0,"water":82},{"name":"Hüttenkäse","category":"Milchprodukte & Eier","kcal":98,"protein":11.1,"water":82},{"name":"Frischkäse Doppelrahm","category":"Milchprodukte & Eier","kcal":342,"protein":6.2,"water":82},{"name":"Mozzarella","category":"Milchprodukte & Eier","kcal":280,"protein":28.0,"water":82},{"name":"Feta","category":"Milchprodukte & Eier","kcal":264,"protein":14.2,"water":82},{"name":"Gouda","category":"Milchprodukte & Eier","kcal":356,"protein":24.9,"water":40},{"name":"Emmentaler","category":"Milchprodukte & Eier","kcal":380,"protein":28.4,"water":40},{"name":"Cheddar","category":"Milchprodukte & Eier","kcal":403,"protein":24.9,"water":40},{"name":"Parmesan","category":"Milchprodukte & Eier","kcal":431,"protein":38.0,"water":40},{"name":"Camembert","category":"Milchprodukte & Eier","kcal":300,"protein":19.8,"water":82},{"name":"Brie","category":"Milchprodukte & Eier","kcal":334,"protein":20.8,"water":82},{"name":"Ricotta","category":"Milchprodukte & Eier","kcal":174,"protein":11.3,"water":82},{"name":"Ei ganz","category":"Milchprodukte & Eier","kcal":143,"protein":12.6,"water":76.2},{"name":"Eiklar","category":"Milchprodukte & Eier","kcal":52,"protein":10.9,"water":82},{"name":"Eigelb","category":"Milchprodukte & Eier","kcal":322,"protein":15.9,"water":82},{"name":"Kefir","category":"Milchprodukte & Eier","kcal":64,"protein":3.5,"water":82},{"name":"Buttermilch","category":"Milchprodukte & Eier","kcal":40,"protein":3.3,"water":82},{"name":"Hähnchenbrust roh","category":"Fleisch, Fisch & Protein","kcal":120,"protein":22.5,"water":67},{"name":"Hähnchenbrust gegart","category":"Fleisch, Fisch & Protein","kcal":165,"protein":31.0,"water":65.3},{"name":"Hähnchenschenkel gegart","category":"Fleisch, Fisch & Protein","kcal":209,"protein":26.0,"water":67},{"name":"Putenbrust roh","category":"Fleisch, Fisch & Protein","kcal":114,"protein":24.0,"water":67},{"name":"Putenbrust gegart","category":"Fleisch, Fisch & Protein","kcal":135,"protein":29.0,"water":67},{"name":"Rinderhack 5% Fett","category":"Fleisch, Fisch & Protein","kcal":137,"protein":21.4,"water":67},{"name":"Rinderhack 10% Fett","category":"Fleisch, Fisch & Protein","kcal":176,"protein":20.0,"water":67},{"name":"Rinderhack 20% Fett","category":"Fleisch, Fisch & Protein","kcal":254,"protein":17.2,"water":67},{"name":"Rinderfilet","category":"Fleisch, Fisch & Protein","kcal":180,"protein":26.0,"water":67},{"name":"Rumpsteak","category":"Fleisch, Fisch & Protein","kcal":200,"protein":27.0,"water":67},{"name":"Roastbeef","category":"Fleisch, Fisch & Protein","kcal":170,"protein":27.0,"water":67},{"name":"Rindergulasch","category":"Fleisch, Fisch & Protein","kcal":165,"protein":21.0,"water":67},{"name":"Schweinefilet","category":"Fleisch, Fisch & Protein","kcal":143,"protein":26.0,"water":67},{"name":"Schweinekotelett","category":"Fleisch, Fisch & Protein","kcal":231,"protein":25.0,"water":67},{"name":"Schweinehack","category":"Fleisch, Fisch & Protein","kcal":263,"protein":17.0,"water":67},{"name":"Kasseler","category":"Fleisch, Fisch & Protein","kcal":150,"protein":22.0,"water":67},{"name":"Lammfilet","category":"Fleisch, Fisch & Protein","kcal":190,"protein":28.0,"water":67},{"name":"Lammhack","category":"Fleisch, Fisch & Protein","kcal":282,"protein":17.0,"water":67},{"name":"Kalbfleisch","category":"Fleisch, Fisch & Protein","kcal":172,"protein":24.0,"water":67},{"name":"Wildschwein","category":"Fleisch, Fisch & Protein","kcal":160,"protein":28.0,"water":67},{"name":"Rehfleisch","category":"Fleisch, Fisch & Protein","kcal":158,"protein":30.0,"water":67},{"name":"Ente Brust","category":"Fleisch, Fisch & Protein","kcal":201,"protein":23.5,"water":67},{"name":"Gans","category":"Fleisch, Fisch & Protein","kcal":305,"protein":25.0,"water":67},{"name":"Kochschinken","category":"Fleisch, Fisch & Protein","kcal":116,"protein":20.0,"water":67},{"name":"Serrano Schinken","category":"Fleisch, Fisch & Protein","kcal":241,"protein":31.0,"water":67},{"name":"Salami","category":"Fleisch, Fisch & Protein","kcal":407,"protein":22.0,"water":67},{"name":"Putenaufschnitt","category":"Fleisch, Fisch & Protein","kcal":105,"protein":20.0,"water":67},{"name":"Hähnchenaufschnitt","category":"Fleisch, Fisch & Protein","kcal":110,"protein":20.0,"water":67},{"name":"Thunfisch in Wasser abgetropft","category":"Fleisch, Fisch & Protein","kcal":116,"protein":26.0,"water":67},{"name":"Thunfisch in Öl abgetropft","category":"Fleisch, Fisch & Protein","kcal":198,"protein":29.0,"water":67},{"name":"Lachs roh","category":"Fleisch, Fisch & Protein","kcal":208,"protein":20.4,"water":67},{"name":"Lachs gegart","category":"Fleisch, Fisch & Protein","kcal":206,"protein":22.0,"water":64.8},{"name":"Räucherlachs","category":"Fleisch, Fisch & Protein","kcal":117,"protein":18.3,"water":67},{"name":"Kabeljau","category":"Fleisch, Fisch & Protein","kcal":82,"protein":18.0,"water":67},{"name":"Seelachs","category":"Fleisch, Fisch & Protein","kcal":92,"protein":19.4,"water":67},{"name":"Forelle","category":"Fleisch, Fisch & Protein","kcal":148,"protein":20.5,"water":67},{"name":"Dorade","category":"Fleisch, Fisch & Protein","kcal":96,"protein":19.7,"water":67},{"name":"Wolfsbarsch","category":"Fleisch, Fisch & Protein","kcal":97,"protein":18.4,"water":67},{"name":"Heilbutt","category":"Fleisch, Fisch & Protein","kcal":111,"protein":23.0,"water":67},{"name":"Makrele","category":"Fleisch, Fisch & Protein","kcal":205,"protein":18.6,"water":67},{"name":"Hering","category":"Fleisch, Fisch & Protein","kcal":158,"protein":18.0,"water":67},{"name":"Sardinen","category":"Fleisch, Fisch & Protein","kcal":208,"protein":24.6,"water":67},{"name":"Garnelen","category":"Fleisch, Fisch & Protein","kcal":99,"protein":24.0,"water":67},{"name":"Krabben","category":"Fleisch, Fisch & Protein","kcal":87,"protein":18.0,"water":67},{"name":"Muscheln","category":"Fleisch, Fisch & Protein","kcal":86,"protein":12.0,"water":67},{"name":"Jakobsmuscheln","category":"Fleisch, Fisch & Protein","kcal":111,"protein":20.5,"water":67},{"name":"Tintenfisch","category":"Fleisch, Fisch & Protein","kcal":92,"protein":15.6,"water":67},{"name":"Tofu natur","category":"Fleisch, Fisch & Protein","kcal":144,"protein":17.3,"water":69.8},{"name":"Tofu geräuchert","category":"Fleisch, Fisch & Protein","kcal":170,"protein":19.0,"water":67},{"name":"Tempeh","category":"Fleisch, Fisch & Protein","kcal":193,"protein":20.3,"water":67},{"name":"Seitan","category":"Fleisch, Fisch & Protein","kcal":141,"protein":24.7,"water":67},{"name":"Veganes Hack","category":"Fleisch, Fisch & Protein","kcal":180,"protein":20.0,"water":67},{"name":"Falafel","category":"Fleisch, Fisch & Protein","kcal":333,"protein":13.3,"water":67},{"name":"Hähnchen Nuggets","category":"Fleisch, Fisch & Protein","kcal":296,"protein":15.0,"water":67},{"name":"Fischstäbchen","category":"Fleisch, Fisch & Protein","kcal":232,"protein":12.0,"water":67},{"name":"Bratwurst","category":"Fleisch, Fisch & Protein","kcal":297,"protein":12.0,"water":67},{"name":"Wiener Würstchen","category":"Fleisch, Fisch & Protein","kcal":301,"protein":12.0,"water":67},{"name":"Leberkäse","category":"Fleisch, Fisch & Protein","kcal":300,"protein":12.0,"water":67},{"name":"Rinderleber","category":"Fleisch, Fisch & Protein","kcal":135,"protein":20.4,"water":67},{"name":"Hähnchenleber","category":"Fleisch, Fisch & Protein","kcal":119,"protein":16.9,"water":67},{"name":"Linsen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":116,"protein":9.0,"water":69.6},{"name":"Rote Linsen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":116,"protein":9.0,"water":65},{"name":"Kichererbsen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":164,"protein":8.9,"water":65},{"name":"Kidneybohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":127,"protein":8.7,"water":65},{"name":"Weiße Bohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":139,"protein":9.7,"water":65},{"name":"Schwarze Bohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":132,"protein":8.9,"water":65},{"name":"Edamame gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":121,"protein":11.9,"water":65},{"name":"Sojabohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":173,"protein":16.6,"water":65},{"name":"Grüne Erbsen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":84,"protein":5.4,"water":65},{"name":"Hummus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":166,"protein":7.9,"water":65},{"name":"Erdnüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":567,"protein":25.8,"water":6},{"name":"Mandeln","category":"Hülsenfrüchte, Nüsse & Samen","kcal":579,"protein":21.2,"water":6},{"name":"Walnüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":654,"protein":15.2,"water":6},{"name":"Cashewkerne","category":"Hülsenfrüchte, Nüsse & Samen","kcal":553,"protein":18.2,"water":6},{"name":"Haselnüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":628,"protein":15.0,"water":6},{"name":"Pistazien","category":"Hülsenfrüchte, Nüsse & Samen","kcal":562,"protein":20.2,"water":6},{"name":"Pekannüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":691,"protein":9.2,"water":6},{"name":"Macadamia","category":"Hülsenfrüchte, Nüsse & Samen","kcal":718,"protein":7.9,"water":6},{"name":"Paranüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":659,"protein":14.3,"water":6},{"name":"Pinienkerne","category":"Hülsenfrüchte, Nüsse & Samen","kcal":673,"protein":13.7,"water":6},{"name":"Erdnussmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":588,"protein":25.0,"water":6},{"name":"Mandelmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":614,"protein":21.0,"water":6},{"name":"Tahini","category":"Hülsenfrüchte, Nüsse & Samen","kcal":595,"protein":17.0,"water":6},{"name":"Chiasamen","category":"Hülsenfrüchte, Nüsse & Samen","kcal":486,"protein":16.5,"water":6},{"name":"Leinsamen","category":"Hülsenfrüchte, Nüsse & Samen","kcal":534,"protein":18.3,"water":6},{"name":"Sonnenblumenkerne","category":"Hülsenfrüchte, Nüsse & Samen","kcal":584,"protein":20.8,"water":6},{"name":"Kürbiskerne","category":"Hülsenfrüchte, Nüsse & Samen","kcal":559,"protein":30.2,"water":6},{"name":"Sesam","category":"Hülsenfrüchte, Nüsse & Samen","kcal":573,"protein":17.7,"water":6},{"name":"Hanfsamen","category":"Hülsenfrüchte, Nüsse & Samen","kcal":553,"protein":31.6,"water":6},{"name":"Mohn","category":"Hülsenfrüchte, Nüsse & Samen","kcal":525,"protein":18.0,"water":6},{"name":"Kokosraspeln","category":"Hülsenfrüchte, Nüsse & Samen","kcal":660,"protein":6.9,"water":6},{"name":"Maronen gegart","category":"Hülsenfrüchte, Nüsse & Samen","kcal":245,"protein":3.2,"water":6},{"name":"Lupinen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":119,"protein":15.6,"water":65},{"name":"Linsenpasta trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":350,"protein":25.0,"water":6},{"name":"Kichererbsenpasta trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":360,"protein":22.0,"water":6},{"name":"Olivenöl","category":"Fette, Aufstriche & Sonstiges","kcal":884,"protein":0,"water":1},{"name":"Rapsöl","category":"Fette, Aufstriche & Sonstiges","kcal":884,"protein":0,"water":1},{"name":"Sonnenblumenöl","category":"Fette, Aufstriche & Sonstiges","kcal":884,"protein":0,"water":1},{"name":"Butter","category":"Fette, Aufstriche & Sonstiges","kcal":717,"protein":0.9,"water":1},{"name":"Margarine","category":"Fette, Aufstriche & Sonstiges","kcal":717,"protein":0.2,"water":1},{"name":"Mayonnaise","category":"Fette, Aufstriche & Sonstiges","kcal":680,"protein":1.0,"water":25},{"name":"Pesto grün","category":"Fette, Aufstriche & Sonstiges","kcal":460,"protein":4.5,"water":25},{"name":"Guacamole","category":"Fette, Aufstriche & Sonstiges","kcal":150,"protein":2.0,"water":25},{"name":"Tomatenmark","category":"Fette, Aufstriche & Sonstiges","kcal":82,"protein":4.3,"water":25},{"name":"Ketchup","category":"Fette, Aufstriche & Sonstiges","kcal":112,"protein":1.3,"water":25},{"name":"Senf","category":"Fette, Aufstriche & Sonstiges","kcal":66,"protein":4.4,"water":25},{"name":"Honig","category":"Fette, Aufstriche & Sonstiges","kcal":304,"protein":0.3,"water":25},{"name":"Ahornsirup","category":"Fette, Aufstriche & Sonstiges","kcal":260,"protein":0,"water":25},{"name":"Marmelade","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":0.5,"water":25},{"name":"Nuss-Nougat-Creme","category":"Fette, Aufstriche & Sonstiges","kcal":539,"protein":6.3,"water":25},{"name":"Zartbitterschokolade 70%","category":"Fette, Aufstriche & Sonstiges","kcal":598,"protein":7.8,"water":25},{"name":"Vollmilchschokolade","category":"Fette, Aufstriche & Sonstiges","kcal":535,"protein":7.7,"water":25},{"name":"Weiße Schokolade","category":"Fette, Aufstriche & Sonstiges","kcal":539,"protein":5.9,"water":25},{"name":"Gummibärchen","category":"Fette, Aufstriche & Sonstiges","kcal":343,"protein":6.9,"water":25},{"name":"Vanilleeis","category":"Fette, Aufstriche & Sonstiges","kcal":207,"protein":3.5,"water":25},{"name":"Schokoladeneis","category":"Fette, Aufstriche & Sonstiges","kcal":216,"protein":3.8,"water":25},{"name":"Fruchteis","category":"Fette, Aufstriche & Sonstiges","kcal":130,"protein":0.5,"water":25},{"name":"Cheesecake","category":"Fette, Aufstriche & Sonstiges","kcal":321,"protein":5.5,"water":25},{"name":"Apfelkuchen","category":"Fette, Aufstriche & Sonstiges","kcal":237,"protein":2.4,"water":25},{"name":"Marmorkuchen","category":"Fette, Aufstriche & Sonstiges","kcal":389,"protein":5.5,"water":25},{"name":"Croissant","category":"Fette, Aufstriche & Sonstiges","kcal":406,"protein":8.2,"water":25},{"name":"Butterkeks","category":"Fette, Aufstriche & Sonstiges","kcal":480,"protein":6.5,"water":1},{"name":"Haferkeks","category":"Fette, Aufstriche & Sonstiges","kcal":450,"protein":7.0,"water":25},{"name":"Kartoffelchips","category":"Fette, Aufstriche & Sonstiges","kcal":536,"protein":7.0,"water":25},{"name":"Tortilla Chips","category":"Fette, Aufstriche & Sonstiges","kcal":500,"protein":7.0,"water":25},{"name":"Popcorn luftgepoppt","category":"Fette, Aufstriche & Sonstiges","kcal":387,"protein":12.9,"water":25},{"name":"Salzstangen","category":"Fette, Aufstriche & Sonstiges","kcal":380,"protein":10.0,"water":25},{"name":"Pizza Margherita","category":"Fette, Aufstriche & Sonstiges","kcal":266,"protein":11.0,"water":25},{"name":"Pizza Salami","category":"Fette, Aufstriche & Sonstiges","kcal":280,"protein":12.0,"water":25},{"name":"Flammkuchen","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":8.0,"water":25},{"name":"Döner Kebab","category":"Fette, Aufstriche & Sonstiges","kcal":215,"protein":12.0,"water":25},{"name":"Hamburger","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":13.0,"water":25},{"name":"Cheeseburger","category":"Fette, Aufstriche & Sonstiges","kcal":286,"protein":15.0,"water":25},{"name":"Chicken Burger","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":14.0,"water":25},{"name":"Sushi Lachs Maki","category":"Fette, Aufstriche & Sonstiges","kcal":150,"protein":6.0,"water":25}];
+function foodTone(cat){
+ const m={"Obst":"food-fruit","Gemüse":"food-veg","Getreide & Beilagen":"food-carb","Milchprodukte & Eier":"food-dairy","Fleisch, Fisch & Protein":"food-protein","Hülsenfrüchte, Nüsse & Samen":"food-legume","Fette, Aufstriche & Sonstiges":"food-other"};
+ return m[cat]||"food-other"
+}
+function todayFoodEntries(){
+ const today=profileDateKey();
+ nutrition.foodLog=Array.isArray(nutrition.foodLog)?nutrition.foodLog:[];
+ return nutrition.foodLog.filter(x=>x.date===today)
+}
+function recalcFoodTotals(){
+ const foods=todayFoodEntries(),drinks=todayHydrationEntries();
+ nutrition.consumedCalories=Math.round(foods.reduce((s,x)=>s+Number(x.kcal||0),0)+drinks.reduce((s,x)=>s+Number(x.caloriesPer250||0)*Number(x.size||0)/250,0));
+ nutrition.consumedProtein=Math.round((foods.reduce((s,x)=>s+Number(x.protein||0),0)+drinks.reduce((s,x)=>s+Number(x.protein||0),0))*10)/10;
+ nutrition.hydration=Math.round(foods.reduce((s,x)=>s+Number(x.water||0),0)+drinks.reduce((s,x)=>s+Number(x.size||0)*Number(x.hydration||0)/100,0));
+ nutrition.caffeineToday=Math.round(drinks.reduce((s,x)=>s+Number(x.caffeinePerServing||0),0))
+}
+function addFoodEntry(food,grams){
+ grams=Math.max(1,Number(grams)||100);
+ nutrition.foodLog=Array.isArray(nutrition.foodLog)?nutrition.foodLog:[];
+ nutrition.foodLog.push({id:uid(),date:profileDateKey(),name:food.name,category:food.category,grams,kcal:Math.round(food.kcal*grams/100),protein:Math.round(food.protein*grams/100*10)/10,water:Math.round(Number(food.water||0)*grams/100)});
+ recalcFoodTotals();saveAll();renderProfile()
+}
+function deleteFoodEntry(id){
+ nutrition.foodLog=(nutrition.foodLog||[]).filter(x=>String(x.id)!==String(id));recalcFoodTotals();saveAll();renderProfile()
+}
+function openFoodSearch(){
+ let q="";
+ const rows=()=>FOOD_DB.filter(f=>!q||f.name.toLowerCase().includes(q)).slice(0,80);
+ const markup=()=>`<div class="search food-search"><span class="search-loupe">⌕</span><input id="foodSearchInput" class="field" placeholder="Lebensmittel suchen" value="${esc(q)}"><button id="foodSearchClear" class="${q?"":"hidden"}">×</button></div><div class="small food-source-note">Nährwerte pro 100 g · Orientierungswerte nach USDA FoodData Central</div><div id="foodSearchRows">${rows().map(f=>`<button class="food-result ${foodTone(f.category)}" data-food-name="${esc(f.name)}"><div><strong>${esc(f.name)}</strong><small>${esc(f.category)}</small></div><span>${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water)} g Wasser</span></button>`).join("")}</div>`;
+ const bind=()=>{
+  $("foodSearchInput").oninput=()=>{q=$("foodSearchInput").value.toLowerCase();render()};
+  $("foodSearchClear").onclick=()=>{q="";render();requestAnimationFrame(()=>$("foodSearchInput").focus())};
+  document.querySelectorAll("[data-food-name]").forEach(b=>b.onclick=()=>{const f=FOOD_DB.find(x=>x.name===b.dataset.foodName);openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water)} g Wasser je 100 g</div></div><div class="form-field"><label>MENGE G</label><input id="foodGramInput" class="field" inputmode="decimal" value="100"></div><button id="foodAddConfirm" class="primary" style="width:100%">Hinzufügen</button>`,()=>{$("foodAddConfirm").onclick=()=>{addFoodEntry(f,Number(String($("foodGramInput").value).replace(",",".")));closeSheet({all:true})}})})
+ };
+ const render=()=>{$("sheetBody").innerHTML=markup();bind()};
+ openSheet("Lebensmittel hinzufügen","");render()
 }
 const BUILTIN_DRINKS=[
 {id:"water",name:"Wasser",icon:"💧",kind:"water",size:250,hydration:100,calories:0,caffeine:0},
@@ -424,6 +573,8 @@ const BUILTIN_DRINKS=[
 {id:"cappuccino",name:"Cappuccino",icon:"☕",kind:"coffee",size:200,hydration:97,calories:80,caffeine:60},
 {id:"oat-cappuccino",name:"Hafer Cappuccino",icon:"☕",kind:"coffee",size:200,hydration:96,calories:90,caffeine:60},
 {id:"espresso",name:"Espresso",icon:"☕",kind:"coffee",size:30,hydration:87,calories:0,caffeine:8},
+{id:"protein-shake",name:"Protein-Shake",icon:"🥛",kind:"protein",size:500,hydration:110,calories:57,caffeine:0,protein:20},
+{id:"protein-caffeine",name:"Protein-Koffein",icon:"🥛",kind:"protein",size:500,hydration:110,calories:57,caffeine:80,protein:20},
 {id:"herbal-tea",name:"Kräuter Tee",icon:"🍵",kind:"tea",size:250,hydration:100,calories:0,caffeine:0},
 {id:"green-tea",name:"Grüner Tee",icon:"🍵",kind:"tea",size:250,hydration:99,calories:0,caffeine:25},
 {id:"black-tea",name:"Schwarzer Tee",icon:"🍵",kind:"tea",size:250,hydration:99,calories:0,caffeine:45},
@@ -453,17 +604,38 @@ function drinkKind(d){
 function drinkTone(d){return`drink-kind-${drinkKind(d)} drink-id-${String(d.id||"").replace(/[^a-z0-9_-]/gi,"-")}`}
 function ensureDrinks(){
  const existing=Array.isArray(nutrition.drinks)?nutrition.drinks:[];
- const byName=new Map(existing.map(d=>[String(d.name||"").toLowerCase(),d]));
  const deleted=new Set((nutrition.deletedBuiltinDrinks||[]).map(String));
- const merged=[];
- BUILTIN_DRINKS.forEach(base=>{if(deleted.has(String(base.id)))return;const old=byName.get(base.name.toLowerCase());merged.push(old?{...base,...old,id:old.id||base.id,icon:old.icon||base.icon,kind:old.kind||base.kind}:clone(base));byName.delete(base.name.toLowerCase())});
- byName.forEach(d=>merged.push(d));
- nutrition.drinks=merged;
+ const builtinById=new Map(BUILTIN_DRINKS.map(x=>[String(x.id),x]));
+ const builtinByName=new Map(BUILTIN_DRINKS.map(x=>[String(x.name).toLowerCase(),x]));
+ const merged=[],seen=new Set();
+ // Keep the user's current order.
+ existing.forEach(old=>{
+  const base=builtinById.get(String(old.id))||builtinByName.get(String(old.name||"").toLowerCase());
+  if(base&&deleted.has(String(base.id))&&String(base.id)!=="water")return;
+  const d=base?{...base,...old,id:old.id||base.id,icon:old.icon||base.icon,kind:old.kind||base.kind}:old;
+  merged.push(d);seen.add(String(d.id||d.name))
+ });
+ // Append missing built-ins; Water is always restored and never deletable.
+ BUILTIN_DRINKS.forEach(base=>{
+  if(deleted.has(String(base.id))&&String(base.id)!=="water")return;
+  if(!merged.some(d=>String(d.id)===String(base.id)||String(d.name||"").toLowerCase()===String(base.name).toLowerCase()))merged.push(clone(base))
+ });
+ nutrition.drinks=merged
 }
 function touchInput(el){if(el)el.dataset.touched="1"}
 function loadData(){plans=(read(STORAGE.plans,[])||[]).map(normPlan);customExercises=read(STORAGE.custom,[])||[];history=read(STORAGE.history,[])||[];measurements=read(STORAGE.measurements,[])||[];nutrition=read(STORAGE.nutrition,{calories:"",protein:"",hydration:0})||{};profile=read(STORAGE.profile,{})||{};activeWorkout=read(STORAGE.active,null);{const dated=loadDatedWeeks()[weekKeyForOffset(0)];weekPlan=dated||read(WEEK_KEY,[[],[],[],[],[],[],[]])||[[],[],[],[],[],[],[]]}if(!Array.isArray(weekPlan)||weekPlan.length!==7)weekPlan=[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x.filter(id=>plans.some(p=>String(p.id)===String(id))):(x!=null&&plans.some(p=>String(p.id)===String(x))?[x]:[]))}
 function showTab(name,{reset=false}={}){tabScroll[currentTab]=window.scrollY||0;document.querySelectorAll(".tab-screen").forEach(x=>x.classList.add("hidden"));$("tab-"+name).classList.remove("hidden");currentTab=name;document.querySelectorAll("#bottomNav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));renderTab(name);requestAnimationFrame(()=>window.scrollTo({top:reset?0:(tabScroll[name]||0),behavior:"auto"}));persistUI()}
-document.querySelectorAll("#bottomNav button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab,{reset:b.dataset.tab===currentTab}));
+function resetTabToStandard(name){
+ // A deliberate tab tap means: close transient tasks/sheets and show the canonical tab screen.
+ document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];sheetStack=[];$("sheetWrap")?.classList.add("hidden");exerciseDetailReturn=null;$("bottomNav").classList.remove("hidden");
+ const a=document.activeElement;if(a&&["INPUT","TEXTAREA","SELECT"].includes(a.tagName))a.blur();
+ if(name==="exercises"){exType="Alle";exMuscles.clear();exercisePickerState={q:"",type:"Alle",muscles:[]};const s=$("exerciseSearch");if(s)s.value=""}
+ if(name==="plans"){plansQuickEdit=false;document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))};if(name==="profile")profileDayOffset=0
+ if(name==="training"){document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
+ if(name==="week"){document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
+ tabScroll[name]=0
+}
+document.querySelectorAll("#bottomNav button").forEach(b=>b.onclick=()=>{resetTabToStandard(b.dataset.tab);showTab(b.dataset.tab,{reset:true})});
 function openPage(id,render){$(id)?.classList.add("keyboard-safe");
  const visible=document.querySelector(".page:not(.hidden)");
  if(visible)pageStack.push({page:visible.id,scroll:visible.scrollTop||0});
@@ -584,17 +756,53 @@ function sortedPlans(){const a=[...plans];a.sort((x,y)=>{if(planSort.key==="name
 let plansQuickEdit=false;
 function renderPlans(){const defs=[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]];$("planSortChips").innerHTML=defs.map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("");document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.sort)planSort.dir*=-1;else{planSort.key=b.dataset.sort;planSort.dir=1}renderPlans()});$("planList").classList.toggle("quick-edit",plansQuickEdit);
  $("plansEditBtn").textContent=plansQuickEdit?"Fertig":"Bearbeiten";
- $("planList").innerHTML=sortedPlans().map(p=>`<div class="plan-card ${plansQuickEdit?"plan-quick-edit":""}" data-plan="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span class="chev">›</span>${plansQuickEdit?`<button class="plan-quick-delete" data-quick-delete="${p.id}" aria-label="${esc(p.name)} löschen">−</button>`:`<button class="plan-swipe-delete" data-swipe-delete="${p.id}">Löschen</button>`}</div>`).join("");document.querySelectorAll("[data-plan]").forEach(card=>{const id=Number(card.dataset.plan);let timer,startX=0,startY=0,dx=0,dy=0,longFired=false;const cancelHold=()=>{clearTimeout(timer);timer=null};card.onclick=e=>{if(plansQuickEdit||e.target.closest("[data-swipe-delete],[data-quick-delete]")||longFired)return;editPlan(id)};card.oncontextmenu=e=>e.preventDefault();card.onpointerdown=e=>{startX=e.clientX;startY=e.clientY;dx=0;dy=0;longFired=false;cancelHold();timer=setTimeout(()=>{longFired=true;openPlanLongActions(id)},950)};card.onpointermove=e=>{dx=e.clientX-startX;dy=e.clientY-startY;if(Math.abs(dx)>12||Math.abs(dy)>12)cancelHold()};card.onpointerup=()=>{cancelHold();if(!longFired){if(dx<-45)card.classList.add("swipe-open");else if(dx>25)card.classList.remove("swipe-open")}};card.onpointercancel=cancelHold;card.onpointerleave=cancelHold});document.querySelectorAll("[data-swipe-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();deletePlanAsked(Number(b.dataset.swipeDelete))});
+ $("planList").innerHTML=sortedPlans().map(p=>`<div class="plan-card ${plansQuickEdit?"plan-quick-edit":""}" data-plan="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span class="chev">›</span>${plansQuickEdit?`<button class="plan-quick-delete" data-quick-delete="${p.id}" aria-label="${esc(p.name)} löschen">−</button>`:`<button class="plan-swipe-delete" data-swipe-delete="${p.id}">Löschen</button>`}</div>`).join("");document.querySelectorAll("[data-plan]").forEach(card=>{const id=Number(card.dataset.plan);let timer,startX=0,startY=0,dx=0,dy=0,longFired=false;const cancelHold=()=>{clearTimeout(timer);timer=null};card.onclick=e=>{if(plansQuickEdit||e.target.closest("[data-swipe-delete],[data-quick-delete]")||longFired)return;editPlan(id)};card.oncontextmenu=e=>e.preventDefault();card.onpointerdown=e=>{startX=e.clientX;startY=e.clientY;dx=0;dy=0;longFired=false;cancelHold();timer=setTimeout(()=>{longFired=true;openPlanLongActions(id)},950)};card.onpointermove=e=>{dx=e.clientX-startX;dy=e.clientY-startY;if(Math.abs(dx)>12||Math.abs(dy)>12)cancelHold()};card.onpointerup=()=>{cancelHold();if(!longFired){if(dx<-45){closeAllSwipeActions(card);card.classList.add("swipe-open")}else if(dx>25)card.classList.remove("swipe-open")}};card.onpointercancel=cancelHold;card.onpointerleave=cancelHold});document.querySelectorAll("[data-swipe-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();deletePlanAsked(Number(b.dataset.swipeDelete))});
  document.querySelectorAll("[data-quick-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();const id=Number(b.dataset.quickDelete);plans=plans.filter(x=>x.id!==id);saveAll();renderPlans();renderWeek()})
 }
 $("plansEditBtn").onclick=()=>{plansQuickEdit=!plansQuickEdit;renderPlans()};
+function closeAllSwipeActions(except=null){document.querySelectorAll(".swipe-open").forEach(x=>{if(x!==except)x.classList.remove("swipe-open")})}
+document.addEventListener("pointerdown",e=>{const card=e.target.closest(".swipe-open");if(!card)closeAllSwipeActions()},{passive:true});
+document.addEventListener("scroll",()=>closeAllSwipeActions(),true);
+document.addEventListener("touchstart",e=>{if(!e.target.closest(".swipe-open"))closeAllSwipeActions()},{passive:true});
+
 function deletePlanAsked(id){const p=plans.find(x=>x.id===id);if(p&&confirm(`„${p.name}“ wirklich löschen?`)){plans=plans.filter(x=>x.id!==id);saveAll();renderPlans();renderWeek()}}
 function openPlanLongActions(id){const p=plans.find(x=>x.id===id);if(!p)return;openSheet(p.name,`<button id="duplicatePlanBtn" class="secondary" style="width:100%">Duplizieren</button><button id="deletePlanBtn" class="secondary danger" style="width:100%;margin-top:8px">Löschen</button>`);$("duplicatePlanBtn").onclick=()=>{plans.push({...clone(p),id:uid(),name:p.name+" Kopie",createdAt:Date.now(),updatedAt:Date.now()});saveAll();closeSheet({all:true});renderPlans()};$("deletePlanBtn").onclick=()=>{closeSheet({all:true});deletePlanAsked(id)}}
-$("newPlanBtn").onclick=()=>{currentPlan={id:uid(),name:"",createdAt:Date.now(),updatedAt:Date.now(),exercises:[]};setEditorBaseline();openPlanEditor()};
-function editPlan(id){currentPlan=clone(plans.find(p=>p.id===id));setEditorBaseline();openPlanEditor()}
+$("newPlanBtn").onclick=()=>{currentPlan={id:uid(),name:"",createdAt:Date.now(),updatedAt:Date.now(),exercises:[],_isNew:true};setEditorBaseline();openPlanEditor()};
+function planBaseName(name){
+ return String(name||"Trainingsplan").replace(/\s+\d+$/,"").trim()||"Trainingsplan"
+}
+function nextPlanVersionName(name){
+ const base=planBaseName(name),nums=plans.map(p=>{const m=String(p.name||"").match(new RegExp(`^${base.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}\\s+(\\d+)$`));return m?Number(m[1]):String(p.name||"")===base?1:0});
+ const max=Math.max(1,...nums);return `${base} ${max+1}`
+}
+function isExistingPlanEditor(){return !!currentPlan?._editingSourceId}
+function editPlan(id){
+ const src=plans.find(p=>p.id===id);if(!src)return;
+ currentPlan=clone(src);currentPlan._editingSourceId=src.id;currentPlan._originalName=src.name;
+ // Keep editor familiar; the numbered name is assigned only if changes are explicitly saved.
+ setEditorBaseline();openPlanEditor()
+}
 function openPlanEditor(){$("planName").value=currentPlan.name||"";renderEditorExercises();openPage("planEditorPage")}
-$("planEditorBack").onclick=()=>{if(!editorHasChanges()){closePage();return}openSheet("Änderungen speichern?",`<p class="muted">Möchtest du deine Änderungen speichern oder verwerfen?</p><div class="grid2"><button id="discardPlanChanges" class="secondary danger">Verwerfen</button><button id="savePlanChanges" class="primary">Speichern</button></div>`);$("discardPlanChanges").onclick=()=>{closeSheet({all:true});editorDirty=false;closePage()};$("savePlanChanges").onclick=()=>{if(saveCurrentPlan()){closeSheet({all:true});editorDirty=false;closePage();renderPlans()}}};$("planName").addEventListener("input",()=>{if(currentPlan){currentPlan.name=$("planName").value;markEditorDirty()}});
-function saveCurrentPlan(){const n=$("planName").value.trim();if(!n)return alert("Bitte Planname eingeben.");if(!(currentPlan.exercises||[]).length){alert("Ein Trainingsplan braucht mindestens eine Übung.");return null}currentPlan.name=n;currentPlan.updatedAt=Date.now();const i=plans.findIndex(x=>x.id===currentPlan.id);i>=0?plans[i]=clone(currentPlan):plans.push(clone(currentPlan));saveAll();setEditorBaseline();return currentPlan}
+$("planEditorBack").onclick=()=>{
+ if(!editorHasChanges()){closePage();return}
+ openSheet("Änderungen speichern?",`<p class="muted">Sollen die Änderungen an diesem Plan wirklich gespeichert werden?</p><div class="grid2"><button id="discardPlanChanges" class="secondary danger">Nein, verwerfen</button><button id="savePlanChanges" class="primary">Ja, speichern</button></div>`);
+ $("discardPlanChanges").onclick=()=>{closeSheet({all:true});editorDirty=false;closePage()};
+ $("savePlanChanges").onclick=()=>{if(saveCurrentPlan()){closeSheet({all:true});editorDirty=false;closePage();renderPlans()}}
+};$("planName").addEventListener("input",()=>{if(currentPlan){currentPlan.name=$("planName").value;markEditorDirty()}});
+function saveCurrentPlan(){
+ const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");
+ if(!(currentPlan.exercises||[]).length){alert("Ein Trainingsplan braucht mindestens eine Übung.");return null}
+ let saved=clone(currentPlan);
+ if(currentPlan._editingSourceId){
+  saved.id=uid();saved.name=nextPlanVersionName(currentPlan._originalName||entered);saved.createdAt=Date.now();saved.updatedAt=Date.now();saved.sourcePlanId=currentPlan._editingSourceId;
+  delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;
+  plans.push(clone(saved))
+ }else{
+  saved.name=entered;saved.updatedAt=Date.now();delete saved._isNew;delete saved._editingSourceId;delete saved._originalName;
+  plans.push(clone(saved))
+ }
+ currentPlan=clone(saved);saveAll();setEditorBaseline();return saved
+}
 $("planSaveBtn").onclick=()=>{
  if(!editorHasChanges()){closePage();showTab("plans");return}
  openSheet("Plan wirklich speichern?",`<p class="muted">Möchtest du die Änderungen an diesem Trainingsplan wirklich speichern?</p><div class="grid2"><button id="cancelPlanSave" class="secondary">Abbrechen</button><button id="confirmPlanSave" class="primary">Speichern</button></div>`);
@@ -606,7 +814,12 @@ function confirmAndStartPlan(p){
  openSheet("Training wirklich starten?",`<p class="muted" style="margin:0 0 16px">„${esc(p.name)}“ jetzt starten?</p><button id="reallyStartPlan" class="primary" style="width:100%">Training starten</button>`);
  $("reallyStartPlan").onclick=()=>{closeSheet({all:true});startWorkout(p)}
 }
-function startCurrentEditorPlan(){const p=saveCurrentPlan();if(p)confirmAndStartPlan(p)}
+function currentEditorTransientPlan(){
+ const n=$("planName").value.trim();if(!n){alert("Bitte Planname eingeben.");return null}
+ if(!(currentPlan.exercises||[]).length){alert("Ein Trainingsplan braucht mindestens eine Übung.");return null}
+ const p=clone(currentPlan);p.name=n;p.id=`draft_${uid()}`;p.sourcePlanId=currentPlan._editingSourceId||null;p.transientEditorPlan=true;delete p._editingSourceId;delete p._originalName;delete p._isNew;return p
+}
+function startCurrentEditorPlan(){const p=currentEditorTransientPlan();if(p)confirmAndStartPlan(p)}
 $("planPlayBtn").onclick=startCurrentEditorPlan;
 function planPrescription(e){
  const m=e.setTechnique||"standard";
@@ -648,14 +861,108 @@ function renderEditorExercises(){
 }
 function replacePlanExercise(i){const old=currentPlan.exercises[i];openExercisePicker(name=>{const fresh=findExercise(name),keep={setTechnique:old.setTechnique,measureMode:old.measureMode,reps:old.reps,sets:old.sets,rest:old.rest,methodData:clone(old.methodData||{}),note:old.note,variant:"",perSide:old.perSide,linkedExerciseNames:clone(old.linkedExerciseNames||[])};currentPlan.exercises[i]=normPlanEx({...fresh,...keep});markEditorDirty();renderEditorExercises();toast("Übung ausgetauscht – Einstellungen beibehalten")},{exclude:new Set([old.name])})}
 function detachExerciseGroup(i){const e=currentPlan.exercises[i];e.linkedExerciseNames=[];e.techniqueGroup=null;e.setTechnique="standard";if(e.reps==="20-30")e.reps="8-12";markEditorDirty();renderEditorExercises();toast("Verknüpfung gelöst – Übung ist jetzt Standard")}
-function addExerciseToCurrentPlanAndConfigure(name){
- const e=normPlanEx({...findExercise(name),sets:3,setTechnique:"standard",reps:"8-12",rest:90});
- currentPlan.exercises.push(e);
- const index=currentPlan.exercises.length-1;
- markEditorDirty();renderEditorExercises();persistUI();
- configureExercise(index);
+let planAddFlow=null;
+function cancelPlanAddFlow(){
+ planAddFlow=null;sheetStack=[];$("sheetWrap").classList.add("hidden")
 }
-$("editorAddExerciseBtn").onclick=()=>openExercisePicker(addExerciseToCurrentPlanAndConfigure,{detailAdd:true});
+function planAddTypes(all){return orderedExerciseTypes(all)}
+function planAddMuscles(all){return orderedMuscles(all)}
+function startPlanExerciseAddFlow(){
+ planAddFlow={step:"picker",q:exercisePickerState.q||"",type:exercisePickerState.type||"Alle",muscles:new Set(exercisePickerState.muscles||[]),drafts:[],history:[]};
+ renderPlanAddPicker()
+}
+function planAddFiltered(){
+ const all=allExercises(),f=planAddFlow;
+ return all.filter(x=>(f.type==="Alle"||x.category===f.type)&&(!f.muscles.size||[...f.muscles].every(m=>(x.muscles||[]).includes(m)))&&(!f.q||x.name.toLowerCase().includes(f.q))).sort(groupedExerciseSort)
+}
+function renderPlanAddPicker(){
+ if(!planAddFlow)return;
+ const f=planAddFlow,all=allExercises(),rows=planAddFiltered(),types=planAddTypes(all),ms=planAddMuscles(all);
+ f.step="picker";
+ renderSheetState({title:f.drafts.length?"Weitere Übung auswählen":"Übung hinzufügen",scroll:0,body:`<div class="search"><input id="planAddSearch" class="field" placeholder="Übung suchen" value="${esc(f.q)}"><button id="planAddClear">×</button></div><div class="chips">${types.map(x=>`<button class="chip ${f.type===x?"active":""}" data-pa-type="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="chips">${ms.map(x=>`<button class="chip ${(x==="Alle"&&!f.muscles.size)||f.muscles.has(x)?"active":""}" data-pa-muscle="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="small" id="planAddCount" style="margin:2px 0 8px">${rows.length} Übungen</div><div id="planAddRows">${planAddRowsMarkup(rows)}</div>`});
+ const search=$("planAddSearch");
+ const refresh=()=>{const rows=planAddFiltered();$("planAddCount").textContent=`${rows.length} Übungen`;$("planAddRows").innerHTML=planAddRowsMarkup(rows);bindPlanAddRows()};
+ search.oninput=()=>{f.q=search.value.toLowerCase();exercisePickerState.q=f.q;refresh()};
+ $("planAddClear").onclick=()=>{f.q="";search.value="";exercisePickerState.q="";refresh();search.focus()};
+ document.querySelectorAll("[data-pa-type]").forEach(b=>b.onclick=()=>{f.type=(f.type===b.dataset.paType&&f.type!=="Alle")?"Alle":b.dataset.paType;exercisePickerState.type=f.type;renderPlanAddPicker()});
+ document.querySelectorAll("[data-pa-muscle]").forEach(b=>b.onclick=()=>{const m=b.dataset.paMuscle;if(m==="Alle")f.muscles.clear();else f.muscles.has(m)?f.muscles.delete(m):f.muscles.add(m);exercisePickerState.muscles=[...f.muscles];renderPlanAddPicker()});
+ bindPlanAddRows()
+}
+function planAddRowsMarkup(rows){
+ return rows.map(x=>`<div class="exercise-card picker-quick-card"><button class="picker-info" type="button" data-pa-info="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${esc(x.category)} · ${esc((x.muscles||[]).join(", "))}</small></div></button><button class="picker-quick-add" type="button" data-pa-pick="${esc(x.name)}" aria-label="${esc(x.name)} hinzufügen">+</button></div>`).join("")
+}
+function bindPlanAddRows(){
+ document.querySelectorAll("[data-pa-pick]").forEach(b=>b.onclick=()=>beginPlanAddConfig(b.dataset.paPick,"picker"));
+ document.querySelectorAll("[data-pa-info]").forEach(b=>b.onclick=()=>renderPlanAddDetail(b.dataset.paInfo))
+}
+function renderPlanAddDetail(name){
+ if(!planAddFlow)return;
+ planAddFlow.step="detail";planAddFlow.detailName=name;
+ const e=findExercise(name),guide=executionText(e);
+ renderSheetState({title:name,scroll:0,body:`<div class="exercise-media-placeholder">+</div><div class="detail-section"><div class="small">TRAININGSART</div><strong>${esc(e.category)}</strong></div><div class="detail-section"><div class="small">MUSKELGRUPPEN</div><div>${esc((e.muscles||[]).join(" · "))}</div></div><div class="detail-section"><div class="small">AUSFÜHRUNG</div><div class="detail-copy">${esc(guide)}</div></div><button id="planAddFromDetail" class="primary" style="width:100%;margin-top:12px">+ Zum Plan</button>`});
+ $("planAddFromDetail").onclick=()=>beginPlanAddConfig(name,"detail")
+}
+function beginPlanAddConfig(name,from="picker",seed=null){
+ if(!planAddFlow)return;
+ const draft=seed?clone(seed):normPlanEx({...findExercise(name),sets:3,setTechnique:"standard",reps:"8-12",rest:90});
+ planAddFlow.current=draft;planAddFlow.from=from;planAddFlow.step="config";
+ renderPlanAddConfig()
+}
+function renderPlanAddConfig(){
+ if(!planAddFlow?.current)return;
+ const e=planAddFlow.current;
+ renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${Array.from({length:10},(_,n)=>`<option ${e.sets===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>WDH.-VORGABE</label>${repPresetMarkup(e)}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
+ document.querySelectorAll("[data-pa-method]").forEach(b=>b.onclick=()=>{e.setTechnique=b.dataset.paMethod;e.reps=defaultRepsForMethod(e.setTechnique);renderPlanAddConfig()});
+ document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;if(e.reps==="Max Hold"){e.measureMode="time";e.timeSeconds=e.timeSeconds||60}renderPlanAddConfig()});
+ $("paConfirm").onclick=()=>confirmPlanAddDraft()
+}
+function planAddMethodExtra(e){
+ if(e.setTechnique==="giant"){const c=Math.max(3,Number(e.methodData?.giantCount)||3);return`<div class="form-field"><label>ANZAHL ÜBUNGEN</label><select id="paGiantCount" class="field">${[3,4,5,6].map(n=>`<option ${c===n?"selected":""}>${n}</option>`).join("")}</select></div>`}
+ if(e.setTechnique==="dropset")return`<div class="grid2"><div class="form-field"><label>DROPS</label><select id="paDrops" class="field">${[1,2,3,4].map(n=>`<option ${Number(e.methodData?.dropCount||2)===n?"selected":""}>${n}</option>`).join("")}</select></div><div class="form-field"><label>REDUKTION %</label><select id="paDropPct" class="field">${[10,15,20,25,30].map(n=>`<option ${Number(e.methodData?.dropPercent||20)===n?"selected":""}>${n}</option>`).join("")}</select></div></div>`;
+ return""
+}
+function savePlanAddFormToDraft(){
+ const e=planAddFlow.current;e.sets=Number($("paSets").value);e.rest=Number($("paRest").value);if($("paVariant"))e.variant=$("paVariant").value;e.perSide=!!$("paPerSide")?.checked;e.methodData=e.methodData||{};
+ if($("paGiantCount"))e.methodData.giantCount=Number($("paGiantCount").value)||3;
+ if($("paDrops"))e.methodData.dropCount=Number($("paDrops").value)||2;
+ if($("paDropPct"))e.methodData.dropPercent=Number($("paDropPct").value)||20
+}
+function confirmPlanAddDraft(){
+ if(!planAddFlow?.current)return;savePlanAddFormToDraft();
+ const e=clone(planAddFlow.current),method=e.setTechnique||"standard";
+ if(methodNeedsPartners(method)){
+  if(!planAddFlow.group){const target=method==="giant"?(e.methodData.giantCount||3):2;planAddFlow.group={id:`tg_${uid()}`,method,target};e.techniqueGroup=planAddFlow.group.id}
+  else e.techniqueGroup=planAddFlow.group.id;
+  planAddFlow.drafts.push(e);
+  if(planAddFlow.drafts.length<planAddFlow.group.target){planAddFlow.current=null;renderPlanAddPicker();return}
+  commitPlanAddFlow();return
+ }
+ planAddFlow.drafts.push(e);commitPlanAddFlow()
+}
+function commitPlanAddFlow(){
+ if(!planAddFlow?.drafts?.length)return;
+ const drafts=planAddFlow.drafts.map(clone);
+ // Only now does the exercise/group become part of the plan.
+ currentPlan.exercises.push(...drafts);
+ markEditorDirty();renderEditorExercises();persistUI();
+ planAddFlow=null;sheetStack=[];$("sheetWrap").classList.add("hidden");toast(drafts.length>1?`${drafts.length} Übungen hinzugefügt`:"Übung hinzugefügt")
+}
+function planAddBack(){
+ if(!planAddFlow){closeSheet({all:false});return}
+ if(planAddFlow.step==="config"){
+  // No commit: go back and allow a different exercise to be chosen.
+  planAddFlow.current=null;
+  if(planAddFlow.from==="detail"&&planAddFlow.detailName)renderPlanAddDetail(planAddFlow.detailName);else renderPlanAddPicker();
+  return
+ }
+ if(planAddFlow.step==="detail"){renderPlanAddPicker();return}
+ if(planAddFlow.step==="picker"&&planAddFlow.drafts.length){
+  // Return to the previously confirmed draft and edit it before the whole group is committed.
+  const prev=planAddFlow.drafts.pop();planAddFlow.current=prev;planAddFlow.from="picker";planAddFlow.step="config";renderPlanAddConfig();return
+ }
+ cancelPlanAddFlow()
+}
+$("editorAddExerciseBtn").onclick=startPlanExerciseAddFlow;
 $("editorPreviewBtn").onclick=()=>openPreview(currentPlan);$("editorReorderBtn").onclick=()=>openReorderSheet();$("editorStartTrainingBtn").onclick=startCurrentEditorPlan;
 function openReorderSheet(){openSheet("Reihenfolge ändern",currentPlan.exercises.map((e,i)=>`<div class="exercise-card"><div><strong>${i+1}. ${esc(e.name)}</strong></div><div class="row"><button class="icon-btn" data-up="${i}">↑</button><button class="icon-btn" data-down="${i}">↓</button></div></div>`).join(""));document.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>moveEx(Number(b.dataset.up),-1));document.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>moveEx(Number(b.dataset.down),1))}
 function moveEx(i,d){const j=i+d;if(j<0||j>=currentPlan.exercises.length)return;[currentPlan.exercises[i],currentPlan.exercises[j]]=[currentPlan.exercises[j],currentPlan.exercises[i]];markEditorDirty();closeSheet();renderEditorExercises();openReorderSheet()}
@@ -727,8 +1034,9 @@ function detachExerciseGroup(i){
  markEditorDirty();renderEditorExercises();toast("Verknüpfung gelöst")
 }
 
+let exercisePickerState={q:"",type:"Alle",muscles:[]};
 function openExercisePicker(onPick,{returnToSheet=false,exclude=new Set(),title="Übung hinzufügen",detailAdd=false}={}){
- const all=allExercises().filter(x=>!exclude.has(x.name));let q="",type="Alle",muscles=new Set();
+ const all=allExercises().filter(x=>!exclude.has(x.name));let q=exercisePickerState.q||"",type=exercisePickerState.type||"Alle",muscles=new Set(exercisePickerState.muscles||[]);
  const filteredRows=()=>all.filter(x=>(type==="Alle"||x.category===type)&&(!muscles.size||[...muscles].every(m=>(x.muscles||[]).includes(m)))&&(!q||x.name.toLowerCase().includes(q))).sort(groupedExerciseSort);
  const rowsMarkup=rows=>rows.map(x=>`<div class="exercise-card picker-quick-card"><button class="picker-info" type="button" data-pick-info="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${esc(x.category)} · ${esc((x.muscles||[]).join(", "))}</small></div></button><button class="picker-quick-add" type="button" data-pick="${esc(x.name)}" aria-label="${esc(x.name)} hinzufügen">+</button></div>`).join("");
  const bindRows=()=>{
@@ -749,10 +1057,10 @@ function openExercisePicker(onPick,{returnToSheet=false,exclude=new Set(),title=
  const render=()=>{
   const types=orderedExerciseTypes(all),ms=orderedMuscles(all),rows=filteredRows();
   $("sheetBody").innerHTML=`<div class="search"><input id="pickerSearch" class="field" placeholder="Übung suchen" value="${esc(q)}"><button id="pickerClear">×</button></div><div class="chips">${types.map(x=>`<button class="chip ${type===x?"active":""}" data-pt="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="chips">${ms.map(x=>`<button class="chip ${(x==="Alle"&&!muscles.size)||muscles.has(x)?"active":""}" data-pm="${esc(x)}">${esc(x)}</button>`).join("")}</div><div id="pickerCount" class="small" style="margin:2px 0 8px">${rows.length} Übungen</div><div id="pickerRows">${rowsMarkup(rows)}</div>`;
-  $("pickerSearch").oninput=()=>{q=$("pickerSearch").value.toLowerCase();refreshRows()};
-  $("pickerClear").onclick=()=>{q="";$("pickerSearch").value="";refreshRows();$("pickerSearch").focus()};
-  document.querySelectorAll("[data-pt]").forEach(b=>b.onclick=()=>{type=(type===b.dataset.pt&&type!=="Alle")?"Alle":b.dataset.pt;render()});
-  document.querySelectorAll("[data-pm]").forEach(b=>b.onclick=()=>{const m=b.dataset.pm;if(m==="Alle")muscles.clear();else muscles.has(m)?muscles.delete(m):muscles.add(m);render()});
+  $("pickerSearch").oninput=()=>{q=$("pickerSearch").value.toLowerCase();exercisePickerState={q,type,muscles:[...muscles]};refreshRows()};
+  $("pickerClear").onclick=()=>{q="";exercisePickerState={q,type,muscles:[...muscles]};$("pickerSearch").value="";refreshRows();$("pickerSearch").focus()};
+  document.querySelectorAll("[data-pt]").forEach(b=>b.onclick=()=>{type=(type===b.dataset.pt&&type!=="Alle")?"Alle":b.dataset.pt;exercisePickerState={q,type,muscles:[...muscles]};render()});
+  document.querySelectorAll("[data-pm]").forEach(b=>b.onclick=()=>{const m=b.dataset.pm;if(m==="Alle")muscles.clear();else muscles.has(m)?muscles.delete(m):muscles.add(m);exercisePickerState={q,type,muscles:[...muscles]};render()});
   bindRows()
  };
  openSheet(title,"");render()
@@ -792,8 +1100,12 @@ function renderTrainingHome(){
 $("clearHistoryBtn").onclick=()=>{if(history.length&&confirm("Gesamten Trainingsverlauf löschen?")){history=[];saveAll();renderTrainingHome()}};
 $("choosePlanStart").onclick=()=>openPlanStartSheet();
 function openPlanStartSheet(){
+ if(!plans.length){
+  currentPlan={id:uid(),name:"",createdAt:Date.now(),updatedAt:Date.now(),exercises:[],_isNew:true};
+  setEditorBaseline();openPlanEditor();return
+ }
  let q="";
- const bindRows=()=>document.querySelectorAll("[data-start]").forEach(b=>b.onclick=()=>{closeSheet();openPreStart(Number(b.dataset.start))});
+ const bindRows=()=>document.querySelectorAll("[data-start]").forEach(b=>b.onclick=()=>{openPreStart(Number(b.dataset.start))});
  const refreshRows=()=>{
   const rows=sortedPlansForPicker(q);
   $("planPickerRows").innerHTML=rows.map(p=>`<button class="plan-card" data-start="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span class="chev">›</span></button>`).join("")||'<div class="small">Keine passenden Pläne.</div>';
@@ -824,7 +1136,19 @@ function openPreview(p){
  $("previewBody").innerHTML=`<div class="preview-live-shell">${previewVisualGroups(pp.exercises).map(g=>`<div class="method-card method-${g.method} ${groupMethod(g.method)?"connected-method-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map((e,j)=>`<div class="preview-group-member"><div class="live-card-head"><div><button class="exercise-title-link">${groupMethod(g.method)?`${String.fromCharCode(97+j)} · `:""}${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div></div>${renderPreviewSets(e)}</div>`).join("")}</div>`).join("")}</div>`;
  openPage("previewPage")
 }
-function renderPreviewSets(e){if(groupMethod(e.setTechnique))return e.liveSets.map((s,si)=>`<div class="group-round"><div class="group-round-title">Runde ${si+1}</div>${s.segments.map((g,gi)=>`<div class="group-ex-row"><span class="group-ex-name">${String.fromCharCode(97+gi)} · ${esc(g.name)}</span><input placeholder="KG"><input placeholder="WDH."></div>`).join("")}</div>`).join("");if(e.measureMode==="time")return`<div class="time-head"><span>SATZ</span><span>ZEIT</span><span></span><span>KG</span><span>S/W</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="time-row"><span>${si+1}</span><input value="${formatTime(s.time)}"><button class="time-play">▶</button><input placeholder="KG"><input placeholder="S/W"><button class="set-check">✓</button><span></span></div>`).join("")}`;if(["dropset","restpause","cluster"].includes(e.setTechnique))return e.liveSets.map((s,si)=>`<div class="advanced-head"><span>SATZ ${si+1}</span><span></span><span>KG</span><span>WDH.</span><span></span><span></span></div>${s.segments.map((g,gi)=>`<div class="advanced-row"><span>${gi+1}</span><span class="small">${esc(g.label)}</span><input placeholder="KG"><input placeholder="WDH." value="${esc(g.reps)}"><span></span><span></span></div>`).join("")}`).join("");return`<div class="set-head"><span>SATZ</span><span>KG</span><span>WDH.</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="set-row"><span>${si+1}</span><input placeholder="KG"><input placeholder="WDH." value="${esc(s.reps)}"><button class="set-check">✓</button><span></span></div>`).join("")}`}
+function renderPreviewSets(e){
+ const staticCell=(txt,cls="preview-value")=>`<span class="${cls}">${esc(String(txt??""))}</span>`;
+ if(groupMethod(e.setTechnique)){
+  return e.liveSets.map((s,si)=>`<div class="group-round"><div class="group-round-title">Runde ${si+1}</div>${s.segments.map((g,gi)=>`<div class="group-ex-row preview-static-row"><span class="group-ex-name">${String.fromCharCode(97+gi)} · ${esc(g.name)}</span>${staticCell("KG")}${staticCell("WDH.")}</div>`).join("")}</div>`).join("")
+ }
+ if(e.measureMode==="time"){
+  return `<div class="time-head"><span>SATZ</span><span>ZEIT</span><span></span><span>KG</span><span>S/W</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="time-row preview-static-row"><span>${si+1}</span>${staticCell(formatTime(s.time||e.timeSeconds||300))}<span></span>${staticCell("KG")}${staticCell("S/W")}<span></span><span></span></div>`).join("")}`
+ }
+ if(["dropset","restpause","cluster"].includes(e.setTechnique)){
+  return e.liveSets.map((s,si)=>`<div class="advanced-head"><span>SATZ ${si+1}</span><span></span><span>KG</span><span>WDH.</span><span></span><span></span></div>${s.segments.map((g,gi)=>`<div class="advanced-row preview-static-row"><span>${gi+1}</span><span class="small">${esc(g.label)}</span>${staticCell("KG")}${staticCell(g.reps||"WDH.")}<span></span><span></span></div>`).join("")}`).join("")
+ }
+ return `<div class="set-head"><span>SATZ</span><span>KG</span><span>WDH.</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="set-row preview-static-row"><span>${si+1}</span>${staticCell("KG")}${staticCell(s.reps||"WDH.")}<span></span><span></span></div>`).join("")}`
+}
 function openPreStart(id){
  const p=plans.find(x=>String(x.id)===String(id));
  if(!p)return;
@@ -834,7 +1158,11 @@ function openPreStart(id){
 }
 $("confirmStartBtn").onclick=()=>startWorkout(pendingStartPlan);$("preStartTopPlay").onclick=()=>startWorkout(pendingStartPlan);
 function lastWorkoutForPlan(p){
- for(let i=history.length-1;i>=0;i--){const w=history[i];if(String(w.planId||"")===String(p.id)||w.planName===p.name||w.name===p.name)return w}
+ const ids=new Set([p.id,p.sourcePlanId,...(p.sourcePlanIds||[]),...(p.weekSourceIds||[])].filter(Boolean).map(String));
+ for(let i=history.length-1;i>=0;i--){
+  const w=history[i],wids=[w.planId,w.sourcePlanId,...(w.sourcePlanIds||[]),...(w.weekSourceIds||[])].filter(Boolean).map(String);
+  if(wids.some(id=>ids.has(id))||w.planName===p.name||w.name===p.name)return w
+ }
  return null
 }
 function copySuggestion(target,prev){
@@ -845,11 +1173,15 @@ function copySuggestion(target,prev){
 }
 function applyPreviousWorkoutSuggestions(p,workout){
  if(!workout)return;
- workout.exercises.forEach(e=>{const prev=(p.exercises||[]).find(x=>x.name===e.name);if(!prev)return;(e.liveSets||[]).forEach((s,i)=>copySuggestion(s,prev.liveSets?.[i]))})
+ workout.exercises.forEach(e=>{
+  const prev=(p.exercises||[]).find(x=>x.name===e.name);if(!prev)return;
+  const completed=(prev.liveSets||[]).filter(s=>s.completed||s.segments?.some(g=>g.completed));
+  (e.liveSets||[]).forEach((s,i)=>copySuggestion(s,completed[i]))
+ })
 }
 function effectiveValue(value,suggested){return String(value??"").trim()!==""?value:(suggested??"")}
 function suggestedComplete(e,s){
- if(e.measureMode==="time")return Number(s.time)>0;
+ if(e.measureMode==="time")return Number(s.time)>0&&!!s._touched;
  if(s.group)return s.segments.every(g=>effectiveValue(g.weight,g._suggested?.weight)!==""&&Number(effectiveValue(g.reps,g._suggested?.reps))>0);
  if(s.segments)return s.segments.every(g=>effectiveValue(g.weight,g._suggested?.weight)!==""&&Number(effectiveValue(g.reps,g._suggested?.reps))>0);
  return effectiveValue(s.weight,s._suggested?.weight)!==""&&Number(effectiveValue(s.reps,s._suggested?.reps))>0
@@ -862,18 +1194,18 @@ function promoteSuggested(e,s){
 }
 function inputSuggestionAttr(v){return String(v??"").trim()!==""?` placeholder="${esc(v)}"`:""}
 function initSet(e,i){
- if(groupMethod(e.setTechnique))return{group:true,segments:groupMembers(e).map((n,j)=>({name:n,weight:"",reps:"",completed:false,order:j})),completed:false,rating:""};
+ if(groupMethod(e.setTechnique))return{group:true,segments:groupMembers(e).map((n,j)=>({name:n,weight:"",reps:"",completed:false,rating:"",order:j})),completed:false,rating:""};
  if(e.measureMode==="time")return{time:e.timeSeconds||300,weight:"",level:e.level||"",completed:false,rating:""};
  if(["dropset","restpause","cluster"].includes(e.setTechnique))return{segments:Array.from({length:e.setTechnique==="dropset"?(e.methodData?.dropCount||2)+1:e.setTechnique==="cluster"?(e.methodData?.blocks||3):(e.methodData?.blocks||2)+1},(_,g)=>({label:e.setTechnique==="dropset"?(g?`Drop ${g}`:"Basis"):e.setTechnique==="restpause"?(g?`RP ${g}`:"Start"):`C${g+1}`,weight:"",reps:"",completed:false})),completed:false,rating:""};
  return{weight:"",reps:["pyramid","backoff"].includes(e.setTechnique)?(e.setTechnique==="backoff"?(i===0?(e.methodData?.topReps||5):(e.methodData?.backoffReps||8)):(e.methodData?.reps||[12,10,8,10,12])[i]||8):"",completed:false,rating:""}
 }
-function startWorkout(p){if(!p||(p.exercises||[]).length===0)return alert("Ein leeres Training kann nicht gestartet werden.");const stored=plans.find(x=>x.id===p.id);if(stored)stored.lastUsedAt=Date.now();const previous=lastWorkoutForPlan(p);activeWorkout={id:uid(),planId:p.id,name:p.name,planName:p.name,startedAt:Date.now(),note:"",structureBaseline:null,weekSourceIds:clone(p.weekSourceIds||[]),weekDate:p.weekDate||null,isWeekCombined:Array.isArray(p.weekSourceIds)&&p.weekSourceIds.length>0,exercises:clone(p.exercises).map(e=>({...normPlanEx(e),liveSets:Array.from({length:e.sets||3},(_,i)=>initSet(e,i))}))};activeWorkout.structureBaseline=clone(activeWorkout.exercises);applyPreviousWorkoutSuggestions(activeWorkout,previous);saveAll();openLive(true)}
+function startWorkout(p){if(!p||(p.exercises||[]).length===0)return alert("Ein leeres Training kann nicht gestartet werden.");const stored=plans.find(x=>x.id===p.id);if(stored)stored.lastUsedAt=Date.now();const previous=lastWorkoutForPlan(p);activeWorkout={id:uid(),planId:p.id,sourcePlanId:p.id,name:p.name,planName:p.name,startedAt:Date.now(),note:"",restEnd:0,structureBaseline:null,weekSourceIds:clone(p.weekSourceIds||[]),weekDate:p.weekDate||null,isWeekCombined:Array.isArray(p.weekSourceIds)&&p.weekSourceIds.length>0,exercises:clone(p.exercises).map(e=>({...normPlanEx(e),liveSets:Array.from({length:e.sets||3},(_,i)=>initSet(e,i))}))};activeWorkout.structureBaseline=clone(activeWorkout.exercises);applyPreviousWorkoutSuggestions(activeWorkout,previous);saveAll();openLive(true)}
 function focusLiveExercise(index=0,behavior="auto"){
  const card=document.querySelector(`[data-live-card="${index}"]`);
  if(!card)return;
  requestAnimationFrame(()=>card.scrollIntoView({block:"start",behavior}))
 }
-function openLive(focus=false){if(!activeWorkout)return;$("liveTitle").textContent=activeWorkout.name;renderLive();openPage("livePage");clearInterval(clockTimer);clockTimer=setInterval(()=>$("liveClock").textContent=formatDuration(Date.now()-activeWorkout.startedAt),1000);restoreRestTimer();if(focus)focusLiveExercise(0,"auto")}
+function openLive(focus=false){if(!activeWorkout)return;$("liveTitle").textContent=activeWorkout.name;renderLive();openPage("livePage");clearInterval(clockTimer);clockTimer=setInterval(()=>$("liveClock").textContent=formatDuration(Date.now()-activeWorkout.startedAt),1000);if(restEnd>Date.now())startRest(Math.ceil((restEnd-Date.now())/1000),true);else restoreRestTimer();if(focus)focusLiveExercise(0,"auto")}
 $("workoutNoteBtn").onclick=()=>{if(!activeWorkout)return;const v=prompt("Trainingsnotiz",activeWorkout.note||"");if(v!==null){activeWorkout.note=v.trim();saveAll();renderLive()}};
 function leaveLiveToTraining(){
  saveAll();persistUI();clearInterval(clockTimer);document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];$("bottomNav").classList.remove("hidden");showTab("training",{reset:false})
@@ -894,6 +1226,7 @@ function renderLive(){
  document.querySelectorAll("[data-delete-live-ex]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.deleteLiveEx);if(confirm(`„${activeWorkout.exercises[i].name}“ aus dem Training löschen?`)){const removed=activeWorkout.exercises.splice(i,1)[0];normalizeBrokenLiveGroupAfterDelete(removed);livePlanEdited=true;saveAll();renderLive()}});
  document.querySelectorAll("[data-live-note]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.liveNote),v=prompt("Notiz",activeWorkout.exercises[i].note||"");if(v!==null){activeWorkout.exercises[i].note=v.trim();saveAll();renderLive()}});
  document.querySelectorAll("[data-check]").forEach(b=>b.onclick=()=>toggleSet(b.dataset.check));
+ document.querySelectorAll("[data-segment-check]").forEach(b=>b.onclick=()=>{const [ei,si,gi]=b.dataset.segmentCheck.split("|").map(Number),g=activeWorkout.exercises[ei].liveSets[si].segments[gi];if(g.completed){g.completed=false;g.rating="";activeWorkout.exercises[ei].liveSets[si].completed=false;saveAll();renderLive()}else openSegmentRating(ei,si,gi)});
  document.querySelectorAll("[data-input]").forEach(x=>{
  x.oninput=()=>{touchInput(x);updateInput(x)};
  x.onchange=()=>updateInput(x);
@@ -909,7 +1242,7 @@ function renderLive(){
 
 }
 function renderSets(e,ei){
- if(groupMethod(e.setTechnique)){return e.liveSets.map((s,si)=>`<div class="group-round"><div class="group-round-title">Runde ${si+1}</div>${s.segments.map((g,gi)=>`<div class="group-ex-row"><span class="group-ex-name">${String.fromCharCode(97+gi)} · ${esc(g.name)}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|gw|${gi}" placeholder="${esc(g._suggested?.weight||"KG")}" value="${esc(g.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|gr|${gi}" placeholder="${esc(g._suggested?.reps||"WDH.")}" value="${esc(g.reps)}"></div>`).join("")}<div class="group-round-foot"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(e,s)?"ready":""}" data-check="${ei}|${si}" >✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div>${ratingMarkup(ei,si,s)}</div>`).join("")}
+ if(groupMethod(e.setTechnique)){return e.liveSets.map((s,si)=>`<div class="group-round"><div class="group-round-title">Runde ${si+1}</div>${s.segments.map((g,gi)=>`<div class="group-ex-row group-ex-rated"><span class="group-ex-name">${String.fromCharCode(97+gi)} · ${esc(g.name)}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|gw|${gi}" placeholder="${esc(g._suggested?.weight||"KG")}" value="${esc(g.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|gr|${gi}" placeholder="${esc(g._suggested?.reps||"WDH.")}" value="${esc(g.reps)}"><button class="set-check ${g.completed?"done":""} ${g.rating?`rating-${g.rating}`:""} ${segmentHasValues(g)?"ready":""}" data-segment-check="${ei}|${si}|${gi}">✓</button></div><div class="rating-row group-rating-row"><span class="rating-label">BEW.</span><div class="small">${g.completed?`Bewertet: ${ratingLabel(g.rating)}`:segmentHasValues(g)?"Haken drücken und bewerten":"KG und WDH. eintragen"}</div></div>`).join("")}<div class="group-round-foot"><span class="small">${s.completed?"Runde abgeschlossen":"Alle Übungen einzeln bewerten"}</span><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div></div>`).join("")}
 
  if(e.measureMode==="time"){
   return`<div class="time-head"><span>SATZ</span><span>ZEIT</span><span></span><span>KG</span><span>S/W</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="time-row"><span>${si+1}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|time" value="${formatTime(s.time)}"><button class="time-play" data-time-play="${ei}|${si}">▶</button><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|level" placeholder="${esc(s._suggested?.level||"S/W")}" value="${esc(s.level)}"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(e,s)?"ready":""}" data-check="${ei}|${si}" >✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div>${ratingMarkup(ei,si,s)}`).join("")}`
@@ -920,22 +1253,28 @@ function renderSets(e,ei){
  }
  return`<div class="set-head"><span>SATZ</span><span>KG</span><span>WDH.</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="set-row"><span>${si+1}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|reps" placeholder="${esc(s._suggested?.reps||"WDH.")}" value="${esc(s.reps)}" ${["pyramid","backoff"].includes(e.setTechnique)?"readonly":""}><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(e,s)?"ready":""}" data-check="${ei}|${si}" >✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div>${ratingMarkup(ei,si,s)}`).join("")}`
 }
+function ratingLabel(r){return r==="red"?"zu anstrengend":r==="yellow"?"noch passend":r==="green"?"genau richtig":r==="blue"?"zu leicht":""}
+function segmentHasValues(g){return validKg(g?.weight)&&validReps(g?.reps)}
+function openSegmentRating(ei,si,gi){const s=activeWorkout.exercises[ei].liveSets[si],g=s.segments[gi];if(!segmentHasValues(g))return toast("Bitte zuerst KG und WDH. vollständig eintragen.");ratingTarget={ei,si,gi,segment:true};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich ${esc(g.name)} angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird diese Übung der Runde abgeschlossen.</div><div class="rating-question-grid"><button class="rating-choice red" data-rating-choice="red">Zu anstrengend</button><button class="rating-choice yellow" data-rating-choice="yellow">Noch passend</button><button class="rating-choice green" data-rating-choice="green">Genau richtig</button><button class="rating-choice blue" data-rating-choice="blue">Zu leicht</button></div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySegmentRating(b.dataset.ratingChoice)))}
+function applySegmentRating(r){if(!ratingTarget?.segment)return;const{ei,si,gi}=ratingTarget,e=activeWorkout.exercises[ei],s=e.liveSets[si],g=s.segments[gi];if(!segmentHasValues(g))return;g.completed=true;g.rating=r;s.completed=s.segments.every(x=>x.completed);s.rating=s.completed?"group":"";ratingTarget=null;saveAll();closeSheet({all:true});renderLive();if(s.completed){const pause=Number.isFinite(Number(e.rest))?Number(e.rest):90;if(pause>0)startRest(pause);if(e.liveSets.every(x=>x.completed))setTimeout(()=>focusLiveExercise(ei+1,"smooth"),200)}}
 function ratingClass(s){return s.rating?`rating-${s.rating}`:""}
-function canRateSet(e,s){return strictSetValues(e,s)||suggestedComplete(e,s)}
+function canRateSet(e,s){return strictSetValues(e,s)}
+function validKg(v){const x=String(v??"").trim().replace(",",".");return x!==""&&Number.isFinite(Number(x))&&Number(x)>=0}
+function validReps(v){const x=String(v??"").trim();return x!==""&&Number.isFinite(Number(x))&&Number(x)>0}
 function strictSetValues(e,s){
- if(e.measureMode==="time")return Number(s.time)>0;
- if(s.group)return s.segments.every(g=>{const kg=String(g.weight??"").trim(),r=String(g.reps??"").trim();return kg!==""&&Number.isFinite(Number(kg.replace(",",".")))&&Number(kg.replace(",","."))>=0&&r!==""&&Number(r)>0});
- if(s.segments)return s.segments.every(g=>{const kg=String(g.weight??"").trim(),r=String(g.reps??"").trim();return kg!==""&&Number.isFinite(Number(kg.replace(",",".")))&&Number(kg.replace(",","."))>=0&&r!==""&&Number(r)>0});
- const kg=String(s.weight??"").trim(),r=String(s.reps??"").trim();return kg!==""&&Number.isFinite(Number(kg.replace(",",".")))&&Number(kg.replace(",","."))>=0&&r!==""&&Number(r)>0
+ // A suggestion/placeholder is never enough for a rating. The user must actually enter/use values.
+ if(e.measureMode==="time")return Number(s.time)>0&&!!s._touched;
+ if(s.group)return s.segments.every(g=>validKg(g.weight)&&validReps(g.reps));
+ if(s.segments)return s.segments.every(g=>validKg(g.weight)&&validReps(g.reps));
+ return validKg(s.weight)&&validReps(s.reps)
 }
-function ratingMarkup(ei,si,s){const e=activeWorkout.exercises[ei],ready=canRateSet(e,s);return`<div class="rating-row"><span class="rating-label">BEW.</span><div class="small">${s.completed?`Bewertet: ${s.rating==="red"?"zu anstrengend":s.rating==="yellow"?"noch passend":s.rating==="green"?"genau richtig":"zu leicht"}`:ready?"Haken drücken und bewerten":e.measureMode==="time"?"Zeit eintragen":"KG und WDH. eintragen"}</div></div>`}
-function openSetRating(ei,si){const e=activeWorkout.exercises[ei],s=e.liveSets[si];if(!canRateSet(e,s))return toast(e.measureMode==="time"?"Bitte zuerst die Zeit eintragen.":"Bitte zuerst KG und WDH. vollständig eintragen.");promoteSuggested(e,s);saveAll();ratingTarget={ei,si};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich der Satz angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird der Satz abgeschlossen und der Haken entsprechend eingefärbt.</div><div class="rating-question-grid"><button class="rating-choice red" data-rating-choice="red">Zu anstrengend</button><button class="rating-choice yellow" data-rating-choice="yellow">Noch passend</button><button class="rating-choice green" data-rating-choice="green">Genau richtig</button><button class="rating-choice blue" data-rating-choice="blue">Zu leicht</button></div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySetRating(b.dataset.ratingChoice)))}
+function ratingMarkup(ei,si,s){const e=activeWorkout.exercises[ei],ready=canRateSet(e,s);return`<div class="rating-row"><span class="rating-label">BEW.</span><div class="small">${s.completed?`Bewertet: ${s.rating==="red"?"zu anstrengend":s.rating==="yellow"?"noch passend":s.rating==="green"?"genau richtig":"zu leicht"}`:ready?"Haken drücken und bewerten":e.measureMode==="time"?"Zeit eingeben oder Timer starten":"KG und WDH. eintragen"}</div></div>`}
+function openSetRating(ei,si){const e=activeWorkout.exercises[ei],s=e.liveSets[si];if(!canRateSet(e,s))return toast(e.measureMode==="time"?"Bitte zuerst die Zeit eintragen.":"Bitte zuerst KG und WDH. vollständig eintragen.");saveAll();ratingTarget={ei,si};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich der Satz angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird der Satz abgeschlossen und der Haken entsprechend eingefärbt.</div><div class="rating-question-grid"><button class="rating-choice red" data-rating-choice="red">Zu anstrengend</button><button class="rating-choice yellow" data-rating-choice="yellow">Noch passend</button><button class="rating-choice green" data-rating-choice="green">Genau richtig</button><button class="rating-choice blue" data-rating-choice="blue">Zu leicht</button></div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySetRating(b.dataset.ratingChoice)))}
 function applySetRating(r){
  if(!ratingTarget)return;
  const{ei,si}=ratingTarget,e=activeWorkout.exercises[ei],s=e.liveSets[si];
- promoteSuggested(e,s);
  if(!canRateSet(e,s))return toast("Die Werte sind nicht vollständig.");
- s.completed=true;s.rating=r;ratingTarget=null;saveAll();closeSheet({all:true});renderLive();startRest(e.rest||90);
+ s.completed=true;s.rating=r;ratingTarget=null;saveAll();closeSheet({all:true});renderLive();const pause=Number.isFinite(Number(e.rest))?Number(e.rest):90;if(pause>0)startRest(pause);
  if(e.liveSets.every(x=>x.completed)){setTimeout(()=>focusLiveExercise(ei+1,"smooth"),200)}
 }
 function removeLiveSet(key){const[ei,si]=key.split("|").map(Number),e=activeWorkout.exercises[ei];if(e.liveSets.length<=1)return toast("Mindestens ein Satz bleibt bestehen");if(!confirm(`Satz ${si+1} von „${e.name}“ wirklich löschen?`))return;e.liveSets.splice(si,1);livePlanEdited=true;saveAll();renderLive()}
@@ -953,7 +1292,7 @@ function updateInput(inp){const[a,b,k,g]=inp.dataset.input.split("|"),e=activeWo
  }
 }if(k==="gw")s.segments[g].weight=inp.value;if(k==="gr")s.segments[g].reps=inp.value;saveAll()}
 function toggleSet(key){const p=key.split("|").map(Number),ei=p[0],si=p[1],e=activeWorkout.exercises[ei],s=e.liveSets[si];if(s.completed){s.completed=false;s.rating="";saveAll();renderLive();return}openSetRating(ei,si)}
-function startRest(sec=90,restored=false){ensureAudio();clearInterval(restTimer);if(!restored)restEnd=Date.now()+sec*1000;persistRestEnd();$("restBar").classList.remove("hidden");$("restBar").classList.toggle("rest-restored",!!restored);const tick=()=>{const s=Math.max(0,Math.ceil((restEnd-Date.now())/1000));$("restTime").textContent=formatTime(s);if(!s){clearInterval(restTimer);restEnd=0;persistRestEnd();$("restBar").classList.add("hidden");signalTone();toast("Pause beendet")}};tick();restTimer=setInterval(tick,250)}
+function startRest(sec=90,restored=false){ensureAudio();clearInterval(restTimer);sec=Math.max(0,Number(sec)||90);if(!restored)restEnd=Date.now()+sec*1000;persistRestEnd();$("restBar").classList.remove("hidden");$("restBar").classList.toggle("rest-restored",!!restored);const tick=()=>{const s=Math.max(0,Math.ceil((restEnd-Date.now())/1000));$("restTime").textContent=formatTime(s);if(!s){clearInterval(restTimer);restEnd=0;persistRestEnd();$("restBar").classList.add("hidden");signalTone();toast("Pause beendet")}};tick();restTimer=setInterval(tick,250)}
 $("restMinus").onclick=()=>{restEnd=Math.max(Date.now(),restEnd-15000);persistRestEnd()};$("restPlus").onclick=()=>{restEnd+=15000;persistRestEnd()};$("restSkip").onclick=()=>{clearInterval(restTimer);restEnd=0;persistRestEnd();$("restBar").classList.add("hidden")};
 function rebuildLiveSetsForExercise(e,oldSets=[]){
  const count=Math.max(1,Number(e.sets)||oldSets.length||3),fresh=Array.from({length:count},(_,i)=>initSet(e,i));
@@ -990,12 +1329,34 @@ function discardWorkoutAsked(){
  if(!confirm("Training wirklich verwerfen? Alle Eintragungen dieses Trainings gehen verloren."))return;
  activeWorkout=null;livePlanEdited=false;restEnd=0;persistRestEnd();timeSetTimers.forEach(clearInterval);timeSetTimers.clear();saveAll();closeSheet({all:true});document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];$("bottomNav").classList.remove("hidden");showTab("training",{reset:true})
 }
-function finishAndSaveWorkout(){
+function finalizeWorkout({saveChangedPlan=false}={}){
  if(!activeWorkout)return;
  activeWorkout.finishedAt=Date.now();
- if(activeWorkout.isWeekCombined){const np={id:uid(),name:activeWorkout.name||"Wochenplan",createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),fromWeek:true,sourcePlanIds:clone(activeWorkout.weekSourceIds||[]),exercises:clone(activeWorkout.exercises).map(x=>{const y=clone(x);delete y.liveSets;return y})};plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name;activeWorkout.savedWeekPlanId=np.id;livePlanEdited=false}
- else if(livePlanEdited){const np={id:uid(),name:(activeWorkout.name||"Training")+" – angepasst",createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),exercises:clone(activeWorkout.exercises).map(x=>{const y=clone(x);delete y.liveSets;return y})};plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name;livePlanEdited=false}
- history.push(clone(activeWorkout));const done=clone(activeWorkout);activeWorkout=null;restEnd=0;persistRestEnd();timeSetTimers.forEach(clearInterval);timeSetTimers.clear();saveAll();closeSheet({all:true});document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];$("bottomNav").classList.remove("hidden");showTab("training",{reset:true});openSummary(done)
+
+ // Weekly combined plans keep the agreed special rule: only completion creates the plan.
+ if(activeWorkout.isWeekCombined){
+  const requested=activeWorkout.name||"Wochenplan",finalName=plans.some(p=>planBaseName(p.name)===planBaseName(requested))?nextPlanVersionName(requested):requested;
+  const np={id:uid(),name:finalName,createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),fromWeek:true,sourcePlanIds:clone(activeWorkout.weekSourceIds||[]),exercises:clone(activeWorkout.exercises).map(x=>{const y=clone(x);delete y.liveSets;return y})};
+  plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name;activeWorkout.savedWeekPlanId=np.id;livePlanEdited=false
+ }else if(livePlanEdited&&saveChangedPlan){
+  const np={id:uid(),name:nextPlanVersionName(activeWorkout.planName||activeWorkout.name||"Training"),createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),sourcePlanId:activeWorkout.sourcePlanId||activeWorkout.planId,exercises:clone(activeWorkout.exercises).map(x=>{const y=clone(x);delete y.liveSets;return y})};
+  plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name;livePlanEdited=false
+ }
+
+ activeWorkout.sourcePlanId=activeWorkout.sourcePlanId||activeWorkout.planId;
+ history.push(clone(activeWorkout));const done=clone(activeWorkout);
+ activeWorkout=null;livePlanEdited=false;restEnd=0;persistRestEnd();timeSetTimers.forEach(clearInterval);timeSetTimers.clear();saveAll();closeSheet({all:true});
+ document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];$("bottomNav").classList.remove("hidden");showTab("training",{reset:true});openSummary(done)
+}
+function finishAndSaveWorkout(){
+ if(!activeWorkout)return;
+ if(livePlanEdited&&!activeWorkout.isWeekCombined){
+  openSheet("Veränderten Plan speichern?",`<p class="small" style="margin:0 0 14px">Du hast den Plan während des Trainings verändert. Soll daraus zusätzlich eine neue Planversion gespeichert werden? Der ursprüngliche Plan bleibt erhalten.</p><div class="grid2"><button id="finishWithoutPlanSave" class="secondary">Nein</button><button id="finishWithPlanSave" class="primary">Ja, Plan speichern</button></div>`);
+  $("finishWithoutPlanSave").onclick=()=>finalizeWorkout({saveChangedPlan:false});
+  $("finishWithPlanSave").onclick=()=>finalizeWorkout({saveChangedPlan:true});
+  return
+ }
+ finalizeWorkout({saveChangedPlan:false})
 }
 $("finishWorkoutBtn").onclick=openFinishWorkoutSheet;
 $("liveTopStop").onclick=openFinishWorkoutSheet;
@@ -1004,25 +1365,19 @@ function summarySetText(e,s){if(s.group)return`<div class="summary-segments">${s
 function summaryVisualGroups(exercises){
  const out=[];
  (exercises||[]).forEach((e,i)=>{
-  const completed=completedSetsOfExercise(e);
-  if(!completed.length)return;
-  const item={...e,liveSets:completed};
-  if(groupMethod(e.setTechnique)&&e.techniqueGroup){
-   const prev=out[out.length-1];
-   if(prev&&prev.key===e.techniqueGroup)prev.items.push(item);
-   else out.push({key:e.techniqueGroup,method:e.setTechnique,items:[item]})
-  }else out.push({key:`hs_${i}`,method:e.setTechnique||"standard",items:[item]})
- });
- return out
+  const item={...e,_plannedSetCount:(e.liveSets||[]).length||Number(e.sets)||0,liveSets:completedSetsOfExercise(e)};
+  if(groupMethod(e.setTechnique)&&e.techniqueGroup){const prev=out[out.length-1];if(prev&&prev.key===e.techniqueGroup)prev.items.push(item);else out.push({key:e.techniqueGroup,method:e.setTechnique,items:[item]})}
+  else out.push({key:`hs_${i}`,method:e.setTechnique||"standard",items:[item]})
+ });return out
 }
 function summaryExerciseBlock(e,label=""){
- return `<div class="history-summary-exercise">${label?`<div class="history-group-label">${label}</div>`:""}<strong>${esc(e.name)}</strong>${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}${(e.liveSets||[]).map((s,i)=>`<div class="summary-set"><strong>Satz ${i+1}</strong><div>${summarySetText(e,s)}</div></div>`).join("")}</div>`
+ const completed=e.liveSets||[],planned=Number(e._plannedSetCount||e.sets)||0;
+ return `<div class="history-summary-exercise">${label?`<div class="history-group-label">${label}</div>`:""}<strong>${esc(e.name)}</strong>${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}${completed.length?completed.map((s,i)=>`<div class="summary-set"><strong>Satz ${i+1}</strong><div>${summarySetText(e,s)}</div></div>`).join(""):'<div class="summary-empty">Keine abgeschlossenen Sätze</div>'}${planned&&completed.length<planned?`<div class="small summary-incomplete">${planned-completed.length} Satz${planned-completed.length===1?"":"e"} nicht abgeschlossen</div>`:""}</div>`
 }
 function openSummary(w){
- const p=plans.find(x=>String(x.id)===String(w.planId)),groups=summaryVisualGroups(w.exercises||[]),exCount=completedExerciseCount(w),setCount=completedSetCount(w);
- const d=new Date(w.finishedAt||w.startedAt||Date.now());
+ const p=plans.find(x=>String(x.id)===String(w.planId)),groups=summaryVisualGroups(w.exercises||[]),exCount=completedExerciseCount(w),setCount=completedSetCount(w),d=new Date(w.finishedAt||w.startedAt||Date.now());
  $("summaryTitle").textContent=`Training vom ${d.toLocaleDateString("de-DE")} · ${d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})}`;
- $("summaryBody").innerHTML=`<div class="card"><div class="small">PLAN</div><strong style="font-size:20px">${esc(w.planName||w.name||p?.name||"Training")}</strong><div class="small" style="margin-top:5px">${formatDuration((w.finishedAt||Date.now())-(w.startedAt||Date.now()))} · ${exCount} abgeschlossene Übung${exCount===1?"":"en"} · ${setCount} abgeschlossene Sätze</div>${w.note?`<div class="note-line">✎ ${esc(w.note)}</div>`:""}</div>${groups.map(g=>`<div class="method-card method-${g.method} ${groupMethod(g.method)?"connected-method-card history-connected-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map((e,j)=>summaryExerciseBlock(e,groupMethod(g.method)?`${String.fromCharCode(97+j)}`:"")).join("")}</div>`).join("")||'<div class="card summary-empty">Keine abgeschlossenen Sätze</div>'}<div style="margin-top:18px">${p?`<button id="summaryEditPlan" class="secondary" style="width:100%">Plan bearbeiten</button><button id="summaryRestart" class="primary" style="width:100%;margin-top:8px">Training erneut starten</button>`:`<div class="card history-missing-plan-note">Der zugehörige Trainingsplan wurde gelöscht.</div>`}</div>`;
+ $("summaryBody").innerHTML=`<div class="card"><div class="small">PLAN</div><strong style="font-size:20px">${esc(w.planName||w.name||p?.name||"Training")}</strong><div class="small" style="margin-top:5px">${formatDuration((w.finishedAt||Date.now())-(w.startedAt||Date.now()))} · ${exCount} abgeschlossene Übung${exCount===1?"":"en"} · ${setCount} abgeschlossene Sätze</div>${w.note?`<div class="note-line">✎ ${esc(w.note)}</div>`:""}</div>${groups.map(g=>`<div class="method-card method-${g.method} ${groupMethod(g.method)?"connected-method-card history-connected-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map((e,j)=>summaryExerciseBlock(e,groupMethod(g.method)?String.fromCharCode(97+j):"")).join("")}</div>`).join("")}<div style="margin-top:18px">${p?`<button id="summaryEditPlan" class="secondary" style="width:100%">Plan bearbeiten</button><button id="summaryRestart" class="primary" style="width:100%;margin-top:8px">Training erneut starten</button>`:`<div class="card history-missing-plan-note">Der zugehörige Trainingsplan wurde gelöscht.</div>`}</div>`;
  openPage("summaryPage",()=>{if(p){$("summaryEditPlan").onclick=()=>{closePage();editPlan(p.id)};$("summaryRestart").onclick=()=>{closePage();openPreStart(p.id)}}})
 }
 function stretchSvg(){return`<svg class="stretch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M12 6.5v5m0-3L7.5 11M12 8.5l4.5 2.5M12 11.5l-4 6M12 11.5l4.5 5.5M8 17.5 5 20M16.5 17l2.5 3"/></svg>`}
@@ -1039,7 +1394,10 @@ function openWeekPreview(day){
  $("previewBody").innerHTML=`<div class="stat-grid"><div class="stat"><strong>${fresh.exercises.length}</strong><span>ÜBUNGEN</span></div><div class="stat"><strong>${countPlanSets(fresh)}</strong><span>SÄTZE</span></div><div class="stat"><strong>~${estimateMinutes(fresh)} Min.</strong><span>DAUER</span></div></div><div class="preview-live-shell">${previewVisualGroups(pp.exercises).map(g=>`<div class="method-card method-${g.method} ${groupMethod(g.method)?"connected-method-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map((e,j)=>`<div class="preview-group-member"><strong>${groupMethod(g.method)?`${String.fromCharCode(97+j)} · `:""}${esc(e.name)}</strong><div class="prescription">${esc(planPrescription(e))}</div>${renderPreviewSets(e)}</div>`).join("")}</div>`).join("")}</div><button id="weekPreviewStart" class="primary" style="width:100%;margin:14px 0 80px">Training starten</button>`;
  openPage("previewPage",()=>{$("weekPreviewStart").onclick=()=>confirmAndStartPlan(fresh)})
 }
+const WEEK_MOTIVATION=["Konstanz schlägt Perfektion. Eine gute Woche entsteht aus den Einheiten, die du wirklich machst.","Trainiere heute so, dass du morgen wiederkommen kannst.","Fortschritt ist selten spektakulär – aber konsequent sichtbar.","Jede geplante Einheit ist eine Entscheidung für dein nächstes Level.","Stärke entsteht nicht an einem Tag. Sie entsteht aus vielen guten Tagen.","Du musst nicht alles geben. Du musst wiederkommen.","Eine starke Woche beginnt mit der nächsten guten Entscheidung.","Kleine Schritte werden groß, wenn du sie oft genug gehst.","Training ist kein Test. Es ist ein Prozess.","Dein Plan gibt die Richtung vor – du gibst ihm Leben.","Ein guter Rhythmus schlägt einen perfekten Start.","Mach die Einheit, die heute möglich ist.","Fortschritt braucht Wiederholung, nicht Drama.","Dein zukünftiges Ich profitiert von der Einheit heute.","Qualität vor Ego. Kontrolle vor Gewicht.","Stärke wächst dort, wo Technik und Geduld zusammenkommen.","Du trainierst nicht nur Leistung, sondern Verlässlichkeit.","Eine Einheit zählt auch dann, wenn sie nicht perfekt war.","Bleib im Prozess. Ergebnisse folgen der Wiederholung.","Trainiere klug genug, um langfristig hart trainieren zu können.","Der wichtigste Satz ist oft der, den du sauber ausführst.","Nicht jede Woche muss stärker sein – aber jede kann dich weiterbringen.","Planen schafft Klarheit. Handeln schafft Fortschritt.","Ein guter Trainingstag beginnt mit dem ersten Satz.","Du brauchst keinen perfekten Moment. Du brauchst einen Anfang.","Mehr Kontrolle, mehr Qualität, mehr Fortschritt.","Leistung entsteht aus vielen unspektakulären Wiederholungen.","Deine Routine trägt dich auch an Tagen ohne Motivation.","Fokus auf das, was du heute beeinflussen kannst.","Stärke ist auch, rechtzeitig aufzuhören und morgen weiterzumachen.","Jede saubere Wiederholung ist eine Investition.","Trainiere mit Ziel, nicht nur mit Tempo.","Der Plan ist die Struktur. Du bist die Konstanz.","Fortschritt zeigt sich oft zuerst in besserer Kontrolle.","Ein Schritt nach dem anderen ist immer noch vorwärts.","Du musst nicht motiviert sein, um konsequent zu sein.","Mach es einfach genug, dass du es wiederholen kannst.","Dein Tempo darf variieren. Deine Richtung bleibt.","Die beste Woche ist die, die zu deinem Leben passt.","Heute trainieren. Morgen aufbauen. Langfristig wachsen."];
+function weekMotivationText(){let sum=0;for(const c of weekKeyForOffset())sum+=c.charCodeAt(0);return WEEK_MOTIVATION[sum%WEEK_MOTIVATION.length]}
 function renderWeek(){
+ $("weekMotivation").innerHTML=`<div class="small">DIESE WOCHE</div><strong>${esc(weekMotivationText())}</strong>`;
  const days=["Mo","Di","Mi","Do","Fr","Sa","So"],from=weekDateAt(0),to=weekDateAt(6);
  $("weekRangeLabel").textContent=`${fmtShortDate(from)} – ${fmtShortDate(to)}`;
  $("weekOffsetLabel").textContent=weekOffset===0?"Diese Woche":weekOffset<0?`${Math.abs(weekOffset)} Woche${Math.abs(weekOffset)===1?"":"n"} zurück`:`${weekOffset} Woche${weekOffset===1?"":"n"} voraus`;
@@ -1052,7 +1410,7 @@ function renderWeek(){
  document.querySelectorAll("[data-wm]").forEach(b=>b.onclick=e=>{e.stopPropagation();weekMenu(Number(b.dataset.wm))})
 }
 $("weekPrevBtn").onclick=()=>{saveCurrentWeekRefs();loadWeekOffset(weekOffset-1)};$("weekNextBtn").onclick=()=>{saveCurrentWeekRefs();loadWeekOffset(weekOffset+1)};
-function openWeekPicker(day){let selected=validWeekPlans(day).map(p=>p.id),q="";const render=()=>{const rows=sortedPlansForPicker(q);$("sheetBody").innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]].map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div>${rows.map(p=>`<button class="plan-card week-select-card ${selected.includes(p.id)?"selected":""}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${selected.includes(p.id)?"✓":"›"}</span></button>`).join("")}<div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`${selected.length} Pläne gewählt · ${weekDateAt(day).toLocaleDateString("de-DE")}`:"Kein Plan gewählt"}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;$("weekSearch").oninput=()=>{q=$("weekSearch").value;render()};$("weekSearchClear").onclick=()=>{q="";render()};document.querySelectorAll("[data-week-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=b.dataset.weekSort==="name"?1:-1}render()});document.querySelectorAll("[data-wpick]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick);selected.includes(id)?selected=selected.filter(x=>x!==id):selected.push(id);render()});$("weekApply").onclick=()=>{weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));saveAll();closeSheet({all:true});renderWeek()}};openSheet("Trainingsplan auswählen","");render()}
+function openWeekPicker(day){let selected=validWeekPlans(day).map(p=>p.id),q="";const render=()=>{const rows=sortedPlansForPicker(q);$("sheetBody").innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]].map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div>${rows.map(p=>`<button class="plan-card week-select-card ${selected.includes(p.id)?"selected":""}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${selected.includes(p.id)?"✓":"›"}</span></button>`).join("")}<div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`${selected.length} Pläne gewählt · ${weekDateAt(day).toLocaleDateString("de-DE")}`:"Kein Plan gewählt"}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;$("weekSearch").oninput=()=>{q=$("weekSearch").value;render()};$("weekSearchClear").onclick=()=>{q="";render()};document.querySelectorAll("[data-week-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}render()});document.querySelectorAll("[data-wpick]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick);selected.includes(id)?selected=selected.filter(x=>x!==id):selected.push(id);render()});$("weekApply").onclick=()=>{weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));saveAll();closeSheet({all:true});renderWeek()}};openSheet("Trainingsplan auswählen","");render()}
 function startWeekDay(day){
  const fresh=combinedWeekPlan(day);if(!fresh||!(fresh.exercises||[]).length)return;
  pendingStartPlan=fresh;
@@ -1069,52 +1427,113 @@ function weekMenu(day){
 }
 const HYDRATION_LOG_KEY="rethink_hydration_log_v1";
 function hydrationLog(){return read(HYDRATION_LOG_KEY,[])||[]}function saveHydrationLog(x){write(HYDRATION_LOG_KEY,x)}
-function addDrinkEntry(drink,size=drink.size){const amount=Math.max(1,Math.min(1000,Number(size)||drink.size||250)),entry={id:uid(),drinkId:drink.id,name:drink.name,size:amount,hydration:Number(drink.hydration)||0,caloriesPer250:Number(drink.calories)||0,caffeinePerServing:Number(drink.caffeine)||0,at:Date.now()};const log=hydrationLog();log.push(entry);saveHydrationLog(log);drink.lastSize=amount;nutrition.lastDrinkSize=amount;nutrition.hydration=(Number(nutrition.hydration)||0)+amount*entry.hydration/100;nutrition.consumedCalories=(Number(nutrition.consumedCalories)||0)+entry.caloriesPer250*amount/250;nutrition.caffeineToday=(Number(nutrition.caffeineToday)||0)+entry.caffeinePerServing;saveAll();renderProfile()}
-function removeHydrationEntry(id){const log=hydrationLog(),entry=log.find(x=>String(x.id)===String(id));if(!entry)return;saveHydrationLog(log.filter(x=>String(x.id)!==String(id)));nutrition.hydration=Math.max(0,(Number(nutrition.hydration)||0)-Number(entry.size)*Number(entry.hydration)/100);nutrition.consumedCalories=Math.max(0,(Number(nutrition.consumedCalories)||0)-Number(entry.caloriesPer250)*Number(entry.size)/250);nutrition.caffeineToday=Math.max(0,(Number(nutrition.caffeineToday)||0)-Number(entry.caffeinePerServing||0));saveAll();renderProfile()}
-function todayHydrationEntries(){const d=new Date();d.setHours(0,0,0,0);return hydrationLog().filter(x=>Number(x.at)>=d.getTime())}
+function addDrinkEntry(drink,size=drink.size){const amount=Math.max(1,Math.min(1000,Number(size)||drink.size||250)),entry={id:uid(),drinkId:drink.id,name:drink.name,size:amount,hydration:Number(drink.hydration)||0,caloriesPer250:Number(drink.calories)||0,caffeinePerServing:Number(drink.caffeine)||0,protein:Number(drink.protein)||0,at:profileDayOffset===0?Date.now():profileDate().setHours(12,0,0,0)};const log=hydrationLog();log.push(entry);saveHydrationLog(log);drink.lastSize=amount;nutrition.lastDrinkSize=amount;recalcFoodTotals();saveAll();renderProfile()}
+function removeHydrationEntry(id){const log=hydrationLog(),entry=log.find(x=>String(x.id)===String(id));if(!entry)return;saveHydrationLog(log.filter(x=>String(x.id)!==String(id)));recalcFoodTotals();saveAll();renderProfile()}
+function todayHydrationEntries(){const {start,end}=profileDayBounds();return hydrationLog().filter(x=>Number(x.at)>=start&&Number(x.at)<end)}
 function historicalDrinks(){const map=new Map();hydrationLog().slice().reverse().forEach(x=>{if(!map.has(x.name))map.set(x.name,{name:x.name,size:x.size,hydration:x.hydration,calories:x.caloriesPer250,caffeine:x.caffeinePerServing})});return[...map.values()]}
-function renderProfile(){ dailyReset();ensureDrinks();const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),currentWeight=Number(latest?.weight||profile.weight||0);$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?profile.height+" cm":"",currentWeight?currentWeight+" kg":""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";$("profileGoalSummary").textContent=profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele";$("nutritionCalTarget").textContent=nutrition.calories?nutrition.calories+" kcal":"–";$("nutritionProteinTarget").textContent=nutrition.protein?nutrition.protein+" g":"–";$("nutritionHydrationTarget").textContent=nutrition.waterGoal?`Flüssigkeit ${nutrition.waterGoal} ml`:"Flüssigkeit –";
- dailyReset();ensureDrinks();
- const goal=hydrateGoal(),water=Number(nutrition.hydration)||0,cal=Number(nutrition.consumedCalories)||0;
- $("calorieTodayView").textContent=`${cal} kcal`;$("calorieGoalView").textContent=`Ziel ${nutrition.calories?nutrition.calories+" kcal":"–"}`;
- $("proteinGoalView").textContent=nutrition.protein?`${nutrition.protein} g`:(profile.weight?`${Math.round(Number(profile.weight)*1.6)} g`:"–");
- $("waterView").textContent=`${Math.round(water)} ml`;$("caffeineTodayView").textContent=`Koffein ${Math.round(Number(nutrition.caffeineToday)||0)} mg`;$("hydrationCaloriesView").textContent=`${Math.round(cal)} kcal`;$("waterGoalView").textContent=`Ziel ${goal} ml`;$("waterProgress").style.width=`${Math.min(100,water/goal*100)}%`;
- $("todayDrinkList").innerHTML=todayHydrationEntries().slice().reverse().map(x=>{const d=nutrition.drinks.find(d=>String(d.id)===String(x.drinkId))||{name:x.name,icon:"🥤",kind:"custom"};return`<div class="card drink-log-row ${drinkTone(d)}"><div class="drink-main"><span class="drink-icon" aria-hidden="true">${d.icon||"🥤"}</span><div><strong>${esc(x.name)}</strong><div class="small">${x.size} ml · ${Math.round(x.size*x.hydration/100)} ml netto${x.caloriesPer250?` · ${Math.round(x.caloriesPer250*x.size/250)} kcal`:""}${x.caffeinePerServing?` · ${x.caffeinePerServing} mg Koffein`:""}</div></div></div><div class="drink-log-actions"><button class="icon-btn danger" data-hydration-del="${x.id}">−</button></div></div>`}).join("")||'<div class="small empty-drink-note">Heute noch nichts eingetragen.</div>';
- $("drinkList").innerHTML=nutrition.drinks.map(d=>`<div class="card drink-card ${drinkTone(d)}"><div class="drink-main"><span class="drink-icon" aria-hidden="true">${d.icon||"🥤"}</span><div><strong>${esc(d.name)}</strong><div class="small">${d.lastSize||d.size} ml zuletzt · ${d.hydration}% Hydrierung${d.calories?` · ${d.calories} kcal/250 ml`:""}${d.caffeine?` · ${d.caffeine} mg Koffein`:""}</div></div></div><div class="drink-actions"><button class="icon-btn plus-btn" data-drink-add="${d.id}">+</button>${String(d.id)==="water"?"":`<button class="icon-btn danger" data-drink-del="${d.id}">−</button>`}</div></div>`).join("");
- document.querySelectorAll("[data-drink-add]").forEach(b=>b.onclick=()=>{const d=nutrition.drinks.find(x=>String(x.id)===b.dataset.drinkAdd);if(!d)return;openSheet(d.name,`<div class="form-field"><label>MENGE ML</label><input id="quickDrinkAmount" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div><div class="small">${d.hydration}% Hydrierung${d.calories?` · ${d.calories} kcal/250 ml`:""}${d.caffeine?` · ${d.caffeine} mg Koffein`:""}</div><button id="quickDrinkApply" class="primary" style="width:100%;margin-top:10px">Eintragen</button>`);$("quickDrinkApply").onclick=()=>{addDrinkEntry(d,$("quickDrinkAmount").value);closeSheet({all:true})}});
+function sparklineMarkup(label,key,unit){
+ const rows=measurements.slice(-12).filter(m=>Number(m[key])>0);if(rows.length<2)return"";
+ const vals=rows.map(m=>Number(m[key])),target=key==="weight"?Number(profile.targetWeight)||0:0;
+ const rangeVals=target?[...vals,target]:vals,min=Math.min(...rangeVals),max=Math.max(...rangeVals),span=Math.max(.001,max-min),w=260,h=84,pad=8,plotBottom=h-22,plotHeight=h-36;
+ const yFor=v=>plotBottom-((v-min)/span)*plotHeight;
+ const pts=vals.map((v,i)=>`${pad+(i/(vals.length-1))*(w-pad*2)},${yFor(v)}`).join(" ");
+ const firstDate=new Date(rows[0].date||Date.now()).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"2-digit"});
+ const lastDate=new Date(rows.at(-1).date||Date.now()).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"2-digit"});
+ const targetLine=target?`<line x1="${pad}" y1="${yFor(target)}" x2="${w-pad}" y2="${yFor(target)}" class="target-weight-line"/><text x="${w-pad}" y="${Math.max(10,yFor(target)-3)}" text-anchor="end" class="target-weight-label">Ziel ${target} kg</text>`:"";
+ return `<div class="profile-chart card"><div class="space"><strong>${label}</strong><span class="small">${vals.at(-1)} ${unit}</span></div><svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label} Verlauf">${targetLine}<polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="chart-range chart-dates"><span>${firstDate}<br><b>${vals[0]} ${unit}</b></span><span>${lastDate}<br><b>${vals.at(-1)} ${unit}</b></span></div></div>`
+}
+function renderMeasurementCharts(){const el=$("measurementCharts");if(!el)return;const cards=[sparklineMarkup("Gewicht","weight","kg"),sparklineMarkup("Körperfett","bodyfat","%"),sparklineMarkup("Taille","waist","cm")].filter(Boolean);el.innerHTML=cards.length?`<div class="section-head"><h2>Verlauf</h2></div>${cards.join("")}`:""}
+function hasGoalBasis(){
+ const w=profileWeight(),height=Number(profile.height),age=Number(profile.age),sex=profile.sex,goal=profile.goal;
+ return !!(w&&height&&age&&sex&&goal)
+}
+let drinksReorderMode=false;
+function moveDrink(id,dir){
+ const i=nutrition.drinks.findIndex(d=>String(d.id)===String(id)),j=i+dir;
+ if(i<0||j<0||j>=nutrition.drinks.length)return;
+ [nutrition.drinks[i],nutrition.drinks[j]]=[nutrition.drinks[j],nutrition.drinks[i]];
+ saveAll();renderProfile()
+}
+function dateKeyLocal(ts){const d=new Date(ts);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function hydrationGoalDaysReached(){
+ const goal=hasGoalBasis()?hydrateGoal():0;if(!goal)return 0;
+ const days=new Map();
+ hydrationLog().forEach(x=>{const k=dateKeyLocal(Number(x.at));days.set(k,(days.get(k)||0)+(Number(x.size)||0)*(Number(x.hydration)||0)/100)});
+ return [...days.values()].filter(v=>v>=goal).length
+}
+function currentWeekTrainingDays(){
+ const start=mondayOf();start.setHours(0,0,0,0);const end=new Date(start);end.setDate(end.getDate()+7);
+ return new Set(history.filter(w=>{const t=Number(w.finishedAt||0);return t>=start.getTime()&&t<end.getTime()}).map(w=>dateKeyLocal(w.finishedAt))).size
+}
+function weightTrend(){
+ const rows=measurements.filter(m=>Number(m.weight)>0),target=Number(profile.targetWeight)||0;
+ if(!rows.length)return null;
+ const b=Number(rows.at(-1).weight),a=rows.length>1?Number(rows[rows.length-2].weight):b;
+ return {delta:Math.round((b-a)*10)/10,current:b,target,distance:target?Math.round((target-b)*10)/10:null,from:new Date((rows.length>1?rows[rows.length-2]:rows[0]).date||Date.now()),to:new Date(rows.at(-1).date||Date.now()),hasTrend:rows.length>1}
+}
+function renderProfileProgress(){
+ const el=$("profileProgressOverview");if(!el)return;
+ const wt=weightTrend(),hyd=hydrationGoalDaysReached(),train=currentWeekTrainingDays();
+ el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid"><div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${wt&&wt.hasTrend?(wt.delta>0?"+":"")+wt.delta+" kg":wt?wt.current+" kg":"–"}</strong><div class="goal-line">${wt?.target?`Wunschgewicht ${wt.target} kg · ${Math.abs(wt.distance)} kg ${wt.distance<0?"darüber":"bis Ziel"}`:wt&&wt.hasTrend?`${wt.from.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})} → ${wt.to.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}`:"Wunschgewicht im Profil eintragen"}</div></div><div class="card progress-stat"><div class="small">Hydrierungsziel erreicht</div><strong>${hyd}</strong><div class="goal-line">Tage insgesamt</div></div><div class="card progress-stat"><div class="small">Training diese Woche</div><strong>${train} / 7</strong><div class="goal-line">Trainingstage</div></div></div>`
+}
+function renderProfile(){ dailyReset();ensureDrinks();recalcFoodTotals();$("profileDayLabel").textContent=profileDayLabel();$("profileDayDate").textContent=profileDate().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});$("profilePrevDay").onclick=()=>changeProfileDay(-1);$("profileNextDay").onclick=()=>changeProfileDay(1);const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),currentWeight=Number(latest?.weight||profile.weight||0),basis=hasGoalBasis();$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?profile.height+" cm":"",currentWeight?currentWeight+" kg":""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";$("profileGoalSummary").textContent=(profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele")+(profile.targetWeight?` · Wunschgewicht ${profile.targetWeight} kg`:"");$("nutritionCalTarget").textContent=basis&&nutrition.calories?nutrition.calories+" kcal":"–";$("nutritionHydrationTarget").textContent=basis&&nutrition.waterGoal?`${nutrition.waterGoal} ml`:"–";
+ const goal=basis?hydrateGoal():0,water=Number(nutrition.hydration)||0,cal=Number(nutrition.consumedCalories)||0,proteinToday=Number(nutrition.consumedProtein)||0;
+ $("calorieTodayView").textContent=`${cal} kcal`;$("proteinTodayView").textContent=`davon Protein ${Math.round(proteinToday)} g`;$("calorieGoalView").textContent=`Ziel ${basis&&nutrition.calories?nutrition.calories+" kcal":"–"}`;const calGoal=basis?Number(nutrition.calories)||0:0,proteinGoal=basis?Number(nutrition.protein)||0:0;
+ $("foodCaloriesCounter").textContent=`${Math.round(cal)} / ${calGoal||"–"} kcal`;
+ $("foodProteinCounter").textContent=`${Math.round(proteinToday*10)/10} / ${proteinGoal||"–"} g`;
+ $("foodCaloriesProgress").style.width=calGoal?`${Math.min(100,cal/calGoal*100)}%`:"0%";
+ $("foodProteinProgress").style.width=proteinGoal?`${Math.min(100,proteinToday/proteinGoal*100)}%`:"0%";
+ $("todayFoodList").innerHTML=todayFoodEntries().slice().reverse().map(x=>`<div class="food-log-row ${foodTone(x.category)}"><div><strong>${esc(x.name)}</strong><small>${x.grams} g · ${x.kcal} kcal · ${x.protein} g Protein · ${Math.round(Number(x.water)||0)} ml Wasser</small></div><button class="icon-btn danger" data-food-del="${x.id}">−</button></div>`).join("")||'<div class="small empty-food-note">Heute noch keine Lebensmittel eingetragen.</div>';
+ document.querySelectorAll("[data-food-del]").forEach(b=>b.onclick=()=>deleteFoodEntry(b.dataset.foodDel));
+ $("proteinGoalView").textContent=basis&&nutrition.protein?`${nutrition.protein} g`:"–";
+ $("waterView").textContent=`${Math.round(water)} ml`;$("caffeineTodayView").textContent=`Koffein ${Math.round(Number(nutrition.caffeineToday)||0)} mg`;$("hydrationCaloriesView").textContent=`${Math.round(cal)} kcal`;$("waterGoalView").textContent=goal?`Ziel ${goal} ml`:"Ziel –";$("waterProgress").style.width=goal?`${Math.min(100,water/goal*100)}%`:"0%";
+ $("todayDrinkList").innerHTML=todayHydrationEntries().slice().reverse().map(x=>{const d=nutrition.drinks.find(d=>String(d.id)===String(x.drinkId))||{name:x.name,icon:"🥤",kind:"custom"};return`<div class="card drink-log-row ${drinkTone(d)}"><div class="drink-main"><span class="drink-icon" aria-hidden="true">${d.icon||"🥤"}</span><div><strong>${esc(x.name)}</strong><div class="small">${x.size} ml · ${Math.round(x.size*x.hydration/100)} ml netto${x.caloriesPer250?` · ${Math.round(x.caloriesPer250*x.size/250)} kcal`:""}${x.caffeinePerServing?` · ${x.caffeinePerServing} mg Koffein`:""}${x.protein?` · ${x.protein} g Protein`:""}</div></div></div><div class="drink-log-actions"><button class="icon-btn danger" data-hydration-del="${x.id}">−</button></div></div>`}).join("")||'<div class="small empty-drink-note">Heute noch nichts eingetragen.</div>';
+ $("reorderDrinksBtn").textContent=drinksReorderMode?"↕":"⇅";$("reorderDrinksBtn").classList.toggle("active",drinksReorderMode);$("drinkList").innerHTML=nutrition.drinks.map((d,i)=>`<div class="card drink-card ${drinkTone(d)}"><div class="drink-main"><span class="drink-icon" aria-hidden="true">${d.icon||"🥤"}</span><div><strong>${esc(d.name)}</strong><div class="small">${d.lastSize||d.size} ml zuletzt · ${d.hydration}% Hydrierung${d.calories?` · ${d.calories} kcal/250 ml`:""}${d.caffeine?` · ${d.caffeine} mg Koffein`:""}${d.protein?` · ${d.protein} g Protein`:""}</div></div></div><div class="drink-actions">${drinksReorderMode?`<button class="icon-btn" data-drink-up="${d.id}" ${i===0?"disabled":""}>↑</button><button class="icon-btn" data-drink-down="${d.id}" ${i===nutrition.drinks.length-1?"disabled":""}>↓</button>`:`<button class="icon-btn plus-btn" data-drink-add="${d.id}">+</button>${String(d.id)==="water"?"":`<button class="icon-btn danger" data-drink-del="${d.id}">−</button>`}`}</div></div>`).join("");
+ $("reorderDrinksBtn").onclick=()=>{drinksReorderMode=!drinksReorderMode;renderProfile()};
+ document.querySelectorAll("[data-drink-up]").forEach(b=>b.onclick=()=>moveDrink(b.dataset.drinkUp,-1));
+ document.querySelectorAll("[data-drink-down]").forEach(b=>b.onclick=()=>moveDrink(b.dataset.drinkDown,1));
+ document.querySelectorAll("[data-drink-add]").forEach(b=>b.onclick=()=>{const d=nutrition.drinks.find(x=>String(x.id)===b.dataset.drinkAdd);if(!d)return;openSheet(d.name,`<div class="form-field"><label>MENGE ML</label><input id="quickDrinkAmount" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div><div class="small">${d.hydration}% Hydrierung${d.calories?` · ${d.calories} kcal/250 ml`:""}${d.caffeine?` · ${d.caffeine} mg Koffein`:""}${d.protein?` · ${d.protein} g Protein`:""}</div><button id="quickDrinkApply" class="primary" style="width:100%;margin-top:10px">Eintragen</button>`);requestAnimationFrame(()=>{const a=$("quickDrinkAmount");a?.scrollIntoView({block:"center",behavior:"smooth"});a?.focus();a?.select()});$("quickDrinkApply").onclick=()=>{addDrinkEntry(d,$("quickDrinkAmount").value);closeSheet({all:true})}});
  document.querySelectorAll("[data-hydration-del]").forEach(b=>b.onclick=()=>{if(confirm("Diesen Hydrierungseintrag löschen?"))removeHydrationEntry(b.dataset.hydrationDel)});
  document.querySelectorAll("[data-drink-del]").forEach(b=>b.onclick=()=>{const id=b.dataset.drinkDel;if(String(id)==="water")return;if(!confirm("Getränk löschen?"))return;if(BUILTIN_DRINKS.some(x=>String(x.id)===String(id)))nutrition.deletedBuiltinDrinks=[...new Set([...(nutrition.deletedBuiltinDrinks||[]),id])];nutrition.drinks=nutrition.drinks.filter(x=>String(x.id)!==id);saveAll();renderProfile()});
- $("measurementList").innerHTML=measurements.slice().reverse().map((m,i)=>`<div class="card" data-measurement-open="${measurements.length-1-i}"><div class="space"><strong>${m.weight?m.weight+" kg":"Messung"}</strong><span class="small">${new Date(m.date||Date.now()).toLocaleDateString("de-DE")}</span></div><div class="measurement-values">${m.bodyfat?`<span>Körperfett ${m.bodyfat}%</span>`:""}${m.waist?`<span>Taille ${m.waist} cm</span>`:""}${m.chest?`<span>Brust ${m.chest} cm</span>`:""}${m.hip?`<span>Hüfte ${m.hip} cm</span>`:""}</div></div>`).join("")||'<div class="card small">Noch keine Messungen.</div>'
+ $("measurementList").innerHTML=measurements.slice().reverse().map((m,i)=>{const idx=measurements.length-1-i;return`<div class="card measurement-card"><button class="measurement-main" data-measurement-open="${idx}"><div class="space"><strong>${m.weight?m.weight+" kg":"Messung"}</strong><span class="small">${new Date(m.date||Date.now()).toLocaleDateString("de-DE")}</span></div><div class="measurement-values">${m.bodyfat?`<span>Körperfett ${m.bodyfat}%</span>`:""}${m.waist?`<span>Taille ${m.waist} cm</span>`:""}${m.chest?`<span>Brust ${m.chest} cm</span>`:""}${m.hip?`<span>Hüfte ${m.hip} cm</span>`:""}</div></button><button class="icon-btn danger measurement-delete" data-measurement-delete="${idx}">−</button></div>`}).join("")||'<div class="card small">Noch keine Messungen.</div>';
+ renderMeasurementCharts();renderProfileProgress();
+ document.querySelectorAll("[data-measurement-open]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.measurementOpen),m=measurements[i];if(!m)return;openSheet("Messung",`<div class="card"><div class="space"><strong>${m.weight?m.weight+" kg":"Messung"}</strong><span class="small">${new Date(m.date||Date.now()).toLocaleDateString("de-DE")}</span></div><div class="measurement-values">${m.bodyfat?`<span>Körperfett ${m.bodyfat}%</span>`:""}${m.waist?`<span>Taille ${m.waist} cm</span>`:""}${m.chest?`<span>Brust ${m.chest} cm</span>`:""}${m.hip?`<span>Hüfte ${m.hip} cm</span>`:""}</div></div><button id="deleteOpenedMeasurement" class="secondary danger" style="width:100%;margin-top:10px">Messung löschen</button>`);$("deleteOpenedMeasurement").onclick=()=>{if(confirm("Diese Messung wirklich löschen?")){measurements.splice(i,1);profile.weight=Number(measurements.at(-1)?.weight)||"";saveAll();closeSheet({all:true});renderProfile()}}});
+ document.querySelectorAll("[data-measurement-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();const i=Number(b.dataset.measurementDelete);if(confirm("Diese Messung wirklich löschen?")){measurements.splice(i,1);profile.weight=Number(measurements.at(-1)?.weight)||"";saveAll();renderProfile()}})
 }
 function profileWeight(){const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0);return Number(latest?.weight||profile.weight||0)}
-function openProfileEditor(){openSheet("Profil bearbeiten",`<div class="profile-form-section"><h3>Persönliche Daten</h3><div class="grid2"><div class="form-field"><label>ALTER</label><input id="profileAgeEdit" class="field" inputmode="numeric" value="${esc(profile.age||"")}"></div><div class="form-field"><label>GRÖSSE CM</label><input id="profileHeightEdit" class="field" inputmode="numeric" value="${esc(profile.height||"")}"></div></div><div class="form-field"><label>GESCHLECHT FÜR ENERGIEBERECHNUNG</label><select id="profileSexEdit" class="field"><option value="">Nicht gewählt</option><option value="female" ${profile.sex==="female"?"selected":""}>Weiblich</option><option value="male" ${profile.sex==="male"?"selected":""}>Männlich</option></select></div></div><div class="profile-form-section"><h3>Aktivität & Ziel</h3><div class="form-field"><label>AKTIVITÄT</label><select id="profileActivityEdit" class="field"><option value="1.2" ${String(profile.activity)==="1.2"?"selected":""}>Wenig aktiv</option><option value="1.375" ${String(profile.activity)==="1.375"?"selected":""}>Leicht aktiv</option><option value="1.55" ${!profile.activity||String(profile.activity)==="1.55"?"selected":""}>Moderat aktiv</option><option value="1.725" ${String(profile.activity)==="1.725"?"selected":""}>Sehr aktiv</option><option value="1.9" ${String(profile.activity)==="1.9"?"selected":""}>Extrem aktiv</option></select></div><div class="form-field"><label>ZIEL</label><select id="profileGoalEdit" class="field"><option value="cut" ${profile.goal==="cut"?"selected":""}>Gewicht reduzieren</option><option value="maintain" ${!profile.goal||profile.goal==="maintain"?"selected":""}>Gewicht halten</option><option value="gain" ${profile.goal==="gain"?"selected":""}>Muskelaufbau</option></select></div></div><button id="profileSaveEdit" class="primary" style="width:100%">Profil speichern</button>`);$("profileSaveEdit").onclick=()=>{const age=Number($("profileAgeEdit").value),height=Number($("profileHeightEdit").value);if(age&&(age<14||age>100))return alert("Bitte ein realistisches Alter eingeben.");if(height&&(height<120||height>230))return alert("Bitte eine realistische Körpergröße eingeben.");profile.age=age||"";profile.height=height||"";profile.sex=$("profileSexEdit").value;profile.activity=$("profileActivityEdit").value;profile.goal=$("profileGoalEdit").value;saveAll();closeSheet({all:true});renderProfile()}}
+function openProfileEditor(){openSheet("Profil bearbeiten",`<div class="profile-form-section"><h3>Persönliche Daten</h3><div class="grid2"><div class="form-field"><label>ALTER</label><input id="profileAgeEdit" class="field" inputmode="numeric" value="${esc(profile.age||"")}"></div><div class="form-field"><label>GRÖSSE CM</label><input id="profileHeightEdit" class="field" inputmode="numeric" value="${esc(profile.height||"")}"></div></div><div class="form-field"><label>GESCHLECHT FÜR ENERGIEBERECHNUNG</label><select id="profileSexEdit" class="field"><option value="">Nicht gewählt</option><option value="female" ${profile.sex==="female"?"selected":""}>Weiblich</option><option value="male" ${profile.sex==="male"?"selected":""}>Männlich</option></select></div></div><div class="profile-form-section"><h3>Aktivität & Ziel</h3><div class="form-field"><label>AKTIVITÄT</label><select id="profileActivityEdit" class="field"><option value="1.2" ${String(profile.activity)==="1.2"?"selected":""}>Wenig aktiv</option><option value="1.375" ${String(profile.activity)==="1.375"?"selected":""}>Leicht aktiv</option><option value="1.55" ${!profile.activity||String(profile.activity)==="1.55"?"selected":""}>Moderat aktiv</option><option value="1.725" ${String(profile.activity)==="1.725"?"selected":""}>Sehr aktiv</option><option value="1.9" ${String(profile.activity)==="1.9"?"selected":""}>Extrem aktiv</option></select></div><div class="form-field"><label>ZIEL</label><select id="profileGoalEdit" class="field"><option value="cut" ${profile.goal==="cut"?"selected":""}>Gewicht reduzieren</option><option value="maintain" ${!profile.goal||profile.goal==="maintain"?"selected":""}>Gewicht halten</option><option value="gain" ${profile.goal==="gain"?"selected":""}>Muskelaufbau</option></select></div><div class="form-field"><label>WUNSCHGEWICHT KG</label><input id="profileTargetWeightEdit" class="field" inputmode="decimal" placeholder="z. B. 70" value="${esc(profile.targetWeight||"")}"></div></div><button id="profileSaveEdit" class="primary" style="width:100%">Profil speichern</button>`);$("profileSaveEdit").onclick=()=>{const age=Number($("profileAgeEdit").value),height=Number($("profileHeightEdit").value);if(age&&(age<14||age>100))return alert("Bitte ein realistisches Alter eingeben.");if(height&&(height<120||height>230))return alert("Bitte eine realistische Körpergröße eingeben.");const targetWeight=Number(String($("profileTargetWeightEdit").value).replace(",","."));
+ if(targetWeight&&(targetWeight<30||targetWeight>300))return alert("Bitte ein realistisches Wunschgewicht eingeben.");
+ profile.age=age||"";profile.height=height||"";profile.sex=$("profileSexEdit").value;profile.activity=$("profileActivityEdit").value;profile.goal=$("profileGoalEdit").value;profile.targetWeight=targetWeight||"";saveAll();closeSheet({all:true});renderProfile()}}
 function openNutritionGoals(){openSheet("Ernährungsziele",`<div class="grid2"><div class="form-field"><label>KALORIEN / TAG</label><input id="goalCaloriesEdit" class="field" inputmode="numeric" value="${esc(nutrition.calories||"")}"></div><div class="form-field"><label>PROTEIN G / TAG</label><input id="goalProteinEdit" class="field" inputmode="numeric" value="${esc(nutrition.protein||"")}"></div></div><div class="form-field"><label>FLÜSSIGKEIT ML / TAG</label><input id="goalWaterEdit" class="field" inputmode="numeric" value="${esc(nutrition.waterGoal||"")}"></div><button id="goalSaveEdit" class="primary" style="width:100%">Ziele speichern</button>`);$("goalSaveEdit").onclick=()=>{nutrition.calories=Math.max(0,Number($("goalCaloriesEdit").value)||0)||"";nutrition.protein=Math.max(0,Number($("goalProteinEdit").value)||0)||"";nutrition.waterGoal=Math.max(0,Number($("goalWaterEdit").value)||0)||"";saveAll();closeSheet({all:true});renderProfile()}}
 function openMeasurementEntry(){
  $("addMeasurementBtn").click()
 }
-function calculateProfileGoals(){
- const w=profileWeight(),age=Number(profile.age),sex=profile.sex,goal=profile.goal;
- if(!w){openMeasurementEntry();requestAnimationFrame(()=>{$("measureWeight")?.focus()});return}
- if(!age||!sex||!goal){openProfileEditor();return}
- // Practical starting estimate using only the values requested for this calculator.
- // It is intentionally a starting value, not a clinical prescription.
- let kcalPerKg=goal==="cut"?27:goal==="gain"?34:30;
- let ageFactor=age>=60?.92:age>=45?.96:age<25?1.04:1;
- let sexFactor=sex==="male"?1.05:.95;
- const kcal=Math.round((w*kcalPerKg*ageFactor*sexFactor)/25)*25;
- const protein=Math.round(w*1.6);
- const waterBase=w*35;
- const goalWater=goal==="gain"?waterBase+250:waterBase;
- const water=Math.round(goalWater/50)*50;
- openSheet("Persönlicher Startwert",`<div class="card"><div class="small">VORSCHLAG</div><strong style="font-size:22px">${kcal} kcal</strong><div class="measurement-values"><span>${protein} g Protein</span><span>${water} ml Flüssigkeit</span></div><div class="goal-line" style="margin-top:10px">Kalorien, Protein und Hydrierung werden gemeinsam als persönliche Startwerte berechnet. Grundlage sind Gewicht, Alter, Geschlecht und Fitnessziel. Beobachte deinen Verlauf und passe die Werte bei Bedarf an.</div></div><button id="applyCalculatedGoals" class="primary" style="width:100%">Als Ziele übernehmen</button>`);
- $("applyCalculatedGoals").onclick=()=>{nutrition.calories=kcal;nutrition.protein=protein;nutrition.waterGoal=water;saveAll();closeSheet({all:true});renderProfile()}
+function measurementTrendAdjustment(goal){
+ const rows=measurements.filter(m=>Number(m.weight)>0).slice(-6);if(rows.length<2)return 0;
+ const a=rows[0],b=rows[rows.length-1],days=Math.max(1,(Number(b.date)-Number(a.date))/86400000);if(days<7)return 0;
+ const weekly=((Number(b.weight)-Number(a.weight))/Number(a.weight))*(7/days);
+ if(goal==="cut"){if(weekly>-0.002)return-100;if(weekly<-0.01)return100}
+ if(goal==="gain"){if(weekly<0.001)return100;if(weekly>0.006)return-100}
+ return 0
 }
+function calculateProfileGoals(){
+ const w=profileWeight(),age=Number(profile.age),height=Number(profile.height),sex=profile.sex,goal=profile.goal;
+ if(!w){openMeasurementEntry();requestAnimationFrame(()=>{$("measureWeight")?.focus()});return}
+ if(!age||!height||!sex||!goal){openProfileEditor();return}
+ let kcalPerKg=goal==="cut"?24:goal==="gain"?30:27;
+ let ageFactor=age>=60?.92:age>=45?.96:age<25?1.02:1,sexFactor=sex==="male"?1.03:.97;
+ let kcal=Math.round((w*kcalPerKg*ageFactor*sexFactor+measurementTrendAdjustment(goal))/25)*25;
+ const protein=Math.round(w*1.6),water=Math.round((w*30)/50)*50;
+ openSheet("Persönlicher Startwert",`<div class="card"><div class="small">VORSCHLAG · UNTERE ORIENTIERUNG</div><strong style="font-size:22px">${kcal} kcal</strong><div class="measurement-values"><span>${protein} g Protein</span><span>${water} ml Flüssigkeit</span></div><div class="goal-line" style="margin-top:10px">Konservativer Startwert aus Gewicht, Alter, Geschlecht und Fitnessziel. Liegen mehrere Messungen vor, wird die Entwicklung vorsichtig berücksichtigt.</div></div><button id="applyCalculatedGoals" class="primary" style="width:100%">Als Ziele übernehmen</button>`);
+ $("applyCalculatedGoals").onclick=()=>{nutrition.calories=kcal;nutrition.protein=protein;nutrition.waterGoal=water;nutrition.goalCalculatedAt=Date.now();saveAll();closeSheet({all:true});renderProfile()}
+}
+$("addFoodTodayBtn").onclick=openFoodSearch;
 $("editProfileBtn").onclick=openProfileEditor;$("editGoalsBtn").onclick=openNutritionGoals;$("calculateGoalsBtn").onclick=calculateProfileGoals;
 function openQuickDrinkEntry(){
  ensureDrinks();let selectedId=nutrition.drinks[0]?.id||null;
  const render=()=>{const d=nutrition.drinks.find(x=>String(x.id)===String(selectedId))||nutrition.drinks[0];if(!d)return;
   $("sheetBody").innerHTML=`<div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?"active":""} ${drinkTone(x)}" data-quick-drink="${x.id}"><span class="drink-icon">${x.icon||"🥤"}</span><span>${esc(x.name)}</span></button>`).join("")}</div><div class="form-field" style="margin-top:12px"><label>MENGE ML</label><input id="quickDrinkAmount" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div><div class="small quick-drink-meta">${d.hydration}% Hydrierung · ${d.calories||0} kcal/250 ml · ${d.caffeine||0} mg Koffein</div><button id="quickDrinkApply" class="primary" style="width:100%;margin-top:12px">Eintragen</button>`;
-  document.querySelectorAll("[data-quick-drink]").forEach(b=>b.onclick=()=>{selectedId=b.dataset.quickDrink;render()});
+  document.querySelectorAll("[data-quick-drink]").forEach(b=>b.onclick=()=>{selectedId=b.dataset.quickDrink;render();requestAnimationFrame(()=>{const a=$("quickDrinkAmount");a?.scrollIntoView({block:"center",behavior:"smooth"});a?.focus();a?.select()})});
   $("quickDrinkApply").onclick=()=>{addDrinkEntry(d,$("quickDrinkAmount").value);closeSheet({all:true})}
  };
  openSheet("Getränk eintragen","");render()
@@ -1140,8 +1559,8 @@ document.addEventListener("click",e=>{if(e.target.closest("button,input,select,t
 function renderSheetState(state){$("sheetTitle").textContent=state.title;$("sheetBody").innerHTML=state.body;$("sheetWrap").classList.remove("hidden");if(typeof state.bind==="function")state.bind();requestAnimationFrame(()=>{$("sheetBody").scrollTop=state.scroll||0})}
 function openSheet(t,b,bind=null,{replace=false}={}){if(!replace&&!$("sheetWrap").classList.contains("hidden"))sheetStack.push({title:$("sheetTitle").textContent,body:$("sheetBody").innerHTML,scroll:$("sheetBody").scrollTop||0,bind:null});renderSheetState({title:t,body:b,scroll:0,bind})}
 function closeSheet({all=false}={}){if(!all&&sheetStack.length){renderSheetState(sheetStack.pop());return}sheetStack=[];$("sheetWrap").classList.add("hidden")}
-function cancelTask(){sheetStack=[];$("sheetWrap").classList.add("hidden");exerciseDetailReturn=null}
-$("sheetBack").onclick=()=>closeSheet({all:false});$("sheetClose").onclick=cancelTask;
+function cancelTask(){planAddFlow=null;sheetStack=[];$("sheetWrap").classList.add("hidden");exerciseDetailReturn=null}
+$("sheetBack").onclick=()=>{if(planAddFlow)planAddBack();else closeSheet({all:false})};$("sheetClose").onclick=()=>{if(planAddFlow)cancelPlanAddFlow();else cancelTask()};
 function formatTime(s){s=Math.max(0,Number(s)||0);return`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function parseTime(v){const x=String(v).trim();if(x.includes(":")){const[m,s]=x.split(":").map(Number);return(m||0)*60+(s||0)}return(Number(x)||0)*60}function formatDuration(ms){const s=Math.max(0,Math.floor(ms/1000)),m=Math.floor(s/60),r=s%60;return`${m}:${String(r).padStart(2,"0")}`}
 loadData();dailyReset();ensureDrinks();renderExerciseLibrary();renderPlans();renderTrainingHome();renderWeek();renderProfile();restoreUI();
 if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});</script></body></html>
