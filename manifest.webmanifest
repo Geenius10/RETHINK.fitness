@@ -3,19 +3,11 @@
   "short_name": "ReThink.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#070708",
-  "theme_color": "#070708",
+  "background_color": "#090910",
+  "theme_color": "#0b0b13",
   "orientation": "portrait-primary",
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"}
   ]
 }

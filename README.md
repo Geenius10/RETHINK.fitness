@@ -1,68 +1,38 @@
-# ReThink. Clean v1
-Komplett neuer Quellcode. Keine alte Screen-/CSS-Struktur übernommen.
+# ReThink. Athletic Lab — v48 Design Lab (TESTBRANCH)
 
-Die bestehenden LocalStorage-Schlüssel bleiben gleich, damit alte Pläne, eigene Übungen, Verlauf, aktive Workouts, Messungen, Ernährung und Profil auf derselben Domain weiter eingelesen werden können.
+> **Wichtig:** Diese Version ist ein reines Design-Experiment auf Basis von v47 und **kein neuer Standard**. Die Trainings-, Plan-, Draft-, Workout- und Storage-Logik bleibt auf dem funktionalen Stand von v47.
 
-Architektur:
-- 5 Haupt-Tabs mit gespeicherter Scrollposition
-- Vollbild-Unterseiten mit kompakter fixer Topbar
-- einheitliche Sheets
-- Standardpause 01:30
-- KG / WDH. in allen Satzansichten
-- Übungsbibliothek, eigene Übungen, Planeditor, Vorschau, Training, Verlauf, Woche, Profil
+## Technischer Stand
+- PWA mit 5 Haupt-Tabs: Übungen, Pläne, Training, Woche, Profil
+- Vanilla JavaScript in `index.html`
+- `manifest.webmanifest` für Installation/PWA-Metadaten
+- `sw.js` als Service Worker
+- lokale Persistenz über die bestehenden LocalStorage-Schlüssel
+- bestehende Pläne, eigene Übungen, Verlauf, aktive Workouts, Messungen, Ernährung und Profil bleiben kompatibel
 
+## Funktionaler Stand v47
+- einheitliche „Übung hinzufügen“-Maske für Hinzufügen, Bearbeiten und Austauschen
+- Draft/Validierung vor dem Übernehmen einer Übung
+- universelle Umwandlung zwischen Satzmethoden
+- Zeit und AMRAP sind Tracking-/Ausführungsformen und **keine** Satzmethoden
+- Superset, Giant Set und Pre-Exhaust behalten pro Mitglied eigenen WDH-/Zeit-/AMRAP-Modus
+- Pyramide nur auf WDH, mindestens 3 Sätze, auf- oder absteigend konfigurierbar und dynamische Folge-WDH
+- methodenabhängige sinnvolle Satzanzahlen
+- Planänderungen außerhalb eines Workouts werden beim Verlassen einmal zum Speichern/Verwerfen angeboten
+- Workout-Strukturänderungen bleiben zunächst im Workout; erst beim regulären Abschluss Entscheidung über Originalplan / neuen Plan / Verwerfen
+- Gruppen bleiben bei Reihenfolge und Darstellung zusammenhängend
+- Vorschau read-only; Verlauf speichert Workout-Snapshots
 
-## Clean v2 additions
-- restored UI/page/draft state; active workout has startup priority
-- plan picker search + shared sorting
-- history delete/restart, week multi-plan merge
-- live notes, deletion, timers, gated ratings
-- method descriptions and aligned KG/WDH headers
-- expanded hydration/nutrition/drinks/measurements
-- execution guidance rewritten using ACE Exercise Library movement-form principles
+## v48 Design Lab — ausschließlich visuell
+Das Design wurde testweise vollständig neu interpretiert:
+- Midnight-/Graphite-Grundfläche mit Lilac-/Ice-Akzenten
+- weichere Glassurfaces und stärkere Tiefenstaffelung
+- schwebende, pillenartige Bottom-Navigation
+- größere typografische Hierarchie und editorialere Überschriften
+- neue Kartenradien, Abstände, Button- und Input-Sprache
+- Trainingsmethoden mit schmalem farbigem Methoden-Rail statt dominanter Vollumrandung
+- überarbeitete visuelle Behandlung von Live-Workout, Pausentimer, Wochenplan und Profilkarten
+- keine Storage-Keys, Datenmodelle oder Trainingslogik für diesen Design-Test verändert
 
-## Clean v3
-- Zurück führt innerhalb eines Arbeitsablaufs auf den unmittelbar vorherigen Screen; X/Schließen beendet den Sheet-Ablauf.
-- Tastatur wird beim Scrollen geschlossen.
-- Sortierung um „Genutzt“ ergänzt; alle Sortierungen sind auf-/absteigend.
-- Wiederholungen werden über verständliche Presets gewählt.
-- Superset, Giant Set und Pre-Exhaust verlangen verknüpfte Übungen; Drop Set konfiguriert Drops und Reduktion.
-- Ein Satz kann erst nach vollständigen Werten über den Haken bewertet und abgeschlossen werden. Die Bewertung färbt den Haken.
-
-## Clean v4
-- 10–15 statt 12–15; Max Hold ergänzt.
-- Bewertung „Zu leicht“ als vierte, hellblaue Stufe.
-- Mehrere Wochenpläne werden nur referenziert, nie als neuer Plan gespeichert. Änderungen/Löschungen der Quellen wirken auf die Woche; abgeschlossene kombinierte Workouts bleiben als Snapshot im Verlauf.
-- Profilbearbeitung wieder ausgebaut: Alter, Größe, Geschlecht für Energieberechnung, Aktivität, Ziel, Messungen, Ernährungsziele und berechneter Startwert – im Clean-Design.
-
-## Clean v5
-- Datumsgebundene Wochenansicht, zwei Wochen zurück und zwei Wochen voraus.
-- Getränke aus Verlauf übernehmen, letzte Menge merken, Kalorien/Koffein/Hydrierung protokollieren und Einträge löschen.
-- Vollbild-Einstellungen mit Profil-, Trainings- und Datenbereichen.
-- Plan Tap/Bearbeiten, Long-Press Duplizieren/Löschen, Links-Wisch Löschen mit Bestätigung.
-- Zurück im Planeditor fragt nur bei Änderungen nach Speichern.
-- Vorschau entspricht der Trainingsansicht.
-- Änderungen während eines laufenden Trainings erzeugen erst beim gespeicherten Abschluss einen neuen angepassten Plan.
-
-## Clean v6 – Zusammenführung mit Verlauf/v2.121
-- Übung austauschen erhält Satzmethode, Sätze, Wiederholungsziel, Pause, Notiz und Methodendaten.
-- Superset, Giant Set und Pre-Exhaust laufen nun als echte gemeinsame Runden mit KG/WDH. pro beteiligter Übung.
-- Verknüpfung lösen setzt die verbleibende Übung sauber auf Standard zurück.
-- Varianten und WDH. pro Seite wieder integriert.
-- Max Hold schaltet auf Zeittracking.
-- Empfehlungen aus dem letzten Trainingsverlauf im Plan und Training.
-- Reihenfolge im laufenden Workout funktioniert mit Pfeilen.
-- Pausentimer überlebt App-Wechsel/Sperrbildschirm zeitlich.
-- Zusammenfassung zeigt tatsächliche KG/WDH./Zeit- und Teilsetwerte.
-- Eigene Übungen können bearbeitet werden und mehrere Bereiche sowie Zeit/Wiederholungs-Tracking erhalten.
-
-## Clean v7 – Usability / state / active workout
-- Laufendes Training: große grün akzentuierte Karte mit Live-Zeit und aktueller Übung; normale Startkarte verschwindet.
-- Nach echtem App-Neustart mit aktivem Workout startet ReThink oben auf der Training-Seite bei dieser Karte.
-- Hintergrund/Foreground ohne Neustart behält den aktuellen Screen; UI-Zustand wird zusätzlich gespeichert.
-- Workout-Eingaben sind auf iOS wieder fokussierbar; Scrollen schließt die Tastatur erst nach tatsächlicher Scrollbewegung.
-- „Genutzt“ ist bei Übungen eine Sortierung nach letzter tatsächlicher Nutzung und wechselt per erneutem Tap zwischen ↑/↓.
-- Mehrere Muskelgruppenfilter wirken als UND-Verknüpfung.
-- Leere Pläne können weder gespeichert noch gestartet werden.
-- Tabbar größer und mit eindeutigen SVG-Symbolen; Profil mit Personensilhouette.
-- Profilreihenfolge: Profildaten → Messungen → Hydrierung mit aufklappbaren Getränken → Ernährung.
+## Persistenz / Kompatibilität
+Die bestehenden Storage-Schlüssel bleiben unverändert. Diese Testversion kann deshalb dieselben gespeicherten Daten wie v47 auf derselben Domain verwenden.
