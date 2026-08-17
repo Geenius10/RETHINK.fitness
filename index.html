@@ -366,6 +366,16 @@ body{font-size:16px}
 </style><style id="v34-food-methods">
 .food-search-empty{padding:28px 12px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}
 .pyramid-config{display:grid;gap:6px}.pyramid-config-row{display:grid;grid-template-columns:54px 1fr 46px;gap:8px;align-items:center}.pyramid-config-row>span{font-size:10px;color:var(--muted);font-weight:800}.pyramid-config-row>span:last-child{text-align:right}
+</style><style id="v35-fixes">
+.rating-choice{display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;padding:9px 12px!important}.rating-choice strong{font-size:12px}.rating-choice small{display:block;font-size:9px;line-height:1.25;margin-top:2px;opacity:.72;font-weight:650}
+.live-exercise-card{transition:box-shadow .2s,transform .2s,border-color .2s}.live-exercise-card.active-live-exercise{box-shadow:0 0 0 2px rgba(255,255,255,.65),0 0 24px rgba(207,177,233,.24);transform:scale(1.008);border-color:#fff!important}
+#restBar{position:fixed!important;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:1000;margin:0!important;box-shadow:0 10px 35px rgba(0,0,0,.45)}#livePage{padding-bottom:150px!important}
+#startTrainingCard{min-height:112px;padding:20px!important;display:flex;align-items:center}#startTrainingCard>.space{width:100%}#startTrainingCard strong{font-size:19px}
+.plan-card.hold-armed{transform:scale(.985);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);filter:brightness(1.12)}.plan-card.hold-ready{transform:scale(.97);box-shadow:inset 0 0 0 2px #fff,0 0 20px rgba(255,255,255,.15)}
+.mode-switch{display:flex;gap:6px;margin:8px 0 12px}.save-choice-stack{display:grid;gap:8px}.summary-plan-card .plus-btn{flex:0 0 auto}
+</style><style id="v36-rep-logic">
+.restpause-progress{padding:7px 2px 2px;text-align:right;font-weight:800}
+.time-presets{display:flex;flex-wrap:wrap;gap:6px}
 </style></head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
@@ -430,6 +440,9 @@ let weekOffset=0,editorDirty=false,editorOriginalSnapshot="",livePlanEdited=fals
 function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1500)}
 function ensureAudio(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}catch{return null}}
 function signalTone(){const c=ensureAudio();if(!c)return;try{const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.setValueAtTime(880,c.currentTime);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.18,c.currentTime+.015);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.28);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.3);setTimeout(()=>{try{const o2=c.createOscillator(),g2=c.createGain();o2.frequency.value=1175;g2.gain.setValueAtTime(.0001,c.currentTime);g2.gain.exponentialRampToValueAtTime(.14,c.currentTime+.01);g2.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.22);o2.connect(g2);g2.connect(c.destination);o2.start();o2.stop(c.currentTime+.24)}catch{}},110)}catch{}}
+function requestTimerNotifications(){if("Notification" in window&&Notification.permission==="default")Notification.requestPermission().catch(()=>{})}
+function backgroundTimerNotice(text){if(document.visibilityState!=="hidden"||!("Notification" in window)||Notification.permission!=="granted")return;navigator.serviceWorker?.ready.then(r=>r.showNotification("ReThink.",{body:text,tag:"rethink-timer",renotify:true})).catch(()=>{})}
+
 
 function mondayOf(date=new Date()){const d=new Date(date);const day=(d.getDay()+6)%7;d.setHours(12,0,0,0);d.setDate(d.getDate()-day);return d}
 function weekKeyForOffset(offset=weekOffset){const d=mondayOf();d.setDate(d.getDate()+offset*7);return d.toISOString().slice(0,10)}
@@ -457,10 +470,25 @@ function repTop(reps){const m=String(reps||"").match(/(\d+)\s*-\s*(\d+)/);return
 function lastHistoryExercise(name){for(let i=history.length-1;i>=0;i--){const ex=(history[i].exercises||[]).find(e=>e.name===name);if(ex)return ex}return null}
 function recommendationFor(e){const prev=lastHistoryExercise(e.name);if(!prev)return"Erstes protokolliertes Training – starte kontrolliert im vorgegebenen Bereich.";const sets=(prev.liveSets||[]).filter(s=>s.completed);if(!sets.length)return"Keine abgeschlossenen Vergleichssätze vorhanden.";const ratings=sets.map(s=>s.rating).filter(Boolean);if(ratings.includes("red"))return"Letztes Mal zu anstrengend: Last zunächst beibehalten oder leicht reduzieren.";if(ratings.includes("blue"))return"Letztes Mal zu leicht: Widerstand moderat erhöhen.";const top=repTop(e.reps),reps=sets.map(s=>Number(s.reps)||0).filter(Boolean);if(top&&reps.length&&reps.every(r=>r>=top))return`Oberes Wiederholungslimit (${top}) erreicht: kleine Laststeigerung sinnvoll.`;if(ratings.length&&ratings.every(r=>r==="green"))return"Genau passend: Last und Zielbereich zunächst beibehalten.";return"Im Zielbereich bleiben und nach Tagesform fein anpassen."}
 function saveAll(){write(STORAGE.plans,plans);write(STORAGE.custom,customExercises);write(STORAGE.history,history);write(STORAGE.measurements,measurements);write(STORAGE.nutrition,nutrition);write(STORAGE.profile,profile);activeWorkout?write(STORAGE.active,activeWorkout):localStorage.removeItem(STORAGE.active);write(WEEK_KEY,weekPlan);saveCurrentWeekRefs()}
-const REP_PRESETS=["1-4","4-6","6-8","8-12","10-15","10-20","20-30","AMRAP","Max Hold"];
-function repsForMethod(m){if(m==="restpause")return["20-30","AMRAP"];if(m==="cluster")return["1-4","4-6"];if(m==="backoff")return["6-8","8-12","10-15"];return REP_PRESETS}
+const REP_PRESETS=["1-3","4-8","8-12","10-15","15-20","20-30","AMRAP"];
+function repsForMethod(m){
+ if(m==="standard")return["1-3","4-8","8-12","10-15","15-20","20-30","AMRAP"];
+ if(m==="superset")return["4-8","8-12","10-15","15-20","AMRAP"];
+ if(m==="giant")return["1-3","4-8","8-12","10-15","15-20","AMRAP"];
+ if(m==="preexhaust")return["8-12","10-15","15-20","AMRAP"];
+ if(m==="dropset")return["8-12","10-15","15-20"];
+ if(m==="restpause")return["20","30"];
+ if(m==="cluster")return["6","8","10","12","15","20"];
+ if(m==="backoff")return["5"];
+ return REP_PRESETS
+}
+function timePresetValues(){return Array.from({length:12},(_,i)=>(i+1)*15)}
+function timePresetMarkup(e,prefix){
+ const cur=Math.min(180,Math.max(15,Number(e.timeSeconds)||60));
+ return`<div class="rep-presets time-presets">${timePresetValues().map(v=>`<button type="button" class="rep-preset ${cur===v?"active":""}" data-time-preset="${v}">${formatTime(v)}</button>`).join("")}</div>`
+}
 function repPresetMarkup(e){const opts=repsForMethod(e.setTechnique||"standard"),cur=amrapText(e.reps||defaultRepsForMethod(e.setTechnique));return`<div class="rep-presets">${opts.map(v=>`<button type="button" class="rep-preset ${cur===v?"active":""}" data-rep-preset="${v}">${v}</button>`).join("")}</div>`}
-function defaultRepsForMethod(m){return m==="restpause"?"20-30":m==="cluster"?"2":m==="backoff"?"5":"8-12"}
+function defaultRepsForMethod(m){return m==="superset"||m==="preexhaust"?"10-15":m==="restpause"?"20":m==="cluster"?"10":m==="backoff"?"5":"8-12"}
 function normEx(x){const e=clone(x||{});e.name=e.name||"Übung";e.category=e.category||"Körpergewicht";e.muscles=Array.isArray(e.muscles)&&e.muscles.length?e.muscles:[e.subcategory||"Ganzkörper"];e.tracking=e.tracking||"reps";return e}
 function normPlanEx(e){const x=normEx(e);x.setTechnique=x.setTechnique==="normal"?"standard":(x.setTechnique||"standard");x.measureMode=x.measureMode||((x.tracking||"").includes("time")?"time":"reps");x.reps=x.reps||x.targetRepRange||defaultRepsForMethod(x.setTechnique);x.sets=Math.max(1,Number(x.sets)||3);x.rest=Number.isFinite(Number(x.rest))?Number(x.rest):90;x.methodData=x.methodData||{};x.note=x.note||"";x.variant=x.variant||"";x.perSide=!!x.perSide;x.linkedExerciseNames=Array.isArray(x.linkedExerciseNames)?x.linkedExerciseNames:[];return x}
 function normPlan(p){return{id:p.id||uid(),name:p.name||"Trainingsplan",createdAt:p.createdAt||Date.now(),updatedAt:p.updatedAt||Date.now(),lastUsedAt:Number(p.lastUsedAt)||0,exercises:(p.exercises||[]).map(normPlanEx)}}
@@ -646,7 +674,7 @@ function closePage(){
  else{$("bottomNav").classList.remove("hidden");showTab(p?.tab||currentTab);requestAnimationFrame(()=>window.scrollTo({top:p?.scroll||0,behavior:"auto"}))}
  persistUI()
 }
-document.addEventListener("click",e=>{if(e.target.closest("[data-back]"))closePage()});
+document.addEventListener("click",e=>{if(!e.target.closest("[data-back]"))return;if(e.target.closest("#exerciseDetailPage")&&exerciseDetailReturn?.type==="live"&&activeWorkout){const idx=exerciseDetailReturn.index||0;exerciseDetailReturn=null;closePage();requestAnimationFrame(()=>focusLiveExercise(idx,"auto"));return}closePage()});
 let keyboardDismissStartY=null,keyboardDismissCanBlur=false;
 function activeEditable(){const a=document.activeElement;return a&&["INPUT","TEXTAREA","SELECT"].includes(a.tagName)?a:null}
 document.addEventListener("touchstart",e=>{
@@ -753,7 +781,7 @@ function sortedPlans(){const a=[...plans];a.sort((x,y)=>{if(planSort.key==="name
 let plansQuickEdit=false;
 function renderPlans(){const defs=[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]];$("planSortChips").innerHTML=defs.map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("");document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.sort)planSort.dir*=-1;else{planSort.key=b.dataset.sort;planSort.dir=1}renderPlans()});$("planList").classList.toggle("quick-edit",plansQuickEdit);
  $("plansEditBtn").textContent=plansQuickEdit?"Fertig":"Bearbeiten";
- $("planList").innerHTML=sortedPlans().map(p=>`<div class="plan-card ${plansQuickEdit?"plan-quick-edit":""}" data-plan="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span class="chev">›</span>${plansQuickEdit?`<button class="plan-quick-delete" data-quick-delete="${p.id}" aria-label="${esc(p.name)} löschen">−</button>`:`<button class="plan-swipe-delete" data-swipe-delete="${p.id}">Löschen</button>`}</div>`).join("");document.querySelectorAll("[data-plan]").forEach(card=>{const id=Number(card.dataset.plan);let timer,startX=0,startY=0,dx=0,dy=0,longFired=false;const cancelHold=()=>{clearTimeout(timer);timer=null};card.onclick=e=>{if(plansQuickEdit||e.target.closest("[data-swipe-delete],[data-quick-delete]")||longFired)return;editPlan(id)};card.oncontextmenu=e=>e.preventDefault();card.onpointerdown=e=>{startX=e.clientX;startY=e.clientY;dx=0;dy=0;longFired=false;cancelHold();timer=setTimeout(()=>{longFired=true;openPlanLongActions(id)},950)};card.onpointermove=e=>{dx=e.clientX-startX;dy=e.clientY-startY;if(Math.abs(dx)>12||Math.abs(dy)>12)cancelHold()};card.onpointerup=()=>{cancelHold();if(!longFired){if(dx<-45){closeAllSwipeActions(card);card.classList.add("swipe-open")}else if(dx>25)card.classList.remove("swipe-open")}};card.onpointercancel=cancelHold;card.onpointerleave=cancelHold});document.querySelectorAll("[data-swipe-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();deletePlanAsked(Number(b.dataset.swipeDelete))});
+ $("planList").innerHTML=sortedPlans().map(p=>`<div class="plan-card ${plansQuickEdit?"plan-quick-edit":""}" data-plan="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span class="chev">›</span>${plansQuickEdit?`<button class="plan-quick-delete" data-quick-delete="${p.id}" aria-label="${esc(p.name)} löschen">−</button>`:`<button class="plan-swipe-delete" data-swipe-delete="${p.id}">Löschen</button>`}</div>`).join("");document.querySelectorAll("[data-plan]").forEach(card=>{const id=Number(card.dataset.plan);let timer,startX=0,startY=0,dx=0,dy=0,longFired=false;const cancelHold=()=>{clearTimeout(timer);timer=null};card.onclick=e=>{if(plansQuickEdit||e.target.closest("[data-swipe-delete],[data-quick-delete]")||longFired)return;editPlan(id)};card.oncontextmenu=e=>e.preventDefault();card.onpointerdown=e=>{startX=e.clientX;startY=e.clientY;dx=0;dy=0;longFired=false;card.classList.add("hold-armed");cancelHold();timer=setTimeout(()=>{longFired=true;card.classList.add("hold-ready");setTimeout(()=>{card.classList.remove("hold-armed","hold-ready");openPlanLongActions(id)},120)},700)};card.onpointermove=e=>{dx=e.clientX-startX;dy=e.clientY-startY;if(Math.abs(dx)>12||Math.abs(dy)>12)cancelHold()};card.onpointerup=()=>{cancelHold();card.classList.remove("hold-armed","hold-ready");if(!longFired){if(dx<-45){closeAllSwipeActions(card);card.classList.add("swipe-open")}else if(dx>25)card.classList.remove("swipe-open")}};card.onpointercancel=()=>{cancelHold();card.classList.remove("hold-armed","hold-ready")};card.onpointerleave=()=>{cancelHold();card.classList.remove("hold-armed","hold-ready")}});document.querySelectorAll("[data-swipe-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();deletePlanAsked(Number(b.dataset.swipeDelete))});
  document.querySelectorAll("[data-quick-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();const id=Number(b.dataset.quickDelete);plans=plans.filter(x=>x.id!==id);saveAll();renderPlans();renderWeek()})
 }
 $("plansEditBtn").onclick=()=>{plansQuickEdit=!plansQuickEdit;renderPlans()};
@@ -782,10 +810,15 @@ function editPlan(id){
 function openPlanEditor(){$("planName").value=currentPlan.name||"";renderEditorExercises();openPage("planEditorPage")}
 $("planEditorBack").onclick=()=>{
  if(!editorHasChanges()){closePage();return}
- openSheet("Änderungen speichern?",`<p class="muted">Sollen die Änderungen an diesem Plan wirklich gespeichert werden?</p><div class="grid2"><button id="discardPlanChanges" class="secondary danger">Nein, verwerfen</button><button id="savePlanChanges" class="primary">Ja, speichern</button></div>`);
- $("discardPlanChanges").onclick=()=>{closeSheet({all:true});editorDirty=false;closePage()};
- $("savePlanChanges").onclick=()=>{if(saveCurrentPlan()){closeSheet({all:true});editorDirty=false;closePage();renderPlans()}}
+ openSheet("Planbearbeitung verlassen?",`<p class="muted">Du hast Änderungen vorgenommen.</p><div class="save-choice-stack"><button id="backSavePlan" class="primary">Änderungen speichern</button><button id="discardPlanChanges" class="secondary danger">Plan verwerfen</button><button id="stayInPlan" class="secondary">Weiter bearbeiten</button></div>`);
+ $("discardPlanChanges").onclick=()=>{closeSheet({all:true});editorDirty=false;closePage()};$("stayInPlan").onclick=()=>closeSheet({all:true});$("backSavePlan").onclick=()=>{closeSheet({all:true});if(currentPlan._editingSourceId)askExistingPlanSave(()=>{editorDirty=false;closePage();renderPlans()});else if(saveCurrentPlan()){editorDirty=false;closePage();renderPlans()}}
 };$("planName").addEventListener("input",()=>{if(currentPlan){currentPlan.name=$("planName").value;markEditorDirty()}});
+
+function planStructureSnapshot(p){const x=clone(p||{});delete x.name;delete x.updatedAt;delete x.lastUsedAt;delete x._editingSourceId;delete x._originalName;delete x._isNew;delete x.id;delete x.createdAt;delete x.sourcePlanId;return JSON.stringify(x)}
+function editorOnlyRenamed(){if(!currentPlan?._editingSourceId)return false;const src=plans.find(p=>p.id===currentPlan._editingSourceId);return !!src&&planStructureSnapshot(src)===planStructureSnapshot(currentPlan)&&String(src.name)!==String($("planName").value.trim())}
+function overwriteCurrentPlan(){const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");const src=plans.find(p=>p.id===currentPlan._editingSourceId);if(!src)return null;const saved=clone(currentPlan);saved.id=src.id;saved.name=entered;saved.createdAt=src.createdAt;saved.updatedAt=Date.now();delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;plans=plans.map(p=>p.id===src.id?clone(saved):p);currentPlan=clone(saved);saveAll();setEditorBaseline();return saved}
+function savePlanAsNew(){const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");if(!(currentPlan.exercises||[]).length)return alert("Ein Trainingsplan braucht mindestens eine Übung.");const saved=clone(currentPlan);saved.id=uid();saved.name=nextPlanVersionName(currentPlan._originalName||entered);saved.createdAt=Date.now();saved.updatedAt=Date.now();saved.sourcePlanId=currentPlan._editingSourceId||currentPlan.id;delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;plans.push(clone(saved));currentPlan=clone(saved);saveAll();setEditorBaseline();return saved}
+function askExistingPlanSave(after){if(editorOnlyRenamed()){overwriteCurrentPlan();after?.();return}openSheet("Planänderungen speichern?",`<p class="muted">Möchtest du den bisherigen Plan überschreiben oder die Bearbeitung als neuen Plan speichern?</p><div class="save-choice-stack"><button id="overwritePlan" class="primary">Alten Plan überschreiben</button><button id="newPlanVersion" class="secondary">Neuen Plan erstellen</button><button id="cancelPlanSave" class="secondary">Abbrechen</button></div>`);$("overwritePlan").onclick=()=>{if(overwriteCurrentPlan()){closeSheet({all:true});after?.()}};$("newPlanVersion").onclick=()=>{if(savePlanAsNew()){closeSheet({all:true});after?.()}};$("cancelPlanSave").onclick=()=>closeSheet({all:true})}
 function saveCurrentPlan(){
  const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");
  if(!(currentPlan.exercises||[]).length){alert("Ein Trainingsplan braucht mindestens eine Übung.");return null}
@@ -800,12 +833,7 @@ function saveCurrentPlan(){
  }
  currentPlan=clone(saved);saveAll();setEditorBaseline();return saved
 }
-$("planSaveBtn").onclick=()=>{
- if(!editorHasChanges()){closePage();showTab("plans");return}
- openSheet("Plan wirklich speichern?",`<p class="muted">Möchtest du die Änderungen an diesem Trainingsplan wirklich speichern?</p><div class="grid2"><button id="cancelPlanSave" class="secondary">Abbrechen</button><button id="confirmPlanSave" class="primary">Speichern</button></div>`);
- $("cancelPlanSave").onclick=()=>closeSheet({all:true});
- $("confirmPlanSave").onclick=()=>{if(saveCurrentPlan()){closeSheet({all:true});closePage();showTab("plans");renderPlans()}}
-};
+$("planSaveBtn").onclick=()=>{if(!editorHasChanges()){closePage();showTab("plans");return}const done=()=>{closePage();showTab("plans");renderPlans()};if(currentPlan._editingSourceId)askExistingPlanSave(done);else{openSheet("Plan wirklich speichern?",`<p class="muted">Möchtest du diesen Trainingsplan speichern?</p><div class="grid2"><button id="cancelPlanSave" class="secondary">Abbrechen</button><button id="confirmPlanSave" class="primary">Speichern</button></div>`);$("cancelPlanSave").onclick=()=>closeSheet({all:true});$("confirmPlanSave").onclick=()=>{if(saveCurrentPlan()){closeSheet({all:true});done()}}}};
 function confirmAndStartPlan(p){
  if(!p||(p.exercises||[]).length===0)return alert("Ein leeres Training kann nicht gestartet werden.");
  openSheet("Training wirklich starten?",`<p class="muted" style="margin:0 0 16px">„${esc(p.name)}“ jetzt starten?</p><button id="reallyStartPlan" class="primary" style="width:100%">Training starten</button>`);
@@ -821,7 +849,7 @@ $("planPlayBtn").onclick=startCurrentEditorPlan;
 function planPrescription(e){
  const m=e.setTechnique||"standard";
  if(e.measureMode==="time")return`${formatTime(e.timeSeconds||300)} · Pause ${formatTime(e.rest||90)}`;
- if(m==="restpause")return`${amrapText(e.reps||"20-30")} ${String(e.reps||"").toUpperCase().includes("AMRAP")?"":"WDH. gesamt"}`.trim();
+ if(m==="restpause")return`${Number(e.reps)||20} WDH. Gesamtziel`;
  if(m==="cluster")return`Empfehlung: ${amrapText(e.reps||"1-4")} WDH. je Cluster · ${e.methodData?.blocks||3} Cluster`;
  if(m==="dropset")return`${amrapText(e.reps||"8-12")}${String(e.reps||"").toUpperCase().includes("AMRAP")?"":" WDH."} · ${e.methodData?.dropCount||2} Drops`;
  if(m==="pyramid"){ensurePyramidData(e);return`${e.methodData.reps.join(" · ")} WDH. · ${e.methodData.weightPct.join(" · ")}%`};
@@ -908,28 +936,65 @@ function beginPlanAddConfig(name,from="picker",seed=null){
 function renderPlanAddConfig(){
  if(!planAddFlow?.current)return;
  const e=planAddFlow.current;
- renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${Array.from({length:10},(_,n)=>`<option ${e.sets===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>WDH.-VORGABE</label>${methodRepConfigMarkup(e,"pa")}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
+ renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${Array.from({length:10},(_,n)=>`<option ${e.sets===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"pa"):methodRepConfigMarkup(e,"pa")}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
  requestAnimationFrame(()=>{const tabs=$("paMethodTabs");if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
  document.querySelectorAll("[data-pa-method]").forEach(b=>b.onclick=()=>{const tabs=$("paMethodTabs");planAddFlow.methodScroll=tabs?.scrollLeft||0;e.setTechnique=b.dataset.paMethod;e.reps=defaultRepsForMethod(e.setTechnique);if(e.setTechnique==="pyramid"){e.sets=Math.max(3,Number(e.sets)||5);ensurePyramidData(e)}renderPlanAddConfig()});
  $("paSets").onchange=()=>{e.sets=Number($("paSets").value);if(e.setTechnique==="pyramid")ensurePyramidData(e);renderPlanAddConfig()};
- document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;if(e.reps==="Max Hold"){e.measureMode="time";e.timeSeconds=e.timeSeconds||60}renderPlanAddConfig()});
+ document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderPlanAddConfig()});
+ document.querySelectorAll("[data-time-preset]").forEach(b=>b.onclick=()=>{e.timeSeconds=Number(b.dataset.timePreset);renderPlanAddConfig()});
  $("paConfirm").onclick=()=>confirmPlanAddDraft()
 }
 function defaultPyramidReps(sets=5){
- const templates={3:[12,8,12],4:[12,10,8,12],5:[12,10,8,10,12],6:[15,12,10,8,10,12],7:[15,12,10,8,10,12,15]};
- const t=templates[sets]||Array.from({length:sets},(_,i)=>Math.max(6,12-Math.abs(Math.floor((sets-1)/2)-i)*2));
- return t.slice(0,sets)
+ const templates={
+  1:[8],
+  2:[10,8],
+  3:[10,8,10],
+  4:[12,10,8,10],
+  5:[12,10,8,10,12],
+  6:[14,12,10,8,10,12],
+  7:[14,12,10,8,10,12,14],
+  8:[18,14,12,10,8,10,12,14],
+  9:[18,14,12,10,8,10,12,14,18]
+ };
+ return (templates[sets]||templates[9].slice(0,sets)).slice()
 }
-function ensurePyramidData(e){e.methodData=e.methodData||{};const sets=Math.max(1,Number(e.sets)||5);if(!Array.isArray(e.methodData.reps)||e.methodData.reps.length!==sets)e.methodData.reps=defaultPyramidReps(sets);if(!Array.isArray(e.methodData.weightPct)||e.methodData.weightPct.length!==sets){const mid=Math.floor((sets-1)/2);e.methodData.weightPct=Array.from({length:sets},(_,i)=>Math.max(60,100-Math.abs(mid-i)*10))}}
+function pyramidPctForSets(sets){
+ const mid=(sets-1)/2;
+ return Array.from({length:sets},(_,i)=>Math.max(55,100-Math.round(Math.abs(mid-i))*10))
+}
+function resizePyramidReps(old,sets){
+ old=Array.isArray(old)?old.map(Number).filter(Number.isFinite):[];
+ if(!old.length)return defaultPyramidReps(sets);
+ if(old.length===sets)return old;
+ // Preserve all manually entered values. New sets extend at the outside.
+ let arr=old.slice();
+ while(arr.length<sets){
+  const edge=Math.max(Number(arr[0])||0,Number(arr[arr.length-1])||0);
+  const next=edge>=14?18:edge>=12?14:edge+2;
+  if(arr.length+2<=sets)arr=[next,...arr,next];
+  else arr.push(next)
+ }
+ while(arr.length>sets){
+  if(arr.length-2>=sets)arr=arr.slice(1,-1);
+  else arr=arr.slice(0,sets)
+ }
+ return arr
+}
+function ensurePyramidData(e){
+ e.methodData=e.methodData||{};
+ const sets=Math.max(1,Number(e.sets)||5);
+ e.methodData.reps=resizePyramidReps(e.methodData.reps,sets);
+ if(!Array.isArray(e.methodData.weightPct)||e.methodData.weightPct.length!==sets)e.methodData.weightPct=pyramidPctForSets(sets)
+}
 function methodRepConfigMarkup(e,prefix){
  if(e.setTechnique==="pyramid"){ensurePyramidData(e);return`<div class="pyramid-config"><div class="small">WDH. JE SATZ</div>${e.methodData.reps.map((r,i)=>`<div class="pyramid-config-row"><span>Satz ${i+1}</span><input id="${prefix}PyrRep${i}" class="field" inputmode="numeric" value="${r}"><span>${e.methodData.weightPct[i]}%</span></div>`).join("")}</div>`}
- if(e.setTechnique==="backoff"){e.methodData=e.methodData||{};const top=Number(e.methodData.topReps)||5,back=Math.max(top+1,Number(e.methodData.backoffReps)||8),pct=Number(e.methodData.backoffPercent)||15;return`<div class="grid2"><div class="form-field"><label>TOP-SATZ WDH.</label><select id="${prefix}TopReps" class="field">${Array.from({length:10},(_,i)=>i+1).map(n=>`<option ${n===top?"selected":""}>${n}</option>`).join("")}</select></div><div class="form-field"><label>BACK-OFF WDH.</label><select id="${prefix}BackReps" class="field">${Array.from({length:20-top},(_,i)=>top+i+1).map(n=>`<option ${n===back?"selected":""}>${n}</option>`).join("")}</select></div></div><div class="form-field"><label>GEWICHT REDUZIEREN %</label><select id="${prefix}BackPct" class="field">${[5,10,15,20,25,30].map(n=>`<option ${n===pct?"selected":""}>${n}</option>`).join("")}</select></div>`}
+ if(e.setTechnique==="backoff"){e.methodData=e.methodData||{};const top=Number(e.methodData.topReps)||5,back=Math.max(top+1,Number(e.methodData.backoffReps)||8),pct=Number(e.methodData.backoffPercent)||15;return`<div class="grid2"><div class="form-field"><label>TOP-SATZ WDH.</label><select id="${prefix}TopReps" class="field">${Array.from({length:10},(_,i)=>i+1).map(n=>`<option ${n===top?"selected":""}>${n}</option>`).join("")}</select></div><div class="form-field"><label>BACK-OFF WDH.</label><select id="${prefix}BackReps" class="field">${[6,7,8,9,10,11,12].filter(n=>n>top).map(n=>`<option ${n===back?"selected":""}>${n}</option>`).join("")}</select></div></div><div class="form-field"><label>GEWICHT REDUZIEREN %</label><select id="${prefix}BackPct" class="field">${[5,10,15,20,25,30].map(n=>`<option ${n===pct?"selected":""}>${n}</option>`).join("")}</select></div>`}
  return repPresetMarkup(e)
 }
 function saveMethodRepConfig(e,prefix){
  e.methodData=e.methodData||{};
  if(e.setTechnique==="pyramid"){ensurePyramidData(e);e.methodData.reps=e.methodData.reps.map((_,i)=>Math.max(1,Number($(`${prefix}PyrRep${i}`)?.value)||e.methodData.reps[i]))}
- if(e.setTechnique==="backoff"){e.methodData.topReps=Math.max(1,Number($(`${prefix}TopReps`)?.value)||5);e.methodData.backoffReps=Math.max(e.methodData.topReps+1,Number($(`${prefix}BackReps`)?.value)||8);e.methodData.backoffPercent=Math.max(0,Number($(`${prefix}BackPct`)?.value)||15)}
+ if(e.setTechnique==="backoff"){e.methodData.topReps=Math.max(1,Number($(`${prefix}TopReps`)?.value)||5);e.methodData.backoffReps=Math.min(12,Math.max(e.methodData.topReps+1,Number($(`${prefix}BackReps`)?.value)||8));e.methodData.backoffPercent=Math.max(0,Number($(`${prefix}BackPct`)?.value)||15)}
 }
 function planAddMethodExtra(e){
  if(e.setTechnique==="giant"){const c=Math.max(3,Number(e.methodData?.giantCount)||3);return`<div class="form-field"><label>ANZAHL ÜBUNGEN</label><select id="paGiantCount" class="field">${[3,4,5,6].map(n=>`<option ${c===n?"selected":""}>${n}</option>`).join("")}</select></div>`}
@@ -1012,11 +1077,12 @@ function linkedMethodMarkup(e,index){
 function configureExercise(i,flow=null){
  const e=currentPlan.exercises[i];let methodScroll=0;
  const render=()=>{
-  $("sheetBody").innerHTML=`<div class="method-tabs" id="cfgMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="cfgSets" class="field">${Array.from({length:10},(_,n)=>`<option ${e.sets===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="cfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>WDH.-VORGABE</label>${methodRepConfigMarkup(e,"cfg")}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="cfgVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="cfgPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${linkedMethodMarkup(e,i)}<button id="cfgSave" class="primary" style="width:100%">Übernehmen</button>`;bind()
+  $("sheetBody").innerHTML=`<div class="method-tabs" id="cfgMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="cfgSets" class="field">${Array.from({length:10},(_,n)=>`<option ${e.sets===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="cfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"cfg"):methodRepConfigMarkup(e,"cfg")}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="cfgVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="cfgPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${linkedMethodMarkup(e,i)}<button id="cfgSave" class="primary" style="width:100%">Übernehmen</button>`;bind()
  };
  const bind=()=>{
   requestAnimationFrame(()=>{const t=$("cfgMethodTabs");if(t)t.scrollLeft=methodScroll});document.querySelectorAll("[data-method]").forEach(b=>b.onclick=()=>{methodScroll=$("cfgMethodTabs")?.scrollLeft||0;const old=e.setTechnique;e.setTechnique=b.dataset.method;e.reps=defaultRepsForMethod(e.setTechnique);if(e.setTechnique==="pyramid"){e.sets=Math.max(3,Number(e.sets)||5);ensurePyramidData(e)}if(methodNeedsPartners(e.setTechnique))ensureTechniqueGroup(i,e.setTechnique);else if(groupMethod(old)){e.techniqueGroup=null}render()});
-  document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;if(e.reps==="Max Hold"){e.measureMode="time";e.timeSeconds=e.timeSeconds||60}else if(e.measureMode==="time"&&!String(findExercise(e.name).tracking||"").includes("time"))e.measureMode="reps";render()});
+  document.querySelectorAll("[data-time-preset]").forEach(b=>b.onclick=()=>{e.timeSeconds=Number(b.dataset.timePreset);render()});
+  document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;if(e.measureMode==="time"&&!String(findExercise(e.name).tracking||"").includes("time"))e.measureMode="reps";render()});
   $("cfgSave").onclick=()=>{
    e.sets=Number($("cfgSets").value);e.rest=Number($("cfgRest").value);if($("cfgVariant"))e.variant=$("cfgVariant").value;e.perSide=!!$("cfgPerSide")?.checked;
    e.methodData=e.methodData||{};
@@ -1211,16 +1277,17 @@ function inputSuggestionAttr(v){return String(v??"").trim()!==""?` placeholder="
 function initSet(e,i){
  if(groupMethod(e.setTechnique))return{group:true,segments:groupMembers(e).map((n,j)=>({name:n,weight:"",reps:"",completed:false,rating:"",order:j})),completed:false,rating:""};
  if(e.measureMode==="time")return{time:e.timeSeconds||300,weight:"",level:e.level||"",completed:false,rating:""};
- if(["dropset","restpause","cluster"].includes(e.setTechnique))return{segments:Array.from({length:e.setTechnique==="dropset"?(e.methodData?.dropCount||2)+1:e.setTechnique==="cluster"?(e.methodData?.blocks||3):(e.methodData?.blocks||2)+1},(_,g)=>({label:e.setTechnique==="dropset"?(g?`Drop ${g}`:"Basis"):e.setTechnique==="restpause"?(g?`RP ${g}`:"Start"):`C${g+1}`,weight:"",reps:"",completed:false})),completed:false,rating:""};
+ if(["dropset","restpause","cluster"].includes(e.setTechnique))return{segments:Array.from({length:e.setTechnique==="dropset"?(e.methodData?.dropCount||2)+1:e.setTechnique==="cluster"?(e.methodData?.blocks||5):6},(_,g)=>({label:e.setTechnique==="dropset"?(g?`Drop ${g}`:"Basis"):e.setTechnique==="restpause"?(g?`RP ${g}`:"Start"):`C${g+1}`,weight:"",reps:"",completed:false})),completed:false,rating:""};
  return{weight:"",reps:["pyramid","backoff"].includes(e.setTechnique)?(e.setTechnique==="backoff"?(i===0?(e.methodData?.topReps||5):(e.methodData?.backoffReps||8)):(e.methodData?.reps||[12,10,8,10,12])[i]||8):"",completed:false,rating:""}
 }
-function startWorkout(p){if(!p||(p.exercises||[]).length===0)return alert("Ein leeres Training kann nicht gestartet werden.");const stored=plans.find(x=>x.id===p.id);if(stored)stored.lastUsedAt=Date.now();const previous=lastWorkoutForPlan(p);activeWorkout={id:uid(),planId:p.id,sourcePlanId:p.id,name:p.name,planName:p.name,startedAt:Date.now(),note:"",restEnd:0,structureBaseline:null,weekSourceIds:clone(p.weekSourceIds||[]),weekDate:p.weekDate||null,isWeekCombined:Array.isArray(p.weekSourceIds)&&p.weekSourceIds.length>0,exercises:clone(p.exercises).map(e=>({...normPlanEx(e),liveSets:Array.from({length:e.sets||3},(_,i)=>initSet(e,i))}))};activeWorkout.structureBaseline=clone(activeWorkout.exercises);applyPreviousWorkoutSuggestions(activeWorkout,previous);saveAll();openLive(true)}
-function focusLiveExercise(index=0,behavior="auto"){
- const card=document.querySelector(`[data-live-card="${index}"]`);
- if(!card)return;
- requestAnimationFrame(()=>card.scrollIntoView({block:"start",behavior}))
+function startWorkout(p){requestTimerNotifications();if(!p||(p.exercises||[]).length===0)return alert("Ein leeres Training kann nicht gestartet werden.");const stored=plans.find(x=>x.id===p.id);if(stored)stored.lastUsedAt=Date.now();const previous=lastWorkoutForPlan(p);activeWorkout={id:uid(),planId:p.id,sourcePlanId:p.id,name:p.name,planName:p.name,startedAt:Date.now(),note:"",restEnd:0,activeExerciseIndex:0,structureBaseline:null,weekSourceIds:clone(p.weekSourceIds||[]),weekDate:p.weekDate||null,isWeekCombined:Array.isArray(p.weekSourceIds)&&p.weekSourceIds.length>0,exercises:clone(p.exercises).map(e=>({...normPlanEx(e),liveSets:Array.from({length:e.sets||3},(_,i)=>initSet(e,i))}))};activeWorkout.structureBaseline=clone(activeWorkout.exercises);applyPreviousWorkoutSuggestions(activeWorkout,previous);saveAll();openLive(true)}
+function setActiveExercise(index,scroll=false,behavior="auto"){
+ if(!activeWorkout)return;index=Math.max(0,Math.min(Number(index)||0,(activeWorkout.exercises||[]).length-1));activeWorkout.activeExerciseIndex=index;saveAll();
+ document.querySelectorAll("[data-live-card]").forEach(c=>c.classList.toggle("active-live-exercise",Number(c.dataset.liveCard)===index));
+ if(scroll){const card=document.querySelector(`[data-live-card="${index}"]`);if(card)requestAnimationFrame(()=>card.scrollIntoView({block:"start",behavior}))}
 }
-function openLive(focus=false){if(!activeWorkout)return;$("liveTitle").textContent=activeWorkout.name;renderLive();openPage("livePage");clearInterval(clockTimer);clockTimer=setInterval(()=>$("liveClock").textContent=formatDuration(Date.now()-activeWorkout.startedAt),1000);if(restEnd>Date.now())startRest(Math.ceil((restEnd-Date.now())/1000),true);else restoreRestTimer();if(focus)focusLiveExercise(0,"auto")}
+function focusLiveExercise(index=0,behavior="auto"){setActiveExercise(index,true,behavior)}
+function openLive(focus=false){if(!activeWorkout)return;$("liveTitle").textContent=activeWorkout.name;renderLive();openPage("livePage");clearInterval(clockTimer);clockTimer=setInterval(()=>$("liveClock").textContent=formatDuration(Date.now()-activeWorkout.startedAt),1000);if(restEnd>Date.now())startRest(Math.ceil((restEnd-Date.now())/1000),true);else restoreRestTimer();focusLiveExercise(focus?0:(activeWorkout.activeExerciseIndex||0),"auto")}
 $("workoutNoteBtn").onclick=()=>{if(!activeWorkout)return;const v=prompt("Trainingsnotiz",activeWorkout.note||"");if(v!==null){activeWorkout.note=v.trim();saveAll();renderLive()}};
 function leaveLiveToTraining(){
  saveAll();persistUI();clearInterval(clockTimer);document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];$("bottomNav").classList.remove("hidden");showTab("training",{reset:false})
@@ -1235,15 +1302,15 @@ $("liveBackBtn").onclick=()=>{
 };
 function renderLive(){
  $("workoutNoteText").textContent=activeWorkout.note||"Notiz";
- $("liveBody").innerHTML=activeWorkout.exercises.map((e,i)=>`<div class="method-card live-exercise-card method-${e.setTechnique||"standard"}" data-live-card="${i}"><div class="method-name">${METHOD_LABEL[e.setTechnique||"standard"]}</div><div class="live-card-head"><div><button class="exercise-title-link" data-live-detail="${esc(e.name)}">${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div><div class="live-card-actions"><button class="icon-btn" data-live-config="${i}" aria-label="Übung bearbeiten">✎</button><button class="live-delete-ex" data-delete-live-ex="${i}" aria-label="Übung löschen">−</button></div></div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div>${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}<div class="recommendation">${esc(recommendationFor(e))}</div><button class="note-line" data-live-note="${i}" style="border:0;background:transparent;padding:0">✎ ${esc(e.note||"Notiz")}</button>${renderSets(e,i)}<button class="secondary" data-add-set="${i}" style="margin-top:8px">Satz hinzufügen</button></div>`).join("");
- document.querySelectorAll("[data-live-detail]").forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.liveDetail));
- document.querySelectorAll("[data-live-config]").forEach(b=>b.onclick=()=>configureLiveExercise(Number(b.dataset.liveConfig)));
+ $("liveBody").innerHTML=activeWorkout.exercises.map((e,i)=>`<div class="method-card live-exercise-card method-${e.setTechnique||"standard"} ${Number(activeWorkout.activeExerciseIndex||0)===i?"active-live-exercise":""}" data-live-card="${i}"><div class="method-name">${METHOD_LABEL[e.setTechnique||"standard"]}</div><div class="live-card-head"><div><button class="exercise-title-link" data-live-detail="${esc(e.name)}">${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div><div class="live-card-actions"><button class="icon-btn" data-live-config="${i}" aria-label="Übung bearbeiten">✎</button><button class="live-delete-ex" data-delete-live-ex="${i}" aria-label="Übung löschen">−</button></div></div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div>${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}<div class="recommendation">${esc(recommendationFor(e))}</div><button class="note-line" data-live-note="${i}" style="border:0;background:transparent;padding:0">✎ ${esc(e.note||"Notiz")}</button>${renderSets(e,i)}<button class="secondary" data-add-set="${i}" style="margin-top:8px">Satz hinzufügen</button></div>`).join("");
+ document.querySelectorAll("[data-live-detail]").forEach(b=>b.onclick=()=>{const i=Number(b.closest("[data-live-card]")?.dataset.liveCard||0);setActiveExercise(i);exerciseDetailReturn={type:"live",index:i};openExerciseDetail(b.dataset.liveDetail)});
+ document.querySelectorAll("[data-live-config]").forEach(b=>b.onclick=()=>{setActiveExercise(Number(b.dataset.liveConfig));configureLiveExercise(Number(b.dataset.liveConfig))});
  document.querySelectorAll("[data-delete-live-ex]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.deleteLiveEx);if(confirm(`„${activeWorkout.exercises[i].name}“ aus dem Training löschen?`)){const removed=activeWorkout.exercises.splice(i,1)[0];normalizeBrokenLiveGroupAfterDelete(removed);livePlanEdited=true;saveAll();renderLive()}});
  document.querySelectorAll("[data-live-note]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.liveNote),v=prompt("Notiz",activeWorkout.exercises[i].note||"");if(v!==null){activeWorkout.exercises[i].note=v.trim();saveAll();renderLive()}});
  document.querySelectorAll("[data-check]").forEach(b=>b.onclick=()=>toggleSet(b.dataset.check));
  document.querySelectorAll("[data-segment-check]").forEach(b=>b.onclick=()=>{const [ei,si,gi]=b.dataset.segmentCheck.split("|").map(Number),g=activeWorkout.exercises[ei].liveSets[si].segments[gi];if(g.completed){g.completed=false;g.rating="";activeWorkout.exercises[ei].liveSets[si].completed=false;saveAll();renderLive()}else openSegmentRating(ei,si,gi)});
  document.querySelectorAll("[data-input]").forEach(x=>{
- x.oninput=()=>{touchInput(x);updateInput(x)};
+ x.oninput=()=>{setActiveExercise(Number(x.dataset.input.split("|")[0]));touchInput(x);updateInput(x)};
  x.onchange=()=>updateInput(x);
  x.onblur=()=>{updateInput(x);setTimeout(()=>{const a=document.activeElement;if(!a||!a.matches("[data-input]"))renderLive()},0)}
 });
@@ -1256,6 +1323,23 @@ function renderLive(){
  document.querySelectorAll("[data-time-play]").forEach(b=>b.onclick=()=>toggleTimeTimer(b.dataset.timePlay,b));
 
 }
+function restPauseTarget(e){return Math.max(1,Number(e.reps)||20)}
+function restPauseVisibleSegments(e,s){
+ const target=restPauseTarget(e),out=[];let total=0,reached=false;
+ for(let i=0;i<(s.segments||[]).length;i++){
+  const seg=s.segments[i];
+  if(reached)break;
+  out.push({seg,index:i});
+  const r=Math.max(0,Number(seg.reps)||0);
+  total+=r;
+  if(total>=target)reached=true
+ }
+ return{items:out,total,target,reached}
+}
+function restPauseComplete(e,s){
+ const x=restPauseVisibleSegments(e,s);
+ return x.reached&&x.items.every(({seg})=>validKg(seg.weight)&&validReps(seg.reps))
+}
 function renderSets(e,ei){
  if(groupMethod(e.setTechnique)){return e.liveSets.map((s,si)=>`<div class="group-round"><div class="group-round-title">Runde ${si+1}</div>${s.segments.map((g,gi)=>`<div class="group-ex-row group-ex-rated"><span class="group-ex-name">${String.fromCharCode(97+gi)} · ${esc(g.name)}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|gw|${gi}" placeholder="${esc(g._suggested?.weight||"KG")}" value="${esc(g.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|gr|${gi}" placeholder="${esc(g._suggested?.reps||"WDH.")}" value="${esc(g.reps)}"><button class="set-check ${g.completed?"done":""} ${g.rating?`rating-${g.rating}`:""} ${segmentHasValues(g)?"ready":""}" data-segment-check="${ei}|${si}|${gi}">✓</button></div><div class="rating-row group-rating-row"><span class="rating-label">BEW.</span><div class="small">${g.completed?`Bewertet: ${ratingLabel(g.rating)}`:segmentHasValues(g)?"Haken drücken und bewerten":"KG und WDH. eintragen"}</div></div>`).join("")}<div class="group-round-foot"><span class="small">${s.completed?"Runde abgeschlossen":"Alle Übungen einzeln bewerten"}</span><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div></div>`).join("")}
 
@@ -1263,28 +1347,41 @@ function renderSets(e,ei){
   return`<div class="time-head"><span>SATZ</span><span>ZEIT</span><span></span><span>KG</span><span>S/W</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="time-row"><span>${si+1}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|time" value="${formatTime(s.time)}"><button class="time-play" data-time-play="${ei}|${si}">▶</button><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|level" placeholder="${esc(s._suggested?.level||"S/W")}" value="${esc(s.level)}"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(e,s)?"ready":""}" data-check="${ei}|${si}" >✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div>${ratingMarkup(ei,si,s)}`).join("")}`
  }
  if(["dropset","restpause","cluster"].includes(e.setTechnique)){
-  const clusterHint=e.setTechnique==="cluster"?`<div class="note-line"><strong>Empfehlung:</strong> ${esc(amrapText(e.reps||"1-4"))} WDH. je Cluster · erste WDH.-Eingabe übernimmt die weiteren Felder.</div>`:"";
-  return clusterHint+e.liveSets.map((s,si)=>`<div class="advanced-head"><span>SATZ ${si+1}</span><span></span><span>KG</span><span>WDH.</span><span></span><span></span></div>${s.segments.map((g,gi)=>`<div class="advanced-row"><span>${gi+1}</span><span class="small">${esc(g.label)}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|sw|${gi}" placeholder="${esc(g._suggested?.weight||"KG")}" value="${esc(g.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|sr|${gi}" placeholder="${esc(g._suggested?.reps||"WDH.")}" value="${esc(g.reps)}"><span></span><span></span></div>`).join("")}<div class="space" style="margin-top:6px"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(e,s)?"ready":""}" data-check="${ei}|${si}" >✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div>${ratingMarkup(ei,si,s)}`).join("")
+  const clusterHint=e.setTechnique==="cluster"?`<div class="note-line"><strong>Gesamtziel:</strong> ${esc(e.reps||"10")} WDH. · erste Cluster-WDH. übernimmt die weiteren leeren Felder.</div>`:"";
+  const restHint=e.setTechnique==="restpause"?`<div class="note-line"><strong>Gesamtziel:</strong> ${restPauseTarget(e)} WDH. · Teilblöcke verschwinden automatisch, sobald das Ziel erreicht ist.</div>`:"";
+  return clusterHint+restHint+e.liveSets.map((s,si)=>{
+   const segs=e.setTechnique==="restpause"?restPauseVisibleSegments(e,s).items.map(x=>[x.seg,x.index]):s.segments.map((x,i)=>[x,i]);
+   const rp=e.setTechnique==="restpause"?restPauseVisibleSegments(e,s):null;
+   return`<div class="advanced-head"><span>SATZ ${si+1}</span><span></span><span>KG</span><span>WDH.</span><span></span><span></span></div>${segs.map(([g,gi])=>`<div class="advanced-row"><span>${gi+1}</span><span class="small">${esc(g.label)}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|sw|${gi}" placeholder="${esc(g._suggested?.weight||"KG")}" value="${esc(g.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|sr|${gi}" placeholder="WDH." value="${esc(g.reps)}"><span></span><span></span></div>`).join("")}${rp?`<div class="restpause-progress small">${rp.total} / ${rp.target} WDH.${rp.reached?" · Ziel erreicht":""}</div>`:""}<div class="space" style="margin-top:6px"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${(e.setTechnique==="restpause"?restPauseComplete(e,s):canRateSet(e,s))?"ready":""}" data-check="${ei}|${si}" >✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div>${ratingMarkup(ei,si,s)}`}).join("")
  }
- return`<div class="set-head"><span>SATZ</span><span>KG</span><span>WDH.</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="set-row"><span>${si+1}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|reps" placeholder="${esc(s._suggested?.reps||"WDH.")}" value="${esc(s.reps)}" ${["pyramid","backoff"].includes(e.setTechnique)?"readonly":""}><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(e,s)?"ready":""}" data-check="${ei}|${si}" >✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div>${ratingMarkup(ei,si,s)}`).join("")}`
+ return`<div class="set-head"><span>SATZ</span><span>KG</span><span>WDH.</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="set-row"><span>${si+1}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|reps" placeholder="${esc(s._suggested?.reps||"WDH.")}" value="${esc(s.reps)}" ${e.setTechnique==="backoff"?"readonly":""}><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(e,s)?"ready":""}" data-check="${ei}|${si}" >✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button></div>${ratingMarkup(ei,si,s)}`).join("")}`
 }
-function ratingLabel(r){return r==="red"?"zu anstrengend":r==="yellow"?"noch passend":r==="green"?"genau richtig":r==="blue"?"zu leicht":""}
+
+const RATING_GUIDE={
+ red:{label:"Zu anstrengend",hint:"Technik oder Wiederholungsziel war so nicht sauber haltbar."},
+ yellow:{label:"Noch passend",hint:"Anstrengend, aber sauber und im Zielbereich machbar."},
+ green:{label:"Genau richtig",hint:"Fordernd, kontrolliert und mit passender Reserve."},
+ blue:{label:"Zu leicht",hint:"Deutlich mehr Wiederholungen oder Last wären möglich gewesen."}
+};
+function ratingChoiceMarkup(){return ["red","yellow","green","blue"].map(k=>`<button class="rating-choice ${k}" data-rating-choice="${k}"><strong>${RATING_GUIDE[k].label}</strong><small>${RATING_GUIDE[k].hint}</small></button>`).join("")}
+function ratingLabel(r){return RATING_GUIDE[r]?.label?.toLowerCase()||""}
 function segmentHasValues(g){return validKg(g?.weight)&&validReps(g?.reps)}
-function openSegmentRating(ei,si,gi){const s=activeWorkout.exercises[ei].liveSets[si],g=s.segments[gi];if(!segmentHasValues(g))return toast("Bitte zuerst KG und WDH. vollständig eintragen.");ratingTarget={ei,si,gi,segment:true};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich ${esc(g.name)} angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird diese Übung der Runde abgeschlossen.</div><div class="rating-question-grid"><button class="rating-choice red" data-rating-choice="red">Zu anstrengend</button><button class="rating-choice yellow" data-rating-choice="yellow">Noch passend</button><button class="rating-choice green" data-rating-choice="green">Genau richtig</button><button class="rating-choice blue" data-rating-choice="blue">Zu leicht</button></div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySegmentRating(b.dataset.ratingChoice)))}
+function openSegmentRating(ei,si,gi){const e=activeWorkout.exercises[ei],s=e.liveSets[si],g=s.segments[gi];if(!segmentHasValues(g)&&!(effectiveValue(g.weight,g._suggested?.weight)!==""&&Number(effectiveValue(g.reps,g._suggested?.reps))>0))return toast("Bitte zuerst KG und WDH. vollständig eintragen.");if(!segmentHasValues(g)){g.weight=g._suggested?.weight||"";g.reps=g._suggested?.reps||"";}ratingTarget={ei,si,gi,segment:true};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich ${esc(g.name)} angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird diese Übung der Runde abgeschlossen.</div><div class="rating-question-grid">${ratingChoiceMarkup()}</div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySegmentRating(b.dataset.ratingChoice)))}
 function applySegmentRating(r){if(!ratingTarget?.segment)return;const{ei,si,gi}=ratingTarget,e=activeWorkout.exercises[ei],s=e.liveSets[si],g=s.segments[gi];if(!segmentHasValues(g))return;g.completed=true;g.rating=r;s.completed=s.segments.every(x=>x.completed);s.rating=s.completed?"group":"";ratingTarget=null;saveAll();closeSheet({all:true});renderLive();if(s.completed){const pause=Number.isFinite(Number(e.rest))?Number(e.rest):90;if(pause>0)startRest(pause);if(e.liveSets.every(x=>x.completed))setTimeout(()=>focusLiveExercise(ei+1,"smooth"),200)}}
 function ratingClass(s){return s.rating?`rating-${s.rating}`:""}
-function canRateSet(e,s){return strictSetValues(e,s)}
+function canRateSet(e,s){return strictSetValues(e,s)||suggestedComplete(e,s)}
 function validKg(v){const x=String(v??"").trim().replace(",",".");return x!==""&&Number.isFinite(Number(x))&&Number(x)>=0}
 function validReps(v){const x=String(v??"").trim();return x!==""&&Number.isFinite(Number(x))&&Number(x)>0}
 function strictSetValues(e,s){
  // A suggestion/placeholder is never enough for a rating. The user must actually enter/use values.
  if(e.measureMode==="time")return Number(s.time)>0&&!!s._touched;
  if(s.group)return s.segments.every(g=>validKg(g.weight)&&validReps(g.reps));
+ if(e.setTechnique==="restpause"&&s.segments)return restPauseComplete(e,s);
  if(s.segments)return s.segments.every(g=>validKg(g.weight)&&validReps(g.reps));
  return validKg(s.weight)&&validReps(s.reps)
 }
 function ratingMarkup(ei,si,s){const e=activeWorkout.exercises[ei],ready=canRateSet(e,s);return`<div class="rating-row"><span class="rating-label">BEW.</span><div class="small">${s.completed?`Bewertet: ${s.rating==="red"?"zu anstrengend":s.rating==="yellow"?"noch passend":s.rating==="green"?"genau richtig":"zu leicht"}`:ready?"Haken drücken und bewerten":e.measureMode==="time"?"Zeit eingeben oder Timer starten":"KG und WDH. eintragen"}</div></div>`}
-function openSetRating(ei,si){const e=activeWorkout.exercises[ei],s=e.liveSets[si];if(!canRateSet(e,s))return toast(e.measureMode==="time"?"Bitte zuerst die Zeit eintragen.":"Bitte zuerst KG und WDH. vollständig eintragen.");saveAll();ratingTarget={ei,si};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich der Satz angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird der Satz abgeschlossen und der Haken entsprechend eingefärbt.</div><div class="rating-question-grid"><button class="rating-choice red" data-rating-choice="red">Zu anstrengend</button><button class="rating-choice yellow" data-rating-choice="yellow">Noch passend</button><button class="rating-choice green" data-rating-choice="green">Genau richtig</button><button class="rating-choice blue" data-rating-choice="blue">Zu leicht</button></div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySetRating(b.dataset.ratingChoice)))}
+function openSetRating(ei,si){const e=activeWorkout.exercises[ei],s=e.liveSets[si];if(!canRateSet(e,s))return toast(e.measureMode==="time"?"Bitte zuerst die Zeit eintragen.":"Bitte zuerst KG und WDH. vollständig eintragen.");promoteSuggested(e,s);saveAll();ratingTarget={ei,si};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich der Satz angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird der Satz abgeschlossen und der Haken entsprechend eingefärbt.</div><div class="rating-question-grid">${ratingChoiceMarkup()}</div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySetRating(b.dataset.ratingChoice)))}
 function applySetRating(r){
  if(!ratingTarget)return;
  const{ei,si}=ratingTarget,e=activeWorkout.exercises[ei],s=e.liveSets[si];
@@ -1297,7 +1394,7 @@ function toggleTimeTimer(key,btn){
  const[ei,si]=key.split("|").map(Number),s=activeWorkout.exercises[ei].liveSets[si],id=`${ei}|${si}`;
  if(timeSetTimers.has(id)){clearInterval(timeSetTimers.get(id));timeSetTimers.delete(id);btn.textContent="▶";return}
  let remain=Number(s.time)||Number(activeWorkout.exercises[ei].timeSeconds)||300;s._touched=true;btn.textContent="Ⅱ";
- const timer=setInterval(()=>{remain--;s.time=Math.max(0,remain);const inp=document.querySelector(`[data-input="${ei}|${si}|time"]`);if(inp)inp.value=formatTime(s.time);if(remain<=0){clearInterval(timer);timeSetTimers.delete(id);signalTone();toast("Zeit beendet");setTimeout(()=>{s.time=Number(activeWorkout.exercises[ei].timeSeconds)||300;renderLive()},700)}},1000);timeSetTimers.set(id,timer)
+ const timer=setInterval(()=>{remain--;s.time=Math.max(0,remain);const inp=document.querySelector(`[data-input="${ei}|${si}|time"]`);if(inp)inp.value=formatTime(s.time);if(remain<=0){clearInterval(timer);timeSetTimers.delete(id);signalTone();backgroundTimerNotice("Zeit beendet");toast("Zeit beendet");setTimeout(()=>{s.time=Number(activeWorkout.exercises[ei].timeSeconds)||300;renderLive()},700)}},1000);timeSetTimers.set(id,timer)
 }
 function roundLoad(v){return Math.round((Number(v)||0)*2)/2}
 function autoFillDropWeights(e,s,base){
@@ -1344,10 +1441,10 @@ function updateInput(inp){
  if(k==="gr")s.segments[g].reps=inp.value;
  saveAll();
  // Repaint calculated boxes after the leading value changes; manually edited lower boxes remain untouched.
- if((k==="weight"&&Number(b)===0&&["backoff","pyramid"].includes(e.setTechnique))||(k==="sw"&&Number(g)===0&&e.setTechnique==="dropset"))renderLive()
+ if((k==="weight"&&Number(b)===0&&["backoff","pyramid"].includes(e.setTechnique))||(k==="sw"&&Number(g)===0&&e.setTechnique==="dropset")||(k==="sr"&&e.setTechnique==="restpause"))renderLive()
 }
 function toggleSet(key){const p=key.split("|").map(Number),ei=p[0],si=p[1],e=activeWorkout.exercises[ei],s=e.liveSets[si];if(s.completed){s.completed=false;s.rating="";saveAll();renderLive();return}openSetRating(ei,si)}
-function startRest(sec=90,restored=false){ensureAudio();clearInterval(restTimer);sec=Math.max(0,Number(sec)||90);if(!restored)restEnd=Date.now()+sec*1000;persistRestEnd();$("restBar").classList.remove("hidden");$("restBar").classList.toggle("rest-restored",!!restored);const tick=()=>{const s=Math.max(0,Math.ceil((restEnd-Date.now())/1000));$("restTime").textContent=formatTime(s);if(!s){clearInterval(restTimer);restEnd=0;persistRestEnd();$("restBar").classList.add("hidden");signalTone();toast("Pause beendet")}};tick();restTimer=setInterval(tick,250)}
+function startRest(sec=90,restored=false){ensureAudio();clearInterval(restTimer);sec=Math.max(0,Number(sec)||90);if(!restored)restEnd=Date.now()+sec*1000;persistRestEnd();$("restBar").classList.remove("hidden");$("restBar").classList.toggle("rest-restored",!!restored);const tick=()=>{const s=Math.max(0,Math.ceil((restEnd-Date.now())/1000));$("restTime").textContent=formatTime(s);if(!s){clearInterval(restTimer);restEnd=0;persistRestEnd();$("restBar").classList.add("hidden");signalTone();backgroundTimerNotice("Pause beendet");toast("Pause beendet")}};tick();restTimer=setInterval(tick,250)}
 $("restMinus").onclick=()=>{restEnd=Math.max(Date.now(),restEnd-15000);persistRestEnd()};$("restPlus").onclick=()=>{restEnd+=15000;persistRestEnd()};$("restSkip").onclick=()=>{clearInterval(restTimer);restEnd=0;persistRestEnd();$("restBar").classList.add("hidden")};
 function rebuildLiveSetsForExercise(e,oldSets=[]){
  const count=Math.max(1,Number(e.sets)||oldSets.length||3),fresh=Array.from({length:count},(_,i)=>initSet(e,i));
@@ -1357,9 +1454,10 @@ function rebuildLiveSetsForExercise(e,oldSets=[]){
 function configureLiveExercise(i){
  const e=activeWorkout.exercises[i];if(!e)return;
  const draft=clone(e),render=()=>{
-  $("sheetBody").innerHTML=`<div class="method-tabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-live-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(draft.setTechnique))}</div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="liveCfgSets" class="field">${Array.from({length:10},(_,n)=>`<option ${Number(draft.sets)===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="liveCfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>WDH.-VORGABE</label>${methodRepConfigMarkup(draft,"liveCfg")}</div>${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="liveCfgVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="liveCfgPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div><button id="liveReplaceExercise" class="secondary" style="width:100%;margin-bottom:8px">⇄ Übung austauschen</button><button id="liveCfgSave" class="primary" style="width:100%">Übernehmen</button>`;
-  document.querySelectorAll("[data-live-method]").forEach(b=>b.onclick=()=>{draft.setTechnique=b.dataset.liveMethod;draft.reps=defaultRepsForMethod(draft.setTechnique);render()});
+  $("sheetBody").innerHTML=`<div class="method-tabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-live-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(draft.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="liveModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="liveModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="liveCfgSets" class="field">${Array.from({length:10},(_,n)=>`<option ${Number(draft.sets)===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="liveCfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"liveCfg"):methodRepConfigMarkup(draft,"liveCfg")}</div>${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="liveCfgVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="liveCfgPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div><button id="liveReplaceExercise" class="secondary" style="width:100%;margin-bottom:8px">⇄ Übung austauschen</button><button id="liveCfgSave" class="primary" style="width:100%">Übernehmen</button>`;
+  $("liveModeReps").onclick=()=>{draft.measureMode="reps";render()};$("liveModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.min(180,Math.max(15,draft.timeSeconds||60));render()};document.querySelectorAll("[data-live-method]").forEach(b=>b.onclick=()=>{draft.setTechnique=b.dataset.liveMethod;draft.reps=defaultRepsForMethod(draft.setTechnique);render()});
   document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});
+  document.querySelectorAll("[data-time-preset]").forEach(b=>b.onclick=()=>{draft.timeSeconds=Number(b.dataset.timePreset);render()});
   $("liveReplaceExercise").onclick=()=>{closeSheet({all:true});openExercisePicker(name=>{const replacement=normPlanEx({...findExercise(name),sets:draft.sets||3,setTechnique:draft.setTechnique||"standard",reps:draft.reps||"8-12",rest:draft.rest||90});replacement.liveSets=rebuildLiveSetsForExercise(replacement,[]);activeWorkout.exercises[i]=replacement;livePlanEdited=true;saveAll();renderLive();configureLiveExercise(i)},{exclude:new Set([e.name]),title:"Übung austauschen",detailAdd:true})};
   $("liveCfgSave").onclick=()=>{
    draft.sets=Number($("liveCfgSets").value);draft.rest=Number($("liveCfgRest").value);saveMethodRepConfig(draft,"liveCfg");if($("liveCfgVariant"))draft.variant=$("liveCfgVariant").value;draft.perSide=!!$("liveCfgPerSide")?.checked;
@@ -1369,8 +1467,13 @@ function configureLiveExercise(i){
  openSheet(e.name+" bearbeiten","");render()
 }
 function addLiveExerciseAndConfigure(n){
- const e=normPlanEx({...findExercise(n),sets:3,setTechnique:"standard",reps:"8-12",rest:90});e.liveSets=Array.from({length:3},(_,i)=>initSet(e,i));activeWorkout.exercises.push(e);livePlanEdited=true;saveAll();renderLive();configureLiveExercise(activeWorkout.exercises.length-1)
+ const draft=normPlanEx({...findExercise(n),sets:3,setTechnique:"standard",reps:"8-12",rest:90});
+ configureLiveDraft(draft)
 }
+function configureLiveDraft(draft){
+ const render=()=>{openSheet(draft.name+" hinzufügen",`<div class="mode-switch"><button id="draftModeReps" class="chip ${draft.measureMode!=="time"?"active":""}">Wiederholungen</button><button id="draftModeTime" class="chip ${draft.measureMode==="time"?"active":""}">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="draftSets" class="field">${Array.from({length:10},(_,i)=>`<option ${draft.sets===i+1?"selected":""}>${i+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="draftRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${draft.rest===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"draft"):repPresetMarkup(draft)}</div><button id="confirmLiveDraft" class="primary" style="width:100%">Übung hinzufügen</button>`,()=>{$("draftModeReps").onclick=()=>{draft.measureMode="reps";render()};$("draftModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.min(180,Math.max(15,draft.timeSeconds||60));render()};document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});$("confirmLiveDraft").onclick=()=>{draft.sets=Number($("draftSets").value);draft.rest=Number($("draftRest").value);draft.liveSets=Array.from({length:draft.sets},(_,i)=>initSet(draft,i));activeWorkout.exercises.push(draft);activeWorkout.activeExerciseIndex=activeWorkout.exercises.length-1;livePlanEdited=true;saveAll();closeSheet({all:true});renderLive();focusLiveExercise(activeWorkout.activeExerciseIndex,"smooth")}})};render()
+}
+
 $("liveAddExercise").onclick=()=>openExercisePicker(addLiveExerciseAndConfigure,{detailAdd:true});
 $("liveReorder").onclick=()=>openLiveReorder();
 function openLiveReorder(){openSheet("Reihenfolge ändern",activeWorkout.exercises.map((e,i)=>`<div class="exercise-card"><div><strong>${i+1}. ${esc(e.name)}</strong></div><div class="row"><button class="icon-btn" data-live-up="${i}">↑</button><button class="icon-btn" data-live-down="${i}">↓</button></div></div>`).join(""));document.querySelectorAll("[data-live-up]").forEach(b=>b.onclick=()=>moveLiveExercise(Number(b.dataset.liveUp),-1));document.querySelectorAll("[data-live-down]").forEach(b=>b.onclick=()=>moveLiveExercise(Number(b.dataset.liveDown),1))}
@@ -1432,8 +1535,8 @@ function summaryExerciseBlock(e,label=""){
 function openSummary(w){
  const p=plans.find(x=>String(x.id)===String(w.planId)),groups=summaryVisualGroups(w.exercises||[]),exCount=completedExerciseCount(w),setCount=completedSetCount(w),d=new Date(w.finishedAt||w.startedAt||Date.now());
  $("summaryTitle").textContent=`Training vom ${d.toLocaleDateString("de-DE")} · ${d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})}`;
- $("summaryBody").innerHTML=`<div class="card"><div class="small">PLAN</div><strong style="font-size:20px">${esc(w.planName||w.name||p?.name||"Training")}</strong><div class="small" style="margin-top:5px">${formatDuration((w.finishedAt||Date.now())-(w.startedAt||Date.now()))} · ${exCount} abgeschlossene Übung${exCount===1?"":"en"} · ${setCount} abgeschlossene Sätze</div>${w.note?`<div class="note-line">✎ ${esc(w.note)}</div>`:""}</div>${groups.map(g=>`<div class="method-card method-${g.method} ${groupMethod(g.method)?"connected-method-card history-connected-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map((e,j)=>summaryExerciseBlock(e,groupMethod(g.method)?String.fromCharCode(97+j):"")).join("")}</div>`).join("")}<div style="margin-top:18px">${p?`<button id="summaryEditPlan" class="secondary" style="width:100%">Plan bearbeiten</button><button id="summaryRestart" class="primary" style="width:100%;margin-top:8px">Training erneut starten</button>`:`<div class="card history-missing-plan-note">Der zugehörige Trainingsplan wurde gelöscht.</div>`}</div>`;
- openPage("summaryPage",()=>{if(p){$("summaryEditPlan").onclick=()=>{closePage();editPlan(p.id)};$("summaryRestart").onclick=()=>{closePage();openPreStart(p.id)}}})
+ $("summaryBody").innerHTML=`<div class="card summary-plan-card"><div class="space"><div><div class="small">PLAN</div><strong style="font-size:20px">${esc(w.planName||w.name||p?.name||"Training")}</strong></div>${p?`<button id="summaryTopPlay" class="icon-btn plus-btn" aria-label="Training starten">▶</button>`:""}</div><div class="small" style="margin-top:5px">${formatDuration((w.finishedAt||Date.now())-(w.startedAt||Date.now()))} · ${exCount} abgeschlossene Übung${exCount===1?"":"en"} · ${setCount} abgeschlossene Sätze</div>${w.note?`<div class="note-line">✎ ${esc(w.note)}</div>`:""}</div>${groups.map(g=>`<div class="method-card method-${g.method} ${groupMethod(g.method)?"connected-method-card history-connected-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map((e,j)=>summaryExerciseBlock(e,groupMethod(g.method)?String.fromCharCode(97+j):"")).join("")}</div>`).join("")}<div style="margin-top:18px">${p?`<button id="summaryEditPlan" class="secondary" style="width:100%">Plan bearbeiten</button><button id="summaryRestart" class="primary" style="width:100%;margin-top:8px">Training erneut starten</button>`:`<div class="card history-missing-plan-note">Der zugehörige Trainingsplan wurde gelöscht.</div>`}</div>`;
+ openPage("summaryPage",()=>{if(p){$("summaryEditPlan").onclick=()=>{closePage();editPlan(p.id)};$("summaryRestart").onclick=()=>{closePage();openPreStart(p.id)};$("summaryTopPlay").onclick=()=>openPreStart(p.id)}})
 }
 function stretchSvg(){return`<svg class="stretch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M12 6.5v5m0-3L7.5 11M12 8.5l4.5 2.5M12 11.5l-4 6M12 11.5l4.5 5.5M8 17.5 5 20M16.5 17l2.5 3"/></svg>`}
 function validWeekPlans(day){const ids=Array.isArray(weekPlan[day])?weekPlan[day]:weekPlan[day]!=null?[weekPlan[day]]:[];return ids.map(id=>plans.find(p=>String(p.id)===String(id))).filter(Boolean)}
@@ -1620,3 +1723,7 @@ $("sheetBack").onclick=()=>{if(planAddFlow)planAddBack();else closeSheet({all:fa
 function formatTime(s){s=Math.max(0,Number(s)||0);return`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function parseTime(v){const x=String(v).trim();if(x.includes(":")){const[m,s]=x.split(":").map(Number);return(m||0)*60+(s||0)}return(Number(x)||0)*60}function formatDuration(ms){const s=Math.max(0,Math.floor(ms/1000)),m=Math.floor(s/60),r=s%60;return`${m}:${String(r).padStart(2,"0")}`}
 loadData();dailyReset();ensureDrinks();renderExerciseLibrary();renderPlans();renderTrainingHome();renderWeek();renderProfile();restoreUI();
 if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});</script></body></html>
+
+<script id="v35-runtime">
+document.addEventListener("click",e=>{const top=e.target.closest(".tab-header,.page-top");if(!top||e.target.closest("button,input,select,textarea"))return;const page=top.closest(".page");if(page)page.scrollTo({top:0,behavior:"smooth"});else window.scrollTo({top:0,behavior:"smooth"})});
+</script>
