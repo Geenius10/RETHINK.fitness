@@ -2355,3 +2355,179 @@ if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catc
 <script id="v35-runtime">
 document.addEventListener("click",e=>{const top=e.target.closest(".tab-header,.page-top");if(!top||e.target.closest("button,input,select,textarea"))return;const page=top.closest(".page");if(page)page.scrollTo({top:0,behavior:"smooth"});else window.scrollTo({top:0,behavior:"smooth"})});
 </script>
+
+
+<style id="v47-method-polish-css">
+/* v47: targeted polish only — familiar cards/masks stay intact. */
+.connected-live-card .combined-series-head{margin-bottom:8px}
+.connected-live-card .combined-series-name{margin:4px 0}
+.connected-live-card .combined-series-name .exercise-title-link{font-size:16px!important;font-weight:900!important;line-height:1.25}
+.connected-live-card .combined-member-row .combined-name,
+.connected-live-card .combined-member-title .combined-name{font-size:10px!important;font-weight:700!important;color:var(--muted)!important;line-height:1.2}
+.pyramid-config-head{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0 0 10px}
+.pyramid-config-row{display:grid;grid-template-columns:54px minmax(80px,1fr) 48px;gap:8px;align-items:center;margin:6px 0}
+.pyramid-config-row>span:last-child{text-align:right;color:var(--muted);font-size:10px}
+.mode-switch button:disabled{opacity:.32;cursor:not-allowed}
+.preview-connected-top{padding:12px;border-bottom:1px solid var(--line)}
+.preview-connected-top .exercise-title-link{display:block;margin:4px 0;font-size:16px!important}
+.preview-combined-round{padding:9px 12px;border-top:1px solid var(--line)}
+.preview-combined-row{display:grid;grid-template-columns:30px minmax(0,1fr) 58px 58px;gap:6px;align-items:center;padding:4px 0}
+.preview-combined-row .preview-mini-name{font-size:9px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style>
+<script id="v47-method-polish">
+(function(){
+ const basePrepare=window.prepareDraftForTargetMethod;
+ const baseValidate=window.validateExerciseDraft;
+ const baseRenderSets=window.renderSets;
+ const basePlanPrescription=window.planPrescription;
+ const baseOpenSummary=window.openSummary;
+
+ // Practical per-exercise / per-series working-set ranges. These are UI guardrails, not training prescriptions.
+ const SET_OPTIONS={
+  standard:[1,2,3,4,5,6],
+  superset:[2,3,4,5],
+  giant:[2,3,4],
+  preexhaust:[2,3,4],
+  dropset:[1,2,3,4],
+  restpause:[1,2,3],
+  cluster:[2,3,4,5,6],
+  pyramid:[3,4,5,6,7],
+  backoff:[2,3,4,5]
+ };
+ const DEFAULT_SETS={standard:3,superset:3,giant:3,preexhaust:3,dropset:2,restpause:1,cluster:3,pyramid:4,backoff:3};
+ function optionsForMethod(m){return SET_OPTIONS[m]||SET_OPTIONS.standard}
+ function nearestSetCount(m,value){const a=optionsForMethod(m),n=Number(value);if(a.includes(n))return n;const d=DEFAULT_SETS[m]||3;return a.includes(d)?d:a[0]}
+ function setOptionsMarkup(e){e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);return optionsForMethod(e.setTechnique||'standard').map(n=>`<option value="${n}" ${Number(e.sets)===n?'selected':''}>${n}</option>`).join('')}
+ window.methodSetOptions=optionsForMethod;
+
+ // Pyramid = repetitions only. Direction means LOAD up/down; reps move inversely.
+ function pyramidDirection(e){return e.methodData?.pyramidDirection==='loadDown'?'loadDown':'loadUp'}
+ function nextPyramidRep(prev,dir){const p=Math.max(1,Math.min(30,Number(prev)||1));return dir==='loadDown'?Math.min(30,p+2):Math.max(1,p-2)}
+ function buildPyramidReps(first,sets,dir){const out=[Math.max(1,Math.min(30,Number(first)||(dir==='loadDown'?6:12)))];while(out.length<sets)out.push(nextPyramidRep(out[out.length-1],dir));return out}
+ window.pyramidPctForSets=function(sets,dir='loadUp'){
+  sets=Math.max(3,Number(sets)||4);const low=sets<=3?80:sets===4?70:60,step=(100-low)/(sets-1);
+  const a=Array.from({length:sets},(_,i)=>Math.round((low+step*i)/5)*5);return dir==='loadDown'?a.reverse():a
+ };
+ window.ensurePyramidData=function(e){
+  e.methodData=e.methodData||{};e.measureMode='reps';e.sets=nearestSetCount('pyramid',e.sets);
+  let dir=e.methodData.pyramidDirection;
+  const old=Array.isArray(e.methodData.reps)?e.methodData.reps.map(Number).filter(Number.isFinite):[];
+  if(!dir){dir=old.length>1&&old[1]>old[0]?'loadDown':'loadUp';e.methodData.pyramidDirection=dir;e.methodData.reps=buildPyramidReps(old[0]||(dir==='loadDown'?6:12),e.sets,dir)}
+  else if(old.length!==e.sets){const seed=old[0]||(dir==='loadDown'?6:12);e.methodData.reps=buildPyramidReps(seed,e.sets,dir)}
+  else e.methodData.reps=old.length?old:buildPyramidReps(dir==='loadDown'?6:12,e.sets,dir);
+  e.methodData.weightPct=window.pyramidPctForSets(e.sets,dir)
+ };
+ window.prepareDraftForTargetMethod=function(e,method,oldGroupCount=1){
+  const prev=e.setTechnique||'standard';basePrepare(e,method,oldGroupCount);
+  e.sets=nearestSetCount(method,prev===method?e.sets:(DEFAULT_SETS[method]||e.sets));
+  if(method==='pyramid'){e.measureMode='reps';e.methodData=e.methodData||{};e.methodData.pyramidDirection='loadUp';e.methodData.reps=buildPyramidReps(12,e.sets,'loadUp');e.methodData.weightPct=window.pyramidPctForSets(e.sets,'loadUp')}
+  return e
+ };
+ window.validateExerciseDraft=function(e){
+  const m=e?.setTechnique||'standard';if(m==='pyramid'&&e.measureMode==='time')return 'Pyramidentraining wird über Wiederholungen konfiguriert, nicht über Zeit.';
+  const n=Number(e?.sets),allowed=optionsForMethod(m);if(!allowed.includes(n))return `Für ${METHOD_LABEL[m]||m} bitte ${allowed[0]}–${allowed[allowed.length-1]} Sätze wählen.`;
+  return baseValidate(e)
+ };
+
+ // Cleaner method explanations: the target number is shown in the prescription/progress, not repeated in the help text.
+ METHOD_HELP.restpause='Gesamtwiederholungen in kurzen Teilblöcken sammeln. Sobald das Ziel erreicht ist, entfallen weitere Rest-Pause-Blöcke.';
+ METHOD_HELP.cluster='Gesamtwiederholungen in kurzen Clustern sammeln. Leere Folgefelder können aus der ersten Eingabe übernommen werden.';
+ METHOD_HELP.pyramid='Satzweise steigt oder sinkt die Last; die Wiederholungen verlaufen gegenläufig. Jeder Satz bleibt manuell anpassbar.';
+ METHOD_HELP.backoff='Auf einen schweren Top-Satz folgen leichtere Back-off-Sätze mit höherer Wiederholungszahl.';
+
+ window.methodRepConfigMarkup=function(e,prefix){
+  if(e.setTechnique==='pyramid'){
+   ensurePyramidData(e);const dir=pyramidDirection(e);
+   return `<div class="pyramid-config"><div class="pyramid-config-head"><div class="form-field"><label>PYRAMIDE</label><select id="${prefix}PyrDirection" class="field"><option value="loadUp" ${dir==='loadUp'?'selected':''}>Last steigern · WDH. sinken</option><option value="loadDown" ${dir==='loadDown'?'selected':''}>Last senken · WDH. steigen</option></select></div></div><div class="small">WDH. JE SATZ</div>${e.methodData.reps.map((r,i)=>`<div class="pyramid-config-row"><span>Satz ${i+1}</span><input id="${prefix}PyrRep${i}" class="field" inputmode="numeric" value="${r}"><span>${e.methodData.weightPct[i]}%</span></div>`).join('')}</div>`
+  }
+  if(e.setTechnique==='backoff'){e.methodData=e.methodData||{};const top=Number(e.methodData.topReps)||5,back=Math.max(top+1,Number(e.methodData.backoffReps)||8),pct=Number(e.methodData.backoffPercent)||15;return`<div class="grid2"><div class="form-field"><label>TOP-SATZ WDH.</label><select id="${prefix}TopReps" class="field">${Array.from({length:10},(_,i)=>i+1).map(n=>`<option ${n===top?'selected':''}>${n}</option>`).join('')}</select></div><div class="form-field"><label>BACK-OFF WDH.</label><select id="${prefix}BackReps" class="field">${[6,7,8,9,10,11,12].filter(n=>n>top).map(n=>`<option ${n===back?'selected':''}>${n}</option>`).join('')}</select></div></div><div class="form-field"><label>GEWICHT REDUZIEREN %</label><select id="${prefix}BackPct" class="field">${[5,10,15,20,25,30].map(n=>`<option ${n===pct?'selected':''}>${n}</option>`).join('')}</select></div>`}
+  return repPresetMarkup(e)
+ };
+ window.saveMethodRepConfig=function(e,prefix){
+  e.methodData=e.methodData||{};
+  if(e.setTechnique==='pyramid'){
+   const dir=$(`${prefix}PyrDirection`)?.value||pyramidDirection(e);e.methodData.pyramidDirection=dir;
+   e.methodData.reps=Array.from({length:Number(e.sets)||3},(_,i)=>Math.max(1,Number($(`${prefix}PyrRep${i}`)?.value)||Number(e.methodData.reps?.[i])||1));
+   e.methodData.weightPct=window.pyramidPctForSets(e.sets,dir)
+  }
+  if(e.setTechnique==='backoff'){e.methodData.topReps=Math.max(1,Number($(`${prefix}TopReps`)?.value)||5);e.methodData.backoffReps=Math.min(12,Math.max(e.methodData.topReps+1,Number($(`${prefix}BackReps`)?.value)||8));e.methodData.backoffPercent=Math.max(0,Number($(`${prefix}BackPct`)?.value)||15)}
+ };
+ function bindPyramidCascade(e,prefix,rerender){
+  if(e.setTechnique!=='pyramid')return;ensurePyramidData(e);
+  const dirSel=$(`${prefix}PyrDirection`);if(dirSel)dirSel.onchange=()=>{e.methodData.pyramidDirection=dirSel.value;e.methodData.reps=buildPyramidReps(Number($(`${prefix}PyrRep0`)?.value)||e.methodData.reps[0],e.sets,dirSel.value);e.methodData.weightPct=window.pyramidPctForSets(e.sets,dirSel.value);rerender()};
+  e.methodData.reps.forEach((_,i)=>{const inp=$(`${prefix}PyrRep${i}`);if(!inp)return;inp.oninput=()=>{const val=Math.max(1,Math.min(30,Number(inp.value)||1));e.methodData.reps[i]=val;for(let j=i+1;j<e.sets;j++){e.methodData.reps[j]=nextPyramidRep(e.methodData.reps[j-1],pyramidDirection(e));const follow=$(`${prefix}PyrRep${j}`);if(follow)follow.value=e.methodData.reps[j]}}})
+ }
+
+ // One familiar add/edit mask for all exercise actions, now with method-aware set counts.
+ window.renderPlanAddConfig=function(){
+  if(!planAddFlow?.current)return;const e=planAddFlow.current;if(e.setTechnique==='pyramid')ensurePyramidData(e);if(e.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);
+  renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?'active':''}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join('')}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=='time'?'active':''}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==='time'?'active':''}" id="paModeTime" ${e.setTechnique==='pyramid'?'disabled':''}>Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e)}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?'selected':''}>${v?formatTime(v):'Keine'}</option>`).join('')}</select></div></div><div class="form-field"><label>${e.measureMode==='time'?'ZEIT':'WDH.-VORGABE'}</label>${e.measureMode==='time'?timePresetMarkup(e,'pa'):methodRepConfigMarkup(e,'pa')}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`:''}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?'checked':''}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
+  requestAnimationFrame(()=>{const tabs=$('paMethodTabs');if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
+  $('paModeReps').onclick=()=>{e.measureMode='reps';renderPlanAddConfig()};
+  if($('paModeTime')&&!$('paModeTime').disabled)$('paModeTime').onclick=()=>{e.measureMode='time';e.timeSeconds=Math.min(180,Math.max(15,Number(e.timeSeconds)||60));renderPlanAddConfig()};
+  document.querySelectorAll('[data-pa-method]').forEach(b=>b.onclick=()=>{const tabs=$('paMethodTabs');planAddFlow.methodScroll=tabs?.scrollLeft||0;if(planAddFlow.memberGroup)planAddFlow.memberMethodExplicit=true;prepareDraftForTargetMethod(e,b.dataset.paMethod,1);renderPlanAddConfig()});
+  $('paSets').onchange=()=>{e.sets=Number($('paSets').value);if(e.setTechnique==='pyramid')ensurePyramidData(e);renderPlanAddConfig()};
+  document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderPlanAddConfig()});
+  document.querySelectorAll('[data-time-preset]').forEach(b=>b.onclick=()=>{e.timeSeconds=Number(b.dataset.timePreset);renderPlanAddConfig()});
+  bindPyramidCascade(e,'pa',renderPlanAddConfig);
+  $('paConfirm').onclick=()=>confirmPlanAddDraft()
+ };
+
+ // Partner exercises keep their own reps/time/AMRAP; pyramid is never offered as time even inside a connected series.
+ const baseCompact=window.renderCompactPartnerConfig;
+ window.renderCompactPartnerConfig=function(){
+  const e=planAddFlow?.current;if(e?.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;
+  baseCompact();
+  if(!e)return;
+  if(e.setTechnique==='pyramid'){e.measureMode='reps';const btn=$('partnerModeTime');if(btn){btn.disabled=true;btn.classList.remove('active')}}
+  bindPyramidCascade(e,'partner',renderCompactPartnerConfig)
+ };
+
+ // Remove the repeated Cluster/Rest-Pause target hint above every block; progress stays visible once.
+ window.renderSets=function(e,ei){let html=baseRenderSets(e,ei);if(['cluster','restpause'].includes(e.setTechnique))html=html.replace(/^<div class="note-line">[\s\S]*?<\/div>/,'');return html};
+ window.planPrescription=function(e){
+  if(e.setTechnique==='cluster'&&e.measureMode!=='time')return`${esc(e.reps||'10')} WDH. Gesamtziel · ${e.methodData?.blocks||5} Cluster`;
+  if(e.setTechnique==='restpause'&&e.measureMode!=='time')return`${Number(e.reps)||20} WDH. Gesamtziel`;
+  if(e.setTechnique==='pyramid'){ensurePyramidData(e);return`${e.methodData.reps.join(' · ')} WDH. · ${e.methodData.weightPct.join(' · ')}%`}
+  return basePlanPrescription(e)
+ };
+
+ // Superset / Giant Set: large exercise links at the top; small repeated names beside 1a/1b/1c.
+ window.renderLiveGroupCard=function(g){
+  const first=g.members[0],active=g.members.some(x=>Number(activeWorkout.activeExerciseIndex||0)===x.i),rounds=Math.max(...g.members.map(x=>x.e.liveSets?.length||x.e.sets||0));let rows='';
+  for(let si=0;si<rounds;si++){rows+=`<div class="combined-round"><div class="group-round-title"><span>Satz ${si+1}</span><button class="remove-mini" data-remove-live-set="${first.i}|${si}">−</button></div>`;g.members.forEach((x,gi)=>{rows+=combinedMemberControls(x,si,gi)});rows+='</div>'}
+  return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?'active-live-exercise':''}" data-live-card="${first.i}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name"><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}"><strong>${String.fromCharCode(65+gi)}</strong> ${esc(x.e.name)}</button></div>`).join('')}</div><button class="icon-btn" data-live-config="${first.i}" aria-label="Serie bearbeiten">✎</button></div><div class="method-help">${esc(methodHelp(g.method))}</div>${rows}<button class="secondary" data-add-group-set="${esc(g.key)}" style="margin-top:8px">Satz hinzufügen</button></div>`
+ };
+
+ // Preview mirrors the same connected-card hierarchy and exercise names open the execution card.
+ window.openPreview=function(p){
+  $('previewTitle').textContent=p.name||'Workout Vorschau';const pp={...clone(p),exercises:clone(p.exercises).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
+  const groups=previewVisualGroups(pp.exercises);
+  $('previewBody').innerHTML=`<div class="preview-live-shell">${groups.map(g=>{if(!groupMethod(g.method))return`<div class="method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map(e=>`<div class="preview-group-member"><div class="live-card-head"><div><button class="exercise-title-link" data-preview-detail="${esc(e.name)}">${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div></div>${renderPreviewSets(e)}</div>`).join('')}</div>`;
+   const rounds=Math.max(...g.items.map(e=>Number(e.sets)||0));return`<div class="method-card connected-method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="preview-connected-top">${g.items.map((e,j)=>`<button class="exercise-title-link" data-preview-detail="${esc(e.name)}"><strong>${String.fromCharCode(65+j)}</strong> ${esc(e.name)}</button>`).join('')}</div><div class="method-help" style="margin-top:8px">${esc(methodHelp(g.method))}</div>${Array.from({length:rounds},(_,si)=>`<div class="preview-combined-round"><div class="group-round-title">Satz ${si+1}</div>${g.items.map((e,j)=>`<div class="preview-combined-row"><span>${si+1}${String.fromCharCode(97+j)}</span><span class="preview-mini-name">${esc(e.name)}</span><span class="preview-value">${e.measureMode==='time'?formatTime(e.timeSeconds||60):'KG'}</span><span class="preview-value">${e.measureMode==='time'?'ZEIT':(amrapText(e.reps||'WDH.'))}</span></div>`).join('')}</div>`).join('')}</div>`}).join('')}</div>`;
+  openPage('previewPage');document.querySelectorAll('[data-preview-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.previewDetail))
+ };
+
+ function askRestart(p){pendingStartPlan=p;openSheet('Training erneut starten?',`<p class="muted" style="margin:0 0 16px">„${esc(p.name)}“ erneut starten?</p><button id="reallyRestartPlan" class="primary" style="width:100%">Training erneut starten</button>`);$('reallyRestartPlan').onclick=()=>{closeSheet({all:true});startWorkout(p)}}
+ window.openSummary=function(w){baseOpenSummary(w);const p=plans.find(x=>String(x.id)===String(w.planId));if(!p)return;requestAnimationFrame(()=>{if($('summaryTopPlay'))$('summaryTopPlay').onclick=()=>askRestart(p);if($('summaryRestart'))$('summaryRestart').onclick=()=>askRestart(p)})};
+
+ // Legacy time exercises that visually default to 1:00 now actually carry 60 s as their selected value.
+ const oldNormPlanEx=window.normPlanEx;window.normPlanEx=function(e){const x=oldNormPlanEx(e);if(x.measureMode==='time'&&!Number(x.timeSeconds))x.timeSeconds=60;if(x.setTechnique==='pyramid')x.measureMode='reps';return x};
+
+ if(currentPlan&&!$('planEditorPage')?.classList.contains('hidden'))renderEditorExercises();
+ if(activeWorkout&&!$('livePage')?.classList.contains('hidden'))renderLive();
+})();
+</script>
+<script id="v47-exercise-detail-return">
+(function(){
+ const baseRenderLive=window.renderLive;
+ window.renderLive=function(){
+  baseRenderLive();
+  document.querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>{
+   const i=Number((b.dataset.liveIndex ?? b.closest('[data-live-card]')?.dataset.liveCard)||0);
+   setActiveExercise(i);exerciseDetailReturn=null;openExerciseDetail(b.dataset.liveDetail)
+  })
+ };
+ if(activeWorkout&&!$('livePage')?.classList.contains('hidden'))renderLive();
+})();
+</script>
