@@ -24,7 +24,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(1
 .advanced-head,.advanced-row{display:grid;grid-template-columns:32px minmax(70px,1fr) 72px 72px 22px;gap:6px;align-items:center}.advanced-head,.time-head{font-size:8px;color:var(--muted);font-weight:900;text-align:center;padding:5px 0}.advanced-row{padding:4px 0}.time-head,.time-row{display:grid;grid-template-columns:28px minmax(70px,1fr) 54px 58px 40px 20px;gap:4px;align-items:center}
 .rating{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.rating button{min-height:34px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--muted);font-size:9px}.rating .red.active{background:#ffb7b3;color:#111}.rating .yellow.active{background:#fff0a6;color:#111}.rating .green.active{background:#c9ffce;color:#111}
 .bottom-actions{display:grid;grid-template-columns:minmax(0,1fr) 50px;gap:8px;margin-top:16px}.finish{width:100%;min-height:52px;margin:9px 0 90px}.week-list{display:grid;gap:8px}.week-row{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:stretch}.week-day{display:grid;place-items:center;color:var(--muted);font-size:11px;font-weight:900}.week-card{min-height:74px;border:1px solid var(--line);background:var(--surface);border-radius:15px;padding:10px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}.week-card strong{display:block}.week-card small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.week-actions{display:flex;gap:5px}.week-plus{width:36px;height:36px;border:0;border-radius:10px;background:#fff;color:#111;font-size:24px;display:grid;place-items:center;padding:0}.week-menu{width:30px;border:0;background:transparent;color:#fff;font-size:23px}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.stat{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:10px;text-align:center}.stat strong{display:block;font-size:17px}.stat span{font-size:8px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:9999;background:#fff;color:#111;border-radius:999px;padding:9px 14px;font-size:11px;font-weight:900}.restbar{position:sticky;bottom:8px;z-index:15;background:#fff;color:#111;border-radius:15px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0}.restbar button{border:0;background:#e8e8e8;border-radius:9px;min-height:34px;padding:0 10px;color:#111}.summary-empty{border-top:1px solid var(--line);padding:9px 0;color:#fff;font-size:13px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.stat{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:10px;text-align:center}.stat strong{display:block;font-size:17px}.stat span{font-size:8px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:9999;background:#fff;color:#111;border-radius:999px;padding:9px 14px;font-size:11px;font-weight:900}.restbar{background:#fff;color:#111;border-radius:15px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;}.restbar button{border:0;background:#e8e8e8;border-radius:9px;min-height:34px;padding:0 10px;color:#111}.summary-empty{border-top:1px solid var(--line);padding:9px 0;color:#fff;font-size:13px}
 </style>
 <style id="clean-v2-additions">
 .editor-add-row{display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:8px;margin-top:8px}.editor-add-row .secondary{width:100%}
@@ -369,7 +369,7 @@ body{font-size:16px}
 </style><style id="v35-fixes">
 .rating-choice{display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;padding:9px 12px!important}.rating-choice strong{font-size:12px}.rating-choice small{display:block;font-size:9px;line-height:1.25;margin-top:2px;opacity:.72;font-weight:650}
 .live-exercise-card{transition:box-shadow .2s,transform .2s,border-color .2s}.live-exercise-card.active-live-exercise{box-shadow:0 0 0 2px rgba(255,255,255,.65),0 0 24px rgba(207,177,233,.24);transform:scale(1.008);border-color:#fff!important}
-#restBar{position:fixed!important;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:1000;margin:0!important;box-shadow:0 10px 35px rgba(0,0,0,.45)}#livePage{padding-bottom:150px!important}
+#restBar{box-shadow:0 10px 35px rgba(0,0,0,.45)}#livePage{padding-bottom:150px!important}
 #startTrainingCard{min-height:112px;padding:20px!important;display:flex;align-items:center}#startTrainingCard>.space{width:100%}#startTrainingCard strong{font-size:19px}
 .plan-card.hold-armed{transform:scale(.985);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);filter:brightness(1.12)}.plan-card.hold-ready{transform:scale(.97);box-shadow:inset 0 0 0 2px #fff,0 0 20px rgba(255,255,255,.15)}
 .mode-switch{display:flex;gap:6px;margin:8px 0 12px}.save-choice-stack{display:grid;gap:8px}.summary-plan-card .plus-btn{flex:0 0 auto}
@@ -378,13 +378,13 @@ body{font-size:16px}
 .time-presets{display:flex;flex-wrap:wrap;gap:6px}
 </style><style id="v37-fixes">
 #restBar{
- position:fixed!important;
- top:auto!important;
- left:12px!important;
- right:12px!important;
- bottom:calc(78px + env(safe-area-inset-bottom))!important;
- z-index:9999!important;
- margin:0!important;
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  min-height:72px!important;
  padding:14px 16px!important;
  border-radius:18px!important;
@@ -450,7 +450,367 @@ body{font-size:16px}
 .combined-time-controls{display:grid;grid-template-columns:minmax(68px,1fr) 44px minmax(54px,.8fr) minmax(48px,.7fr) 42px;gap:6px;align-items:center}
 .combined-time-controls input{width:100%;min-width:0;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:#fff;text-align:center}
 .group-round-title{display:flex;align-items:center;justify-content:space-between}
-</style></head><body>
+</style>
+<script id="v48-theme-boot">
+(function(){
+ const key="rethink_theme_mode";
+ const mode=localStorage.getItem(key)||"system";
+ const resolve=m=>m==="system"?(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"):m;
+ document.documentElement.dataset.theme=resolve(mode);
+ document.documentElement.dataset.themeMode=mode;
+})();
+</script>
+
+<style id="v48-original-theme-and-workout-unify">
+:root{--v48-accent:#b7a4d8;--v48-coral:#d56b72}
+html[data-theme="dark"]{color-scheme:dark}
+html[data-theme="light"]{
+ --bg:#dfe1e7!important;
+ --surface:#ececf1!important;
+ --surface2:#d6d7df!important;
+ --line:rgba(38,38,48,.13)!important;
+ --text:#25242a!important;
+ --muted:#6f6d76!important;
+ --danger:#b8414d!important;
+ color-scheme:light;
+}
+html[data-theme="light"],html[data-theme="light"] body{background:#dfe1e7!important;color:var(--text)!important}
+html[data-theme="light"] body{
+ background:
+   radial-gradient(700px 480px at 5% -5%,rgba(177,157,211,.24),transparent 58%),
+   radial-gradient(600px 420px at 100% 3%,rgba(124,168,183,.16),transparent 56%),
+   linear-gradient(180deg,#e4e4ea 0%,#dcdfe5 58%,#d9dce2 100%)!important;
+}
+html[data-theme="light"] .page{background:linear-gradient(180deg,#e4e4ea,#dbdde3)!important}
+html[data-theme="light"] .page-top{background:rgba(228,228,234,.94)!important;border-bottom-color:rgba(38,38,48,.10)!important}
+html[data-theme="light"] .sheet{background:linear-gradient(180deg,#eeeeF3,#dddee5)!important;border-color:rgba(38,38,48,.12)!important}
+html[data-theme="light"] .nav{background:rgba(229,229,235,.95)!important;border-color:rgba(38,38,48,.11)!important;box-shadow:0 12px 34px rgba(42,40,52,.12)!important}
+html[data-theme="light"] .nav button{color:#74717b!important}
+html[data-theme="light"] .nav button.active{color:#25242a!important;background:#cbc5d8!important}
+html[data-theme="light"] .card,html[data-theme="light"] .exercise-card,html[data-theme="light"] .plan-card,
+html[data-theme="light"] .week-card,html[data-theme="light"] .settings-card,html[data-theme="light"] .stat,
+html[data-theme="light"] .daily-track-card,html[data-theme="light"] .nutrition-target-card,
+html[data-theme="light"] .method-card,html[data-theme="light"] .group-round,html[data-theme="light"] .recommendation,
+html[data-theme="light"] .measurement-card,html[data-theme="light"] .drink-card{
+ background:#ececf1!important;border-color:rgba(38,38,48,.11)!important;color:#25242a!important;
+ box-shadow:0 8px 22px rgba(42,40,52,.07)!important;
+}
+html[data-theme="light"] .secondary,html[data-theme="light"] .icon-btn{background:#e7e7ed!important;color:#29282e!important;border-color:rgba(38,38,48,.12)!important}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn{background:#c5bdd4!important;color:#26222d!important}
+html[data-theme="light"] .search input,html[data-theme="light"] .field,html[data-theme="light"] select.field,
+html[data-theme="light"] textarea.field,html[data-theme="light"] .set-row input,html[data-theme="light"] .advanced-row input,
+html[data-theme="light"] .time-row input,html[data-theme="light"] .group-ex-row input,
+html[data-theme="light"] .combined-member-row input{
+ background:#f0f0f4!important;color:#25242a!important;border-color:rgba(38,38,48,.13)!important
+}
+html[data-theme="light"] .chip,html[data-theme="light"] .rep-preset{background:#e8e8ed!important;color:#625f69!important;border-color:rgba(38,38,48,.11)!important}
+html[data-theme="light"] .chip.active,html[data-theme="light"] .rep-preset.active{background:#c7bfd6!important;color:#27222e!important;border-color:#c7bfd6!important}
+html[data-theme="light"] .small,html[data-theme="light"] .prescription,html[data-theme="light"] .method-help,
+html[data-theme="light"] .goal-line,html[data-theme="light"] .variant-line{color:#6f6d76!important}
+
+/* "Heute messen?" remains a standard card; only the prompt text is red. */
+#measurementSuggestionBtn{background:var(--surface)!important;border:1px solid var(--line)!important;box-shadow:none!important}
+#measurementSuggestionBtn strong{color:#e35d66!important}
+html[data-theme="light"] #measurementSuggestionBtn strong{color:#b43c49!important}
+
+/* One input language for all rep/weight work sets. */
+.set-row input,.advanced-row input,.group-ex-row input,.combined-member-row input,
+.combined-time-controls input,.time-row input{
+ height:44px!important;border:1px solid var(--line)!important;border-radius:11px!important;
+ background:var(--surface2)!important;color:var(--text)!important;text-align:center!important;
+ font-size:16px!important;font-variant-numeric:tabular-nums!important;min-width:0!important;
+}
+.set-row input::placeholder,.advanced-row input::placeholder,.group-ex-row input::placeholder,
+.combined-member-row input::placeholder,.combined-time-controls input::placeholder,.time-row input::placeholder{
+ color:var(--muted)!important;opacity:.62!important
+}
+.combined-value-head,.combined-time-head{
+ display:grid;grid-template-columns:34px minmax(90px,1fr) minmax(58px,68px) minmax(58px,68px) 38px;
+ gap:6px;align-items:end;margin:7px 0 -1px;font-size:9px;font-weight:900;color:var(--muted);
+ text-transform:uppercase;text-align:center
+}
+.combined-value-head span:nth-child(2){text-align:left}
+.combined-member-row{grid-template-columns:34px minmax(90px,1fr) minmax(58px,68px) minmax(58px,68px) 38px!important;gap:6px!important}
+.workout-field-head{font-size:9px;color:var(--muted);font-weight:900;text-transform:uppercase}
+.theme-choice-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.theme-choice{height:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--text);font-size:11px;font-weight:850}
+.theme-choice.active{background:#b7a4d8!important;color:#17141c!important;border-color:#b7a4d8!important}
+.week-calendar-label{font-size:11px;color:var(--muted);margin:3px 0}
+</style>
+
+<style id="v50-draggable-sheets">
+.sheet-handle{cursor:grab;touch-action:none!important;width:56px!important;height:5px!important;margin:9px auto 5px!important;background:color-mix(in srgb,var(--muted) 70%,transparent)!important}
+.sheet-handle:active{cursor:grabbing}
+.sheet{will-change:transform;transition:transform .22s cubic-bezier(.2,.75,.25,1)}
+.sheet-wrap{transition:background-color .18s ease}
+.sheet.sheet-dragging{transition:none!important}
+</style>
+
+<style id="v51-ui-polish">
+.target-weight-line-profile{display:block;margin-top:4px}
+.measurement-chevron{font-size:25px;font-weight:500;line-height:1;color:var(--muted)}
+.week-scheduled{
+ background:rgba(232,145,62,.18)!important;
+ border-color:#e58d3d!important;
+ box-shadow:inset 0 0 0 1px rgba(229,141,61,.16)!important;
+}
+.week-scheduled,.week-scheduled strong,.week-scheduled .week-card-date,.week-scheduled small,.week-scheduled button{color:#f0ad6e!important}
+html[data-theme="light"] .week-scheduled{
+ background:rgba(215,130,49,.22)!important;border-color:#cf7e32!important;
+}
+html[data-theme="light"] .week-scheduled,html[data-theme="light"] .week-scheduled strong,
+html[data-theme="light"] .week-scheduled .week-card-date,html[data-theme="light"] .week-scheduled small,
+html[data-theme="light"] .week-scheduled button{color:#704018!important}
+.week-completed{border-color:#68c68a!important;background:rgba(70,166,101,.17)!important}
+.set-row>span:first-child,.time-row>span:first-child,.advanced-row>span:first-child,
+.combined-index,.group-round-title,.preview-static-row>span:first-child{font-weight:900!important}
+.advanced-row{grid-template-columns:32px minmax(58px,1fr) minmax(58px,68px) minmax(58px,68px) 38px 22px!important}
+.advanced-row .set-check{grid-column:5!important}
+.advanced-row .remove-mini{grid-column:6!important}
+.drop-final-row{align-items:center!important}
+.drop-final-row .set-check,.drop-final-row .remove-mini{display:block!important}
+.rating-row{min-width:0}
+#paTypeChips,#paMuscleChips{scroll-behavior:auto}
+</style>
+
+<style id="v52-food-color-keyboard">
+/* Protein drinks now use the same icon + color-card language as all other drinks. */
+.drink-kind-protein{
+ border-left-color:#9f8ce1!important;
+ background:linear-gradient(90deg,rgba(159,140,225,.18),var(--surface) 30%)!important
+}
+.drink-id-protein-caffeine{
+ border-left-color:#c58ce1!important;
+ background:linear-gradient(90deg,rgba(197,140,225,.19),var(--surface) 30%)!important
+}
+/* Friendlier, slightly more colorful clean branch without changing structure. */
+.profile-identity-card{border-color:rgba(190,157,225,.28)!important;background:linear-gradient(135deg,rgba(180,145,214,.08),var(--surface) 55%)!important}
+.hydration-today-card{border-color:rgba(116,190,222,.42)!important;background:linear-gradient(135deg,rgba(95,181,218,.10),var(--surface) 48%)!important}
+.nutrition-today-card{min-height:240px!important;border-color:rgba(224,171,100,.40)!important;background:linear-gradient(135deg,rgba(224,153,83,.095),var(--surface) 50%)!important}
+.progress-fill{background:linear-gradient(90deg,#87c6e3,#b49bdf)!important}
+.protein-progress i{background:linear-gradient(90deg,#d697bf,#b99fe6)!important}
+.daily-white-plus,.plus-btn{box-shadow:0 5px 16px rgba(159,140,225,.16)}
+.food-manage-details{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding-top:8px}
+.food-manage-details>summary{display:flex;justify-content:space-between;align-items:center;list-style:none;cursor:pointer;font-size:11px;font-weight:850;color:var(--text)}
+.food-manage-details>summary::-webkit-details-marker{display:none}
+.food-manage-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}
+.food-manage-actions .secondary{min-height:40px;font-size:10px}
+.food-manage-section{margin-top:10px}.food-manage-label{margin-bottom:6px;font-weight:900}
+.my-food-card,.meal-card{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);margin-bottom:6px}
+.my-food-card strong,.meal-card strong{display:block;font-size:12px}.my-food-card small,.meal-card small{display:block;font-size:9px;color:var(--muted);margin-top:3px}
+.food-card-actions{display:flex;gap:5px}.food-card-actions button{width:33px;height:33px;min-width:33px}
+.food-result{border-left:4px solid rgba(224,171,100,.55)!important;background:linear-gradient(90deg,rgba(224,171,100,.06),var(--surface) 25%)!important}
+.food-serving{display:block;margin-top:3px;font-size:9px;color:#d7b07a!important}
+.food-quick-portions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0 12px}
+.food-quick-portions button{min-height:38px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font-size:10px;font-weight:800}
+.meal-builder-total{padding:11px;border-radius:12px;background:rgba(224,171,100,.08);border:1px solid rgba(224,171,100,.22);margin:10px 0}
+.meal-builder-item{display:grid;grid-template-columns:minmax(0,1fr) 70px 30px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.meal-builder-item:last-child{border-bottom:0}.meal-builder-item input{height:38px}
+html[data-theme="light"] .nutrition-today-card{background:linear-gradient(135deg,rgba(203,139,73,.13),#dbdce4 52%)!important}
+html[data-theme="light"] .hydration-today-card{background:linear-gradient(135deg,rgba(80,157,189,.12),#dbdce4 52%)!important}
+html[data-theme="light"] .drink-kind-protein{background:linear-gradient(90deg,rgba(136,113,194,.17),#dbdce4 30%)!important}
+html[data-theme="light"] .drink-id-protein-caffeine{background:linear-gradient(90deg,rgba(174,104,190,.17),#dbdce4 30%)!important}
+
+/* Keyboard-safe layout for pages and bottom sheets. */
+:root{--keyboard-inset:0px}
+.sheet-wrap{padding-bottom:0!important}
+.sheet{max-height:calc(100dvh - 10px - env(safe-area-inset-top))!important}
+.page.keyboard-open{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
+.sheet.keyboard-open .sheet-body{padding-bottom:calc(16px + env(safe-area-inset-bottom))!important}
+</style>
+
+<style id="v52-friendly-color-polish">
+/* Small friendly accents across the whole app; structure/spacing stay unchanged. */
+.kicker{color:#c2a8e7!important}
+.primary{background:#c9b8e3!important;color:#201a27!important;border-color:#c9b8e3!important}
+.plus-btn{background:#c9b8e3!important;color:#201a27!important}
+.secondary:not(.danger){border-color:rgba(190,164,225,.30)!important}
+#tab-exercises .tab-header{border-bottom-color:rgba(174,153,222,.10)}
+#tab-plans .tab-header{border-bottom-color:rgba(112,181,205,.10)}
+#tab-training .tab-header{border-bottom-color:rgba(224,171,100,.10)}
+#tab-profile .section-head h2{letter-spacing:-.01em}
+.nav button.active{color:#d5c2ee!important}
+html[data-theme="light"] .kicker{color:#766096!important}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn{background:#b8a5cf!important;color:#28202e!important}
+html[data-theme="light"] .nav button.active{color:#66517f!important}
+</style>
+
+<style id="v53-workout-profile-fixes">
+/* Completed sets get a quiet green wash without changing the rating color itself. */
+.set-row:has(.set-check.done),.time-row:has(.set-check.done),.advanced-row.drop-final-row:has(.set-check.done),
+.combined-member-row:has(.set-check.done),.group-ex-row:has(.set-check.done){
+ background:rgba(92,184,119,.08)!important;border-radius:10px
+}
+html[data-theme="light"] .set-row:has(.set-check.done),html[data-theme="light"] .time-row:has(.set-check.done),
+html[data-theme="light"] .advanced-row.drop-final-row:has(.set-check.done),html[data-theme="light"] .combined-member-row:has(.set-check.done),
+html[data-theme="light"] .group-ex-row:has(.set-check.done){background:rgba(67,153,91,.11)!important}
+.last-rating-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px;background:#777}
+.last-rating-dot.rating-green{background:#79d38c}.last-rating-dot.rating-yellow{background:#e7cb5f}.last-rating-dot.rating-red{background:#e47777}.last-rating-dot.rating-blue{background:#78cbe9}
+.partner-unified-card{border:1px solid var(--line);border-radius:15px;padding:12px;background:var(--surface);margin-bottom:10px}
+.partner-step-kicker{font-size:9px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.weight-goal-reached{color:#75ce8d!important}
+</style>
+
+<style id="v53-rating-dot-layout">
+.set-row,.time-row,.advanced-row,.combined-member-row{position:relative}
+.last-rating-dot{position:absolute!important;left:1px;top:50%;transform:translateY(-50%);z-index:2;margin:0!important}
+</style>
+
+<style id="v56-streak-badges">
+.streak-section-head{display:flex!important;align-items:center;justify-content:space-between;gap:10px}
+.section-head-actions{display:flex;align-items:center;gap:8px}
+.streak-flame{display:flex;align-items:center;gap:4px;min-width:42px;justify-content:flex-end;font-size:15px;color:var(--muted)}
+.streak-flame strong{font-size:12px;color:var(--text);font-variant-numeric:tabular-nums}
+.streak-flame.active{color:#f29a45}
+.streak-flame.active strong{color:#f4b16a}
+html[data-theme="light"] .streak-flame.active{color:#c96f29}
+html[data-theme="light"] .streak-flame.active strong{color:#9b4d18}
+</style>
+
+<style id="v61-progress-rating-core">
+.profile-progress-grid .progress-stat .progress-sub-label{
+  display:block;margin-top:7px;font-size:9px;font-weight:800;color:var(--muted);text-transform:none
+}
+.profile-progress-grid .progress-stat .progress-sub-value{
+  display:block;margin-top:2px;font-size:10px;font-weight:800;color:var(--text)
+}
+</style>
+<style id="v47-method-polish-css">
+/* v47: targeted polish only — familiar cards/masks stay intact. */
+.connected-live-card .combined-series-head{margin-bottom:8px}
+.connected-live-card .combined-series-name{margin:4px 0}
+.connected-live-card .combined-series-name .exercise-title-link{font-size:16px!important;font-weight:900!important;line-height:1.25}
+.connected-live-card .combined-member-row .combined-name,
+.connected-live-card .combined-member-title .combined-name{font-size:10px!important;font-weight:700!important;color:var(--muted)!important;line-height:1.2}
+.pyramid-config-head{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0 0 10px}
+.pyramid-config-row{display:grid;grid-template-columns:54px minmax(80px,1fr) 48px;gap:8px;align-items:center;margin:6px 0}
+.pyramid-config-row>span:last-child{text-align:right;color:var(--muted);font-size:10px}
+.mode-switch button:disabled{opacity:.32;cursor:not-allowed}
+.preview-connected-top{padding:12px;border-bottom:1px solid var(--line)}
+.preview-connected-top .exercise-title-link{display:block;margin:4px 0;font-size:16px!important}
+.preview-combined-round{padding:9px 12px;border-top:1px solid var(--line)}
+.preview-combined-row{display:grid;grid-template-columns:30px minmax(0,1fr) 58px 58px;gap:6px;align-items:center;padding:4px 0}
+.preview-combined-row .preview-mini-name{font-size:9px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style>
+<style id="current-keyboard-layout">
+.sheet-wrap{padding-bottom:0!important}.sheet{bottom:0!important;transform:none}.sheet.keyboard-open{transform:none!important}.page.keyboard-open{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
+</style>
+
+<style id="v64-partner-live-visuals">
+/* Partner picker now uses the same visual language as exercise 1. */
+.partner-catalog-note{margin:2px 0 10px;color:var(--muted);font-size:10px}
+.partner-catalog-detail .exercise-media-placeholder{margin-bottom:12px}
+
+/* Active exercise: method colour only while unfinished. */
+.live-exercise-card.active-live-exercise:not(.live-method-complete){
+  background:color-mix(in srgb,var(--method) 22%,var(--surface))!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--method) 48%,transparent),0 12px 32px rgba(0,0,0,.15)!important;
+}
+.live-exercise-card.active-live-exercise:not(.live-method-complete) .exercise-title-link{
+  color:color-mix(in srgb,var(--method) 72%,white)!important
+}
+.live-exercise-card.live-method-complete{background:var(--surface)!important}
+
+/* Completed set/round gets the training-method colour, not generic green.
+   Rating check itself keeps green/yellow/red/blue rating semantics. */
+.method-card .set-row:has(.set-check.done),
+.method-card .time-row:has(.set-check.done),
+.method-card .advanced-row:has(.set-check.done),
+.method-card .combined-member-row:has(.set-check.done),
+.method-card .group-ex-row:has(.set-check.done),
+.method-card .group-round:has(.set-check.done){
+  background:color-mix(in srgb,var(--method) 38%,transparent)!important;
+  border-color:color-mix(in srgb,var(--method) 62%,transparent)!important;
+}
+html[data-theme="light"] .method-card .set-row:has(.set-check.done),
+html[data-theme="light"] .method-card .time-row:has(.set-check.done),
+html[data-theme="light"] .method-card .advanced-row:has(.set-check.done),
+html[data-theme="light"] .method-card .combined-member-row:has(.set-check.done),
+html[data-theme="light"] .method-card .group-ex-row:has(.set-check.done),
+html[data-theme="light"] .method-card .group-round:has(.set-check.done){
+  background:color-mix(in srgb,var(--method) 46%,#d7d8df)!important;
+}
+
+/* Pause timer sits at the actual lower screen edge. */
+#restBar{
+  
+  
+  
+  
+  
+  
+  
+}
+#livePage{padding-bottom:120px!important}
+</style>
+
+<style id="v65-method-borders">
+.method-card{
+  border:2px solid var(--method)!important;
+}
+.method-card.connected-live-card,
+.method-card.connected-method-card{
+  border:2px solid var(--method)!important;
+}
+.method-card .method-name{
+  color:var(--method)!important;
+}
+</style>
+<style id="current-v66-theme-layout">
+html[data-theme="light"]{--bg:#cfd1d8!important;--surface:#dbdce3!important;--surface2:#c8cad2!important;--line:rgba(39,37,47,.15)!important;--text:#28262e!important;--muted:#68656f!important;--danger:#a73e49!important;color-scheme:light}
+html[data-theme="light"],html[data-theme="light"] body{background:#cfd1d8!important;color:var(--text)!important}
+html[data-theme="light"] body{background:radial-gradient(760px 500px at 0% -6%,rgba(164,143,194,.20),transparent 58%),radial-gradient(650px 440px at 100% 0%,rgba(104,150,164,.14),transparent 58%),linear-gradient(180deg,#d7d7df,#ced1d8 58%,#c9cdd4)!important}
+html[data-theme="light"] .page{background:linear-gradient(180deg,#d5d6dd,#cdd0d7)!important;color:var(--text)!important}
+html[data-theme="light"] .page-top{background:rgba(211,212,220,.96)!important;color:var(--text)!important;border-bottom-color:rgba(39,37,47,.11)!important}
+html[data-theme="light"] .sheet{background:linear-gradient(180deg,#dfe0e6,#c9cbd3)!important;color:var(--text)!important;border-color:rgba(39,37,47,.13)!important}
+html[data-theme="light"] .nav{background:rgba(216,217,224,.96)!important;border-color:rgba(39,37,47,.11)!important;box-shadow:0 12px 32px rgba(42,40,52,.13)!important}
+html[data-theme="light"] .card,html[data-theme="light"] .exercise-card,html[data-theme="light"] .plan-card,html[data-theme="light"] .week-card,html[data-theme="light"] .settings-card,html[data-theme="light"] .stat,html[data-theme="light"] .daily-track-card,html[data-theme="light"] .nutrition-target-card,html[data-theme="light"] .method-card,html[data-theme="light"] .group-round,html[data-theme="light"] .recommendation,html[data-theme="light"] .measurement-card,html[data-theme="light"] .drink-card,html[data-theme="light"] .partner-unified-card{background:#dbdce3!important;color:var(--text)!important;border-color:rgba(39,37,47,.12)!important;box-shadow:0 7px 19px rgba(43,40,51,.065)!important}
+html[data-theme="light"] .exercise-title-link,html[data-theme="light"] .combined-name,html[data-theme="light"] .preview-mini-name,html[data-theme="light"] .summary-empty,html[data-theme="light"] .meta-pill,html[data-theme="light"] .week-menu,html[data-theme="light"] .settings-row strong,html[data-theme="light"] .settings-row small{color:var(--text)!important}
+html[data-theme="light"] .small,html[data-theme="light"] .goal-line,html[data-theme="light"] .method-help,html[data-theme="light"] .variant-line,html[data-theme="light"] .prescription,html[data-theme="light"] .note-line{color:var(--muted)!important;opacity:1!important}
+html[data-theme="light"] .secondary,html[data-theme="light"] .icon-btn,html[data-theme="light"] .text-action,html[data-theme="light"] .remove-mini{background:#d0d1d8!important;color:#2e2b34!important;border-color:rgba(39,37,47,.13)!important}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn,html[data-theme="light"] .daily-white-plus{background:#b7a7cc!important;color:#251f2c!important;border-color:#b7a7cc!important}
+html[data-theme="light"] input,html[data-theme="light"] textarea,html[data-theme="light"] select,html[data-theme="light"] .field,html[data-theme="light"] .set-row input,html[data-theme="light"] .advanced-row input,html[data-theme="light"] .time-row input,html[data-theme="light"] .combined-member-row input,html[data-theme="light"] .group-ex-row input{background:#cfd1d8!important;color:#28262e!important;border-color:rgba(39,37,47,.14)!important}
+html[data-theme="light"] input::placeholder,html[data-theme="light"] textarea::placeholder{color:#77737e!important;opacity:.72!important}
+html[data-theme="light"] .chip,html[data-theme="light"] .rep-preset{background:#d1d2d9!important;color:#5f5b66!important;border-color:rgba(39,37,47,.11)!important}
+html[data-theme="light"] .chip.active,html[data-theme="light"] .rep-preset.active{background:#b5a5ca!important;color:#27212d!important;border-color:#b5a5ca!important}
+html[data-theme="light"] .method-card{border-color:var(--method)!important}
+html[data-theme="light"] .method-card .method-name{color:color-mix(in srgb,var(--method) 72%,#3a3340)!important}
+html[data-theme="light"] .live-exercise-card.active-live-exercise:not(.live-method-complete){background:color-mix(in srgb,var(--method) 31%,#d8d9df)!important}
+html[data-theme="light"] .live-exercise-card.active-live-exercise:not(.live-method-complete) .exercise-title-link{color:#2b2730!important}
+#restBar{position:fixed!important;top:auto!important;left:0!important;right:0!important;bottom:0!important;z-index:10000!important;margin:0!important;min-height:70px!important;border-radius:18px 18px 0 0!important;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;box-shadow:0 -10px 30px rgba(0,0,0,.30)!important}
+#restBar #restTime{font-size:25px!important;font-weight:900!important}
+#livePage{padding-bottom:150px!important}
+</style>
+<style id="v67-week-pending-lilac">
+.week-scheduled{
+  background:color-mix(in srgb,#b7a4d8 22%,var(--surface))!important;
+  border-color:#b7a4d8!important;
+  box-shadow:inset 0 0 0 1px rgba(183,164,216,.18)!important;
+}
+.week-scheduled,
+.week-scheduled strong,
+.week-scheduled .week-card-date,
+.week-scheduled small,
+.week-scheduled button{
+  color:var(--text)!important;
+}
+html[data-theme="light"] .week-scheduled{
+  background:color-mix(in srgb,#b7a4d8 30%,#dbdce3)!important;
+  border-color:#9e89bf!important;
+}
+html[data-theme="light"] .week-scheduled,
+html[data-theme="light"] .week-scheduled strong,
+html[data-theme="light"] .week-scheduled .week-card-date,
+html[data-theme="light"] .week-scheduled small,
+html[data-theme="light"] .week-scheduled button{
+  color:#302b37!important;
+}
+.week-completed{
+  border-color:#68c68a!important;
+  background:rgba(70,166,101,.17)!important;
+}
+</style>
+</head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
 <main id="tab-plans" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Meine Pläne</h1></div><div class="plan-header-actions"><button id="plansEditBtn" class="secondary plan-edit-toggle">Bearbeiten</button><button id="newPlanBtn" class="icon-btn plus-btn">+</button></div></div><div class="chips" id="planSortChips"></div><div id="planList"></div></main>
@@ -465,7 +825,7 @@ body{font-size:16px}
 <div class="space section-head"><h2>Messungen</h2><button id="addMeasurementBtn" class="icon-btn plus-btn">+</button></div>
 <div id="measurementCharts" class="measurement-charts"></div><div id="measurementSuggestion"></div><div id="measurementList"></div><div id="profileProgressOverview"></div>
 
-<div class="section-head"><h2>Hydrierung heute</h2></div>
+<div class="section-head streak-section-head"><h2>Hydrierung heute</h2><div id="hydrationStreakBadge" class="streak-flame" aria-label="Hydrierungs-Streak">🔥 <strong>0</strong></div></div>
 <div class="card daily-track-card hydration-today-card">
   <div class="daily-track-top">
     <div class="daily-main-stat"><span>Menge</span><strong id="waterView">0 ml</strong></div>
@@ -478,7 +838,7 @@ body{font-size:16px}
   <details id="drinksDetails" class="drink-details"><summary><span>Meine Getränke</span><span class="drink-summary-chevron">⌄</span></summary><div class="space drink-details-actions"><div class="small">Getränke verwalten</div><div class="drink-manage-actions"><button id="reorderDrinksBtn" class="icon-btn subtle-reorder-btn" aria-label="Reihenfolge ändern">⇅</button><button id="newDrinkBtn" class="secondary create-drink-btn">Getränk erstellen</button></div></div><div id="drinkList"></div></details>
 </div>
 
-<div class="space section-head"><h2>Ernährung heute</h2><button id="editGoalsBtn" class="secondary compact-profile-edit">Bearbeiten</button></div>
+<div class="space section-head streak-section-head"><h2>Ernährung heute</h2><div class="section-head-actions"><div id="nutritionStreakBadge" class="streak-flame" aria-label="Ernährungs-Streak">🔥 <strong>0</strong></div><button id="editGoalsBtn" class="secondary compact-profile-edit">Bearbeiten</button></div></div>
 <div class="card daily-track-card nutrition-today-card">
   <div class="daily-track-top nutrition-track-top">
     <div class="daily-bar-stat"><div><span>Kalorien</span><strong id="foodCaloriesCounter">0 / – kcal</strong></div><div class="mini-progress"><i id="foodCaloriesProgress"></i></div></div>
@@ -486,6 +846,15 @@ body{font-size:16px}
     <button id="addFoodTodayBtn" class="daily-white-plus" aria-label="Lebensmittel hinzufügen">+</button>
   </div>
   <details class="daily-log-details" id="todayFoodsDetails"><summary><span>Lebensmittel heute</span><span id="todayFoodCount">0</span></summary><div id="todayFoodList" class="compact-daily-list today-food-list"></div></details>
+  <details id="myFoodsDetails" class="food-manage-details">
+    <summary><span>Meine Lebensmittel & Mahlzeiten</span><span class="drink-summary-chevron">⌄</span></summary><div class="small" style="margin-top:7px">1.500 integrierte Lebensmittel + eigene Lebensmittel</div>
+    <div class="food-manage-actions">
+      <button id="newCustomFoodBtn" class="secondary">Lebensmittel erstellen</button>
+      <button id="newMealBtn" class="secondary">Mahlzeit erstellen</button>
+    </div>
+    <div class="food-manage-section"><div class="small food-manage-label">MEINE LEBENSMITTEL</div><div id="myFoodList"></div></div>
+    <div class="food-manage-section"><div class="small food-manage-label">MEINE MAHLZEITEN</div><div id="myMealList"></div></div>
+  </details>
 </div>
 
 <div class="card nutrition-target-card goal-calculation-card">
@@ -509,6 +878,7 @@ body{font-size:16px}
 <section id="summaryPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2 id="summaryTitle">Training</h2><div></div></div><div id="summaryBody"></div></section><section id="settingsPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2>Einstellungen</h2><div></div></div><div id="settingsBody"></div></section>
 <div id="sheetWrap" class="sheet-wrap hidden"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-top"><button id="sheetBack" class="icon-btn">‹</button><h2 id="sheetTitle">Auswahl</h2><button id="sheetClose" class="icon-btn">×</button></div><div id="sheetBody" class="sheet-body"></div></div></div>
 
+<script src="./foods.js"></script>
 <script>
 "use strict";
 const STORAGE={plans:"gymapp_plans",custom:"gymapp_custom_exercises",library:"gymapp_exercise_library",history:"gymapp_workout_history",active:"gymapp_active_workout",measurements:"gymapp_measurements",nutrition:"gymapp_nutrition",profile:"gymapp_profile"};
@@ -522,7 +892,8 @@ const read=(k,f)=>{try{const x=localStorage.getItem(k);return x?JSON.parse(x):f}
 let plans=[],customExercises=[],history=[],measurements=[],nutrition={},profile={},activeWorkout=null,weekPlan=[null,null,null,null,null,null,null];
 let currentTab="training",tabScroll={exercises:0,plans:0,training:0,week:0,profile:0},pageStack=[],currentExercise=null,currentPlan=null,pendingStartPlan=null,restTimer=null,restEnd=0,clockTimer=null,timeSetTimers=new Map(),audioCtx=null;
 let sheetStack=[],exerciseDetailReturn=null,ratingTarget=null;
-let weekOffset=0,editorDirty=false,editorOriginalSnapshot="",livePlanEdited=false;
+const WEEK_VIEW_OFFSET_KEY="rethink_week_view_offset",PROFILE_DAY_OFFSET_KEY="rethink_profile_day_offset";
+let weekOffset=Math.max(-2,Math.min(2,Number(localStorage.getItem(WEEK_VIEW_OFFSET_KEY)||0))),editorDirty=false,editorOriginalSnapshot="",livePlanEdited=false;
 
 function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1500)}
 function ensureAudio(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}catch{return null}}
@@ -535,7 +906,7 @@ function mondayOf(date=new Date()){const d=new Date(date);const day=(d.getDay()+
 function weekKeyForOffset(offset=weekOffset){const d=mondayOf();d.setDate(d.getDate()+offset*7);return d.toISOString().slice(0,10)}
 function loadDatedWeeks(){return read(WEEK_DATED_KEY,{})||{}}
 function saveCurrentWeekRefs(){const all=loadDatedWeeks();all[weekKeyForOffset()]=weekPlan;write(WEEK_DATED_KEY,all)}
-function loadWeekOffset(offset){weekOffset=Math.max(-2,Math.min(2,offset));const all=loadDatedWeeks();weekPlan=all[weekKeyForOffset()]||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]));renderWeek()}
+function loadWeekOffset(offset){weekOffset=Math.max(-2,Math.min(2,offset));localStorage.setItem(WEEK_VIEW_OFFSET_KEY,String(weekOffset));const all=loadDatedWeeks();weekPlan=all[weekKeyForOffset()]||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]));renderWeek()}
 function weekDateAt(day,offset=weekOffset){const d=mondayOf();d.setDate(d.getDate()+offset*7+day);return d}
 function fmtShortDate(d){return d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}
 function markEditorDirty(){editorDirty=true;persistUI()}
@@ -668,12 +1039,12 @@ function restoreUI(){
  else if(s.page==="exerciseDetailPage"&&s.currentExerciseName){const found=allExercises().find(x=>x.name===s.currentExerciseName);if(found){openExerciseDetail(found.name);requestAnimationFrame(()=>{$("exerciseDetailPage").scrollTop=s.pageScroll||0})}}
  else if(s.page==="preStartPage"&&s.pendingStartPlanId){const p=plans.find(x=>String(x.id)===String(s.pendingStartPlanId));if(p){openPreStart(p.id);requestAnimationFrame(()=>{$("preStartPage").scrollTop=s.pageScroll||0})}}
 }
-let profileDayOffset=0;
+let profileDayOffset=Number(localStorage.getItem(PROFILE_DAY_OFFSET_KEY)||0);
 function profileDate(offset=profileDayOffset){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d}
 function profileDateKey(offset=profileDayOffset){const d=profileDate(offset);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
 function profileDayLabel(){if(profileDayOffset===0)return"Heute";if(profileDayOffset===-1)return"Gestern";if(profileDayOffset===1)return"Morgen";return profileDate().toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})}
 function profileDayBounds(){const d=profileDate();d.setHours(0,0,0,0);return{start:d.getTime(),end:d.getTime()+86400000}}
-function changeProfileDay(delta){profileDayOffset+=delta;renderProfile();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"auto"}))}
+function changeProfileDay(delta){profileDayOffset+=delta;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,String(profileDayOffset));renderProfile();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"auto"}))}
 function dailyReset(){
  const today=new Date().toISOString().slice(0,10),d=read(DAY_KEY,{date:today});
  if(d.date!==today){nutrition.hydration=0;nutrition.consumedCalories=0;nutrition.consumedProtein=0;d.date=today;write(DAY_KEY,d);saveAll()}
@@ -684,7 +1055,7 @@ function hydrateGoal(){
  if(!w)return 0;
  return 0
 }
-const FOOD_DB=[{"name":"Apfel","category":"Obst","kcal":52,"protein":0.3,"water":85.6},{"name":"Banane","category":"Obst","kcal":89,"protein":1.1,"water":74.9},{"name":"Orange","category":"Obst","kcal":47,"protein":0.9,"water":86.8},{"name":"Mandarine","category":"Obst","kcal":53,"protein":0.8,"water":86},{"name":"Clementine","category":"Obst","kcal":47,"protein":0.9,"water":86},{"name":"Birne","category":"Obst","kcal":57,"protein":0.4,"water":86},{"name":"Pfirsich","category":"Obst","kcal":39,"protein":0.9,"water":86},{"name":"Nektarine","category":"Obst","kcal":44,"protein":1.1,"water":86},{"name":"Aprikose","category":"Obst","kcal":48,"protein":1.4,"water":86},{"name":"Pflaume","category":"Obst","kcal":46,"protein":0.7,"water":86},{"name":"Kirschen","category":"Obst","kcal":63,"protein":1.1,"water":86},{"name":"Erdbeeren","category":"Obst","kcal":32,"protein":0.7,"water":91},{"name":"Himbeeren","category":"Obst","kcal":52,"protein":1.2,"water":86},{"name":"Blaubeeren","category":"Obst","kcal":57,"protein":0.7,"water":86},{"name":"Brombeeren","category":"Obst","kcal":43,"protein":1.4,"water":86},{"name":"Weintrauben","category":"Obst","kcal":69,"protein":0.7,"water":86},{"name":"Wassermelone","category":"Obst","kcal":30,"protein":0.6,"water":91.5},{"name":"Honigmelone","category":"Obst","kcal":36,"protein":0.5,"water":90.2},{"name":"Ananas","category":"Obst","kcal":50,"protein":0.5,"water":86},{"name":"Mango","category":"Obst","kcal":60,"protein":0.8,"water":86},{"name":"Papaya","category":"Obst","kcal":43,"protein":0.5,"water":86},{"name":"Kiwi","category":"Obst","kcal":61,"protein":1.1,"water":86},{"name":"Grapefruit","category":"Obst","kcal":42,"protein":0.8,"water":86},{"name":"Granatapfel","category":"Obst","kcal":83,"protein":1.7,"water":86},{"name":"Feige frisch","category":"Obst","kcal":74,"protein":0.8,"water":86},{"name":"Datteln","category":"Obst","kcal":282,"protein":2.5,"water":20},{"name":"Rosinen","category":"Obst","kcal":299,"protein":3.1,"water":20},{"name":"Cranberries getrocknet","category":"Obst","kcal":325,"protein":0.1,"water":20},{"name":"Kokosnuss frisch","category":"Obst","kcal":354,"protein":3.3,"water":47},{"name":"Avocado","category":"Obst","kcal":160,"protein":2.0,"water":73.2},{"name":"Maracuja","category":"Obst","kcal":97,"protein":2.2,"water":86},{"name":"Guave","category":"Obst","kcal":68,"protein":2.6,"water":86},{"name":"Litschi","category":"Obst","kcal":66,"protein":0.8,"water":86},{"name":"Kaki","category":"Obst","kcal":70,"protein":0.6,"water":86},{"name":"Johannisbeeren rot","category":"Obst","kcal":56,"protein":1.4,"water":86},{"name":"Johannisbeeren schwarz","category":"Obst","kcal":63,"protein":1.4,"water":86},{"name":"Stachelbeeren","category":"Obst","kcal":44,"protein":0.9,"water":86},{"name":"Rhabarber","category":"Obst","kcal":21,"protein":0.9,"water":86},{"name":"Zitrone","category":"Obst","kcal":29,"protein":1.1,"water":86},{"name":"Limette","category":"Obst","kcal":30,"protein":0.7,"water":86},{"name":"Brokkoli roh","category":"Gemüse","kcal":34,"protein":2.8,"water":91},{"name":"Brokkoli gekocht","category":"Gemüse","kcal":35,"protein":2.4,"water":91},{"name":"Blumenkohl roh","category":"Gemüse","kcal":25,"protein":1.9,"water":91},{"name":"Blumenkohl gekocht","category":"Gemüse","kcal":23,"protein":1.8,"water":91},{"name":"Karotte roh","category":"Gemüse","kcal":41,"protein":0.9,"water":91},{"name":"Karotte gekocht","category":"Gemüse","kcal":35,"protein":0.8,"water":91},{"name":"Paprika rot","category":"Gemüse","kcal":31,"protein":1.0,"water":91},{"name":"Paprika gelb","category":"Gemüse","kcal":27,"protein":1.0,"water":91},{"name":"Paprika grün","category":"Gemüse","kcal":20,"protein":0.9,"water":91},{"name":"Tomate","category":"Gemüse","kcal":18,"protein":0.9,"water":94.5},{"name":"Cherrytomaten","category":"Gemüse","kcal":18,"protein":0.9,"water":91},{"name":"Gurke","category":"Gemüse","kcal":15,"protein":0.7,"water":95.2},{"name":"Zucchini","category":"Gemüse","kcal":17,"protein":1.2,"water":94.8},{"name":"Aubergine","category":"Gemüse","kcal":25,"protein":1.0,"water":91},{"name":"Spinat roh","category":"Gemüse","kcal":23,"protein":2.9,"water":91},{"name":"Spinat gekocht","category":"Gemüse","kcal":23,"protein":3.0,"water":91},{"name":"Grünkohl","category":"Gemüse","kcal":49,"protein":4.3,"water":91},{"name":"Mangold","category":"Gemüse","kcal":19,"protein":1.8,"water":91},{"name":"Feldsalat","category":"Gemüse","kcal":21,"protein":2.0,"water":91},{"name":"Kopfsalat","category":"Gemüse","kcal":15,"protein":1.4,"water":95.6},{"name":"Rucola","category":"Gemüse","kcal":25,"protein":2.6,"water":91},{"name":"Eisbergsalat","category":"Gemüse","kcal":14,"protein":0.9,"water":95.6},{"name":"Weißkohl","category":"Gemüse","kcal":25,"protein":1.3,"water":91},{"name":"Rotkohl","category":"Gemüse","kcal":31,"protein":1.4,"water":91},{"name":"Wirsing","category":"Gemüse","kcal":27,"protein":2.0,"water":91},{"name":"Rosenkohl","category":"Gemüse","kcal":43,"protein":3.4,"water":91},{"name":"Sauerkraut","category":"Gemüse","kcal":19,"protein":0.9,"water":91},{"name":"Fenchel","category":"Gemüse","kcal":31,"protein":1.2,"water":91},{"name":"Sellerie Stange","category":"Gemüse","kcal":14,"protein":0.7,"water":95.4},{"name":"Knollensellerie","category":"Gemüse","kcal":42,"protein":1.5,"water":91},{"name":"Lauch","category":"Gemüse","kcal":61,"protein":1.5,"water":91},{"name":"Frühlingszwiebel","category":"Gemüse","kcal":32,"protein":1.8,"water":91},{"name":"Zwiebel","category":"Gemüse","kcal":40,"protein":1.1,"water":91},{"name":"Rote Zwiebel","category":"Gemüse","kcal":42,"protein":1.0,"water":91},{"name":"Knoblauch","category":"Gemüse","kcal":149,"protein":6.4,"water":59},{"name":"Champignons","category":"Gemüse","kcal":22,"protein":3.1,"water":91},{"name":"Austernpilze","category":"Gemüse","kcal":33,"protein":3.3,"water":91},{"name":"Steinpilze","category":"Gemüse","kcal":34,"protein":3.7,"water":91},{"name":"Spargel grün","category":"Gemüse","kcal":20,"protein":2.2,"water":91},{"name":"Spargel weiß","category":"Gemüse","kcal":20,"protein":2.2,"water":91},{"name":"Grüne Bohnen","category":"Gemüse","kcal":31,"protein":1.8,"water":91},{"name":"Erbsen grün","category":"Gemüse","kcal":81,"protein":5.4,"water":91},{"name":"Mais gekocht","category":"Gemüse","kcal":96,"protein":3.4,"water":91},{"name":"Rote Bete","category":"Gemüse","kcal":43,"protein":1.6,"water":91},{"name":"Radieschen","category":"Gemüse","kcal":16,"protein":0.7,"water":91},{"name":"Kürbis Hokkaido","category":"Gemüse","kcal":63,"protein":1.7,"water":91},{"name":"Butternut Kürbis","category":"Gemüse","kcal":45,"protein":1.0,"water":91},{"name":"Süßkartoffel","category":"Gemüse","kcal":86,"protein":1.6,"water":91},{"name":"Pastinake","category":"Gemüse","kcal":75,"protein":1.2,"water":91},{"name":"Artischocke","category":"Gemüse","kcal":47,"protein":3.3,"water":91},{"name":"Kartoffeln gekocht","category":"Getreide & Beilagen","kcal":87,"protein":1.9,"water":77},{"name":"Kartoffeln Ofen","category":"Getreide & Beilagen","kcal":93,"protein":2.5,"water":68},{"name":"Kartoffelpüree","category":"Getreide & Beilagen","kcal":88,"protein":1.7,"water":68},{"name":"Pommes frites","category":"Getreide & Beilagen","kcal":312,"protein":3.4,"water":68},{"name":"Reis weiß gekocht","category":"Getreide & Beilagen","kcal":130,"protein":2.7,"water":68.4},{"name":"Reis braun gekocht","category":"Getreide & Beilagen","kcal":123,"protein":2.7,"water":68},{"name":"Basmatireis gekocht","category":"Getreide & Beilagen","kcal":121,"protein":3.5,"water":68},{"name":"Jasminreis gekocht","category":"Getreide & Beilagen","kcal":129,"protein":2.7,"water":68},{"name":"Wildreis gekocht","category":"Getreide & Beilagen","kcal":101,"protein":4.0,"water":68},{"name":"Quinoa gekocht","category":"Getreide & Beilagen","kcal":120,"protein":4.4,"water":68},{"name":"Couscous gekocht","category":"Getreide & Beilagen","kcal":112,"protein":3.8,"water":68},{"name":"Bulgur gekocht","category":"Getreide & Beilagen","kcal":83,"protein":3.1,"water":68},{"name":"Hirse gekocht","category":"Getreide & Beilagen","kcal":119,"protein":3.5,"water":68},{"name":"Buchweizen gekocht","category":"Getreide & Beilagen","kcal":92,"protein":3.4,"water":68},{"name":"Polenta gekocht","category":"Getreide & Beilagen","kcal":70,"protein":1.5,"water":68},{"name":"Haferflocken","category":"Getreide & Beilagen","kcal":379,"protein":13.2,"water":10},{"name":"Haferkleie","category":"Getreide & Beilagen","kcal":246,"protein":17.3,"water":10},{"name":"Müsli ungesüßt","category":"Getreide & Beilagen","kcal":360,"protein":10.0,"water":10},{"name":"Cornflakes","category":"Getreide & Beilagen","kcal":357,"protein":7.5,"water":10},{"name":"Weizenmehl Type 405","category":"Getreide & Beilagen","kcal":364,"protein":10.0,"water":10},{"name":"Dinkelmehl","category":"Getreide & Beilagen","kcal":338,"protein":13.0,"water":10},{"name":"Vollkornmehl","category":"Getreide & Beilagen","kcal":340,"protein":13.2,"water":10},{"name":"Weißbrot","category":"Getreide & Beilagen","kcal":266,"protein":8.9,"water":10},{"name":"Vollkornbrot","category":"Getreide & Beilagen","kcal":247,"protein":12.5,"water":10},{"name":"Roggenbrot","category":"Getreide & Beilagen","kcal":259,"protein":8.5,"water":10},{"name":"Dinkelbrot","category":"Getreide & Beilagen","kcal":250,"protein":10.0,"water":10},{"name":"Toastbrot","category":"Getreide & Beilagen","kcal":265,"protein":9.0,"water":10},{"name":"Knäckebrot","category":"Getreide & Beilagen","kcal":350,"protein":10.0,"water":10},{"name":"Baguette","category":"Getreide & Beilagen","kcal":274,"protein":8.8,"water":10},{"name":"Ciabatta","category":"Getreide & Beilagen","kcal":271,"protein":8.8,"water":10},{"name":"Brezel","category":"Getreide & Beilagen","kcal":338,"protein":9.0,"water":10},{"name":"Wrap Weizen","category":"Getreide & Beilagen","kcal":312,"protein":8.3,"water":10},{"name":"Pita Brot","category":"Getreide & Beilagen","kcal":275,"protein":9.1,"water":10},{"name":"Nudeln gekocht","category":"Getreide & Beilagen","kcal":158,"protein":5.8,"water":62.1},{"name":"Vollkornnudeln gekocht","category":"Getreide & Beilagen","kcal":149,"protein":5.5,"water":68},{"name":"Spaghetti gekocht","category":"Getreide & Beilagen","kcal":158,"protein":5.8,"water":68},{"name":"Gnocchi","category":"Getreide & Beilagen","kcal":150,"protein":4.0,"water":68},{"name":"Spätzle gekocht","category":"Getreide & Beilagen","kcal":157,"protein":5.7,"water":68},{"name":"Lasagneblätter gekocht","category":"Getreide & Beilagen","kcal":131,"protein":4.8,"water":68},{"name":"Reiswaffeln","category":"Getreide & Beilagen","kcal":387,"protein":8.0,"water":10},{"name":"Maiswaffeln","category":"Getreide & Beilagen","kcal":381,"protein":8.1,"water":10},{"name":"Semmelknödel","category":"Getreide & Beilagen","kcal":168,"protein":5.3,"water":68},{"name":"Kartoffelknödel","category":"Getreide & Beilagen","kcal":130,"protein":2.5,"water":68},{"name":"Schupfnudeln","category":"Getreide & Beilagen","kcal":170,"protein":4.0,"water":68},{"name":"Haferbrei mit Wasser","category":"Getreide & Beilagen","kcal":71,"protein":2.5,"water":68},{"name":"Grießbrei","category":"Getreide & Beilagen","kcal":101,"protein":3.2,"water":68},{"name":"Couscous trocken","category":"Getreide & Beilagen","kcal":376,"protein":12.8,"water":10},{"name":"Quinoa trocken","category":"Getreide & Beilagen","kcal":368,"protein":14.1,"water":10},{"name":"Reis weiß trocken","category":"Getreide & Beilagen","kcal":365,"protein":7.1,"water":10},{"name":"Nudeln trocken","category":"Getreide & Beilagen","kcal":371,"protein":13.0,"water":10},{"name":"Vollmilch 3,5%","category":"Milchprodukte & Eier","kcal":61,"protein":3.2,"water":88},{"name":"Milch 1,5%","category":"Milchprodukte & Eier","kcal":46,"protein":3.4,"water":82},{"name":"Magermilch","category":"Milchprodukte & Eier","kcal":34,"protein":3.4,"water":82},{"name":"Joghurt natur 3,5%","category":"Milchprodukte & Eier","kcal":61,"protein":3.5,"water":82},{"name":"Joghurt natur 1,5%","category":"Milchprodukte & Eier","kcal":47,"protein":4.3,"water":82},{"name":"Griechischer Joghurt 10%","category":"Milchprodukte & Eier","kcal":133,"protein":6.0,"water":82},{"name":"Skyr natur","category":"Milchprodukte & Eier","kcal":63,"protein":11.0,"water":85},{"name":"Magerquark","category":"Milchprodukte & Eier","kcal":67,"protein":12.0,"water":82.5},{"name":"Speisequark 20%","category":"Milchprodukte & Eier","kcal":109,"protein":12.0,"water":82},{"name":"Hüttenkäse","category":"Milchprodukte & Eier","kcal":98,"protein":11.1,"water":82},{"name":"Frischkäse Doppelrahm","category":"Milchprodukte & Eier","kcal":342,"protein":6.2,"water":82},{"name":"Mozzarella","category":"Milchprodukte & Eier","kcal":280,"protein":28.0,"water":82},{"name":"Feta","category":"Milchprodukte & Eier","kcal":264,"protein":14.2,"water":82},{"name":"Gouda","category":"Milchprodukte & Eier","kcal":356,"protein":24.9,"water":40},{"name":"Emmentaler","category":"Milchprodukte & Eier","kcal":380,"protein":28.4,"water":40},{"name":"Cheddar","category":"Milchprodukte & Eier","kcal":403,"protein":24.9,"water":40},{"name":"Parmesan","category":"Milchprodukte & Eier","kcal":431,"protein":38.0,"water":40},{"name":"Camembert","category":"Milchprodukte & Eier","kcal":300,"protein":19.8,"water":82},{"name":"Brie","category":"Milchprodukte & Eier","kcal":334,"protein":20.8,"water":82},{"name":"Ricotta","category":"Milchprodukte & Eier","kcal":174,"protein":11.3,"water":82},{"name":"Ei ganz","category":"Milchprodukte & Eier","kcal":143,"protein":12.6,"water":76.2},{"name":"Eiklar","category":"Milchprodukte & Eier","kcal":52,"protein":10.9,"water":82},{"name":"Eigelb","category":"Milchprodukte & Eier","kcal":322,"protein":15.9,"water":82},{"name":"Kefir","category":"Milchprodukte & Eier","kcal":64,"protein":3.5,"water":82},{"name":"Buttermilch","category":"Milchprodukte & Eier","kcal":40,"protein":3.3,"water":82},{"name":"Hähnchenbrust roh","category":"Fleisch, Fisch & Protein","kcal":120,"protein":22.5,"water":67},{"name":"Hähnchenbrust gegart","category":"Fleisch, Fisch & Protein","kcal":165,"protein":31.0,"water":65.3},{"name":"Hähnchenschenkel gegart","category":"Fleisch, Fisch & Protein","kcal":209,"protein":26.0,"water":67},{"name":"Putenbrust roh","category":"Fleisch, Fisch & Protein","kcal":114,"protein":24.0,"water":67},{"name":"Putenbrust gegart","category":"Fleisch, Fisch & Protein","kcal":135,"protein":29.0,"water":67},{"name":"Rinderhack 5% Fett","category":"Fleisch, Fisch & Protein","kcal":137,"protein":21.4,"water":67},{"name":"Rinderhack 10% Fett","category":"Fleisch, Fisch & Protein","kcal":176,"protein":20.0,"water":67},{"name":"Rinderhack 20% Fett","category":"Fleisch, Fisch & Protein","kcal":254,"protein":17.2,"water":67},{"name":"Rinderfilet","category":"Fleisch, Fisch & Protein","kcal":180,"protein":26.0,"water":67},{"name":"Rumpsteak","category":"Fleisch, Fisch & Protein","kcal":200,"protein":27.0,"water":67},{"name":"Roastbeef","category":"Fleisch, Fisch & Protein","kcal":170,"protein":27.0,"water":67},{"name":"Rindergulasch","category":"Fleisch, Fisch & Protein","kcal":165,"protein":21.0,"water":67},{"name":"Schweinefilet","category":"Fleisch, Fisch & Protein","kcal":143,"protein":26.0,"water":67},{"name":"Schweinekotelett","category":"Fleisch, Fisch & Protein","kcal":231,"protein":25.0,"water":67},{"name":"Schweinehack","category":"Fleisch, Fisch & Protein","kcal":263,"protein":17.0,"water":67},{"name":"Kasseler","category":"Fleisch, Fisch & Protein","kcal":150,"protein":22.0,"water":67},{"name":"Lammfilet","category":"Fleisch, Fisch & Protein","kcal":190,"protein":28.0,"water":67},{"name":"Lammhack","category":"Fleisch, Fisch & Protein","kcal":282,"protein":17.0,"water":67},{"name":"Kalbfleisch","category":"Fleisch, Fisch & Protein","kcal":172,"protein":24.0,"water":67},{"name":"Wildschwein","category":"Fleisch, Fisch & Protein","kcal":160,"protein":28.0,"water":67},{"name":"Rehfleisch","category":"Fleisch, Fisch & Protein","kcal":158,"protein":30.0,"water":67},{"name":"Ente Brust","category":"Fleisch, Fisch & Protein","kcal":201,"protein":23.5,"water":67},{"name":"Gans","category":"Fleisch, Fisch & Protein","kcal":305,"protein":25.0,"water":67},{"name":"Kochschinken","category":"Fleisch, Fisch & Protein","kcal":116,"protein":20.0,"water":67},{"name":"Serrano Schinken","category":"Fleisch, Fisch & Protein","kcal":241,"protein":31.0,"water":67},{"name":"Salami","category":"Fleisch, Fisch & Protein","kcal":407,"protein":22.0,"water":67},{"name":"Putenaufschnitt","category":"Fleisch, Fisch & Protein","kcal":105,"protein":20.0,"water":67},{"name":"Hähnchenaufschnitt","category":"Fleisch, Fisch & Protein","kcal":110,"protein":20.0,"water":67},{"name":"Thunfisch in Wasser abgetropft","category":"Fleisch, Fisch & Protein","kcal":116,"protein":26.0,"water":67},{"name":"Thunfisch in Öl abgetropft","category":"Fleisch, Fisch & Protein","kcal":198,"protein":29.0,"water":67},{"name":"Lachs roh","category":"Fleisch, Fisch & Protein","kcal":208,"protein":20.4,"water":67},{"name":"Lachs gegart","category":"Fleisch, Fisch & Protein","kcal":206,"protein":22.0,"water":64.8},{"name":"Räucherlachs","category":"Fleisch, Fisch & Protein","kcal":117,"protein":18.3,"water":67},{"name":"Kabeljau","category":"Fleisch, Fisch & Protein","kcal":82,"protein":18.0,"water":67},{"name":"Seelachs","category":"Fleisch, Fisch & Protein","kcal":92,"protein":19.4,"water":67},{"name":"Forelle","category":"Fleisch, Fisch & Protein","kcal":148,"protein":20.5,"water":67},{"name":"Dorade","category":"Fleisch, Fisch & Protein","kcal":96,"protein":19.7,"water":67},{"name":"Wolfsbarsch","category":"Fleisch, Fisch & Protein","kcal":97,"protein":18.4,"water":67},{"name":"Heilbutt","category":"Fleisch, Fisch & Protein","kcal":111,"protein":23.0,"water":67},{"name":"Makrele","category":"Fleisch, Fisch & Protein","kcal":205,"protein":18.6,"water":67},{"name":"Hering","category":"Fleisch, Fisch & Protein","kcal":158,"protein":18.0,"water":67},{"name":"Sardinen","category":"Fleisch, Fisch & Protein","kcal":208,"protein":24.6,"water":67},{"name":"Garnelen","category":"Fleisch, Fisch & Protein","kcal":99,"protein":24.0,"water":67},{"name":"Krabben","category":"Fleisch, Fisch & Protein","kcal":87,"protein":18.0,"water":67},{"name":"Muscheln","category":"Fleisch, Fisch & Protein","kcal":86,"protein":12.0,"water":67},{"name":"Jakobsmuscheln","category":"Fleisch, Fisch & Protein","kcal":111,"protein":20.5,"water":67},{"name":"Tintenfisch","category":"Fleisch, Fisch & Protein","kcal":92,"protein":15.6,"water":67},{"name":"Tofu natur","category":"Fleisch, Fisch & Protein","kcal":144,"protein":17.3,"water":69.8},{"name":"Tofu geräuchert","category":"Fleisch, Fisch & Protein","kcal":170,"protein":19.0,"water":67},{"name":"Tempeh","category":"Fleisch, Fisch & Protein","kcal":193,"protein":20.3,"water":67},{"name":"Seitan","category":"Fleisch, Fisch & Protein","kcal":141,"protein":24.7,"water":67},{"name":"Veganes Hack","category":"Fleisch, Fisch & Protein","kcal":180,"protein":20.0,"water":67},{"name":"Falafel","category":"Fleisch, Fisch & Protein","kcal":333,"protein":13.3,"water":67},{"name":"Hähnchen Nuggets","category":"Fleisch, Fisch & Protein","kcal":296,"protein":15.0,"water":67},{"name":"Fischstäbchen","category":"Fleisch, Fisch & Protein","kcal":232,"protein":12.0,"water":67},{"name":"Bratwurst","category":"Fleisch, Fisch & Protein","kcal":297,"protein":12.0,"water":67},{"name":"Wiener Würstchen","category":"Fleisch, Fisch & Protein","kcal":301,"protein":12.0,"water":67},{"name":"Leberkäse","category":"Fleisch, Fisch & Protein","kcal":300,"protein":12.0,"water":67},{"name":"Rinderleber","category":"Fleisch, Fisch & Protein","kcal":135,"protein":20.4,"water":67},{"name":"Hähnchenleber","category":"Fleisch, Fisch & Protein","kcal":119,"protein":16.9,"water":67},{"name":"Linsen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":116,"protein":9.0,"water":69.6},{"name":"Rote Linsen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":116,"protein":9.0,"water":65},{"name":"Kichererbsen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":164,"protein":8.9,"water":65},{"name":"Kidneybohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":127,"protein":8.7,"water":65},{"name":"Weiße Bohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":139,"protein":9.7,"water":65},{"name":"Schwarze Bohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":132,"protein":8.9,"water":65},{"name":"Edamame gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":121,"protein":11.9,"water":65},{"name":"Sojabohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":173,"protein":16.6,"water":65},{"name":"Grüne Erbsen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":84,"protein":5.4,"water":65},{"name":"Hummus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":166,"protein":7.9,"water":65},{"name":"Erdnüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":567,"protein":25.8,"water":6},{"name":"Mandeln","category":"Hülsenfrüchte, Nüsse & Samen","kcal":579,"protein":21.2,"water":6},{"name":"Walnüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":654,"protein":15.2,"water":6},{"name":"Cashewkerne","category":"Hülsenfrüchte, Nüsse & Samen","kcal":553,"protein":18.2,"water":6},{"name":"Haselnüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":628,"protein":15.0,"water":6},{"name":"Pistazien","category":"Hülsenfrüchte, Nüsse & Samen","kcal":562,"protein":20.2,"water":6},{"name":"Pekannüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":691,"protein":9.2,"water":6},{"name":"Macadamia","category":"Hülsenfrüchte, Nüsse & Samen","kcal":718,"protein":7.9,"water":6},{"name":"Paranüsse","category":"Hülsenfrüchte, Nüsse & Samen","kcal":659,"protein":14.3,"water":6},{"name":"Pinienkerne","category":"Hülsenfrüchte, Nüsse & Samen","kcal":673,"protein":13.7,"water":6},{"name":"Erdnussmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":588,"protein":25.0,"water":6},{"name":"Mandelmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":614,"protein":21.0,"water":6},{"name":"Tahini","category":"Hülsenfrüchte, Nüsse & Samen","kcal":595,"protein":17.0,"water":6},{"name":"Chiasamen","category":"Hülsenfrüchte, Nüsse & Samen","kcal":486,"protein":16.5,"water":6},{"name":"Leinsamen","category":"Hülsenfrüchte, Nüsse & Samen","kcal":534,"protein":18.3,"water":6},{"name":"Sonnenblumenkerne","category":"Hülsenfrüchte, Nüsse & Samen","kcal":584,"protein":20.8,"water":6},{"name":"Kürbiskerne","category":"Hülsenfrüchte, Nüsse & Samen","kcal":559,"protein":30.2,"water":6},{"name":"Sesam","category":"Hülsenfrüchte, Nüsse & Samen","kcal":573,"protein":17.7,"water":6},{"name":"Hanfsamen","category":"Hülsenfrüchte, Nüsse & Samen","kcal":553,"protein":31.6,"water":6},{"name":"Mohn","category":"Hülsenfrüchte, Nüsse & Samen","kcal":525,"protein":18.0,"water":6},{"name":"Kokosraspeln","category":"Hülsenfrüchte, Nüsse & Samen","kcal":660,"protein":6.9,"water":6},{"name":"Maronen gegart","category":"Hülsenfrüchte, Nüsse & Samen","kcal":245,"protein":3.2,"water":6},{"name":"Lupinen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":119,"protein":15.6,"water":65},{"name":"Linsenpasta trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":350,"protein":25.0,"water":6},{"name":"Kichererbsenpasta trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":360,"protein":22.0,"water":6},{"name":"Olivenöl","category":"Fette, Aufstriche & Sonstiges","kcal":884,"protein":0,"water":1},{"name":"Rapsöl","category":"Fette, Aufstriche & Sonstiges","kcal":884,"protein":0,"water":1},{"name":"Sonnenblumenöl","category":"Fette, Aufstriche & Sonstiges","kcal":884,"protein":0,"water":1},{"name":"Butter","category":"Fette, Aufstriche & Sonstiges","kcal":717,"protein":0.9,"water":1},{"name":"Margarine","category":"Fette, Aufstriche & Sonstiges","kcal":717,"protein":0.2,"water":1},{"name":"Mayonnaise","category":"Fette, Aufstriche & Sonstiges","kcal":680,"protein":1.0,"water":25},{"name":"Pesto grün","category":"Fette, Aufstriche & Sonstiges","kcal":460,"protein":4.5,"water":25},{"name":"Guacamole","category":"Fette, Aufstriche & Sonstiges","kcal":150,"protein":2.0,"water":25},{"name":"Tomatenmark","category":"Fette, Aufstriche & Sonstiges","kcal":82,"protein":4.3,"water":25},{"name":"Ketchup","category":"Fette, Aufstriche & Sonstiges","kcal":112,"protein":1.3,"water":25},{"name":"Senf","category":"Fette, Aufstriche & Sonstiges","kcal":66,"protein":4.4,"water":25},{"name":"Honig","category":"Fette, Aufstriche & Sonstiges","kcal":304,"protein":0.3,"water":25},{"name":"Ahornsirup","category":"Fette, Aufstriche & Sonstiges","kcal":260,"protein":0,"water":25},{"name":"Marmelade","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":0.5,"water":25},{"name":"Nuss-Nougat-Creme","category":"Fette, Aufstriche & Sonstiges","kcal":539,"protein":6.3,"water":25},{"name":"Zartbitterschokolade 70%","category":"Fette, Aufstriche & Sonstiges","kcal":598,"protein":7.8,"water":25},{"name":"Vollmilchschokolade","category":"Fette, Aufstriche & Sonstiges","kcal":535,"protein":7.7,"water":25},{"name":"Weiße Schokolade","category":"Fette, Aufstriche & Sonstiges","kcal":539,"protein":5.9,"water":25},{"name":"Gummibärchen","category":"Fette, Aufstriche & Sonstiges","kcal":343,"protein":6.9,"water":25},{"name":"Vanilleeis","category":"Fette, Aufstriche & Sonstiges","kcal":207,"protein":3.5,"water":25},{"name":"Schokoladeneis","category":"Fette, Aufstriche & Sonstiges","kcal":216,"protein":3.8,"water":25},{"name":"Fruchteis","category":"Fette, Aufstriche & Sonstiges","kcal":130,"protein":0.5,"water":25},{"name":"Cheesecake","category":"Fette, Aufstriche & Sonstiges","kcal":321,"protein":5.5,"water":25},{"name":"Apfelkuchen","category":"Fette, Aufstriche & Sonstiges","kcal":237,"protein":2.4,"water":25},{"name":"Marmorkuchen","category":"Fette, Aufstriche & Sonstiges","kcal":389,"protein":5.5,"water":25},{"name":"Croissant","category":"Fette, Aufstriche & Sonstiges","kcal":406,"protein":8.2,"water":25},{"name":"Butterkeks","category":"Fette, Aufstriche & Sonstiges","kcal":480,"protein":6.5,"water":1},{"name":"Haferkeks","category":"Fette, Aufstriche & Sonstiges","kcal":450,"protein":7.0,"water":25},{"name":"Kartoffelchips","category":"Fette, Aufstriche & Sonstiges","kcal":536,"protein":7.0,"water":25},{"name":"Tortilla Chips","category":"Fette, Aufstriche & Sonstiges","kcal":500,"protein":7.0,"water":25},{"name":"Popcorn luftgepoppt","category":"Fette, Aufstriche & Sonstiges","kcal":387,"protein":12.9,"water":25},{"name":"Salzstangen","category":"Fette, Aufstriche & Sonstiges","kcal":380,"protein":10.0,"water":25},{"name":"Pizza Margherita","category":"Fette, Aufstriche & Sonstiges","kcal":266,"protein":11.0,"water":25},{"name":"Pizza Salami","category":"Fette, Aufstriche & Sonstiges","kcal":280,"protein":12.0,"water":25},{"name":"Flammkuchen","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":8.0,"water":25},{"name":"Döner Kebab","category":"Fette, Aufstriche & Sonstiges","kcal":215,"protein":12.0,"water":25},{"name":"Hamburger","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":13.0,"water":25},{"name":"Cheeseburger","category":"Fette, Aufstriche & Sonstiges","kcal":286,"protein":15.0,"water":25},{"name":"Chicken Burger","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":14.0,"water":25},{"name":"Sushi Lachs Maki","category":"Fette, Aufstriche & Sonstiges","kcal":150,"protein":6.0,"water":25},{"name":"Apfelmus ungesüßt","category":"Obst","kcal":42,"protein":0.2,"water":88},{"name":"Apfelmus gezuckert","category":"Obst","kcal":76,"protein":0.2,"water":79},{"name":"Birnenkompott","category":"Obst","kcal":74,"protein":0.3,"water":80},{"name":"Pfirsich Konserve","category":"Obst","kcal":54,"protein":0.5,"water":84},{"name":"Ananas Konserve","category":"Obst","kcal":60,"protein":0.4,"water":83},{"name":"Mandarinen Konserve","category":"Obst","kcal":61,"protein":0.6,"water":82},{"name":"Obstsalat","category":"Obst","kcal":50,"protein":0.6,"water":87},{"name":"Bananenchips","category":"Obst","kcal":519,"protein":2.3,"water":3},{"name":"Mango getrocknet","category":"Obst","kcal":319,"protein":2.5,"water":16},{"name":"Aprikosen getrocknet","category":"Obst","kcal":241,"protein":3.4,"water":30},{"name":"Pflaumen getrocknet","category":"Obst","kcal":240,"protein":2.2,"water":31},{"name":"Feigen getrocknet","category":"Obst","kcal":249,"protein":3.3,"water":30},{"name":"Dattel Medjool","category":"Obst","kcal":277,"protein":1.8,"water":22},{"name":"Dattel Deglet Nour","category":"Obst","kcal":282,"protein":2.5,"water":20},{"name":"Beerenmix TK","category":"Obst","kcal":45,"protein":1.0,"water":88},{"name":"Erdbeeren TK","category":"Obst","kcal":35,"protein":0.7,"water":90},{"name":"Himbeeren TK","category":"Obst","kcal":48,"protein":1.2,"water":86},{"name":"Heidelbeeren TK","category":"Obst","kcal":51,"protein":0.7,"water":86},{"name":"Mango TK","category":"Obst","kcal":60,"protein":0.8,"water":84},{"name":"Ananas TK","category":"Obst","kcal":50,"protein":0.5,"water":86},{"name":"Brokkoli TK","category":"Gemüse","kcal":34,"protein":2.8,"water":89},{"name":"Blumenkohl TK","category":"Gemüse","kcal":25,"protein":1.9,"water":91},{"name":"Spinat TK","category":"Gemüse","kcal":23,"protein":2.9,"water":91},{"name":"Erbsen TK","category":"Gemüse","kcal":81,"protein":5.4,"water":79},{"name":"Gemüsemix TK","category":"Gemüse","kcal":50,"protein":2.5,"water":84},{"name":"Kaisergemüse TK","category":"Gemüse","kcal":44,"protein":2.4,"water":86},{"name":"Karotten TK","category":"Gemüse","kcal":36,"protein":0.8,"water":90},{"name":"Grüne Bohnen TK","category":"Gemüse","kcal":31,"protein":1.8,"water":90},{"name":"Mais Dose abgetropft","category":"Gemüse","kcal":86,"protein":3.0,"water":76},{"name":"Kidneybohnen Dose abgetropft","category":"Hülsenfrüchte, Nüsse & Samen","kcal":104,"protein":7.0,"water":70},{"name":"Kichererbsen Dose abgetropft","category":"Hülsenfrüchte, Nüsse & Samen","kcal":120,"protein":6.5,"water":68},{"name":"Weiße Bohnen Dose","category":"Hülsenfrüchte, Nüsse & Samen","kcal":110,"protein":7.0,"water":69},{"name":"Linsen Dose","category":"Hülsenfrüchte, Nüsse & Samen","kcal":90,"protein":6.5,"water":73},{"name":"Tomaten passiert","category":"Gemüse","kcal":29,"protein":1.4,"water":92},{"name":"Tomaten gehackt Dose","category":"Gemüse","kcal":24,"protein":1.2,"water":93},{"name":"Tomatensauce","category":"Gemüse","kcal":42,"protein":1.5,"water":88},{"name":"Ajvar","category":"Gemüse","kcal":80,"protein":1.5,"water":75},{"name":"Kimchi","category":"Gemüse","kcal":15,"protein":1.1,"water":94},{"name":"Essiggurke","category":"Gemüse","kcal":12,"protein":0.5,"water":95},{"name":"Oliven grün","category":"Gemüse","kcal":145,"protein":1.0,"water":75},{"name":"Oliven schwarz","category":"Gemüse","kcal":116,"protein":0.8,"water":80},{"name":"Artischockenherzen","category":"Gemüse","kcal":47,"protein":3.3,"water":84},{"name":"Haferflocken zart","category":"Getreide & Beilagen","kcal":379,"protein":13.2,"water":8},{"name":"Haferflocken kernig","category":"Getreide & Beilagen","kcal":379,"protein":13.2,"water":8},{"name":"Instant Oats","category":"Getreide & Beilagen","kcal":375,"protein":13,"water":8},{"name":"Dinkelflocken","category":"Getreide & Beilagen","kcal":350,"protein":13,"water":9},{"name":"Reisflocken","category":"Getreide & Beilagen","kcal":360,"protein":7,"water":9},{"name":"Hirseflocken","category":"Getreide & Beilagen","kcal":360,"protein":11,"water":9},{"name":"Granola","category":"Getreide & Beilagen","kcal":471,"protein":10,"water":4},{"name":"Crunchy Müsli","category":"Getreide & Beilagen","kcal":450,"protein":9,"water":4},{"name":"Bircher Müsli","category":"Getreide & Beilagen","kcal":350,"protein":10,"water":10},{"name":"Porridge mit Milch","category":"Getreide & Beilagen","kcal":105,"protein":4,"water":77},{"name":"Porridge mit Haferdrink","category":"Getreide & Beilagen","kcal":92,"protein":3,"water":79},{"name":"Milchreis gekocht","category":"Getreide & Beilagen","kcal":111,"protein":3.2,"water":74},{"name":"Risotto gekocht","category":"Getreide & Beilagen","kcal":150,"protein":3.5,"water":65},{"name":"Paella","category":"Getreide & Beilagen","kcal":158,"protein":6,"water":66},{"name":"Fried Rice","category":"Getreide & Beilagen","kcal":174,"protein":5,"water":61},{"name":"Sushi Reis gekocht","category":"Getreide & Beilagen","kcal":140,"protein":2.5,"water":64},{"name":"Glasnudeln gekocht","category":"Getreide & Beilagen","kcal":109,"protein":0.2,"water":73},{"name":"Reisnudeln gekocht","category":"Getreide & Beilagen","kcal":109,"protein":1.8,"water":73},{"name":"Udon gekocht","category":"Getreide & Beilagen","kcal":127,"protein":3.5,"water":69},{"name":"Soba gekocht","category":"Getreide & Beilagen","kcal":99,"protein":5.1,"water":72},{"name":"Ramen Nudeln gekocht","category":"Getreide & Beilagen","kcal":138,"protein":4.5,"water":68},{"name":"Tortellini Käse gekocht","category":"Getreide & Beilagen","kcal":190,"protein":8,"water":58},{"name":"Ravioli gekocht","category":"Getreide & Beilagen","kcal":175,"protein":7,"water":60},{"name":"Maultaschen","category":"Getreide & Beilagen","kcal":205,"protein":10,"water":55},{"name":"Schwarzbrot","category":"Getreide & Beilagen","kcal":210,"protein":7,"water":40},{"name":"Pumpernickel","category":"Getreide & Beilagen","kcal":250,"protein":8.5,"water":37},{"name":"Mehrkornbrot","category":"Getreide & Beilagen","kcal":260,"protein":10,"water":36},{"name":"Eiweißbrot","category":"Getreide & Beilagen","kcal":260,"protein":20,"water":38},{"name":"Proteinbrot","category":"Getreide & Beilagen","kcal":250,"protein":22,"water":39},{"name":"Laugenbrötchen","category":"Getreide & Beilagen","kcal":290,"protein":9,"water":32},{"name":"Brötchen Weizen","category":"Getreide & Beilagen","kcal":275,"protein":9,"water":34},{"name":"Vollkornbrötchen","category":"Getreide & Beilagen","kcal":245,"protein":10,"water":38},{"name":"Croissant Schokolade","category":"Fette, Aufstriche & Sonstiges","kcal":430,"protein":7,"water":20},{"name":"Bagel","category":"Getreide & Beilagen","kcal":257,"protein":10,"water":36},{"name":"English Muffin","category":"Getreide & Beilagen","kcal":235,"protein":8,"water":43},{"name":"Naan","category":"Getreide & Beilagen","kcal":290,"protein":9,"water":34},{"name":"Fladenbrot","category":"Getreide & Beilagen","kcal":270,"protein":9,"water":36},{"name":"Taco Shell","category":"Getreide & Beilagen","kcal":480,"protein":7,"water":5},{"name":"Tortilla Mais","category":"Getreide & Beilagen","kcal":218,"protein":5.7,"water":46},{"name":"Milch laktosefrei 1,5%","category":"Milchprodukte & Eier","kcal":46,"protein":3.4,"water":90},{"name":"Milch laktosefrei 3,5%","category":"Milchprodukte & Eier","kcal":61,"protein":3.2,"water":88},{"name":"Ziegenmilch","category":"Milchprodukte & Eier","kcal":69,"protein":3.6,"water":87},{"name":"Joghurt griechisch 0%","category":"Milchprodukte & Eier","kcal":59,"protein":10.3,"water":85},{"name":"Joghurt griechisch 2%","category":"Milchprodukte & Eier","kcal":73,"protein":9.9,"water":83},{"name":"Joghurt Vanille","category":"Milchprodukte & Eier","kcal":100,"protein":4,"water":78},{"name":"Fruchtjoghurt Erdbeere","category":"Milchprodukte & Eier","kcal":95,"protein":4,"water":80},{"name":"Protein Joghurt","category":"Milchprodukte & Eier","kcal":70,"protein":10,"water":82},{"name":"Skyr Vanille","category":"Milchprodukte & Eier","kcal":73,"protein":9.5,"water":82},{"name":"Skyr Beere","category":"Milchprodukte & Eier","kcal":75,"protein":9,"water":81},{"name":"Quarkcreme","category":"Milchprodukte & Eier","kcal":130,"protein":8,"water":75},{"name":"Mascarpone","category":"Milchprodukte & Eier","kcal":429,"protein":4.8,"water":47},{"name":"Schmand","category":"Milchprodukte & Eier","kcal":240,"protein":2.5,"water":65},{"name":"Saure Sahne 10%","category":"Milchprodukte & Eier","kcal":119,"protein":3.0,"water":80},{"name":"Crème fraîche","category":"Milchprodukte & Eier","kcal":292,"protein":2.4,"water":63},{"name":"Körniger Frischkäse light","category":"Milchprodukte & Eier","kcal":72,"protein":12,"water":84},{"name":"Frischkäse light","category":"Milchprodukte & Eier","kcal":160,"protein":8,"water":70},{"name":"Gouda light","category":"Milchprodukte & Eier","kcal":270,"protein":30,"water":47},{"name":"Mozzarella light","category":"Milchprodukte & Eier","kcal":170,"protein":25,"water":62},{"name":"Harzer Käse","category":"Milchprodukte & Eier","kcal":126,"protein":30,"water":60},{"name":"Ziegenkäse","category":"Milchprodukte & Eier","kcal":364,"protein":22,"water":45},{"name":"Halloumi","category":"Milchprodukte & Eier","kcal":321,"protein":22,"water":46},{"name":"Burrata","category":"Milchprodukte & Eier","kcal":250,"protein":12,"water":60},{"name":"Milchreis Dessert","category":"Milchprodukte & Eier","kcal":125,"protein":3.3,"water":72},{"name":"Rührei","category":"Milchprodukte & Eier","kcal":149,"protein":10,"water":75},{"name":"Spiegelei","category":"Milchprodukte & Eier","kcal":196,"protein":13.6,"water":70},{"name":"Omelett natur","category":"Milchprodukte & Eier","kcal":154,"protein":11,"water":74},{"name":"Hähnchenhack","category":"Fleisch, Fisch & Protein","kcal":143,"protein":20,"water":69},{"name":"Putenhack","category":"Fleisch, Fisch & Protein","kcal":170,"protein":20,"water":66},{"name":"Hähnchenflügel gegart","category":"Fleisch, Fisch & Protein","kcal":203,"protein":30,"water":62},{"name":"Hähnchenkeule gegart","category":"Fleisch, Fisch & Protein","kcal":215,"protein":27,"water":61},{"name":"Pulled Chicken","category":"Fleisch, Fisch & Protein","kcal":165,"protein":28,"water":62},{"name":"Pulled Pork","category":"Fleisch, Fisch & Protein","kcal":242,"protein":25,"water":55},{"name":"Rinderhüfte","category":"Fleisch, Fisch & Protein","kcal":170,"protein":28,"water":66},{"name":"Tafelspitz","category":"Fleisch, Fisch & Protein","kcal":180,"protein":27,"water":65},{"name":"Ribeye Steak","category":"Fleisch, Fisch & Protein","kcal":291,"protein":24,"water":55},{"name":"Entrecôte","category":"Fleisch, Fisch & Protein","kcal":250,"protein":25,"water":58},{"name":"Rinderbraten","category":"Fleisch, Fisch & Protein","kcal":190,"protein":28,"water":63},{"name":"Corned Beef","category":"Fleisch, Fisch & Protein","kcal":251,"protein":18,"water":55},{"name":"Schweinerücken","category":"Fleisch, Fisch & Protein","kcal":180,"protein":27,"water":64},{"name":"Schweinebauch","category":"Fleisch, Fisch & Protein","kcal":518,"protein":9,"water":37},{"name":"Schnitzel paniert","category":"Fleisch, Fisch & Protein","kcal":297,"protein":20,"water":48},{"name":"Hähnchenschnitzel paniert","category":"Fleisch, Fisch & Protein","kcal":250,"protein":22,"water":52},{"name":"Puten-Schnitzel","category":"Fleisch, Fisch & Protein","kcal":135,"protein":29,"water":68},{"name":"Frikadelle","category":"Fleisch, Fisch & Protein","kcal":250,"protein":16,"water":58},{"name":"Hackbraten","category":"Fleisch, Fisch & Protein","kcal":220,"protein":18,"water":60},{"name":"Cevapcici","category":"Fleisch, Fisch & Protein","kcal":250,"protein":18,"water":55},{"name":"Sucuk","category":"Fleisch, Fisch & Protein","kcal":450,"protein":20,"water":35},{"name":"Chorizo","category":"Fleisch, Fisch & Protein","kcal":455,"protein":24,"water":32},{"name":"Mortadella","category":"Fleisch, Fisch & Protein","kcal":311,"protein":16,"water":54},{"name":"Bresaola","category":"Fleisch, Fisch & Protein","kcal":151,"protein":32,"water":59},{"name":"Lachsforelle","category":"Fleisch, Fisch & Protein","kcal":190,"protein":21,"water":66},{"name":"Zander","category":"Fleisch, Fisch & Protein","kcal":84,"protein":19,"water":79},{"name":"Rotbarsch","category":"Fleisch, Fisch & Protein","kcal":94,"protein":19,"water":78},{"name":"Scholle","category":"Fleisch, Fisch & Protein","kcal":86,"protein":18,"water":79},{"name":"Seehecht","category":"Fleisch, Fisch & Protein","kcal":90,"protein":19,"water":78},{"name":"Karpfen","category":"Fleisch, Fisch & Protein","kcal":127,"protein":18,"water":72},{"name":"Aal","category":"Fleisch, Fisch & Protein","kcal":184,"protein":18,"water":68},{"name":"Anchovis","category":"Fleisch, Fisch & Protein","kcal":210,"protein":29,"water":50},{"name":"Thunfischsteak","category":"Fleisch, Fisch & Protein","kcal":132,"protein":28,"water":70},{"name":"Surimi","category":"Fleisch, Fisch & Protein","kcal":99,"protein":15,"water":76},{"name":"Hummer","category":"Fleisch, Fisch & Protein","kcal":89,"protein":19,"water":77},{"name":"Austern","category":"Fleisch, Fisch & Protein","kcal":68,"protein":7,"water":86},{"name":"Tofu Seide","category":"Fleisch, Fisch & Protein","kcal":55,"protein":5,"water":87},{"name":"Tofu mariniert","category":"Fleisch, Fisch & Protein","kcal":160,"protein":16,"water":70},{"name":"Tempeh mariniert","category":"Fleisch, Fisch & Protein","kcal":210,"protein":19,"water":55},{"name":"Sojagranulat trocken","category":"Fleisch, Fisch & Protein","kcal":340,"protein":50,"water":7},{"name":"Veganes Schnitzel","category":"Fleisch, Fisch & Protein","kcal":210,"protein":17,"water":58},{"name":"Vegane Nuggets","category":"Fleisch, Fisch & Protein","kcal":220,"protein":16,"water":55},{"name":"Vegane Bratwurst","category":"Fleisch, Fisch & Protein","kcal":230,"protein":18,"water":52},{"name":"Veganes Hähnchen","category":"Fleisch, Fisch & Protein","kcal":160,"protein":23,"water":63},{"name":"Protein Pudding","category":"Milchprodukte & Eier","kcal":75,"protein":10,"water":82},{"name":"Rote Linsen trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":352,"protein":25,"water":8},{"name":"Braune Linsen trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":353,"protein":25,"water":8},{"name":"Belugalinsen trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":350,"protein":24,"water":8},{"name":"Kichererbsen trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":364,"protein":19,"water":11},{"name":"Kidneybohnen trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":333,"protein":24,"water":11},{"name":"Weiße Bohnen trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":333,"protein":23,"water":11},{"name":"Schwarze Bohnen trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":341,"protein":22,"water":11},{"name":"Mungbohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":105,"protein":7,"water":72},{"name":"Mungbohnen trocken","category":"Hülsenfrüchte, Nüsse & Samen","kcal":347,"protein":24,"water":9},{"name":"Adzukibohnen gekocht","category":"Hülsenfrüchte, Nüsse & Samen","kcal":128,"protein":7.5,"water":66},{"name":"Erbsenprotein Pulver","category":"Hülsenfrüchte, Nüsse & Samen","kcal":370,"protein":80,"water":6},{"name":"Sojaprotein Pulver","category":"Hülsenfrüchte, Nüsse & Samen","kcal":360,"protein":85,"water":6},{"name":"Whey Protein Pulver","category":"Milchprodukte & Eier","kcal":390,"protein":78,"water":5},{"name":"Casein Protein Pulver","category":"Milchprodukte & Eier","kcal":370,"protein":80,"water":5},{"name":"Walnussmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":650,"protein":15,"water":3},{"name":"Cashewmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":590,"protein":18,"water":3},{"name":"Pistazienmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":610,"protein":20,"water":3},{"name":"Haselnussmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":650,"protein":15,"water":3},{"name":"Erdnussbutter crunchy","category":"Hülsenfrüchte, Nüsse & Samen","kcal":590,"protein":25,"water":2},{"name":"Erdnussbutter smooth","category":"Hülsenfrüchte, Nüsse & Samen","kcal":588,"protein":25,"water":2},{"name":"Chia Pudding","category":"Hülsenfrüchte, Nüsse & Samen","kcal":120,"protein":4,"water":74},{"name":"Leinsamen geschrotet","category":"Hülsenfrüchte, Nüsse & Samen","kcal":534,"protein":18.3,"water":7},{"name":"Kürbiskernmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":610,"protein":28,"water":3},{"name":"Sonnenblumenkernmus","category":"Hülsenfrüchte, Nüsse & Samen","kcal":600,"protein":20,"water":3},{"name":"Miso Paste","category":"Fette, Aufstriche & Sonstiges","kcal":199,"protein":12,"water":44},{"name":"Sojasauce","category":"Fette, Aufstriche & Sonstiges","kcal":53,"protein":8,"water":71},{"name":"Teriyaki Sauce","category":"Fette, Aufstriche & Sonstiges","kcal":89,"protein":5,"water":67},{"name":"Sweet Chili Sauce","category":"Fette, Aufstriche & Sonstiges","kcal":220,"protein":1,"water":45},{"name":"BBQ Sauce","category":"Fette, Aufstriche & Sonstiges","kcal":172,"protein":1,"water":55},{"name":"Sriracha","category":"Fette, Aufstriche & Sonstiges","kcal":93,"protein":2,"water":70},{"name":"Tzatziki","category":"Fette, Aufstriche & Sonstiges","kcal":110,"protein":4,"water":75},{"name":"Kräuterquark","category":"Milchprodukte & Eier","kcal":100,"protein":9,"water":77},{"name":"Salsa","category":"Fette, Aufstriche & Sonstiges","kcal":36,"protein":1.5,"water":90},{"name":"Currypaste rot","category":"Fette, Aufstriche & Sonstiges","kcal":120,"protein":3,"water":55},{"name":"Kokosmilch","category":"Fette, Aufstriche & Sonstiges","kcal":230,"protein":2.3,"water":67},{"name":"Kokosmilch light","category":"Fette, Aufstriche & Sonstiges","kcal":90,"protein":1,"water":82},{"name":"Erdnusssoße","category":"Fette, Aufstriche & Sonstiges","kcal":320,"protein":10,"water":43},{"name":"Balsamico","category":"Fette, Aufstriche & Sonstiges","kcal":88,"protein":0.5,"water":78},{"name":"Salatdressing Joghurt","category":"Fette, Aufstriche & Sonstiges","kcal":120,"protein":2,"water":70},{"name":"Salatdressing French","category":"Fette, Aufstriche & Sonstiges","kcal":300,"protein":1,"water":45},{"name":"Caesar Dressing","category":"Fette, Aufstriche & Sonstiges","kcal":430,"protein":3,"water":30},{"name":"Remoulade","category":"Fette, Aufstriche & Sonstiges","kcal":540,"protein":1,"water":25},{"name":"Nutella","category":"Fette, Aufstriche & Sonstiges","kcal":539,"protein":6.3,"water":2},{"name":"Erdbeermarmelade","category":"Fette, Aufstriche & Sonstiges","kcal":250,"protein":0.4,"water":34},{"name":"Aprikosenmarmelade","category":"Fette, Aufstriche & Sonstiges","kcal":245,"protein":0.5,"water":35},{"name":"Pflaumenmus","category":"Fette, Aufstriche & Sonstiges","kcal":220,"protein":0.7,"water":40},{"name":"Agavendicksaft","category":"Fette, Aufstriche & Sonstiges","kcal":310,"protein":0,"water":22}];
+
 function foodTone(cat){
  const m={"Obst":"food-fruit","Gemüse":"food-veg","Getreide & Beilagen":"food-carb","Milchprodukte & Eier":"food-dairy","Fleisch, Fisch & Protein":"food-protein","Hülsenfrüchte, Nüsse & Samen":"food-legume","Fette, Aufstriche & Sonstiges":"food-other"};
  return m[cat]||"food-other"
@@ -735,8 +1106,8 @@ const BUILTIN_DRINKS=[
 {id:"cappuccino",name:"Cappuccino",icon:"☕",kind:"coffee",size:200,hydration:97,calories:80,caffeine:60},
 {id:"oat-cappuccino",name:"Hafer Cappuccino",icon:"☕",kind:"coffee",size:200,hydration:96,calories:90,caffeine:60},
 {id:"espresso",name:"Espresso",icon:"☕",kind:"coffee",size:30,hydration:87,calories:0,caffeine:8},
-{id:"protein-shake",name:"Protein-Shake",icon:"🥛",kind:"protein",size:500,hydration:110,calories:57,caffeine:0,protein:20},
-{id:"protein-caffeine",name:"Protein-Koffein",icon:"🥛",kind:"protein",size:500,hydration:110,calories:57,caffeine:80,protein:20},
+{id:"protein-shake",name:"Protein-Shake",icon:"💪",kind:"protein",size:500,hydration:110,calories:57,caffeine:0,protein:20},
+{id:"protein-caffeine",name:"Protein-Koffein",icon:"⚡",kind:"protein",size:500,hydration:110,calories:57,caffeine:80,protein:20},
 {id:"herbal-tea",name:"Kräuter Tee",icon:"🍵",kind:"tea",size:250,hydration:100,calories:0,caffeine:0},
 {id:"green-tea",name:"Grüner Tee",icon:"🍵",kind:"tea",size:250,hydration:99,calories:0,caffeine:25},
 {id:"black-tea",name:"Schwarzer Tee",icon:"🍵",kind:"tea",size:250,hydration:99,calories:0,caffeine:45},
@@ -774,7 +1145,7 @@ function ensureDrinks(){
  existing.forEach(old=>{
   const base=builtinById.get(String(old.id))||builtinByName.get(String(old.name||"").toLowerCase());
   if(base&&deleted.has(String(base.id))&&String(base.id)!=="water")return;
-  const d=base?{...base,...old,id:old.id||base.id,icon:old.icon||base.icon,kind:old.kind||base.kind}:old;
+  const d=base?{...base,...old,id:old.id||base.id,icon:["protein-shake","protein-caffeine"].includes(String(base.id))?base.icon:(old.icon||base.icon),kind:["protein-shake","protein-caffeine"].includes(String(base.id))?"protein":(old.kind||base.kind)}:old;
   merged.push(d);seen.add(String(d.id||d.name))
  });
  // Append missing built-ins; Water is always restored and never deletable.
@@ -792,12 +1163,12 @@ function resetTabToStandard(name){
  document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];sheetStack=[];$("sheetWrap")?.classList.add("hidden");exerciseDetailReturn=null;$("bottomNav").classList.remove("hidden");
  const a=document.activeElement;if(a&&["INPUT","TEXTAREA","SELECT"].includes(a.tagName))a.blur();
  if(name==="exercises"){exType="Alle";exMuscles.clear();exercisePickerState={q:"",type:"Alle",muscles:[]};const s=$("exerciseSearch");if(s)s.value=""}
- if(name==="plans"){plansQuickEdit=false;document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))};if(name==="profile")profileDayOffset=0
+ if(name==="plans"){plansQuickEdit=false;document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
  if(name==="training"){document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
  if(name==="week"){document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
  tabScroll[name]=0
 }
-document.querySelectorAll("#bottomNav button").forEach(b=>b.onclick=()=>{resetTabToStandard(b.dataset.tab);showTab(b.dataset.tab,{reset:true})});
+document.querySelectorAll("#bottomNav button").forEach(b=>b.onclick=()=>{showTab(b.dataset.tab,{reset:false})});
 function openPage(id,render){$(id)?.classList.add("keyboard-safe");
  const visible=document.querySelector(".page:not(.hidden)");
  if(visible)pageStack.push({page:visible.id,scroll:visible.scrollTop||0});
@@ -1035,7 +1406,7 @@ function configureReplacementDraft(i,sourceIndexes,draft){
  const render=()=>{
   openSheet(draft.name+" konfigurieren",`<div class="method-tabs" id="repMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-rep-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(draft.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="repModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="repModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="repSets" class="field">${Array.from({length:10},(_,n)=>`<option ${Number(draft.sets)===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="repRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"rep"):methodRepConfigMarkup(draft,"rep")}</div>${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="repVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="repPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${existingEditMethodMarkup(draft,sourceIndexes.length)}<button id="repConfirm" class="primary" style="width:100%">Übernehmen</button>`,null,{replace:true});
   requestAnimationFrame(()=>{const t=$("repMethodTabs");if(t)t.scrollLeft=methodScroll});
-  $("repModeReps").onclick=()=>{draft.measureMode="reps";render()};
+  $("repRest").onchange=()=>{draft.rest=Number($("repRest").value)};$("repModeReps").onclick=()=>{draft.measureMode="reps";render()};
   $("repModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.min(180,Math.max(15,Number(draft.timeSeconds)||60));render()};
   document.querySelectorAll("[data-rep-method]").forEach(b=>b.onclick=()=>{methodScroll=$("repMethodTabs")?.scrollLeft||0;prepareDraftForTargetMethod(draft,b.dataset.repMethod,sourceIndexes.length);render()});
   document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});
@@ -1063,13 +1434,14 @@ function renderPlanAddPicker(){
  if(!planAddFlow)return;
  const f=planAddFlow,all=allExercises(),rows=planAddFiltered(),types=planAddTypes(all),ms=planAddMuscles(all);
  f.step="picker";
- renderSheetState({title:f.drafts.length?"Weitere Übung auswählen":"Übung hinzufügen",scroll:0,body:`<div class="search"><input id="planAddSearch" class="field" placeholder="Übung suchen" value="${esc(f.q)}"><button id="planAddClear">×</button></div><div class="chips">${types.map(x=>`<button class="chip ${f.type===x?"active":""}" data-pa-type="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="chips">${ms.map(x=>`<button class="chip ${(x==="Alle"&&!f.muscles.size)||f.muscles.has(x)?"active":""}" data-pa-muscle="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="small" id="planAddCount" style="margin:2px 0 8px">${rows.length} Übungen</div><div id="planAddRows">${planAddRowsMarkup(rows)}</div>`});
+ renderSheetState({title:f.drafts.length?"Weitere Übung auswählen":"Übung hinzufügen",scroll:Number(f.pickerScroll)||0,body:`<div class="search"><input id="planAddSearch" class="field" placeholder="Übung suchen" value="${esc(f.q)}"><button id="planAddClear">×</button></div><div class="chips" id="paTypeChips">${types.map(x=>`<button class="chip ${f.type===x?"active":""}" data-pa-type="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="chips" id="paMuscleChips">${ms.map(x=>`<button class="chip ${(x==="Alle"&&!f.muscles.size)||f.muscles.has(x)?"active":""}" data-pa-muscle="${esc(x)}">${esc(x)}</button>`).join("")}</div><div class="small" id="planAddCount" style="margin:2px 0 8px">${rows.length} Übungen</div><div id="planAddRows">${planAddRowsMarkup(rows)}</div>`});
  const search=$("planAddSearch");
  const refresh=()=>{const rows=planAddFiltered();$("planAddCount").textContent=`${rows.length} Übungen`;$("planAddRows").innerHTML=planAddRowsMarkup(rows);bindPlanAddRows()};
  search.oninput=()=>{f.q=search.value.toLowerCase();exercisePickerState.q=f.q;refresh()};
  $("planAddClear").onclick=()=>{f.q="";search.value="";exercisePickerState.q="";refresh();search.focus()};
- document.querySelectorAll("[data-pa-type]").forEach(b=>b.onclick=()=>{f.type=(f.type===b.dataset.paType&&f.type!=="Alle")?"Alle":b.dataset.paType;exercisePickerState.type=f.type;renderPlanAddPicker()});
- document.querySelectorAll("[data-pa-muscle]").forEach(b=>b.onclick=()=>{const m=b.dataset.paMuscle;if(m==="Alle")f.muscles.clear();else f.muscles.has(m)?f.muscles.delete(m):f.muscles.add(m);exercisePickerState.muscles=[...f.muscles];renderPlanAddPicker()});
+ requestAnimationFrame(()=>{if($("paTypeChips"))$("paTypeChips").scrollLeft=Number(f.typeScroll)||0;if($("paMuscleChips"))$("paMuscleChips").scrollLeft=Number(f.muscleScroll)||0;$("sheetBody").scrollTop=Number(f.pickerScroll)||0});
+ document.querySelectorAll("[data-pa-type]").forEach(b=>b.onclick=()=>{f.pickerScroll=$("sheetBody").scrollTop||0;f.typeScroll=$("paTypeChips")?.scrollLeft||0;f.muscleScroll=$("paMuscleChips")?.scrollLeft||0;f.type=(f.type===b.dataset.paType&&f.type!=="Alle")?"Alle":b.dataset.paType;exercisePickerState.type=f.type;renderPlanAddPicker()});
+ document.querySelectorAll("[data-pa-muscle]").forEach(b=>b.onclick=()=>{f.pickerScroll=$("sheetBody").scrollTop||0;f.typeScroll=$("paTypeChips")?.scrollLeft||0;f.muscleScroll=$("paMuscleChips")?.scrollLeft||0;const m=b.dataset.paMuscle;if(m==="Alle")f.muscles.clear();else f.muscles.has(m)?f.muscles.delete(m):f.muscles.add(m);exercisePickerState.muscles=[...f.muscles];renderPlanAddPicker()});
  bindPlanAddRows()
 }
 function planAddRowsMarkup(rows){
@@ -1340,7 +1712,7 @@ function configureExercise(i,flow=null){
  };
  const bind=()=>{
   requestAnimationFrame(()=>{const t=$("cfgMethodTabs");if(t)t.scrollLeft=methodScroll});
-  $("cfgModeReps").onclick=()=>{draft.measureMode="reps";render()};
+  $("cfgRest").onchange=()=>{draft.rest=Number($("cfgRest").value)};$("cfgModeReps").onclick=()=>{draft.measureMode="reps";render()};
   $("cfgModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.min(180,Math.max(15,Number(draft.timeSeconds)||60));render()};
   document.querySelectorAll("[data-method]").forEach(b=>b.onclick=()=>{
     methodScroll=$("cfgMethodTabs")?.scrollLeft||0;
@@ -1566,12 +1938,17 @@ function copySuggestion(target,prev){
  if(target.segments&&prev.segments){target.segments.forEach((g,i)=>{const pg=prev.segments?.[i];if(pg)g._suggested={weight:pg.weight||"",reps:pg.reps||""}});return}
  target._suggested={weight:prev.weight||"",reps:prev.reps||"",level:prev.level||"",time:prev.time||""}
 }
-function applyPreviousWorkoutSuggestions(p,workout){
- if(!workout)return;
- workout.exercises.forEach(e=>{
-  const prev=(p.exercises||[]).find(x=>x.name===e.name);if(!prev)return;
-  const completed=(prev.liveSets||[]).filter(s=>s.completed||s.segments?.some(g=>g.completed));
-  (e.liveSets||[]).forEach((s,i)=>copySuggestion(s,completed[i]))
+function applyPreviousWorkoutSuggestions(p){
+ if(!p)return;
+ (p.exercises||[]).forEach(e=>{
+  let prev=null;
+  for(let hi=history.length-1;hi>=0&&!prev;hi--){
+   const matches=(history[hi].exercises||[]).filter(x=>String(x.name||"")===String(e.name||"")&&String(x.setTechnique||"standard")===String(e.setTechnique||"standard")&&String(x.measureMode||"reps")===String(e.measureMode||"reps"));
+   for(let mi=matches.length-1;mi>=0;mi--){const done=(matches[mi].liveSets||[]).filter(s=>s.completed||s.segments?.some(g=>g.completed));if(done.length){prev={exercise:matches[mi],sets:done};break}}
+  }
+  if(!prev)return;
+  (e.liveSets||[]).forEach((s,i)=>{if(prev.sets[i])copySuggestion(s,prev.sets[i])});
+  e._lastRatings=prev.sets.map(s=>s.rating||s.segments?.find(g=>g.rating)?.rating||"")
  })
 }
 function effectiveValue(value,suggested){return String(value??"").trim()!==""?value:(suggested??"")}
@@ -1582,10 +1959,12 @@ function suggestedComplete(e,s){
  return effectiveValue(s.weight,s._suggested?.weight)!==""&&Number(effectiveValue(s.reps,s._suggested?.reps))>0
 }
 function promoteSuggested(e,s){
- if(s.group||s.segments){s.segments.forEach(g=>{if(String(g.weight??"").trim()===""&&g._suggested?.weight!=="")g.weight=g._suggested.weight;if(String(g.reps??"").trim()===""&&g._suggested?.reps!=="")g.reps=g._suggested.reps});return}
- if(String(s.weight??"").trim()===""&&s._suggested?.weight!=="")s.weight=s._suggested.weight;
- if(String(s.reps??"").trim()===""&&s._suggested?.reps!=="")s.reps=s._suggested.reps;
- if(String(s.level??"").trim()===""&&s._suggested?.level!=="")s.level=s._suggested.level
+ if(!s)return;
+ if(s.group||s.segments){(s.segments||[]).forEach(g=>{const sug=g?._suggested;if(!sug)return;if(String(g.weight??"").trim()===""&&String(sug.weight??"").trim()!=="")g.weight=sug.weight;if(String(g.reps??"").trim()===""&&String(sug.reps??"").trim()!=="")g.reps=sug.reps});return}
+ const sug=s._suggested;if(!sug)return;
+ if(String(s.weight??"").trim()===""&&String(sug.weight??"").trim()!=="")s.weight=sug.weight;
+ if(String(s.reps??"").trim()===""&&String(sug.reps??"").trim()!=="")s.reps=sug.reps;
+ if(String(s.level??"").trim()===""&&String(sug.level??"").trim()!=="")s.level=sug.level
 }
 function inputSuggestionAttr(v){return String(v??"").trim()!==""?` placeholder="${esc(v)}"`:""}
 function initSet(e,i){
@@ -1608,14 +1987,7 @@ $("workoutNoteBtn").onclick=()=>{if(!activeWorkout)return;const v=prompt("Traini
 function leaveLiveToTraining(){
  saveAll();persistUI();clearInterval(clockTimer);document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];$("bottomNav").classList.remove("hidden");showTab("training",{reset:false})
 }
-$("liveBackBtn").onclick=()=>{
- if(!activeWorkout)return leaveLiveToTraining();
- if(livePlanEdited){
-  openSheet("Änderungen am Training",`<p class="muted">Möchtest du die Änderungen am laufenden Training speichern oder verwerfen?</p><div class="grid2"><button id="discardLiveEdits" class="secondary danger">Verwerfen</button><button id="keepLiveEdits" class="primary">Speichern</button></div>`);
-  $("keepLiveEdits").onclick=()=>{activeWorkout.structureBaseline=clone(activeWorkout.exercises);saveAll();closeSheet({all:true});leaveLiveToTraining()};
-  $("discardLiveEdits").onclick=()=>{activeWorkout.exercises=clone(activeWorkout.structureBaseline||activeWorkout.exercises);livePlanEdited=false;saveAll();closeSheet({all:true});renderLive();leaveLiveToTraining()}
- }else leaveLiveToTraining()
-};
+$("liveBackBtn").onclick=()=>leaveLiveToTraining();
 function liveVisualGroups(exercises){
  const out=[],seen=new Set();
  (exercises||[]).forEach((e,i)=>{
@@ -1640,7 +2012,7 @@ function combinedMemberControls(x,si,gi){
   <span class="combined-index">${idx}</span>
   <button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(x.e.name)}</button>
   <input type="text" inputmode="decimal" autocomplete="off" data-input="${x.i}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight||"")}">
-  <input type="text" inputmode="numeric" autocomplete="off" data-input="${x.i}|${si}|reps" placeholder="${esc(s._suggested?.reps||x.e.reps||"WDH.")}" value="${esc(s.reps||"")}">
+  <input type="text" inputmode="numeric" autocomplete="off" data-input="${x.i}|${si}|reps" placeholder="${esc(s._suggested?.reps||"WDH.")}" value="${esc(s.reps||"")}">
   <button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button>
  </div>${ratingMarkup(x.i,si,s)}`
 }
@@ -1727,11 +2099,34 @@ const RATING_GUIDE={
  red:{label:"Zu schwer",hint:"Form zu früh verloren"},
  blue:{label:"Zu leicht",hint:"problemlos noch 3+ Wdh."}
 };
-function ratingChoiceMarkup(){return ["red","yellow","green","blue"].map(k=>`<button class="rating-choice ${k}" data-rating-choice="${k}"><strong>${RATING_GUIDE[k].label}</strong><small>${RATING_GUIDE[k].hint}</small></button>`).join("")}
+function ratingChoiceMarkup(){return ["green","yellow","red","blue"].map(k=>`<button class="rating-choice ${k}" data-rating-choice="${k}"><strong>${RATING_GUIDE[k].label}</strong><small>${RATING_GUIDE[k].hint}</small></button>`).join("")}
 function ratingLabel(r){return RATING_GUIDE[r]?.label?.toLowerCase()||""}
 function segmentHasValues(g){return validKg(g?.weight)&&validReps(g?.reps)}
 function openSegmentRating(ei,si,gi){const e=activeWorkout.exercises[ei],s=e.liveSets[si],g=s.segments[gi];if(!segmentHasValues(g)&&!(effectiveValue(g.weight,g._suggested?.weight)!==""&&Number(effectiveValue(g.reps,g._suggested?.reps))>0))return toast("Bitte zuerst KG und WDH. vollständig eintragen.");if(!segmentHasValues(g)){g.weight=g._suggested?.weight||"";g.reps=g._suggested?.reps||"";}ratingTarget={ei,si,gi,segment:true};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich ${esc(g.name)} angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird diese Übung der Runde abgeschlossen.</div><div class="rating-question-grid">${ratingChoiceMarkup()}</div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySegmentRating(b.dataset.ratingChoice)))}
-function applySegmentRating(r){if(!ratingTarget?.segment)return;const{ei,si,gi}=ratingTarget,e=activeWorkout.exercises[ei],s=e.liveSets[si],g=s.segments[gi];if(!segmentHasValues(g))return;g.completed=true;g.rating=r;s.completed=s.segments.every(x=>x.completed);s.rating=s.completed?"group":"";ratingTarget=null;saveAll();closeSheet({all:true});renderLive();if(s.completed){const pause=Number.isFinite(Number(e.rest))?Number(e.rest):90;if(pause>0)startRest(pause);if(e.liveSets.every(x=>x.completed))setTimeout(()=>focusLiveExercise(ei+1,"smooth"),200)}}
+function applySegmentRating(r){
+ if(!ratingTarget?.segment)return;
+ const{ei,si,gi}=ratingTarget,e=activeWorkout.exercises[ei],s=e.liveSets[si],g=s.segments[gi];
+ if(!segmentHasValues(g))return;
+ g.completed=true;g.rating=r;s.completed=s.segments.every(x=>x.completed);s.rating=s.completed?"group":"";
+ ratingTarget=null;saveAll();closeSheet({all:true});renderLive();
+ if(!s.completed)return;
+ const group=liveGroupContext(ei,si);
+ if(group){
+   if(group.roundDone){
+     const pause=Number.isFinite(Number(activeWorkout.exercises[group.first].rest))?Number(activeWorkout.exercises[group.first].rest):90;
+     if(pause>0)startRest(pause);
+     if(group.allDone)setTimeout(()=>focusLiveExercise(group.after,"smooth"),200);
+     else setActiveExercise(group.first,false)
+   }else{
+     const openMembers=group.members.filter(i=>activeWorkout.exercises[i].liveSets?.[si]&&!activeWorkout.exercises[i].liveSets[si].completed);
+     if(openMembers.length)setActiveExercise(openMembers.find(i=>i>ei)??openMembers[0],false)
+   }
+   return
+ }
+ const pause=Number.isFinite(Number(e.rest))?Number(e.rest):90;
+ if(pause>0)startRest(pause);
+ if(e.liveSets.every(x=>x.completed))setTimeout(()=>focusLiveExercise(ei+1,"smooth"),200)
+}
 function ratingClass(s){return s.rating?`rating-${s.rating}`:""}
 function canRateSet(e,s){
  if(strictSetValues(e,s)||suggestedComplete(e,s))return true;
@@ -1751,7 +2146,7 @@ function strictSetValues(e,s){
  if(s.segments)return s.segments.every(g=>validKg(g.weight)&&validReps(g.reps));
  return validKg(s.weight)&&validReps(s.reps)
 }
-function ratingMarkup(ei,si,s){const e=activeWorkout.exercises[ei],ready=canRateSet(e,s);return`<div class="rating-row"><span class="rating-label">BEW.</span><div class="small">${s.completed?`Bewertet: ${ratingLabel(s.rating)}`:ready?"Haken drücken und bewerten":e.measureMode==="time"?"Zeit einstellen oder Timer starten":"KG und WDH. eintragen"}</div></div>`}
+function ratingMarkup(){return""}
 function openSetRating(ei,si){const e=activeWorkout.exercises[ei],s=e.liveSets[si];if(!canRateSet(e,s))return toast(e.measureMode==="time"?"Bitte zuerst die Zeit eintragen.":"Bitte zuerst KG und WDH. vollständig eintragen.");promoteSuggested(e,s);saveAll();ratingTarget={ei,si};openSheet("Intensität bewerten",`<div class="rating-question">Wie intensiv hat sich der Satz angefühlt?</div><div class="rating-question-sub">Wähle eine Antwort. Erst danach wird der Satz abgeschlossen und der Haken entsprechend eingefärbt.</div><div class="rating-question-grid">${ratingChoiceMarkup()}</div>`,()=>document.querySelectorAll("[data-rating-choice]").forEach(b=>b.onclick=()=>applySetRating(b.dataset.ratingChoice)))}
 function liveGroupContext(ei,si){
  const e=activeWorkout.exercises[ei];
@@ -1774,16 +2169,18 @@ function syncGroupStructure(ei){
 
  const group=liveGroupContext(ei,si);
  if(group){
-   if(!group.last){
-     setActiveExercise(group.members[group.pos+1],false);
-     return
-   }
    if(group.roundDone){
      const pause=Number.isFinite(Number(activeWorkout.exercises[group.first].rest))?Number(activeWorkout.exercises[group.first].rest):90;
      if(pause>0)startRest(pause);
      if(group.allDone)setTimeout(()=>focusLiveExercise(group.after,"smooth"),200);
-     else setActiveExercise(group.first,false)
+     else setActiveExercise(group.first,false);
+     return
    }
+   const openMembers=group.members.filter(i=>{
+     const rs=activeWorkout.exercises[i].liveSets?.[si];
+     return rs&&!rs.completed
+   });
+   if(openMembers.length)setActiveExercise(openMembers.find(i=>i>ei)??openMembers[0],false);
    return
  }
  const pause=Number.isFinite(Number(e.rest))?Number(e.rest):90;if(pause>0)startRest(pause);
@@ -1905,7 +2302,7 @@ function configureLiveExercise(i){
  const render=()=>{
   $("sheetBody").innerHTML=`<div class="method-tabs" id="liveMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-live-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(draft.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="liveModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="liveModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="liveCfgSets" class="field">${Array.from({length:10},(_,n)=>`<option ${Number(draft.sets)===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="liveCfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"liveCfg"):methodRepConfigMarkup(draft,"liveCfg")}</div>${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="liveCfgVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="liveCfgPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${existingEditMethodMarkup(draft,originalGroup.length)}<button id="liveReplaceExercise" class="secondary" style="width:100%;margin-bottom:8px">⇄ Übung austauschen</button><button id="liveCfgSave" class="primary" style="width:100%">Übernehmen</button>`;
   requestAnimationFrame(()=>{const t=$("liveMethodTabs");if(t)t.scrollLeft=methodScroll});
-  $("liveModeReps").onclick=()=>{draft.measureMode="reps";render()};$("liveModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.min(180,Math.max(15,Number(draft.timeSeconds)||60));render()};
+  $("liveCfgRest").onchange=()=>{draft.rest=Number($("liveCfgRest").value)};$("liveModeReps").onclick=()=>{draft.measureMode="reps";render()};$("liveModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.min(180,Math.max(15,Number(draft.timeSeconds)||60));render()};
   document.querySelectorAll("[data-live-method]").forEach(b=>b.onclick=()=>{methodScroll=$("liveMethodTabs")?.scrollLeft||0;prepareDraftForTargetMethod(draft,b.dataset.liveMethod,originalGroup.length);render()});
   document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});document.querySelectorAll("[data-time-preset]").forEach(b=>b.onclick=()=>{draft.timeSeconds=Number(b.dataset.timePreset);render()});
   $("liveReplaceExercise").onclick=()=>openExercisePicker(name=>{const keep={sets:draft.sets||3,setTechnique:draft.setTechnique||"standard",measureMode:draft.measureMode,reps:draft.reps||defaultRepsForMethod(draft.setTechnique),timeSeconds:draft.timeSeconds,rest:draft.rest||90,methodData:clone(draft.methodData||{}),perSide:draft.perSide};const replacement=normPlanEx({...findExercise(name),...keep,variant:""});Object.assign(draft,replacement);render()},{exclude:new Set([draft.name]),title:"Übung austauschen",detailAdd:true,returnToSheet:true});
@@ -1918,7 +2315,7 @@ function addLiveExerciseAndConfigure(n){
  configureLiveDraft(draft)
 }
 function configureLiveDraft(draft){
- const render=()=>{openSheet(draft.name+" hinzufügen",`<div class="mode-switch"><button id="draftModeReps" class="chip ${draft.measureMode!=="time"?"active":""}">Wiederholungen</button><button id="draftModeTime" class="chip ${draft.measureMode==="time"?"active":""}">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="draftSets" class="field">${Array.from({length:10},(_,i)=>`<option ${draft.sets===i+1?"selected":""}>${i+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="draftRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${draft.rest===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"draft"):repPresetMarkup(draft)}</div><button id="confirmLiveDraft" class="primary" style="width:100%">Übung hinzufügen</button>`,()=>{$("draftModeReps").onclick=()=>{draft.measureMode="reps";render()};$("draftModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.min(180,Math.max(15,draft.timeSeconds||60));render()};document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});$("confirmLiveDraft").onclick=()=>{draft.sets=Number($("draftSets").value);draft.rest=Number($("draftRest").value);draft.liveSets=Array.from({length:draft.sets},(_,i)=>initSet(draft,i));activeWorkout.exercises.push(draft);activeWorkout.activeExerciseIndex=activeWorkout.exercises.length-1;livePlanEdited=true;saveAll();closeSheet({all:true});renderLive();focusLiveExercise(activeWorkout.activeExerciseIndex,"smooth")}})};render()
+ const render=()=>{openSheet(draft.name+" hinzufügen",`<div class="mode-switch"><button id="draftModeReps" class="chip ${draft.measureMode!=="time"?"active":""}">Wiederholungen</button><button id="draftModeTime" class="chip ${draft.measureMode==="time"?"active":""}">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="draftSets" class="field">${Array.from({length:10},(_,i)=>`<option ${draft.sets===i+1?"selected":""}>${i+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="draftRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${draft.rest===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"draft"):repPresetMarkup(draft)}</div><button id="confirmLiveDraft" class="primary" style="width:100%">Übung hinzufügen</button>`,()=>{$("draftRest").onchange=()=>{draft.rest=Number($("draftRest").value)};$("draftModeReps").onclick=()=>{draft.measureMode="reps";render()};$("draftModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.min(180,Math.max(15,draft.timeSeconds||60));render()};document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});$("confirmLiveDraft").onclick=()=>{draft.sets=Number($("draftSets").value);draft.rest=Number($("draftRest").value);draft.liveSets=Array.from({length:draft.sets},(_,i)=>initSet(draft,i));activeWorkout.exercises.push(draft);activeWorkout.activeExerciseIndex=activeWorkout.exercises.length-1;livePlanEdited=true;saveAll();closeSheet({all:true});renderLive();focusLiveExercise(activeWorkout.activeExerciseIndex,"smooth")}})};render()
 }
 
 $("liveAddExercise").onclick=()=>openExercisePicker(addLiveExerciseAndConfigure,{detailAdd:true});
@@ -2021,7 +2418,7 @@ function renderWeek(){
  document.querySelectorAll("[data-wm]").forEach(b=>b.onclick=e=>{e.stopPropagation();weekMenu(Number(b.dataset.wm))})
 }
 $("weekPrevBtn").onclick=()=>{saveCurrentWeekRefs();loadWeekOffset(weekOffset-1)};$("weekNextBtn").onclick=()=>{saveCurrentWeekRefs();loadWeekOffset(weekOffset+1)};
-function openWeekPicker(day){let selected=validWeekPlans(day).map(p=>p.id),q="";const render=()=>{const rows=sortedPlansForPicker(q);$("sheetBody").innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]].map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div>${rows.map(p=>`<button class="plan-card week-select-card ${selected.includes(p.id)?"selected":""}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${selected.includes(p.id)?"✓":"›"}</span></button>`).join("")}<div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`${selected.length} Pläne gewählt · ${weekDateAt(day).toLocaleDateString("de-DE")}`:"Kein Plan gewählt"}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;$("weekSearch").oninput=()=>{q=$("weekSearch").value;render()};$("weekSearchClear").onclick=()=>{q="";render()};document.querySelectorAll("[data-week-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}render()});document.querySelectorAll("[data-wpick]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick);selected.includes(id)?selected=selected.filter(x=>x!==id):selected.push(id);render()});$("weekApply").onclick=()=>{weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));saveAll();closeSheet({all:true});renderWeek()}};openSheet("Trainingsplan auswählen","");render()}
+function openWeekPicker(day){let selected=validWeekPlans(day).map(p=>p.id),q="";const render=()=>{const rows=sortedPlansForPicker(q);$("sheetBody").innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]].map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div>${rows.map(p=>`<button class="plan-card week-select-card ${selected.includes(p.id)?"selected":""}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${selected.includes(p.id)?"✓":"›"}</span></button>`).join("")}<div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`${selected.length} Pläne gewählt · ${weekDateAt(day).toLocaleDateString("de-DE")}`:"Kein Plan gewählt"}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;$("weekSearch").oninput=()=>{q=$("weekSearch").value;render()};$("weekSearchClear").onclick=()=>{q="";render()};document.querySelectorAll("[data-week-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}render()});document.querySelectorAll("[data-wpick]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick);selected.includes(id)?selected=selected.filter(x=>x!==id):selected.push(id);render()});$("weekApply").onclick=()=>{const hadPlans=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(hadPlans&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();if(typeof renderProfileProgress==="function")renderProfileProgress()}};openSheet("Trainingsplan auswählen","");render()}
 function startWeekDay(day){
  const fresh=combinedWeekPlan(day);if(!fresh||!(fresh.exercises||[]).length)return;
  pendingStartPlan=fresh;
@@ -2029,12 +2426,25 @@ function startWeekDay(day){
  $("preStartBody").innerHTML=`<div class="stat-grid"><div class="stat"><strong>${fresh.exercises.length}</strong><span>ÜBUNGEN</span></div><div class="stat"><strong>${countPlanSets(fresh)}</strong><span>SÄTZE</span></div><div class="stat"><strong>~${estimateMinutes(fresh)} Min.</strong><span>DAUER</span></div></div>${fresh.exercises.map((e,i)=>`<div class="exercise-card"><div><strong>${i+1}. ${esc(e.name)}</strong><small>${esc(METHOD_LABEL[e.setTechnique||"standard"])} · ${esc(planPrescription(e))}</small></div></div>`).join("")}`;
  openPage("preStartPage")
 }
+
+function clearWeekCompletionForDay(day){
+ const date=weekDateAt(day),key=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+ const before=history.length;
+ history=history.filter(w=>{
+   if(!w?.finishedAt)return true;
+   const weekly=!!w.isWeekCombined||!!w.weekDate||(Array.isArray(w.weekSourceIds)&&w.weekSourceIds.length>0);
+   if(!weekly)return true;
+   const wk=String(w.weekDate||dateKeyLocal(Number(w.finishedAt)));
+   return wk!==key
+ });
+ if(history.length!==before){saveAll();renderTrainingHome();if(typeof renderProfileProgress==="function")renderProfileProgress()}
+}
 function weekMenu(day){
  const ps=validWeekPlans(day);
  if(!ps.length)return;
  openSheet(ps.map(p=>p.name).join(" + "),`<button id="weekReplace" class="secondary" style="width:100%">⇄ Auswahl bearbeiten</button><button id="weekDelete" class="secondary danger" style="width:100%;margin-top:8px">× Auswahl löschen</button>`);
  $("weekReplace").onclick=()=>{closeSheet({all:true});openWeekPicker(day)};
- $("weekDelete").onclick=()=>{if(confirm("Auswahl für diesen Tag wirklich löschen?")){weekPlan[day]=[];saveAll();closeSheet({all:true});renderWeek()}}
+ $("weekDelete").onclick=()=>{if(confirm("Auswahl für diesen Tag wirklich löschen?")){clearWeekCompletionForDay(day);weekPlan[day]=[];saveAll();closeSheet({all:true});renderWeek();if(typeof renderProfileProgress==="function")renderProfileProgress()}}
 }
 const HYDRATION_LOG_KEY="rethink_hydration_log_v1";
 function hydrationLog(){return read(HYDRATION_LOG_KEY,[])||[]}function saveHydrationLog(x){write(HYDRATION_LOG_KEY,x)}
@@ -2101,19 +2511,19 @@ function renderProfileProgress(){
  const wt=weightTrend(),hyd=hydrationGoalDaysReached(),train=currentWeekTrainingDays();
  el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid"><div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${wt&&wt.hasTrend?(wt.delta>0?"+":"")+wt.delta+" kg":wt?wt.current+" kg":"–"}</strong><div class="goal-line">${wt?.target?`Wunschgewicht ${wt.target} kg · ${Math.abs(wt.distance)} kg ${wt.distance<0?"darüber":"bis Ziel"}`:wt&&wt.hasTrend?`${wt.from.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})} → ${wt.to.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}`:"Wunschgewicht im Profil eintragen"}</div></div><div class="card progress-stat"><div class="small">Hydrierungsziel erreicht</div><strong>${hyd}</strong><div class="goal-line">Tage insgesamt</div></div><div class="card progress-stat training-week-stat"><div class="small">Trainingstage Woche</div><div class="week-calendar-label">${selectedWeekInfo().label}</div><strong>${train} / 7</strong><div class="goal-line">Trainingstage</div></div></div>`
 }
-function renderProfile(){ dailyReset();ensureDrinks();recalcFoodTotals();$("profileDayLabel").textContent=profileDayLabel();$("profileDayDate").textContent=profileDate().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});$("profilePrevDay").onclick=()=>changeProfileDay(-1);$("profileNextDay").onclick=()=>changeProfileDay(1);const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),currentWeight=Number(latest?.weight||profile.weight||0),basis=hasGoalBasis();$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?profile.height+" cm":"",currentWeight?currentWeight+" kg":""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";$("profileGoalSummary").textContent=(profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele")+(profile.targetWeight?` · Wunschgewicht ${profile.targetWeight} kg`:"");$("nutritionCalTarget").textContent=basis&&nutrition.calories?nutrition.calories+" kcal":"–";$("nutritionHydrationTarget").textContent=basis&&nutrition.waterGoal?`${nutrition.waterGoal} ml`:"–";
+function renderProfile(){ dailyReset();ensureDrinks();recalcFoodTotals();$("profileDayLabel").textContent=profileDayLabel();$("profileDayDate").textContent=profileDate().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});$("profilePrevDay").onclick=()=>changeProfileDay(-1);$("profileNextDay").onclick=()=>changeProfileDay(1);const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),currentWeight=Number(latest?.weight||profile.weight||0),basis=hasGoalBasis();$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?profile.height+" cm":"",currentWeight?currentWeight+" kg":""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";$("profileGoalSummary").innerHTML=`<span>${profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele"}</span>${profile.targetWeight?`<span class="target-weight-line-profile">Wunschgewicht ${esc(profile.targetWeight)} kg</span>`:""}`;$("nutritionCalTarget").textContent=basis&&nutrition.calories?nutrition.calories+" kcal":"–";$("nutritionHydrationTarget").textContent=basis&&nutrition.waterGoal?`${nutrition.waterGoal} ml`:"–";
  const goal=basis?hydrateGoal():0,water=Number(nutrition.hydration)||0,cal=Number(nutrition.consumedCalories)||0,proteinToday=Number(nutrition.consumedProtein)||0;
  const calGoal=basis?Number(nutrition.calories)||0:0,proteinGoal=basis?Number(nutrition.protein)||0:0;
  $("foodCaloriesCounter").textContent=`${Math.round(cal)} / ${calGoal||"–"} kcal`;
  $("foodProteinCounter").textContent=`${Math.round(proteinToday*10)/10} / ${proteinGoal||"–"} g`;
  $("foodCaloriesProgress").style.width=calGoal?`${Math.min(100,cal/calGoal*100)}%`:"0%";
  $("foodProteinProgress").style.width=proteinGoal?`${Math.min(100,proteinToday/proteinGoal*100)}%`:"0%";
- const foodRows=todayFoodEntries().slice().reverse();$("todayFoodCount").textContent=foodRows.length;$("todayFoodList").innerHTML=foodRows.map(x=>`<div class="compact-log-row ${foodTone(x.category)}"><div class="compact-log-copy"><strong>${esc(x.name)}</strong><small>${x.grams} g · ${x.kcal} kcal · ${x.protein} g Protein · ${Math.round(Number(x.water)||0)} ml Wasser</small></div><button class="compact-delete" data-food-del="${x.id}">−</button></div>`).join("")||'<div class="small empty-food-note">Noch nichts eingetragen.</div>';
+ const foodRows=todayFoodEntries().slice().reverse();$("todayFoodCount").textContent=foodRows.length;$("todayFoodList").innerHTML=foodRows.map(x=>`<div class="compact-log-row ${foodTone(x.category)}" data-edit-food-entry="${x.id}"><div class="compact-log-copy"><strong>${esc(x.name)}</strong><small>${x.grams} g · ${x.kcal} kcal · ${x.protein} g Protein · ${Math.round(Number(x.water)||0)} ml Wasser</small></div><button class="compact-delete" data-food-del="${x.id}">−</button></div>`).join("")||'<div class="small empty-food-note">Noch nichts eingetragen.</div>';
  document.querySelectorAll("[data-food-del]").forEach(b=>b.onclick=()=>deleteFoodEntry(b.dataset.foodDel));
  
  $("waterView").textContent=`${Math.round(water)} ml`;$("caffeineTodayView").textContent=`${Math.round(Number(nutrition.caffeineToday)||0)} mg`;$("hydrationCaloriesView").textContent=`${Math.round(todayHydrationEntries().reduce((s,x)=>s+(Number(x.caloriesPer250)||0)*Number(x.size||0)/250,0))} kcal`;$("waterGoalView").textContent=goal?`${goal} ml`:"–";$("waterProgress").style.width=goal?`${Math.min(100,water/goal*100)}%`:"0%";
- const drinkRows=todayHydrationEntries().slice().reverse();$("todayDrinkCount").textContent=drinkRows.length;$("todayDrinkList").innerHTML=drinkRows.map(x=>{const d=nutrition.drinks.find(d=>String(d.id)===String(x.drinkId))||{name:x.name,icon:"🥤",kind:"custom"};return`<div class="compact-log-row ${drinkTone(d)}"><div class="drink-main compact-log-copy"><span class="drink-icon" aria-hidden="true">${d.icon||"🥤"}</span><div><strong>${esc(x.name)}</strong><small>${x.size} ml · ${Math.round(x.size*x.hydration/100)} ml netto${x.caloriesPer250?` · ${Math.round(x.caloriesPer250*x.size/250)} kcal`:""}${x.caffeinePerServing?` · ${x.caffeinePerServing} mg Koffein`:""}${x.protein?` · ${x.protein} g Protein`:""}</small></div></div><button class="compact-delete" data-hydration-del="${x.id}">−</button></div>`}).join("")||'<div class="small empty-drink-note">Noch nichts eingetragen.</div>';
- $("reorderDrinksBtn").textContent=drinksReorderMode?"↕":"⇅";$("reorderDrinksBtn").classList.toggle("active",drinksReorderMode);$("drinkList").innerHTML=nutrition.drinks.map((d,i)=>`<div class="card drink-card ${drinkTone(d)}"><div class="drink-main"><span class="drink-icon" aria-hidden="true">${d.icon||"🥤"}</span><div><strong>${esc(d.name)}</strong><div class="small">${d.lastSize||d.size} ml zuletzt · ${d.hydration}% Hydrierung${d.calories?` · ${d.calories} kcal/250 ml`:""}${d.caffeine?` · ${d.caffeine} mg Koffein`:""}${d.protein?` · ${d.protein} g Protein`:""}</div></div></div><div class="drink-actions">${drinksReorderMode?`<button class="icon-btn" data-drink-up="${d.id}" ${i===0?"disabled":""}>↑</button><button class="icon-btn" data-drink-down="${d.id}" ${i===nutrition.drinks.length-1?"disabled":""}>↓</button>`:`<button class="icon-btn plus-btn" data-drink-add="${d.id}">+</button>${String(d.id)==="water"?"":`<button class="icon-btn danger" data-drink-del="${d.id}">−</button>`}`}</div></div>`).join("");
+ const drinkRows=todayHydrationEntries().slice().reverse();$("todayDrinkCount").textContent=drinkRows.length;$("todayDrinkList").innerHTML=drinkRows.map(x=>{const d=nutrition.drinks.find(d=>String(d.id)===String(x.drinkId))||{name:x.name,icon:"🥤",kind:"custom"};return`<div class="compact-log-row ${drinkTone(d)}" data-edit-drink-entry="${x.id}"><div class="drink-main compact-log-copy"><span class="drink-icon" aria-hidden="true">${d.icon||"🥤"}</span><div><strong>${esc(x.name)}</strong><small>${x.size} ml · ${Math.round(x.size*x.hydration/100)} ml netto${x.caloriesPer250?` · ${Math.round(x.caloriesPer250*x.size/250)} kcal`:""}${x.caffeinePerServing?` · ${x.caffeinePerServing} mg Koffein`:""}${x.protein?` · ${x.protein} g Protein`:""}</small></div></div><button class="compact-delete" data-hydration-del="${x.id}">−</button></div>`}).join("")||'<div class="small empty-drink-note">Noch nichts eingetragen.</div>';
+ $("reorderDrinksBtn").textContent=drinksReorderMode?"↕":"⇅";$("reorderDrinksBtn").classList.toggle("active",drinksReorderMode);$("drinkList").innerHTML=nutrition.drinks.map((d,i)=>`<div class="card drink-card ${drinkTone(d)}" data-direct-drink="${d.id}"><div class="drink-main"><span class="drink-icon" aria-hidden="true">${d.icon||"🥤"}</span><div><strong>${esc(d.name)}</strong><div class="small">${d.lastSize||d.size} ml zuletzt · ${d.hydration}% Hydrierung${d.calories?` · ${d.calories} kcal/250 ml`:""}${d.caffeine?` · ${d.caffeine} mg Koffein`:""}${d.protein?` · ${d.protein} g Protein`:""}</div></div></div><div class="drink-actions">${drinksReorderMode?`<button class="icon-btn" data-drink-up="${d.id}" ${i===0?"disabled":""}>↑</button><button class="icon-btn" data-drink-down="${d.id}" ${i===nutrition.drinks.length-1?"disabled":""}>↓</button>`:`<button class="icon-btn plus-btn" data-drink-add="${d.id}">+</button>${String(d.id)==="water"?"":`<button class="icon-btn danger" data-drink-del="${d.id}">−</button>`}`}</div></div>`).join("");
  $("reorderDrinksBtn").onclick=()=>{drinksReorderMode=!drinksReorderMode;renderProfile()};
  document.querySelectorAll("[data-drink-up]").forEach(b=>b.onclick=()=>moveDrink(b.dataset.drinkUp,-1));
  document.querySelectorAll("[data-drink-down]").forEach(b=>b.onclick=()=>moveDrink(b.dataset.drinkDown,1));
@@ -2122,7 +2532,7 @@ function renderProfile(){ dailyReset();ensureDrinks();recalcFoodTotals();$("prof
  document.querySelectorAll("[data-drink-del]").forEach(b=>b.onclick=()=>{const id=b.dataset.drinkDel;if(String(id)==="water")return;if(!confirm("Getränk löschen?"))return;if(BUILTIN_DRINKS.some(x=>String(x.id)===String(id)))nutrition.deletedBuiltinDrinks=[...new Set([...(nutrition.deletedBuiltinDrinks||[]),id])];nutrition.drinks=nutrition.drinks.filter(x=>String(x.id)!==id);saveAll();renderProfile()});
  const selectedMeasurementKey=profileDateKey();
  const dailyMeasurements=measurements.map((m,idx)=>({m,idx})).filter(({m})=>dateKeyLocal(Number(m.date||0))===selectedMeasurementKey).reverse();
- $("measurementSuggestion").innerHTML=dailyMeasurements.length?"":`<button id="measurementSuggestionBtn" class="card measurement-suggestion"><div><strong>Heute messen?</strong><div class="small">Gewicht regelmäßig einzutragen macht den Verlauf aussagekräftiger.</div></div><span>+</span></button>`;
+ $("measurementSuggestion").innerHTML=dailyMeasurements.length?"":`<button id="measurementSuggestionBtn" class="card measurement-suggestion"><div><strong>Heute messen?</strong><div class="small">Gewicht regelmäßig einzutragen macht den Verlauf aussagekräftiger.</div></div><span class="measurement-chevron">›</span></button>`;
  $("measurementList").innerHTML=dailyMeasurements.map(({m,idx})=>`<div class="card measurement-card"><button class="measurement-main" data-measurement-open="${idx}"><div class="space"><strong>${m.weight?m.weight+" kg":"Messung"}</strong><span class="small">${new Date(m.date||Date.now()).toLocaleDateString("de-DE")}</span></div><div class="measurement-values">${m.bodyfat?`<span>Körperfett ${m.bodyfat}%</span>`:""}${m.waist?`<span>Taille ${m.waist} cm</span>`:""}${m.chest?`<span>Brust ${m.chest} cm</span>`:""}${m.hip?`<span>Hüfte ${m.hip} cm</span>`:""}</div></button><button class="icon-btn danger measurement-delete" data-measurement-delete="${idx}">−</button></div>`).join("");
  renderMeasurementCharts();renderProfileProgress();
  if($("measurementSuggestionBtn"))$("measurementSuggestionBtn").onclick=openMeasurementEntry;
@@ -2207,327 +2617,42 @@ function closeSheet({all=false}={}){if(!all&&sheetStack.length){renderSheetState
 function cancelTask(){planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden");exerciseDetailReturn=null}
 $("sheetBack").onclick=()=>{if(planAddFlow)planAddBack();else closeSheet({all:false})};$("sheetClose").onclick=()=>{if(planAddFlow)cancelPlanAddFlow();else cancelTask()};
 function formatTime(s){s=Math.max(0,Number(s)||0);return`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function parseTime(v){const x=String(v).trim();if(x.includes(":")){const[m,s]=x.split(":").map(Number);return(m||0)*60+(s||0)}return(Number(x)||0)*60}function formatDuration(ms){const s=Math.max(0,Math.floor(ms/1000)),m=Math.floor(s/60),r=s%60;return`${m}:${String(r).padStart(2,"0")}`}
-loadData();dailyReset();ensureDrinks();renderExerciseLibrary();renderPlans();renderTrainingHome();renderWeek();renderProfile();restoreUI();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});</script></body></html>
-
-<script id="v44-simple-unified-edit-flow">
-// v44: keep the familiar "Übung hinzufügen" configuration UI for creation AND editing.
-// Confirmed edits of an existing non-running plan are permanent on that original plan.
-(function(){
- const originalMarkEditorDirty=window.markEditorDirty;
- const originalCommitPlanAddFlow=window.commitPlanAddFlow;
-
- function persistExistingEditorPlan(){
-  if(!currentPlan?._editingSourceId)return false;
-  const src=plans.find(p=>p.id===currentPlan._editingSourceId);if(!src)return false;
-  const saved=clone(currentPlan);
-  saved.id=src.id;saved.name=String(currentPlan.name||src.name||'').trim()||src.name;
-  saved.createdAt=src.createdAt;saved.updatedAt=Date.now();
-  delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;
-  plans=plans.map(p=>p.id===src.id?saved:p);saveAll();renderPlans();return true
- }
- window.persistExistingEditorPlan=persistExistingEditorPlan;
- window.markEditorDirty=function(){
-  editorDirty=true;persistUI();
-  // Existing plans stay as an editor draft until the user explicitly decides to save.
-  // This keeps the original plan reversible while leaving the familiar editor UI untouched.
- };
-
- function groupContextFor(collection,i){
-  const old=collection?.[i];if(!old||!groupMethod(old.setTechnique)||!old.techniqueGroup)return null;
-  const idx=collection.map((x,j)=>x.techniqueGroup===old.techniqueGroup&&x.setTechnique===old.setTechnique?j:-1).filter(j=>j>=0);
-  return {id:old.techniqueGroup,method:old.setTechnique,indexes:idx,count:idx.length,originalIndex:i}
- }
- function baseEditFlow(context,i,seed){
-  const collection=context==='live'?activeWorkout?.exercises:currentPlan?.exercises;if(!collection?.[i])return;
-  const g=groupContextFor(collection,i),draft=clone(seed||collection[i]);delete draft.liveSets;
-  // A single member of a connected series is configured like a normal single exercise.
-  // The wrapper (Superset/Giant/Pre-Exhaust) is restored only on commit.
-  if(g){draft.setTechnique='standard';draft.techniqueGroup=null;draft.linkedExerciseNames=[];draft.methodData={};if(!draft.reps||['20','30','20-30'].includes(String(draft.reps)))draft.reps='8-12'}
-  planAddFlow={context,step:'config',q:exercisePickerState.q||'',type:exercisePickerState.type||'Alle',muscles:new Set(exercisePickerState.muscles||[]),drafts:[],history:[],methodScroll:0,editSourceIndexes:[i],memberGroup:g,memberMethodExplicit:false,current:draft,from:'edit'};
-  renderPlanAddConfig()
- }
- function startReplacement(context,i,name){
-  const collection=context==='live'?activeWorkout?.exercises:currentPlan?.exercises,old=collection?.[i];if(!old)return;
-  const g=groupContextFor(collection,i),fresh=findExercise(name);
-  const keep={measureMode:old.measureMode,reps:old.reps,timeSeconds:old.timeSeconds,sets:old.sets,rest:old.rest,variant:'',perSide:old.perSide,note:old.note};
-  let seed=normPlanEx({...fresh,...keep,setTechnique:g?'standard':(old.setTechnique||'standard'),methodData:g?{}:clone(old.methodData||{})});
-  baseEditFlow(context,i,seed)
- }
- window.configureExercise=function(i){baseEditFlow('plan',i)};
- window.replacePlanExercise=function(i){
-  const old=currentPlan?.exercises?.[i];if(!old)return;
-  openExercisePicker(name=>startReplacement('plan',i,name),{exclude:new Set([old.name]),title:'Übung austauschen',detailAdd:true})
- };
- window.configureLiveExercise=function(i){baseEditFlow('live',i)};
-
- // Reuse the same add flow for adding a new exercise during a running workout.
- function startUnifiedLiveAdd(name){
-  const draft=normPlanEx({...findExercise(name),sets:3,setTechnique:'standard',reps:'8-12',rest:Number(localStorage.getItem(REST_DEFAULT_KEY)||90)});
-  planAddFlow={context:'live',step:'config',q:exercisePickerState.q||'',type:exercisePickerState.type||'Alle',muscles:new Set(exercisePickerState.muscles||[]),drafts:[],history:[],methodScroll:0,current:draft,from:'picker'};
-  renderPlanAddConfig()
- }
- if($('liveAddExercise'))$('liveAddExercise').onclick=()=>openExercisePicker(startUnifiedLiveAdd,{detailAdd:true});
-
- window.confirmPlanAddDraft=function(){
-  if(!planAddFlow?.current)return;savePlanAddFormToDraft();
-  const validation=validateExerciseDraft(planAddFlow.current);if(validation)return toast(validation);
-  let e=clone(planAddFlow.current),method=e.setTechnique||'standard';
-  // Editing one member of an existing connected series: configure it as a single exercise,
-  // then put it back into exactly the same group slot on commit.
-  if(planAddFlow.memberGroup&&!planAddFlow.memberMethodExplicit){
-   const g=planAddFlow.memberGroup;e.setTechnique=g.method;e.techniqueGroup=g.id;e.linkedExerciseNames=[];
-   if(g.method==='giant'){e.methodData=e.methodData||{};e.methodData.giantCount=g.count}
-   planAddFlow.drafts=[e];commitPlanAddFlow();return
-  }
-  // If the user explicitly selects a different method while editing a group member,
-  // that member leaves the old wrapper and follows the same universal target-method flow
-  // as every other exercise, including partner selection for Superset/Giant/Pre-Exhaust.
-  if(planAddFlow.memberGroup&&planAddFlow.memberMethodExplicit){e.techniqueGroup=null;e.linkedExerciseNames=[]}
-  if(methodNeedsPartners(method)){
-   if(!planAddFlow.group){const target=method==='giant'?(e.methodData.giantCount||3):2;planAddFlow.group={id:`tg_${uid()}`,method,target};e.techniqueGroup=planAddFlow.group.id}
-   else e.techniqueGroup=planAddFlow.group.id;
-   planAddFlow.drafts.push(e);
-   if(planAddFlow.drafts.length<planAddFlow.group.target){planAddFlow.current=null;renderPartnerExercisePicker();return}
-   const master=planAddFlow.drafts[0],gid=planAddFlow.group.id;
-   planAddFlow.drafts.forEach(d=>{d.setTechnique=planAddFlow.group.method;d.techniqueGroup=gid;d.sets=master.sets;d.rest=master.rest});
-   commitPlanAddFlow();return
-  }
-  planAddFlow.drafts.push(e);commitPlanAddFlow()
- };
-
- window.commitPlanAddFlow=function(){
-  if(!planAddFlow?.drafts?.length)return;
-  let drafts=planAddFlow.drafts.map(clone);
-  const detached=drafts.flatMap(d=>Array.isArray(d._detachedAfterConversion)?d._detachedAfterConversion.map(clone):[]);
-  if(drafts.some(d=>Number.isFinite(Number(d._draftOrder))))drafts.sort((a,b)=>(Number.isFinite(Number(a._draftOrder))?Number(a._draftOrder):999)-(Number.isFinite(Number(b._draftOrder))?Number(b._draftOrder):999));
-  drafts.forEach(d=>{delete d._draftOrder;delete d._detachedAfterConversion});
-  detached.forEach(d=>{d.techniqueGroup=null;d.linkedExerciseNames=[];d.setTechnique='standard';d.methodData={};if(!d.reps||['20','30','20-30'].includes(String(d.reps)))d.reps='8-12';delete d.liveSets});
-  const memberGroup=planAddFlow.memberGroup;
-  const preserveMemberGroup=!!memberGroup&&!planAddFlow.memberMethodExplicit;
-  const method=preserveMemberGroup?memberGroup.method:(planAddFlow.group?.method||drafts[0]?.setTechnique||'standard');
-  const target=preserveMemberGroup?1:(planAddFlow.group?.target||drafts.length);
-  if(!preserveMemberGroup){const validation=validateDraftCollection(drafts,method,target);if(validation)return toast(validation)}
-  const edited=Array.isArray(planAddFlow.editSourceIndexes)&&planAddFlow.editSourceIndexes.length,liveContext=planAddFlow.context==='live',collection=liveContext?activeWorkout.exercises:currentPlan.exercises;
-  if(liveContext){
-   const oldByIndex=new Map((planAddFlow.editSourceIndexes||[]).map(i=>[i,clone(collection[i]?.liveSets||[])]));
-   drafts.forEach((d,k)=>{const old=oldByIndex.get((planAddFlow.editSourceIndexes||[])[k])||[];d.liveSets=rebuildLiveSetsForExercise(d,old)});
-   detached.forEach(d=>d.liveSets=rebuildLiveSetsForExercise(d,[]))
-  }
-  let insertAt=collection.length;
-  if(edited){const indexes=[...planAddFlow.editSourceIndexes].sort((a,b)=>a-b);insertAt=indexes[0];[...indexes].sort((a,b)=>b-a).forEach(i=>collection.splice(i,1));collection.splice(insertAt,0,...drafts,...detached)}
-  else collection.push(...drafts);
-  if(memberGroup){normalizeGroupCollection(collection,memberGroup.id);if(liveContext){collection.filter(x=>x.techniqueGroup===memberGroup.id).forEach(x=>x.liveSets=rebuildLiveSetsForExercise(x,x.liveSets||[]))}}
-  if(liveContext){livePlanEdited=true;saveAll();renderLive()}else{markEditorDirty();renderEditorExercises();persistUI()}
-  const wasEdit=edited;planAddFlow=null;sheetStack=[];currentSheetState=null;$('sheetWrap').classList.add('hidden');
-  toast(wasEdit?'Änderung übernommen':(drafts.length>1?`${drafts.length} Übungen hinzugefügt`:'Übung hinzugefügt'))
- };
-
- // Existing plan outside a workout: ask exactly once on leaving/saving.
- // Save overwrites the original plan. Discard closes the editor and leaves the saved original untouched.
- function askExistingPlanSaveOrDiscard({toPlans=false}={}){
-  openSheet('Plan speichern?',`<p class="muted">Möchtest du die Änderungen an diesem Plan speichern?</p><div class="save-choice-stack"><button id="confirmExistingPlanSave" class="primary">Plan speichern</button><button id="discardExistingPlanChanges" class="secondary danger">Änderungen verwerfen</button><button id="stayInExistingPlan" class="secondary">Weiter bearbeiten</button></div>`);
-  $('confirmExistingPlanSave').onclick=()=>{if(persistExistingEditorPlan()){closeSheet({all:true});editorDirty=false;closePage();if(toPlans)showTab('plans');renderPlans()}};
-  $('discardExistingPlanChanges').onclick=()=>{closeSheet({all:true});editorDirty=false;closePage();if(toPlans)showTab('plans');renderPlans()};
-  $('stayInExistingPlan').onclick=()=>closeSheet({all:true});
- }
- if($('planEditorBack'))$('planEditorBack').onclick=()=>{
-  if(currentPlan?._editingSourceId){if(!editorHasChanges()){closePage();renderPlans();return}askExistingPlanSaveOrDiscard({toPlans:false});return}
-  if(!editorHasChanges()){closePage();return}
-  openSheet('Planbearbeitung verlassen?',`<p class="muted">Du hast einen neuen, noch nicht gespeicherten Plan.</p><div class="save-choice-stack"><button id="backSavePlan" class="primary">Plan speichern</button><button id="discardPlanChanges" class="secondary danger">Plan verwerfen</button><button id="stayInPlan" class="secondary">Weiter bearbeiten</button></div>`);
-  $('discardPlanChanges').onclick=()=>{closeSheet({all:true});editorDirty=false;closePage()};$('stayInPlan').onclick=()=>closeSheet({all:true});$('backSavePlan').onclick=()=>{closeSheet({all:true});if(saveCurrentPlan()){editorDirty=false;closePage();renderPlans()}}
- };
- if($('liveBackBtn'))$('liveBackBtn').onclick=()=>leaveLiveToTraining();
-
- if($('planSaveBtn'))$('planSaveBtn').onclick=()=>{
-  if(currentPlan?._editingSourceId){if(!editorHasChanges()){closePage();showTab('plans');renderPlans();return}askExistingPlanSaveOrDiscard({toPlans:true});return}
-  if(!editorHasChanges()){closePage();showTab('plans');return}
-  openSheet('Plan wirklich speichern?',`<p class="muted">Möchtest du diesen Trainingsplan speichern?</p><div class="grid2"><button id="cancelPlanSave" class="secondary">Abbrechen</button><button id="confirmPlanSave" class="primary">Speichern</button></div>`);
-  $('cancelPlanSave').onclick=()=>closeSheet({all:true});$('confirmPlanSave').onclick=()=>{if(saveCurrentPlan()){closeSheet({all:true});closePage();showTab('plans');renderPlans()}}
- };
-
- // Rebind current editor/list if visible after overriding handlers.
- if(currentPlan&&!$('planEditorPage')?.classList.contains('hidden'))renderEditorExercises();
- if(activeWorkout&&!$('livePage')?.classList.contains('hidden'))renderLive();
-})();
-</script>
-
-<script id="v35-runtime">
-document.addEventListener("click",e=>{const top=e.target.closest(".tab-header,.page-top");if(!top||e.target.closest("button,input,select,textarea"))return;const page=top.closest(".page");if(page)page.scrollTo({top:0,behavior:"smooth"});else window.scrollTo({top:0,behavior:"smooth"})});
-</script>
+loadData();if(weekOffset!==0){const _dated=loadDatedWeeks();weekPlan=_dated[weekKeyForOffset()]||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]))}dailyReset();ensureDrinks();renderExerciseLibrary();renderPlans();renderTrainingHome();renderWeek();renderProfile();restoreUI();
+if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});</script>
 
 
-<style id="v47-method-polish-css">
-/* v47: targeted polish only — familiar cards/masks stay intact. */
-.connected-live-card .combined-series-head{margin-bottom:8px}
-.connected-live-card .combined-series-name{margin:4px 0}
-.connected-live-card .combined-series-name .exercise-title-link{font-size:16px!important;font-weight:900!important;line-height:1.25}
-.connected-live-card .combined-member-row .combined-name,
-.connected-live-card .combined-member-title .combined-name{font-size:10px!important;font-weight:700!important;color:var(--muted)!important;line-height:1.2}
-.pyramid-config-head{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0 0 10px}
-.pyramid-config-row{display:grid;grid-template-columns:54px minmax(80px,1fr) 48px;gap:8px;align-items:center;margin:6px 0}
-.pyramid-config-row>span:last-child{text-align:right;color:var(--muted);font-size:10px}
-.mode-switch button:disabled{opacity:.32;cursor:not-allowed}
-.preview-connected-top{padding:12px;border-bottom:1px solid var(--line)}
-.preview-connected-top .exercise-title-link{display:block;margin:4px 0;font-size:16px!important}
-.preview-combined-round{padding:9px 12px;border-top:1px solid var(--line)}
-.preview-combined-row{display:grid;grid-template-columns:30px minmax(0,1fr) 58px 58px;gap:6px;align-items:center;padding:4px 0}
-.preview-combined-row .preview-mini-name{font-size:9px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-</style>
-<script id="v47-method-polish">
-(function(){
- const basePrepare=window.prepareDraftForTargetMethod;
- const baseValidate=window.validateExerciseDraft;
- const baseRenderSets=window.renderSets;
- const basePlanPrescription=window.planPrescription;
- const baseOpenSummary=window.openSummary;
 
- // Practical per-exercise / per-series working-set ranges. These are UI guardrails, not training prescriptions.
- const SET_OPTIONS={
-  standard:[1,2,3,4,5,6],
-  superset:[2,3,4,5],
-  giant:[2,3,4],
-  preexhaust:[2,3,4],
-  dropset:[1,2,3,4],
-  restpause:[1,2,3],
-  cluster:[2,3,4,5,6],
-  pyramid:[3,4,5,6,7],
-  backoff:[2,3,4,5]
- };
- const DEFAULT_SETS={standard:3,superset:3,giant:3,preexhaust:3,dropset:2,restpause:1,cluster:3,pyramid:4,backoff:3};
- function optionsForMethod(m){return SET_OPTIONS[m]||SET_OPTIONS.standard}
- function nearestSetCount(m,value){const a=optionsForMethod(m),n=Number(value);if(a.includes(n))return n;const d=DEFAULT_SETS[m]||3;return a.includes(d)?d:a[0]}
- function setOptionsMarkup(e){e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);return optionsForMethod(e.setTechnique||'standard').map(n=>`<option value="${n}" ${Number(e.sets)===n?'selected':''}>${n}</option>`).join('')}
- window.methodSetOptions=optionsForMethod;
 
- // Pyramid = repetitions only. Direction means LOAD up/down; reps move inversely.
- function pyramidDirection(e){return e.methodData?.pyramidDirection==='loadDown'?'loadDown':'loadUp'}
- function nextPyramidRep(prev,dir){const p=Math.max(1,Math.min(30,Number(prev)||1));return dir==='loadDown'?Math.min(30,p+2):Math.max(1,p-2)}
- function buildPyramidReps(first,sets,dir){const out=[Math.max(1,Math.min(30,Number(first)||(dir==='loadDown'?6:12)))];while(out.length<sets)out.push(nextPyramidRep(out[out.length-1],dir));return out}
- window.pyramidPctForSets=function(sets,dir='loadUp'){
-  sets=Math.max(3,Number(sets)||4);const low=sets<=3?80:sets===4?70:60,step=(100-low)/(sets-1);
-  const a=Array.from({length:sets},(_,i)=>Math.round((low+step*i)/5)*5);return dir==='loadDown'?a.reverse():a
- };
- window.ensurePyramidData=function(e){
-  e.methodData=e.methodData||{};e.measureMode='reps';e.sets=nearestSetCount('pyramid',e.sets);
-  let dir=e.methodData.pyramidDirection;
-  const old=Array.isArray(e.methodData.reps)?e.methodData.reps.map(Number).filter(Number.isFinite):[];
-  if(!dir){dir=old.length>1&&old[1]>old[0]?'loadDown':'loadUp';e.methodData.pyramidDirection=dir;e.methodData.reps=buildPyramidReps(old[0]||(dir==='loadDown'?6:12),e.sets,dir)}
-  else if(old.length!==e.sets){const seed=old[0]||(dir==='loadDown'?6:12);e.methodData.reps=buildPyramidReps(seed,e.sets,dir)}
-  else e.methodData.reps=old.length?old:buildPyramidReps(dir==='loadDown'?6:12,e.sets,dir);
-  e.methodData.weightPct=window.pyramidPctForSets(e.sets,dir)
- };
- window.prepareDraftForTargetMethod=function(e,method,oldGroupCount=1){
-  const prev=e.setTechnique||'standard';basePrepare(e,method,oldGroupCount);
-  e.sets=nearestSetCount(method,prev===method?e.sets:(DEFAULT_SETS[method]||e.sets));
-  if(method==='pyramid'){e.measureMode='reps';e.methodData=e.methodData||{};e.methodData.pyramidDirection='loadUp';e.methodData.reps=buildPyramidReps(12,e.sets,'loadUp');e.methodData.weightPct=window.pyramidPctForSets(e.sets,'loadUp')}
-  return e
- };
- window.validateExerciseDraft=function(e){
-  const m=e?.setTechnique||'standard';if(m==='pyramid'&&e.measureMode==='time')return 'Pyramidentraining wird über Wiederholungen konfiguriert, nicht über Zeit.';
-  const n=Number(e?.sets),allowed=optionsForMethod(m);if(!allowed.includes(n))return `Für ${METHOD_LABEL[m]||m} bitte ${allowed[0]}–${allowed[allowed.length-1]} Sätze wählen.`;
-  return baseValidate(e)
- };
 
- // Cleaner method explanations: the target number is shown in the prescription/progress, not repeated in the help text.
- METHOD_HELP.restpause='Gesamtwiederholungen in kurzen Teilblöcken sammeln. Sobald das Ziel erreicht ist, entfallen weitere Rest-Pause-Blöcke.';
- METHOD_HELP.cluster='Gesamtwiederholungen in kurzen Clustern sammeln. Leere Folgefelder können aus der ersten Eingabe übernommen werden.';
- METHOD_HELP.pyramid='Satzweise steigt oder sinkt die Last; die Wiederholungen verlaufen gegenläufig. Jeder Satz bleibt manuell anpassbar.';
- METHOD_HELP.backoff='Auf einen schweren Top-Satz folgen leichtere Back-off-Sätze mit höherer Wiederholungszahl.';
 
- window.methodRepConfigMarkup=function(e,prefix){
-  if(e.setTechnique==='pyramid'){
-   ensurePyramidData(e);const dir=pyramidDirection(e);
-   return `<div class="pyramid-config"><div class="pyramid-config-head"><div class="form-field"><label>PYRAMIDE</label><select id="${prefix}PyrDirection" class="field"><option value="loadUp" ${dir==='loadUp'?'selected':''}>Last steigern · WDH. sinken</option><option value="loadDown" ${dir==='loadDown'?'selected':''}>Last senken · WDH. steigen</option></select></div></div><div class="small">WDH. JE SATZ</div>${e.methodData.reps.map((r,i)=>`<div class="pyramid-config-row"><span>Satz ${i+1}</span><input id="${prefix}PyrRep${i}" class="field" inputmode="numeric" value="${r}"><span>${e.methodData.weightPct[i]}%</span></div>`).join('')}</div>`
-  }
-  if(e.setTechnique==='backoff'){e.methodData=e.methodData||{};const top=Number(e.methodData.topReps)||5,back=Math.max(top+1,Number(e.methodData.backoffReps)||8),pct=Number(e.methodData.backoffPercent)||15;return`<div class="grid2"><div class="form-field"><label>TOP-SATZ WDH.</label><select id="${prefix}TopReps" class="field">${Array.from({length:10},(_,i)=>i+1).map(n=>`<option ${n===top?'selected':''}>${n}</option>`).join('')}</select></div><div class="form-field"><label>BACK-OFF WDH.</label><select id="${prefix}BackReps" class="field">${[6,7,8,9,10,11,12].filter(n=>n>top).map(n=>`<option ${n===back?'selected':''}>${n}</option>`).join('')}</select></div></div><div class="form-field"><label>GEWICHT REDUZIEREN %</label><select id="${prefix}BackPct" class="field">${[5,10,15,20,25,30].map(n=>`<option ${n===pct?'selected':''}>${n}</option>`).join('')}</select></div>`}
-  return repPresetMarkup(e)
- };
- window.saveMethodRepConfig=function(e,prefix){
-  e.methodData=e.methodData||{};
-  if(e.setTechnique==='pyramid'){
-   const dir=$(`${prefix}PyrDirection`)?.value||pyramidDirection(e);e.methodData.pyramidDirection=dir;
-   e.methodData.reps=Array.from({length:Number(e.sets)||3},(_,i)=>Math.max(1,Number($(`${prefix}PyrRep${i}`)?.value)||Number(e.methodData.reps?.[i])||1));
-   e.methodData.weightPct=window.pyramidPctForSets(e.sets,dir)
-  }
-  if(e.setTechnique==='backoff'){e.methodData.topReps=Math.max(1,Number($(`${prefix}TopReps`)?.value)||5);e.methodData.backoffReps=Math.min(12,Math.max(e.methodData.topReps+1,Number($(`${prefix}BackReps`)?.value)||8));e.methodData.backoffPercent=Math.max(0,Number($(`${prefix}BackPct`)?.value)||15)}
- };
- function bindPyramidCascade(e,prefix,rerender){
-  if(e.setTechnique!=='pyramid')return;ensurePyramidData(e);
-  const dirSel=$(`${prefix}PyrDirection`);if(dirSel)dirSel.onchange=()=>{e.methodData.pyramidDirection=dirSel.value;e.methodData.reps=buildPyramidReps(Number($(`${prefix}PyrRep0`)?.value)||e.methodData.reps[0],e.sets,dirSel.value);e.methodData.weightPct=window.pyramidPctForSets(e.sets,dirSel.value);rerender()};
-  e.methodData.reps.forEach((_,i)=>{const inp=$(`${prefix}PyrRep${i}`);if(!inp)return;inp.oninput=()=>{const val=Math.max(1,Math.min(30,Number(inp.value)||1));e.methodData.reps[i]=val;for(let j=i+1;j<e.sets;j++){e.methodData.reps[j]=nextPyramidRep(e.methodData.reps[j-1],pyramidDirection(e));const follow=$(`${prefix}PyrRep${j}`);if(follow)follow.value=e.methodData.reps[j]}}})
- }
 
- // One familiar add/edit mask for all exercise actions, now with method-aware set counts.
- window.renderPlanAddConfig=function(){
-  if(!planAddFlow?.current)return;const e=planAddFlow.current;if(e.setTechnique==='pyramid')ensurePyramidData(e);if(e.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);
-  renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?'active':''}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join('')}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=='time'?'active':''}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==='time'?'active':''}" id="paModeTime" ${e.setTechnique==='pyramid'?'disabled':''}>Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e)}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?'selected':''}>${v?formatTime(v):'Keine'}</option>`).join('')}</select></div></div><div class="form-field"><label>${e.measureMode==='time'?'ZEIT':'WDH.-VORGABE'}</label>${e.measureMode==='time'?timePresetMarkup(e,'pa'):methodRepConfigMarkup(e,'pa')}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`:''}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?'checked':''}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
-  requestAnimationFrame(()=>{const tabs=$('paMethodTabs');if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
-  $('paModeReps').onclick=()=>{e.measureMode='reps';renderPlanAddConfig()};
-  if($('paModeTime')&&!$('paModeTime').disabled)$('paModeTime').onclick=()=>{e.measureMode='time';e.timeSeconds=Math.min(180,Math.max(15,Number(e.timeSeconds)||60));renderPlanAddConfig()};
-  document.querySelectorAll('[data-pa-method]').forEach(b=>b.onclick=()=>{const tabs=$('paMethodTabs');planAddFlow.methodScroll=tabs?.scrollLeft||0;if(planAddFlow.memberGroup)planAddFlow.memberMethodExplicit=true;prepareDraftForTargetMethod(e,b.dataset.paMethod,1);renderPlanAddConfig()});
-  $('paSets').onchange=()=>{e.sets=Number($('paSets').value);if(e.setTechnique==='pyramid')ensurePyramidData(e);renderPlanAddConfig()};
-  document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderPlanAddConfig()});
-  document.querySelectorAll('[data-time-preset]').forEach(b=>b.onclick=()=>{e.timeSeconds=Number(b.dataset.timePreset);renderPlanAddConfig()});
-  bindPyramidCascade(e,'pa',renderPlanAddConfig);
-  $('paConfirm').onclick=()=>confirmPlanAddDraft()
- };
 
- // Partner exercises keep their own reps/time/AMRAP; pyramid is never offered as time even inside a connected series.
- const baseCompact=window.renderCompactPartnerConfig;
- window.renderCompactPartnerConfig=function(){
-  const e=planAddFlow?.current;if(e?.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;
-  baseCompact();
-  if(!e)return;
-  if(e.setTechnique==='pyramid'){e.measureMode='reps';const btn=$('partnerModeTime');if(btn){btn.disabled=true;btn.classList.remove('active')}}
-  bindPyramidCascade(e,'partner',renderCompactPartnerConfig)
- };
 
- // Remove the repeated Cluster/Rest-Pause target hint above every block; progress stays visible once.
- window.renderSets=function(e,ei){let html=baseRenderSets(e,ei);if(['cluster','restpause'].includes(e.setTechnique))html=html.replace(/^<div class="note-line">[\s\S]*?<\/div>/,'');return html};
- window.planPrescription=function(e){
-  if(e.setTechnique==='cluster'&&e.measureMode!=='time')return`${esc(e.reps||'10')} WDH. Gesamtziel · ${e.methodData?.blocks||5} Cluster`;
-  if(e.setTechnique==='restpause'&&e.measureMode!=='time')return`${Number(e.reps)||20} WDH. Gesamtziel`;
-  if(e.setTechnique==='pyramid'){ensurePyramidData(e);return`${e.methodData.reps.join(' · ')} WDH. · ${e.methodData.weightPct.join(' · ')}%`}
-  return basePlanPrescription(e)
- };
 
- // Superset / Giant Set: large exercise links at the top; small repeated names beside 1a/1b/1c.
- window.renderLiveGroupCard=function(g){
-  const first=g.members[0],active=g.members.some(x=>Number(activeWorkout.activeExerciseIndex||0)===x.i),rounds=Math.max(...g.members.map(x=>x.e.liveSets?.length||x.e.sets||0));let rows='';
-  for(let si=0;si<rounds;si++){rows+=`<div class="combined-round"><div class="group-round-title"><span>Satz ${si+1}</span><button class="remove-mini" data-remove-live-set="${first.i}|${si}">−</button></div>`;g.members.forEach((x,gi)=>{rows+=combinedMemberControls(x,si,gi)});rows+='</div>'}
-  return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?'active-live-exercise':''}" data-live-card="${first.i}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name"><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}"><strong>${String.fromCharCode(65+gi)}</strong> ${esc(x.e.name)}</button></div>`).join('')}</div><button class="icon-btn" data-live-config="${first.i}" aria-label="Serie bearbeiten">✎</button></div><div class="method-help">${esc(methodHelp(g.method))}</div>${rows}<button class="secondary" data-add-group-set="${esc(g.key)}" style="margin-top:8px">Satz hinzufügen</button></div>`
- };
 
- // Preview mirrors the same connected-card hierarchy and exercise names open the execution card.
- window.openPreview=function(p){
-  $('previewTitle').textContent=p.name||'Workout Vorschau';const pp={...clone(p),exercises:clone(p.exercises).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
-  const groups=previewVisualGroups(pp.exercises);
-  $('previewBody').innerHTML=`<div class="preview-live-shell">${groups.map(g=>{if(!groupMethod(g.method))return`<div class="method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map(e=>`<div class="preview-group-member"><div class="live-card-head"><div><button class="exercise-title-link" data-preview-detail="${esc(e.name)}">${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div></div>${renderPreviewSets(e)}</div>`).join('')}</div>`;
-   const rounds=Math.max(...g.items.map(e=>Number(e.sets)||0));return`<div class="method-card connected-method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="preview-connected-top">${g.items.map((e,j)=>`<button class="exercise-title-link" data-preview-detail="${esc(e.name)}"><strong>${String.fromCharCode(65+j)}</strong> ${esc(e.name)}</button>`).join('')}</div><div class="method-help" style="margin-top:8px">${esc(methodHelp(g.method))}</div>${Array.from({length:rounds},(_,si)=>`<div class="preview-combined-round"><div class="group-round-title">Satz ${si+1}</div>${g.items.map((e,j)=>`<div class="preview-combined-row"><span>${si+1}${String.fromCharCode(97+j)}</span><span class="preview-mini-name">${esc(e.name)}</span><span class="preview-value">${e.measureMode==='time'?formatTime(e.timeSeconds||60):'KG'}</span><span class="preview-value">${e.measureMode==='time'?'ZEIT':(amrapText(e.reps||'WDH.'))}</span></div>`).join('')}</div>`).join('')}</div>`}).join('')}</div>`;
-  openPage('previewPage');document.querySelectorAll('[data-preview-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.previewDetail))
- };
 
- function askRestart(p){pendingStartPlan=p;openSheet('Training erneut starten?',`<p class="muted" style="margin:0 0 16px">„${esc(p.name)}“ erneut starten?</p><button id="reallyRestartPlan" class="primary" style="width:100%">Training erneut starten</button>`);$('reallyRestartPlan').onclick=()=>{closeSheet({all:true});startWorkout(p)}}
- window.openSummary=function(w){baseOpenSummary(w);const p=plans.find(x=>String(x.id)===String(w.planId));if(!p)return;requestAnimationFrame(()=>{if($('summaryTopPlay'))$('summaryTopPlay').onclick=()=>askRestart(p);if($('summaryRestart'))$('summaryRestart').onclick=()=>askRestart(p)})};
 
- // Legacy time exercises that visually default to 1:00 now actually carry 60 s as their selected value.
- const oldNormPlanEx=window.normPlanEx;window.normPlanEx=function(e){const x=oldNormPlanEx(e);if(x.measureMode==='time'&&!Number(x.timeSeconds))x.timeSeconds=60;if(x.setTechnique==='pyramid')x.measureMode='reps';return x};
 
- if(currentPlan&&!$('planEditorPage')?.classList.contains('hidden'))renderEditorExercises();
- if(activeWorkout&&!$('livePage')?.classList.contains('hidden'))renderLive();
-})();
-</script>
-<script id="v47-exercise-detail-return">
-(function(){
- const baseRenderLive=window.renderLive;
- window.renderLive=function(){
-  baseRenderLive();
-  document.querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>{
-   const i=Number((b.dataset.liveIndex ?? b.closest('[data-live-card]')?.dataset.liveCard)||0);
-   setActiveExercise(i);exerciseDetailReturn=null;openExerciseDetail(b.dataset.liveDetail)
-  })
- };
- if(activeWorkout&&!$('livePage')?.classList.contains('hidden'))renderLive();
-})();
-</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="./runtime-current.js"></script>
+</body></html>
