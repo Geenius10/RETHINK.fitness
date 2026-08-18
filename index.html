@@ -810,6 +810,313 @@ html[data-theme="light"] .week-scheduled button{
   background:rgba(70,166,101,.17)!important;
 }
 </style>
+
+<style id="v68-final-ui">
+/* Calm, coherent light mode */
+html[data-theme="light"]{
+ --bg:#d7d7dc!important;--surface:#e0dfe3!important;--surface2:#ceced4!important;
+ --text:#302e34!important;--muted:#716e77!important;--line:rgba(48,45,54,.13)!important;
+}
+html[data-theme="light"] body{background:linear-gradient(180deg,#d9d9de,#d2d3d8)!important;color:#302e34!important}
+html[data-theme="light"] .page{background:#d6d6db!important}
+html[data-theme="light"] .card,html[data-theme="light"] .method-card,html[data-theme="light"] .week-card,
+html[data-theme="light"] .exercise-card,html[data-theme="light"] .plan-card,html[data-theme="light"] .settings-card,
+html[data-theme="light"] .sheet,html[data-theme="light"] .daily-track-card,html[data-theme="light"] .nutrition-target-card{
+ background:#dfdee3!important;color:#302e34!important;box-shadow:0 6px 18px rgba(45,42,50,.055)!important
+}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn{background:#a99bbd!important;color:#28232d!important;border-color:#a99bbd!important}
+html[data-theme="light"] .secondary,html[data-theme="light"] .icon-btn{background:#cdccd2!important;color:#35323a!important;border-color:rgba(48,45,54,.12)!important}
+html[data-theme="light"] .small,html[data-theme="light"] small,html[data-theme="light"] .goal-line,
+html[data-theme="light"] .prescription,html[data-theme="light"] .method-help,html[data-theme="light"] .variant-line,
+html[data-theme="light"] .note-line{color:#716e77!important}
+html[data-theme="light"] .exercise-title-link,html[data-theme="light"] .combined-name,html[data-theme="light"] .week-menu{color:#302e34!important}
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea,html[data-theme="light"] .field{
+ background:#d0d0d6!important;color:#302e34!important;border-color:rgba(48,45,54,.14)!important
+}
+html[data-theme="light"] input::placeholder{color:#77747c!important}
+html[data-theme="light"] .chip{background:#d0cfd5!important;color:#625e68!important}
+html[data-theme="light"] .chip.active{background:#aea0c0!important;color:#2c2632!important}
+/* Only the active exercise/card is method-coloured; completed rows return neutral. */
+.method-card .set-row:has(.set-check.done),.method-card .time-row:has(.set-check.done),
+.method-card .advanced-row:has(.set-check.done),.method-card .combined-member-row:has(.set-check.done),
+.method-card .group-ex-row:has(.set-check.done),.method-card .group-round:has(.set-check.done){
+ background:transparent!important;border-color:transparent!important
+}
+.live-exercise-card.active-live-exercise:not(.live-method-complete){
+ background:color-mix(in srgb,var(--method) 24%,var(--surface))!important
+}
+.live-exercise-card.live-method-complete{background:var(--surface)!important}
+/* Delete controls stay inside method cards. */
+.live-exercise-card{overflow:hidden!important}
+.live-card-actions{display:flex;align-items:center;gap:5px;flex:0 0 auto;max-width:82px;padding-right:1px}
+.live-delete-ex{width:34px!important;height:34px!important;min-width:34px!important;margin:0!important;box-sizing:border-box!important}
+.connected-live-card .combined-series-head{padding-right:1px}
+/* Pause timer is a body-level fixed dock. */
+#restBar{position:fixed!important;left:0!important;right:0!important;bottom:0!important;width:100vw!important;max-width:none!important;
+ border-radius:18px 18px 0 0!important;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;z-index:2147483000!important;margin:0!important}
+#livePage{padding-bottom:150px!important}
+/* Week */
+.week-scheduled{background:color-mix(in srgb,#b7a4d8 24%,var(--surface))!important;border-color:#b7a4d8!important}
+.week-running{background:color-mix(in srgb,#b7a4d8 38%,var(--surface))!important;border-color:#9b86ba!important;box-shadow:inset 0 0 0 1px rgba(183,164,216,.3)!important}
+.week-running-label{font-size:10px;font-weight:900;color:#c8b5e5;margin-top:4px}
+.week-play{background:#5f526e!important;color:#fff!important;border:1px solid rgba(255,255,255,.28)!important}
+html[data-theme="light"] .week-play{background:#665675!important;color:#fff!important}
+.week-order-badge{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#b7a4d8;color:#251f2c;font-weight:900;font-size:11px}
+/* Stable food search / quantity entry */
+.food-search-sticky{position:sticky;top:-1px;z-index:8;background:var(--surface);padding:2px 0 8px}
+.food-results-scroll{min-height:220px}
+.food-quick-portions.v68{grid-template-columns:repeat(4,1fr)!important}
+.food-quick-portions.v68 button{min-width:0}
+.preview-exact .live-card-actions,.preview-exact [data-add-set],.preview-exact [data-add-group-set],
+.preview-exact .remove-mini,.preview-exact .set-check,.preview-exact .time-play{display:none!important}
+.preview-exact input{pointer-events:none!important}
+</style>
+
+<style id="v69-final-ui">
+/* Calm light mode: one muted grey/lilac language, dark typography. */
+html[data-theme="light"]{
+ --bg:#d9d9de!important;
+ --surface:#e1e0e4!important;
+ --surface2:#d0cfd5!important;
+ --line:rgba(48,45,54,.12)!important;
+ --text:#343139!important;
+ --muted:#74717a!important;
+ --danger:#a34a53!important;
+}
+html[data-theme="light"],html[data-theme="light"] body{background:#d9d9de!important;color:#343139!important}
+html[data-theme="light"] body{background:linear-gradient(180deg,#dcdbdf,#d5d5da)!important}
+html[data-theme="light"] .page,html[data-theme="light"] .tab-screen{background:#d9d9de!important;color:#343139!important}
+html[data-theme="light"] .page-top,html[data-theme="light"] .nav{background:#d5d4d9!important;color:#343139!important}
+html[data-theme="light"] .card,html[data-theme="light"] .exercise-card,html[data-theme="light"] .plan-card,
+html[data-theme="light"] .week-card,html[data-theme="light"] .settings-card,html[data-theme="light"] .method-card,
+html[data-theme="light"] .sheet,html[data-theme="light"] .daily-track-card,html[data-theme="light"] .nutrition-target-card,
+html[data-theme="light"] .drink-card,html[data-theme="light"] .group-round{
+ background:#e1e0e4!important;color:#343139!important;border-color:rgba(48,45,54,.11)!important;
+ box-shadow:0 5px 16px rgba(45,42,50,.045)!important
+}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn{
+ background:#a99db8!important;color:#2c2731!important;border-color:#a99db8!important
+}
+html[data-theme="light"] .secondary,html[data-theme="light"] .icon-btn,html[data-theme="light"] .text-action{
+ background:#d1d0d5!important;color:#39363e!important;border-color:rgba(48,45,54,.11)!important
+}
+html[data-theme="light"] .small,html[data-theme="light"] small,html[data-theme="light"] .goal-line,
+html[data-theme="light"] .prescription,html[data-theme="light"] .method-help,html[data-theme="light"] .variant-line,
+html[data-theme="light"] .note-line{color:#74717a!important}
+html[data-theme="light"] .exercise-title-link,html[data-theme="light"] .combined-name,
+html[data-theme="light"] .week-menu,html[data-theme="light"] strong,html[data-theme="light"] h1,html[data-theme="light"] h2{
+ color:#343139!important
+}
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea,html[data-theme="light"] .field{
+ background:#d2d1d6!important;color:#343139!important;border-color:rgba(48,45,54,.12)!important
+}
+html[data-theme="light"] input::placeholder,html[data-theme="light"] textarea::placeholder{color:#817e86!important}
+html[data-theme="light"] .chip{background:#d2d1d6!important;color:#67636d!important;border-color:rgba(48,45,54,.09)!important}
+html[data-theme="light"] .chip.active{background:#b3a7c0!important;color:#302a35!important;border-color:#b3a7c0!important}
+/* Keep status colours only where they have meaning. */
+html[data-theme="light"] .week-completed{background:rgba(91,166,111,.15)!important;border-color:#75b985!important}
+html[data-theme="light"] .week-completed strong,html[data-theme="light"] .week-completed small{color:#3e4b41!important}
+
+/* Only current exercise / current connected card is method-coloured. */
+.method-card .set-row:has(.set-check.done),.method-card .time-row:has(.set-check.done),
+.method-card .advanced-row:has(.set-check.done),.method-card .combined-member-row:has(.set-check.done),
+.method-card .group-ex-row:has(.set-check.done),.method-card .group-round:has(.set-check.done){
+ background:transparent!important;border-color:transparent!important
+}
+.live-exercise-card{background:var(--surface)!important}
+.live-exercise-card.active-live-exercise:not(.live-method-complete){
+ background:color-mix(in srgb,var(--method) 22%,var(--surface))!important
+}
+.live-exercise-card.live-method-complete{background:var(--surface)!important}
+/* Delete/Edit never leave method-card bounds. */
+.live-exercise-card{overflow:hidden!important;box-sizing:border-box!important}
+.live-card-head,.combined-series-head{min-width:0!important}
+.live-card-actions{display:flex!important;align-items:center!important;gap:5px!important;flex:0 0 auto!important;max-width:78px!important;padding-right:2px!important}
+.live-card-actions>*{box-sizing:border-box!important;flex:0 0 34px!important;width:34px!important;min-width:34px!important;height:34px!important;margin:0!important}
+.live-delete-ex{position:static!important;right:auto!important;transform:none!important}
+
+/* Pause dock: actual bottom edge, centered to app width on iPad. */
+#restBar{
+ position:fixed!important;top:auto!important;bottom:0!important;left:50%!important;right:auto!important;
+ transform:translateX(-50%)!important;width:min(100%,var(--max))!important;max-width:var(--max)!important;
+ margin:0!important;z-index:2147483000!important;border-radius:18px 18px 0 0!important;
+ padding:12px 14px calc(12px + env(safe-area-inset-bottom))!important;
+ box-shadow:0 -8px 26px rgba(0,0,0,.25)!important
+}
+#livePage{padding-bottom:150px!important}
+
+/* Week */
+.week-scheduled{background:color-mix(in srgb,#b7a4d8 24%,var(--surface))!important;border-color:#b7a4d8!important}
+.week-running{background:color-mix(in srgb,#b7a4d8 34%,var(--surface))!important;border-color:#9c88b7!important}
+.week-running-label{font-size:10px;font-weight:900;color:#b9a6d2;margin-top:4px}
+.week-play{background:#51475d!important;color:#fff!important;border:1px solid rgba(255,255,255,.22)!important}
+html[data-theme="light"] .week-play{background:#5d5367!important;color:#fff!important}
+.week-order-badge{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#b7a4d8;color:#28222e;font-size:11px;font-weight:900}
+
+/* Food search is stable; only results scroll/reduce. */
+.food-search-sticky{position:sticky!important;top:-1px!important;z-index:20!important;background:var(--surface)!important;padding:2px 0 9px!important}
+#v69FoodRows{min-height:240px}
+.food-quick-portions.v69{grid-template-columns:repeat(4,1fr)!important}
+
+/* Preview same cards, but no interaction. */
+.preview-exact .live-card-actions,.preview-exact [data-add-set],.preview-exact [data-add-group-set],
+.preview-exact .remove-mini,.preview-exact .set-check,.preview-exact .time-play{display:none!important}
+.preview-exact input,.preview-exact button{pointer-events:none}
+.preview-exact [data-live-detail]{pointer-events:auto!important}
+</style>
+
+<style id="v70-recurring-week">
+.week-repeat-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:900;color:var(--muted);margin-left:5px}
+.repeat-config{display:grid;gap:10px;margin:12px 0;padding:11px;border:1px solid var(--line);border-radius:13px;background:var(--surface2)}
+.repeat-config .grid2{gap:8px}
+.repeat-choice-line{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.repeat-rule-note{font-size:9px;line-height:1.35;color:var(--muted)}
+</style>
+
+<style id="rethink-v31-final">
+:root{
+  --v31-lilac:#b7a4d8;
+  --v31-lilac-soft:#cbbde2;
+  --v31-running-bg:#c7b5df;
+  --v31-running-border:#a58fc4;
+  --v31-running-text:#17131c;
+}
+/* Important action buttons in LIGHT MODE speak one visual language. */
+html[data-theme="light"] .primary,
+html[data-theme="light"] .plus-btn,
+html[data-theme="light"] .picker-quick-add,
+html[data-theme="light"] .daily-white-plus,
+html[data-theme="light"] .week-plus:not(.week-play),
+html[data-theme="light"] .food-add-btn,
+html[data-theme="light"] .meal-add-btn{
+  background:var(--v31-lilac)!important;
+  border-color:var(--v31-lilac)!important;
+  color:#241f2a!important;
+}
+/* Active workout card on Training tab: lilac in BOTH themes, black copy. */
+.active-workout-card{
+  background:var(--v31-running-bg)!important;
+  border-color:var(--v31-running-border)!important;
+  box-shadow:0 0 0 1px rgba(77,58,102,.09) inset!important;
+}
+.active-workout-card .active-resume-area,
+.active-workout-card .active-kicker,
+.active-workout-card .active-name,
+.active-workout-card .active-meta,
+.active-workout-card .active-time,
+.active-workout-card .active-current{
+  color:var(--v31-running-text)!important;
+}
+/* Week running card: same lilac in BOTH themes and black typography.
+   Its action buttons intentionally keep their existing darker button tone. */
+.week-running{
+  background:var(--v31-running-bg)!important;
+  border-color:var(--v31-running-border)!important;
+  box-shadow:inset 0 0 0 1px rgba(77,58,102,.10)!important;
+}
+.week-running .week-card-main,
+.week-running .week-card-date,
+.week-running strong,
+.week-running small,
+.week-running .week-running-label{
+  color:var(--v31-running-text)!important;
+}
+/* Keep week-running action buttons at their existing action colour. */
+.week-running .week-play{
+  background:#51475d!important;
+  border-color:rgba(255,255,255,.22)!important;
+  color:#fff!important;
+}
+html[data-theme="light"] .week-running .week-play{
+  background:#5d5367!important;
+  color:#fff!important;
+}
+</style>
+
+<style id="rethink-v31-tabstate-controls">
+/* DARK MODE: Settings is an important action and therefore lilac. */
+html[data-theme="dark"] #settingsBtn{
+  background:#b7a4d8!important;
+  border-color:#b7a4d8!important;
+  color:#241f2a!important;
+}
+/* Measurements is a neutral utility action, not a lilac primary action. */
+html[data-theme="dark"] #addMeasurementBtn{
+  background:#fff!important;
+  border-color:#fff!important;
+  color:#111!important;
+}
+html[data-theme="light"] #addMeasurementBtn{
+  background:var(--surface2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+</style>
+
+<style id="rethink-v31-state-keyboard-polish">
+html[data-theme="dark"] #settingsBtn,
+:root:not([data-theme="light"]) #settingsBtn{
+  background:var(--surface)!important;
+  border:1px solid var(--line)!important;
+  color:#fff!important;
+}
+#addMeasurementBtn{
+  background:#fff!important;
+  border-color:#fff!important;
+  color:#111!important;
+}
+html[data-theme="light"] #addMeasurementBtn{
+  background:var(--surface2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+.sheet-top{padding-bottom:3px!important}
+.sheet-body{padding-top:6px!important}
+.sheet-body>.search:first-child,
+.sheet-body>.plan-picker-tools:first-child,
+.sheet-body>.food-search-sticky:first-child{
+  margin-top:0!important;
+}
+.plan-picker-tools{padding-top:0!important;margin-top:0!important}
+.plan-picker-tools .search,
+.food-search-sticky .search{
+  margin-top:0!important;
+  margin-bottom:6px!important;
+}
+.repeat-config{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.repeat-config .repeat-choice-line{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  align-items:stretch!important;
+  gap:6px!important;
+}
+.repeat-config .field,
+.repeat-config input,
+.repeat-config select{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+.repeat-config input[type="date"]{
+  -webkit-appearance:none;
+  appearance:none;
+  display:block!important;
+}
+.repeat-config .form-field{min-width:0!important;margin-bottom:7px!important}
+.sheet-body input:focus,
+.sheet-body textarea:focus,
+.sheet-body select:focus{
+  scroll-margin-bottom:22px;
+  scroll-margin-top:12px;
+}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
@@ -893,7 +1200,7 @@ let plans=[],customExercises=[],history=[],measurements=[],nutrition={},profile=
 let currentTab="training",tabScroll={exercises:0,plans:0,training:0,week:0,profile:0},pageStack=[],currentExercise=null,currentPlan=null,pendingStartPlan=null,restTimer=null,restEnd=0,clockTimer=null,timeSetTimers=new Map(),audioCtx=null;
 let sheetStack=[],exerciseDetailReturn=null,ratingTarget=null;
 const WEEK_VIEW_OFFSET_KEY="rethink_week_view_offset",PROFILE_DAY_OFFSET_KEY="rethink_profile_day_offset";
-let weekOffset=Math.max(-2,Math.min(2,Number(localStorage.getItem(WEEK_VIEW_OFFSET_KEY)||0))),editorDirty=false,editorOriginalSnapshot="",livePlanEdited=false;
+let weekOffset=Math.max(-104,Math.min(104,Number(localStorage.getItem(WEEK_VIEW_OFFSET_KEY)||0))),editorDirty=false,editorOriginalSnapshot="",livePlanEdited=false;
 
 function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1500)}
 function ensureAudio(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}catch{return null}}
@@ -906,7 +1213,7 @@ function mondayOf(date=new Date()){const d=new Date(date);const day=(d.getDay()+
 function weekKeyForOffset(offset=weekOffset){const d=mondayOf();d.setDate(d.getDate()+offset*7);return d.toISOString().slice(0,10)}
 function loadDatedWeeks(){return read(WEEK_DATED_KEY,{})||{}}
 function saveCurrentWeekRefs(){const all=loadDatedWeeks();all[weekKeyForOffset()]=weekPlan;write(WEEK_DATED_KEY,all)}
-function loadWeekOffset(offset){weekOffset=Math.max(-2,Math.min(2,offset));localStorage.setItem(WEEK_VIEW_OFFSET_KEY,String(weekOffset));const all=loadDatedWeeks();weekPlan=all[weekKeyForOffset()]||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]));renderWeek()}
+function loadWeekOffset(offset){weekOffset=Math.max(-104,Math.min(104,offset));localStorage.setItem(WEEK_VIEW_OFFSET_KEY,String(weekOffset));const all=loadDatedWeeks();weekPlan=all[weekKeyForOffset()]||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]));renderWeek()}
 function weekDateAt(day,offset=weekOffset){const d=mondayOf();d.setDate(d.getDate()+offset*7+day);return d}
 function fmtShortDate(d){return d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}
 function markEditorDirty(){editorDirty=true;persistUI()}
@@ -988,8 +1295,8 @@ function validateDraftCollection(drafts,method,target){
  if(groupMethod(method)&&drafts.some(x=>x.setTechnique!==method))return"Alle Übungen der Serie müssen dieselbe Zielmethode verwenden.";
  return""
 }
-function normEx(x){const e=clone(x||{});e.name=e.name||"Übung";e.category=e.category||"Körpergewicht";e.muscles=Array.isArray(e.muscles)&&e.muscles.length?e.muscles:[e.subcategory||"Ganzkörper"];e.tracking=e.tracking||"reps";return e}
-function normPlanEx(e){const x=normEx(e),legacyAmrap=x.setTechnique==="amrap";x.setTechnique=x.setTechnique==="normal"||legacyAmrap?"standard":(x.setTechnique||"standard");x.measureMode=x.measureMode||((x.tracking||"").includes("time")?"time":"reps");x.reps=legacyAmrap&&x.measureMode!=="time"?"AMRAP":(x.reps||x.targetRepRange||defaultRepsForMethod(x.setTechnique));x.sets=Math.max(1,Number(x.sets)||3);x.rest=Number.isFinite(Number(x.rest))?Number(x.rest):90;x.methodData=x.methodData||{};x.note=x.note||"";x.variant=x.variant||"";x.perSide=!!x.perSide;x.linkedExerciseNames=Array.isArray(x.linkedExerciseNames)?x.linkedExerciseNames:[];return x}
+function normEx(x){const e=clone(x||{});e.name=e.name||"Übung";e.category=e.category||"Körpergewicht";e.muscles=Array.isArray(e.muscles)&&e.muscles.length?e.muscles:[e.subcategory||"Ganzkörper"];e.tracking=e.tracking||"reps";if(Array.isArray(e.variants))e.variants=[...new Set(e.variants.map(v=>String(v||"").trim()).filter(v=>v&&v.toLowerCase()!=="standard"))];return e}
+function normPlanEx(e){const x=normEx(e),legacyAmrap=x.setTechnique==="amrap";x.variant=(String(x.variant||"").trim().toLowerCase()==="standard"?"":String(x.variant||"").trim());x.setTechnique=x.setTechnique==="normal"||legacyAmrap?"standard":(x.setTechnique||"standard");x.measureMode=x.measureMode||((x.tracking||"").includes("time")?"time":"reps");x.reps=legacyAmrap&&x.measureMode!=="time"?"AMRAP":(x.reps||x.targetRepRange||defaultRepsForMethod(x.setTechnique));x.sets=Math.max(1,Number(x.sets)||3);x.rest=Number.isFinite(Number(x.rest))?Number(x.rest):90;x.methodData=x.methodData||{};x.note=x.note||"";x.variant=String(x.variant||"").toLowerCase()==="standard"?"":(x.variant||"");x.perSide=!!x.perSide;x.linkedExerciseNames=Array.isArray(x.linkedExerciseNames)?x.linkedExerciseNames:[];return x}
 function normPlan(p){return{id:p.id||uid(),name:p.name||"Trainingsplan",createdAt:p.createdAt||Date.now(),updatedAt:p.updatedAt||Date.now(),lastUsedAt:Number(p.lastUsedAt)||0,exercises:(p.exercises||[]).map(normPlanEx)}}
 function allExercises(){const hidden=new Set((read(STORAGE.library,{hidden:[]}).hidden||[])),map=new Map(DEFAULT_EXERCISES.filter(x=>!hidden.has(x.name)).map(x=>[x.name.toLowerCase(),normEx(x)]));customExercises.forEach(x=>{const e=normEx(typeof x==="string"?{name:x,custom:true}:x);e.custom=true;map.set(e.name.toLowerCase(),e)});return[...map.values()].sort((a,b)=>a.name.localeCompare(b.name,"de"))}
 function findExercise(n){return allExercises().find(x=>x.name===n)||normEx({name:n})}
@@ -1014,8 +1321,12 @@ function amrapText(v){const s=String(v||"");return s.toUpperCase().includes("AMR
 function estimateMinutes(p){let sec=0;(p.exercises||[]).forEach(e=>{const sets=Number(e.sets)||3;if(e.measureMode==="time")sec+=sets*(Number(e.timeSeconds)||300);else sec+=sets*45;sec+=Math.max(0,sets-1)*(Number(e.rest)||90)});return Math.max(1,Math.round(sec/60))}
 function persistUI(){
  const visible=document.querySelector(".page:not(.hidden)");
+ captureTabUiState(currentTab);
  const state={
-  tab:currentTab,tabScroll,page:visible?.id||null,pageScroll:visible?.scrollTop||0,
+  tab:currentTab,tabScroll,tabUiState:clone(tabUiState),
+  exerciseFilters:{type:exType,muscles:[...exMuscles]},
+  plansQuickEdit:!!plansQuickEdit,
+  page:visible?.id||null,pageScroll:visible?.scrollTop||0,
   currentPlan:currentPlan?clone(currentPlan):null,
   currentExerciseName:$("exerciseDetailPage")&&!$("exerciseDetailPage").classList.contains("hidden")?$("exerciseDetailTitle").textContent:null,
   pendingStartPlanId:pendingStartPlan?.id||pendingStartPlan||null
@@ -1026,20 +1337,34 @@ const SESSION_MARKER="rethink_session_alive_v1";
 function restoreUI(){
  const sameSession=sessionStorage.getItem(SESSION_MARKER)==="1";
  sessionStorage.setItem(SESSION_MARKER,"1");
- // Active workout always wins on a true launch/reload and starts at its priority card.
+ // A true process/PWA restart always resets Profile's viewed day to Today,
+ // even when an active workout takes launch priority.
+ if(!sameSession){profileDayOffset=0;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,"0")}
+ // Active workout always wins on launch/reload and starts at its priority card.
  if(activeWorkout){currentTab="training";showTab("training",{reset:true});requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"auto"}));return}
  // A fully closed/new PWA session starts on Training.
- if(!sameSession){currentTab="training";showTab("training",{reset:true});return}
+ if(!sameSession){
+  currentTab="training";showTab("training",{reset:true});return
+ }
  // While the app remains open, preserve the user's last editing/view state.
  const s=read(UI_KEY,null);if(!s){showTab("training",{reset:true});return}
- tabScroll=Object.assign(tabScroll,s.tabScroll||{});currentTab=s.tab||"training";showTab(currentTab);
+ tabScroll=Object.assign(tabScroll,s.tabScroll||{});
+ if(s.tabUiState&&typeof s.tabUiState==="object"){
+   Object.keys(tabUiState).forEach(k=>{if(s.tabUiState[k])tabUiState[k]=s.tabUiState[k]})
+ }
+ if(s.exerciseFilters){
+   exType=s.exerciseFilters.type||"Alle";
+   exMuscles=new Set(Array.isArray(s.exerciseFilters.muscles)?s.exerciseFilters.muscles:[])
+ }
+ plansQuickEdit=!!s.plansQuickEdit;
+ currentTab=s.tab||"training";showTab(currentTab);
  if(s.page==="planEditorPage"&&s.currentPlan){currentPlan=s.currentPlan;setEditorBaseline();openPlanEditor();requestAnimationFrame(()=>{$("planEditorPage").scrollTop=s.pageScroll||0})}
  else if(s.page==="previewPage"&&s.currentPlan){currentPlan=s.currentPlan;openPreview(currentPlan);requestAnimationFrame(()=>{$("previewPage").scrollTop=s.pageScroll||0})}
  else if(s.page==="settingsPage"){openSettingsPage();requestAnimationFrame(()=>{$("settingsPage").scrollTop=s.pageScroll||0})}
  else if(s.page==="exerciseDetailPage"&&s.currentExerciseName){const found=allExercises().find(x=>x.name===s.currentExerciseName);if(found){openExerciseDetail(found.name);requestAnimationFrame(()=>{$("exerciseDetailPage").scrollTop=s.pageScroll||0})}}
  else if(s.page==="preStartPage"&&s.pendingStartPlanId){const p=plans.find(x=>String(x.id)===String(s.pendingStartPlanId));if(p){openPreStart(p.id);requestAnimationFrame(()=>{$("preStartPage").scrollTop=s.pageScroll||0})}}
 }
-let profileDayOffset=Number(localStorage.getItem(PROFILE_DAY_OFFSET_KEY)||0);
+let profileDayOffset=0;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,"0");
 function profileDate(offset=profileDayOffset){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d}
 function profileDateKey(offset=profileDayOffset){const d=profileDate(offset);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
 function profileDayLabel(){if(profileDayOffset===0)return"Heute";if(profileDayOffset===-1)return"Gestern";if(profileDayOffset===1)return"Morgen";return profileDate().toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})}
@@ -1157,18 +1482,149 @@ function ensureDrinks(){
 }
 function touchInput(el){if(el)el.dataset.touched="1"}
 function loadData(){plans=(read(STORAGE.plans,[])||[]).map(normPlan);customExercises=read(STORAGE.custom,[])||[];history=(read(STORAGE.history,[])||[]).map(w=>({...w,exercises:(w.exercises||[]).map(e=>{const liveSets=e.liveSets;const n=normPlanEx(e);if(liveSets)n.liveSets=liveSets;return n})}));measurements=read(STORAGE.measurements,[])||[];nutrition=read(STORAGE.nutrition,{calories:"",protein:"",hydration:0})||{};profile=read(STORAGE.profile,{})||{};activeWorkout=read(STORAGE.active,null);if(activeWorkout?.exercises)activeWorkout.exercises=activeWorkout.exercises.map(e=>{const liveSets=e.liveSets;const n=normPlanEx(e);if(liveSets)n.liveSets=liveSets;return n});{const dated=loadDatedWeeks()[weekKeyForOffset(0)];weekPlan=dated||read(WEEK_KEY,[[],[],[],[],[],[],[]])||[[],[],[],[],[],[],[]]}if(!Array.isArray(weekPlan)||weekPlan.length!==7)weekPlan=[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x.filter(id=>plans.some(p=>String(p.id)===String(id))):(x!=null&&plans.some(p=>String(p.id)===String(x))?[x]:[]))}
-function showTab(name,{reset=false}={}){tabScroll[currentTab]=window.scrollY||0;document.querySelectorAll(".tab-screen").forEach(x=>x.classList.add("hidden"));$("tab-"+name).classList.remove("hidden");currentTab=name;document.querySelectorAll("#bottomNav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));renderTab(name);requestAnimationFrame(()=>window.scrollTo({top:reset?0:(tabScroll[name]||0),behavior:"auto"}));persistUI()}
+const tabUiState={
+ exercises:{},plans:{},training:{},week:{},profile:{}
+};
+const tabVisited={exercises:false,plans:false,training:false,week:false,profile:false};
+
+function captureTabUiState(name=currentTab){
+ const tab=$("tab-"+name);if(!tab)return;
+ const s=tabUiState[name]||(tabUiState[name]={});
+ s.scroll=Math.max(Number(window.scrollY||0),Number(document.scrollingElement?.scrollTop||0));
+ s.horizontal={};
+ tab.querySelectorAll(".chips,[data-preserve-hscroll]").forEach((el,i)=>{
+   s.horizontal[el.id||`idx_${i}`]=Number(el.scrollLeft||0)
+ });
+ s.details={};
+ tab.querySelectorAll("details").forEach((el,i)=>{
+   s.details[el.id||`idx_${i}`]=!!el.open
+ });
+ // Preserve text/search inputs that belong directly to the tab.
+ s.inputs={};
+ tab.querySelectorAll("input,textarea,select").forEach((el,i)=>{
+   const key=el.id||`idx_${i}`;
+   if(el.type==="checkbox"||el.type==="radio")s.inputs[key]={checked:!!el.checked};
+   else s.inputs[key]={value:el.value}
+ })
+}
+
+function restoreTabUiState(name,{scroll=true}={}){
+ const tab=$("tab-"+name),s=tabUiState[name];if(!tab||!s)return;
+ if(s.inputs){
+   tab.querySelectorAll("input,textarea,select").forEach((el,i)=>{
+     const key=el.id||`idx_${i}`,v=s.inputs[key];if(!v)return;
+     if("checked" in v&&(el.type==="checkbox"||el.type==="radio"))el.checked=!!v.checked;
+     else if("value" in v&&document.activeElement!==el)el.value=v.value
+   })
+ }
+ if(s.details){
+   tab.querySelectorAll("details").forEach((el,i)=>{
+     const key=el.id||`idx_${i}`;if(Object.prototype.hasOwnProperty.call(s.details,key))el.open=!!s.details[key]
+   })
+ }
+ if(s.horizontal){
+   tab.querySelectorAll(".chips,[data-preserve-hscroll]").forEach((el,i)=>{
+     const key=el.id||`idx_${i}`;if(Object.prototype.hasOwnProperty.call(s.horizontal,key))el.scrollLeft=Number(s.horizontal[key])||0
+   })
+ }
+ if(scroll){
+   const y=Number(s.scroll??tabScroll[name]??0)||0;
+   try{window.scrollTo({top:y,left:0,behavior:"auto"})}catch{window.scrollTo(0,y)}
+   const doc=document.scrollingElement||document.documentElement;if(doc)doc.scrollTop=y;
+   tabScroll[name]=y
+ }
+}
+
+function showTab(name,{reset=false,forceRender=false}={}){
+ if(currentTab)captureTabUiState(currentTab);
+ document.querySelectorAll(".tab-screen").forEach(x=>x.classList.add("hidden"));
+ $("tab-"+name).classList.remove("hidden");
+ currentTab=name;
+ document.querySelectorAll("#bottomNav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
+
+ // Normal tab switching keeps the existing DOM and all user choices.
+ // Render only on first visit, explicit reset, or explicit data refresh.
+ if(!tabVisited[name]||reset||forceRender){
+   renderTab(name);
+   tabVisited[name]=true
+ }
+
+ requestAnimationFrame(()=>{
+   if(reset){
+     try{window.scrollTo({top:0,left:0,behavior:"auto"})}catch{window.scrollTo(0,0)}
+     tabScroll[name]=0
+   }else{
+     restoreTabUiState(name,{scroll:true});
+     // A second pass catches layouts whose width settles one frame later.
+     setTimeout(()=>restoreTabUiState(name,{scroll:true}),35)
+   }
+ });
+ persistUI()
+}
 function resetTabToStandard(name){
- // A deliberate tab tap means: close transient tasks/sheets and show the canonical tab screen.
  document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];sheetStack=[];$("sheetWrap")?.classList.add("hidden");exerciseDetailReturn=null;$("bottomNav").classList.remove("hidden");
  const a=document.activeElement;if(a&&["INPUT","TEXTAREA","SELECT"].includes(a.tagName))a.blur();
  if(name==="exercises"){exType="Alle";exMuscles.clear();exercisePickerState={q:"",type:"Alle",muscles:[]};const s=$("exerciseSearch");if(s)s.value=""}
  if(name==="plans"){plansQuickEdit=false;document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
  if(name==="training"){document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
- if(name==="week"){document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
+ if(name==="week"){saveCurrentWeekRefs();weekOffset=0;localStorage.setItem(WEEK_VIEW_OFFSET_KEY,"0");const all=loadDatedWeeks();weekPlan=all[weekKeyForOffset(0)]||read(WEEK_KEY,[[],[],[],[],[],[],[]])||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]));document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
+ if(name==="profile"){profileDayOffset=0;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,"0")}
  tabScroll[name]=0
 }
-document.querySelectorAll("#bottomNav button").forEach(b=>b.onclick=()=>{showTab(b.dataset.tab,{reset:false})});
+function mainScrollTop(){
+ const el=document.scrollingElement||document.documentElement;
+ return Math.max(Number(el?.scrollTop||0),Number(document.body?.scrollTop||0),Number(window.scrollY||0))
+}
+function forceTabTop(name){
+ const el=document.scrollingElement||document.documentElement;
+ try{window.scrollTo({top:0,left:0,behavior:"auto"})}catch{window.scrollTo(0,0)}
+ if(el)el.scrollTop=0;
+ if(document.documentElement)document.documentElement.scrollTop=0;
+ if(document.body)document.body.scrollTop=0;
+ const tab=$("tab-"+name);if(tab)tab.scrollTop=0;
+ tabScroll[name]=0
+}
+function resetExerciseFilterRibbonScroll(){
+ const type=$("typeChips"),muscle=$("muscleChips");
+ if(type)type.scrollLeft=0;
+ if(muscle)muscle.scrollLeft=0
+}
+document.querySelectorAll("#bottomNav button").forEach(b=>b.onclick=()=>{
+ const name=b.dataset.tab;
+ const subPage=!!document.querySelector(".page:not(.hidden)");
+ const isCurrent=currentTab===name&&!subPage;
+
+ // Switching to another tab restores exactly the state in which it was left.
+ if(!isCurrent){
+   // showTab() captures the outgoing tab and restores the target tab.
+   // Nothing is reset on a normal switch.
+   showTab(name,{reset:false});
+   return
+ }
+
+ // First tap on the active tab while scrolled: only move to the top.
+ if(mainScrollTop()>8){
+   forceTabTop(name);
+   if(tabUiState[name])tabUiState[name].scroll=0;
+   persistUI();
+   return
+ }
+
+ // Second tap while already at top: deliberate reset of this tab.
+ resetTabToStandard(name);
+ showTab(name,{reset:true,forceRender:true});
+ requestAnimationFrame(()=>{
+   forceTabTop(name);
+   if(name==="exercises")resetExerciseFilterRibbonScroll();
+   // Reset saved UI snapshot too, otherwise an old horizontal position could return.
+   tabUiState[name]={scroll:0,horizontal:{},details:{},inputs:{}};
+   captureTabUiState(name);
+   setTimeout(()=>{
+     forceTabTop(name);
+     if(name==="exercises")resetExerciseFilterRibbonScroll()
+   },40)
+ })
+});
 function openPage(id,render){$(id)?.classList.add("keyboard-safe");
  const visible=document.querySelector(".page:not(.hidden)");
  if(visible)pageStack.push({page:visible.id,scroll:visible.scrollTop||0});
@@ -1213,7 +1669,13 @@ window.addEventListener("pagehide",()=>{saveAll();persistUI()});
 
 function renderTab(n){if(n==="exercises")renderExerciseLibrary();if(n==="plans")renderPlans();if(n==="training")renderTrainingHome();if(n==="week")renderWeek();if(n==="profile")renderProfile()}
 
-let exType="Alle",exMuscles=new Set(),planSort={key:"updated",dir:1};
+const PLAN_SORT_KEY="rethink_plan_sort_v31";
+const storedPlanSort=read(PLAN_SORT_KEY,{key:"name",dir:1});
+let exType="Alle",exMuscles=new Set(),planSort={
+ key:["name","created","updated","used"].includes(storedPlanSort?.key)?storedPlanSort.key:"name",
+ dir:Number(storedPlanSort?.dir)===-1?-1:1
+};
+function savePlanSort(){write(PLAN_SORT_KEY,planSort)}
 function exerciseLastUsedAt(name){
  let t=0;
  history.forEach(w=>{(w.exercises||[]).forEach(e=>{if(e.name===name)t=Math.max(t,Number(w.finishedAt||w.startedAt||0))})});
@@ -1252,6 +1714,8 @@ function orderedExerciseTypes(all){
  return ["Alle",...EXERCISE_CATEGORY_ORDER.filter(x=>present.includes(x)),...present.filter(x=>!EXERCISE_CATEGORY_ORDER.includes(x)).sort((a,b)=>a.localeCompare(b,"de"))]
 }
 function renderExerciseLibrary(){
+ const oldTypeScroll=Number($("typeChips")?.scrollLeft||tabUiState.exercises?.horizontal?.typeChips||0);
+ const oldMuscleScroll=Number($("muscleChips")?.scrollLeft||tabUiState.exercises?.horizontal?.muscleChips||0);
  const all=allExercises(),types=orderedExerciseTypes(all),muscles=orderedMuscles(all);
  $("typeChips").innerHTML=types.map(x=>`<button class="chip ${exType===x?"active":""}" data-type="${esc(x)}">${esc(x)}</button>`).join("");
  $("muscleChips").innerHTML=muscles.map(x=>`<button class="chip ${(x==="Alle"&&!exMuscles.size)||exMuscles.has(x)?"active":""}" data-muscle="${esc(x)}">${esc(x)}</button>`).join("");
@@ -1262,7 +1726,13 @@ function renderExerciseLibrary(){
  $("exerciseList").innerHTML=rows.map(x=>`<button class="exercise-card" data-ex="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${esc(x.category)} · ${esc((x.muscles||[]).join(", "))}</small></div><span class="chev">›</span></button>`).join("");
  document.querySelectorAll("[data-type]").forEach(b=>b.onclick=()=>{exType=(exType===b.dataset.type&&exType!=="Alle")?"Alle":b.dataset.type;renderExerciseLibrary()});
  document.querySelectorAll("[data-muscle]").forEach(b=>b.onclick=()=>{const m=b.dataset.muscle;if(m==="Alle")exMuscles.clear();else exMuscles.has(m)?exMuscles.delete(m):exMuscles.add(m);renderExerciseLibrary()});
- document.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.ex))
+ document.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.ex));
+ requestAnimationFrame(()=>{
+   if($("typeChips"))$("typeChips").scrollLeft=oldTypeScroll;
+   if($("muscleChips"))$("muscleChips").scrollLeft=oldMuscleScroll;
+   tabUiState.exercises=tabUiState.exercises||{};
+   tabUiState.exercises.horizontal={...(tabUiState.exercises.horizontal||{}),typeChips:oldTypeScroll,muscleChips:oldMuscleScroll}
+ })
 }
 $("exerciseSearch").oninput=renderExerciseLibrary;$("clearSearch").onclick=()=>{$("exerciseSearch").value="";$("exerciseSearch").dispatchEvent(new Event("input",{bubbles:true}));$("exerciseSearch").focus()};
 const EXECUTION_GUIDE={"Back Lever":"Hänge mit gestreckten Armen an der Stange oder den Ringen, ziehe die Schulterblätter aktiv nach unten und bringe den Körper kontrolliert rückwärts in eine möglichst gerade, horizontale Linie. Spanne Gesäß und Bauch fest an, halte Hüfte und Knie gestreckt und vermeide ein Durchhängen im unteren Rücken. Halte die Position nur so lange, wie Schulterkontrolle und Körperspannung erhalten bleiben, und löse sie kontrolliert.","Dragon Flag":"Lege dich auf eine Bank, greife hinter dem Kopf fest und hebe Schulterblätter, Becken und Beine als gespannte Einheit an. Senke den gestreckten Körper langsam ab, ohne in der Hüfte einzuknicken oder den unteren Rücken unkontrolliert durchhängen zu lassen. Stoppe knapp vor dem Kontakt und ziehe den Körper aus der Rumpfspannung wieder hoch.","Front Lever":"Hänge im Obergriff, ziehe die Schulterblätter aktiv nach unten und hinten und kippe den gestreckten Körper nach hinten, bis Schulter, Hüfte und Füße möglichst eine horizontale Linie bilden. Halte Arme gestreckt, Rippen unten und Gesäß angespannt. Halte ohne Schwung und kehre kontrolliert in den Hang zurück.","Handstand":"Setze die Hände etwa schulterbreit auf, spreize die Finger und drücke aktiv aus den Schultern nach oben. Bringe Hüfte über Schultern und Hände und richte Beine und Rumpf zu einer langen Linie aus. Balanciere über Fingerdruck und Handballen, halte Bauch und Gesäß angespannt und steige kontrolliert wieder ab.","Handstand Push-Up":"Starte im stabilen Handstand mit aktiven Schultern und gespanntem Rumpf. Beuge die Ellbogen kontrolliert und senke den Kopf zwischen die Hände, ohne die Körperspannung zu verlieren. Drücke den Boden kräftig weg, bis die Arme wieder gestreckt sind.","Hanging Leg Raise":"Hänge stabil mit aktiven Schultern an der Stange. Kippe das Becken nach hinten und hebe die möglichst gestreckten Beine ohne Schwung bis mindestens Hüfthöhe beziehungsweise kontrolliert höher. Senke die Beine langsam ab, ohne ins Hohlkreuz oder Pendeln zu geraten.","Human Flag":"Greife die Stange mit versetzten Händen; die obere Hand zieht, die untere drückt. Spanne Rumpf und Gesäß an und hebe den Körper seitlich in eine möglichst gerade Linie. Halte Schultern aktiv und Hüfte gestreckt und senke kontrolliert ab, sobald die Linie nicht mehr gehalten werden kann.","L-Sit/V-Sit":"Stütze dich mit gestreckten Armen auf Parallettes oder Griffen ab und drücke die Schultern aktiv nach unten. Hebe die gestreckten Beine vor den Körper; für den V-Sit führst du sie weiter nach oben. Halte Knie gestreckt und Rumpf fest und setze die Füße kontrolliert wieder ab.","Muscle-Up":"Starte im aktiven Hang und ziehe dich explosiv mit der Brust zur Stange beziehungsweise zwischen die Ringe. Führe den Oberkörper zügig über die Hände in die Übergangsphase, ohne die Schultern kollabieren zu lassen. Drücke dich anschließend in den stabilen Stütz und kehre kontrolliert zurück.","Pistol Squat":"Stehe auf einem Bein und strecke das freie Bein nach vorn. Beuge Hüfte, Knie und Sprunggelenk des Standbeins kontrolliert, halte die Ferse am Boden und das Knie in Fußrichtung. Gehe so tief wie stabil möglich und drücke dich über den ganzen Fuß wieder hoch.","Planche":"Stütze dich mit gestreckten Armen auf Hände oder Parallettes und schiebe die Schultern deutlich vor die Hände. Runde den oberen Rücken leicht, spanne Bauch und Gesäß an und hebe die Füße vom Boden. Halte den Körper möglichst als feste Linie und beende die Position, bevor Ellbogen oder Schulterkontrolle nachgeben.","Planche Push-Up":"Starte in einer stabilen Planche mit Schultern vor den Händen und festem Rumpf. Beuge die Ellbogen und senke den Körper als Einheit, ohne die Hüfte absinken zu lassen. Drücke dich mit unveränderter Körperlinie wieder in den gestreckten Stütz.","Sissy Squat":"Stehe aufrecht, halte dich bei Bedarf leicht fest und gehe auf die Fußballen. Schiebe die Knie kontrolliert nach vorn, während Hüfte und Oberkörper möglichst gestreckt bleiben und der Körper nach hinten sinkt. Strecke die Knie aus der Vorderseite der Oberschenkel wieder, ohne Schwung zu nutzen.","AirBike":"Stelle den Sitz so ein, dass das Knie unten leicht gebeugt bleibt. Drücke und ziehe die Pedale gleichmäßig und bewege gleichzeitig die Griffe kraftvoll vor und zurück. Halte den Rumpf stabil und steuere die Intensität über Tritt- und Armfrequenz.","CrossTrainer":"Stelle die Füße vollständig auf die Pedale und halte den Oberkörper aufrecht. Führe Beine und bewegliche Griffe in einem gleichmäßigen, fließenden Rhythmus und vermeide seitliches Ausweichen. Passe Widerstand und Frequenz so an, dass die Bewegung ruhig bleibt.","Fahrradergometer":"Stelle den Sattel so ein, dass das Knie am tiefsten Pedalpunkt leicht gebeugt ist. Trete rund und gleichmäßig, halte Knie in Richtung der Füße und den Oberkörper ruhig. Reguliere Belastung über Widerstand und Trittfrequenz, ohne auf dem Sattel zu wippen.","Laufband":"Richte dich auf und lande mit dem Fuß möglichst unter dem Körperschwerpunkt statt weit davor. Halte Schritte gleichmäßig, Arme locker gebeugt und den Blick nach vorn. Passe Tempo und Steigung so an, dass du nicht am Geländer hängen oder die Schrittlänge erzwingen musst.","Ruderergometer":"Starte vorn mit gebeugten Knien, langen Armen und neutralem Rücken. Drücke zuerst kräftig über die Beine, öffne danach die Hüfte und ziehe zuletzt den Griff zum unteren Brustkorb. Auf dem Rückweg gehen zuerst Arme vor, dann kippt der Oberkörper und zuletzt beugen die Knie.","Seilspringen":"Halte Ellbogen nah am Körper und drehe das Seil hauptsächlich aus den Handgelenken. Springe nur so hoch wie nötig über den Fußballen und halte Knie und Hüfte weich. Lande leise und halte einen gleichmäßigen Rhythmus ohne große Armkreise.","Skiergometer":"Starte aufrecht mit hohen Griffen und leicht gebeugten Armen. Ziehe die Griffe durch eine kräftige Rumpf- und Hüftbeugung nach unten, während die Arme die Bewegung beenden. Richte dich kontrolliert wieder auf und führe die Griffe ohne ruckartiges Hochziehen zurück.","StairMaster":"Stelle den ganzen oder überwiegenden Fuß sicher auf die Stufe und halte den Oberkörper aufrecht. Steige gleichmäßig aus Hüfte und Bein, ohne dich dauerhaft auf den Handläufen abzustützen. Wähle eine Geschwindigkeit, bei der Knieachse und Schrittgröße kontrolliert bleiben.","Box Jump":"Starte in einer stabilen athletischen Position. Springe explosiv auf die Box und lande vollständig und leise auf der Oberfläche. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Broad Jump":"Starte in einer stabilen athletischen Position. Springe explosiv nach vorn und nutze die Arme zur Unterstützung. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Clean Pull":"Starte mit der Hantel dicht vor den Schienbeinen, Rücken neutral und Rumpf gespannt. Strecke Beine und Hüfte explosiv und halte die Hantel eng am Körper; ziehe die Schultern am Ende kraftvoll hoch, ohne die Hantel umzusetzen. Senke kontrolliert und setze neu an.","Countermovement Jump":"Starte in einer stabilen athletischen Position. Nutze eine kurze Gegenbewegung und strecke Hüfte, Knie und Sprunggelenk explosiv. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Depth Jump":"Starte in einer stabilen athletischen Position. Steige von der Box herunter, lande kurz und reaktiv und springe unmittelbar wieder explosiv ab. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Half Squat":"Stelle die Füße für Half Squat stabil und richte Knie und Fußspitzen in dieselbe Richtung. Beuge Hüfte und Knie kontrolliert und halte Rumpf sowie Fußsohle stabil. Drücke über den ganzen Fuß nach oben und strecke Hüfte und Knie gemeinsam, ohne die Knie hart durchzuschlagen.","Hang Power Clean":"Starte aus der Hangposition oberhalb der Knie, Rücken neutral und Rumpf gespannt. Beschleunige die Hantel durch explosive Streckung von Hüfte, Knie und Sprunggelenk eng am Körper nach oben. Ziehe dich unter die Hantel und fange sie stabil auf den vorderen Schultern ab, bevor du dich vollständig aufrichtest.","High Pull":"Starte mit der Hantel dicht vor den Schienbeinen und halte die Hantel eng am Körper. Strecke Hüfte, Knie und Sprunggelenke explosiv und führe anschließend die Ellbogen hoch und außen, sodass die Hantel bis etwa Brusthöhe steigt. Fange sie nicht auf, sondern senke kontrolliert zurück.","Jump Squat":"Starte in einer stabilen athletischen Position. Sinke kurz in die Kniebeuge und strecke Hüfte, Knie und Sprunggelenk explosiv zum Absprung. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Kettlebell Swing":"Stehe etwas breiter als hüftbreit und halte die Kettlebell mit beiden Händen. Schiebe die Hüfte nach hinten, lasse die Kugel dicht zwischen die Beine schwingen und strecke die Hüfte anschließend explosiv. Die Arme führen nur; lasse die Kettlebell durch den Hüftimpuls steigen und fange den Rückschwung wieder mit der Hüfte ab.","Landmine Push Press":"Halte die Last auf Schulterhöhe und stehe stabil. Beuge Knie und Hüfte kurz gerade nach unten und strecke die Beine anschließend explosiv, um die Last zu beschleunigen; drücke mit den Armen über Kopf nach. Stabilisiere oben mit gestreckten Armen und senke die Last kontrolliert.","Lateral Bound":"Starte in einer stabilen athletischen Position. Springe seitlich von einem Bein auf das andere und stabilisiere die Landung. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Loaded Jump Squat":"Starte in einer stabilen athletischen Position. Sinke kurz in die Kniebeuge und strecke Hüfte, Knie und Sprunggelenk explosiv zum Absprung. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Medicine Ball Chest Pass":"Halte den Medizinball stabil und richte Füße, Knie und Rumpf für Medicine Ball Chest Pass aus. Beschleunige den Ball explosiv aus Brusthöhe gerade nach vorn, wobei Beine, Hüfte und Rumpf die Bewegung einleiten. Fange beziehungsweise nimm den Ball erst wieder auf, wenn du stabil stehst, und setze jede Wiederholung neu an.","Medicine Ball Overhead Throw":"Halte den Medizinball stabil und richte Füße, Knie und Rumpf für Medicine Ball Overhead Throw aus. Beschleunige den Ball mit gestreckter Hüfte kraftvoll über Kopf nach vorn, wobei Beine, Hüfte und Rumpf die Bewegung einleiten. Fange beziehungsweise nimm den Ball erst wieder auf, wenn du stabil stehst, und setze jede Wiederholung neu an.","Medicine Ball Rotational Throw":"Halte den Medizinball stabil und richte Füße, Knie und Rumpf für Medicine Ball Rotational Throw aus. Beschleunige den Ball aus einer kontrollierten Rumpfrotation seitlich, wobei Beine, Hüfte und Rumpf die Bewegung einleiten. Fange beziehungsweise nimm den Ball erst wieder auf, wenn du stabil stehst, und setze jede Wiederholung neu an.","Medicine Ball Scoop Toss":"Halte den Medizinball stabil und richte Füße, Knie und Rumpf für Medicine Ball Scoop Toss aus. Beschleunige den Ball aus Hüfte und Beinen bogenförmig nach vorn/oben, wobei Beine, Hüfte und Rumpf die Bewegung einleiten. Fange beziehungsweise nimm den Ball erst wieder auf, wenn du stabil stehst, und setze jede Wiederholung neu an.","Medicine Ball Shot Put":"Halte den Medizinball stabil und richte Füße, Knie und Rumpf für Medicine Ball Shot Put aus. Beschleunige den Ball einarmig aus Schulter und Rumpfrotation nach vorn, wobei Beine, Hüfte und Rumpf die Bewegung einleiten. Fange beziehungsweise nimm den Ball erst wieder auf, wenn du stabil stehst, und setze jede Wiederholung neu an.","Medicine Ball Slam":"Halte den Medizinball stabil und richte Füße, Knie und Rumpf für Medicine Ball Slam aus. Beschleunige den Ball über Kopf anheben und kraftvoll vor dir auf den Boden, wobei Beine, Hüfte und Rumpf die Bewegung einleiten. Fange beziehungsweise nimm den Ball erst wieder auf, wenn du stabil stehst, und setze jede Wiederholung neu an.","Pogo Jump":"Starte in einer stabilen athletischen Position. Halte Knie relativ steif und springe reaktiv hauptsächlich aus den Sprunggelenken. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Power Clean":"Starte mit der Hantel dicht vor den Schienbeinen, Rücken neutral und Rumpf gespannt. Beschleunige die Hantel durch explosive Streckung von Hüfte, Knie und Sprunggelenk eng am Körper nach oben. Ziehe dich unter die Hantel und fange sie stabil auf den vorderen Schultern ab, bevor du dich vollständig aufrichtest.","Push Press":"Halte die Last auf Schulterhöhe und stehe stabil. Beuge Knie und Hüfte kurz gerade nach unten und strecke die Beine anschließend explosiv, um die Last zu beschleunigen; drücke mit den Armen über Kopf nach. Stabilisiere oben mit gestreckten Armen und senke die Last kontrolliert.","Repeated Broad Jump":"Starte in einer stabilen athletischen Position. Springe explosiv nach vorn und nutze die Arme zur Unterstützung. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Single-Leg Bound":"Starte in einer stabilen athletischen Position. Springe kontrolliert auf einem Bein nach vorn und stabilisiere jede Landung. Lande mit Knie und Fuß in gleicher Richtung, federe kontrolliert ab und richte dich vor der nächsten Wiederholung neu aus.","Butterfly Machine":"Stabilisiere bei Butterfly Machine Schulterblätter und Rumpf und halte die Ellbogen leicht gebeugt. Führe die Arme in einem weiten Bogen kontrolliert zusammen, ohne die Schultern nach vorn zu schieben. Öffne langsam zurück, bis eine kontrollierte Dehnung der Brust entsteht.","Cable Biceps Curl":"Richte dich für Cable Biceps Curl stabil aus und halte die Oberarme ruhig. Beuge die Ellbogen kontrolliert, bis der Bizeps deutlich verkürzt ist, ohne Schulter oder Oberkörper mitzuschwingen. Senke die Last langsam bis fast zur vollständigen Streckung zurück.","Cable Fly":"Stabilisiere bei Cable Fly Schulterblätter und Rumpf und halte die Ellbogen leicht gebeugt. Führe die Arme in einem weiten Bogen kontrolliert zusammen, ohne die Schultern nach vorn zu schieben. Öffne langsam zurück, bis eine kontrollierte Dehnung der Brust entsteht.","Cable Lateral Raise":"Stehe stabil und halte die Arme bei Cable Lateral Raise leicht gebeugt. Hebe die Arme seitlich kontrolliert bis ungefähr Schulterhöhe, ohne Schwung oder Hochziehen der Schultern. Senke langsam zurück und behalte Spannung bis zur Ausgangsposition.","Cable Row":"Richte dich für Cable Row ein und beginne mit langen Armen. Halte Wirbelsäule und Rumpf stabil. Ziehe die Ellbogen nach hinten und die Schulterblätter kontrolliert zusammen. Strecke die Arme langsam wieder, ohne die Last fallen oder den Oberkörper mitschwingen zu lassen.","Cable Shoulder Rotation":"Positioniere den Oberarm bei Cable Shoulder Rotation stabil am Körper beziehungsweise in der vorgesehenen Schulterposition. Drehe den Oberarm kontrolliert gegen den Widerstand, ohne Ellbogen oder Rumpf ausweichen zu lassen. Kehre langsam zurück und arbeite nur im schmerzfreien Bewegungsumfang.","Cable Triceps Extension":"Stabilisiere bei Cable Triceps Extension Schulter und Oberarm und halte den Rumpf ruhig. Strecke die Ellbogen kontrolliert gegen den Widerstand, ohne die Oberarme mitzubewegen. Kehre langsam in die gebeugte Ausgangsposition zurück.","Calf Machine":"Positioniere die Fußballen sicher auf der Auflage und halte Knie und Hüfte stabil. Drücke die Fersen kontrolliert maximal nach oben und halte kurz die Spannung in den Waden. Senke die Fersen langsam durch den verfügbaren Bewegungsumfang zurück.","Chest Press":"Positioniere dich für Chest Press stabil, ziehe die Schulterblätter nach hinten/unten und halte Füße beziehungsweise Rumpf fest. Senke die Last kontrolliert zur Brust, während Unterarme und Handgelenke möglichst übereinander bleiben. Drücke die Last kraftvoll zurück, ohne die Schultern nach vorn zu verlieren.","Chest Supported Row":"Richte dich für Chest Supported Row ein und beginne mit langen Armen. Halte Brust und Rumpf fest an der Auflage. Ziehe die Ellbogen nach hinten und die Schulterblätter kontrolliert zusammen. Strecke die Arme langsam wieder, ohne die Last fallen oder den Oberkörper mitschwingen zu lassen.","Crunch Machine":"Stelle Sitz und Polster so ein, dass du den Rumpf kontrolliert beugen kannst. Ziehe Rippen und Becken über die Bauchmuskulatur zueinander, ohne nur mit Armen oder Hüfte zu drücken. Kehre langsam in die aufrechte Ausgangsposition zurück.","Hip Abduction Machine":"Sitze stabil mit Becken und Rücken an der Lehne. Drücke die Knie kontrolliert nach außen gegen die Polster, ohne den Oberkörper mitzudrehen. Führe die Beine langsam wieder zusammen und halte die Spannung bis zur Ausgangsposition.","Hip Adduction Machine":"Sitze stabil mit Becken und Rücken an der Lehne. Führe die Beine kontrolliert gegen die Polster nach innen zusammen, ohne das Becken zu verdrehen. Öffne die Beine langsam wieder bis zu einer kontrollierten Dehnung.","Hip Thrust Machine":"Positioniere bei Hip Thrust Machine die Füße so, dass die Knie oben ungefähr über den Fersen stehen. Strecke die Hüfte über die Fersen, spanne das Gesäß an und halte Rippen und Becken kontrolliert, statt ins Hohlkreuz zu gehen. Senke die Hüfte langsam wieder ab.","Lat Pull-Down":"Setze dich stabil unter die Latzugstange und fixiere die Oberschenkel. Ziehe die Schulterblätter nach unten und führe die Ellbogen anschließend Richtung Rippen, bis die Stange kontrolliert zum oberen Brustbereich kommt. Strecke die Arme langsam wieder, ohne die Schultern unkontrolliert hochzuziehen.","Leg Curl":"Richte das Knie zur Maschinenachse aus und positioniere das Polster knapp oberhalb der Ferse. Beuge die Knie kontrolliert und ziehe das Polster Richtung Gesäß, ohne Hüfte oder Rücken auszuweichen. Strecke die Knie langsam wieder, ohne die Gewichte abfallen zu lassen.","Leg Extension":"Richte Kniegelenk und Drehachse der Maschine aus und fixiere den Oberkörper. Strecke die Knie kontrolliert gegen das Polster, ohne Schwung zu holen. Senke die Last langsam zurück, bis die Knie wieder deutlich gebeugt sind.","Leg Press":"Setze die Füße stabil auf die Plattform und halte Becken und Rücken an der Lehne. Senke die Plattform durch Beugen von Knie und Hüfte so weit, wie das Becken stabil bleibt und die Knie den Fußspitzen folgen. Drücke über den ganzen Fuß zurück, ohne die Knie hart durchzustrecken.","Reverse Fly":"Stabilisiere bei Reverse Fly Schulterblätter und Rumpf und halte die Ellbogen leicht gebeugt. Führe die Arme in einem weiten Bogen kontrolliert zusammen, ohne die Schultern nach vorn zu schieben. Öffne langsam zurück, bis eine kontrollierte Dehnung der Brust entsteht.","ATG Split Squat":"Stelle die Füße für ATG Split Squat stabil und richte Knie und Fußspitzen in dieselbe Richtung. Beuge Hüfte und Knie kontrolliert und halte Rumpf sowie Fußsohle stabil. Drücke über den ganzen Fuß nach oben und strecke Hüfte und Knie gemeinsam, ohne die Knie hart durchzuschlagen.","Barbell Bench Press":"Positioniere dich für Barbell Bench Press stabil, ziehe die Schulterblätter nach hinten/unten und halte Füße beziehungsweise Rumpf fest. Senke die Last kontrolliert zur Brust, während Unterarme und Handgelenke möglichst übereinander bleiben. Drücke die Last kraftvoll zurück, ohne die Schultern nach vorn zu verlieren.","Barbell Deadlift":"Spanne für Barbell Deadlift den Rumpf an und halte die Wirbelsäule neutral. Schiebe die Hüfte nach hinten und halte die Last beziehungsweise Hantel dicht am Körper, während die Knie nur so weit wie nötig beugen. Strecke die Hüfte kontrolliert wieder nach vorn, ohne ins Hohlkreuz zu überstrecken.","Barbell Good Morning":"Spanne für Barbell Good Morning den Rumpf an und halte die Wirbelsäule neutral. Schiebe die Hüfte nach hinten und halte die Last beziehungsweise Hantel dicht am Körper, während die Knie nur so weit wie nötig beugen. Strecke die Hüfte kontrolliert wieder nach vorn, ohne ins Hohlkreuz zu überstrecken.","Barbell Hip Thrust":"Positioniere bei Barbell Hip Thrust die Füße so, dass die Knie oben ungefähr über den Fersen stehen. Strecke die Hüfte über die Fersen, spanne das Gesäß an und halte Rippen und Becken kontrolliert, statt ins Hohlkreuz zu gehen. Senke die Hüfte langsam wieder ab.","Barbell Row":"Richte dich für Barbell Row ein und beginne mit langen Armen. Halte Wirbelsäule und Rumpf stabil. Ziehe die Ellbogen nach hinten und die Schulterblätter kontrolliert zusammen. Strecke die Arme langsam wieder, ohne die Last fallen oder den Oberkörper mitschwingen zu lassen.","Barbell Squat":"Stelle die Füße für Barbell Squat stabil und richte Knie und Fußspitzen in dieselbe Richtung. Beuge Hüfte und Knie kontrolliert und halte Rumpf sowie Fußsohle stabil. Drücke über den ganzen Fuß nach oben und strecke Hüfte und Knie gemeinsam, ohne die Knie hart durchzuschlagen.","Biceps Curl":"Richte dich für Biceps Curl stabil aus und halte die Oberarme ruhig. Beuge die Ellbogen kontrolliert, bis der Bizeps deutlich verkürzt ist, ohne Schulter oder Oberkörper mitzuschwingen. Senke die Last langsam bis fast zur vollständigen Streckung zurück.","Bulgarian Split Squat":"Stelle die Füße für Bulgarian Split Squat stabil und richte Knie und Fußspitzen in dieselbe Richtung. Beuge Hüfte und Knie kontrolliert und halte Rumpf sowie Fußsohle stabil. Drücke über den ganzen Fuß nach oben und strecke Hüfte und Knie gemeinsam, ohne die Knie hart durchzuschlagen.","Cable-Fly":"Stabilisiere bei Cable-Fly Schulterblätter und Rumpf und halte die Ellbogen leicht gebeugt. Führe die Arme in einem weiten Bogen kontrolliert zusammen, ohne die Schultern nach vorn zu schieben. Öffne langsam zurück, bis eine kontrollierte Dehnung der Brust entsteht.","Dumbbell Bench Press":"Positioniere dich für Dumbbell Bench Press stabil, ziehe die Schulterblätter nach hinten/unten und halte Füße beziehungsweise Rumpf fest. Senke die Last kontrolliert zur Brust, während Unterarme und Handgelenke möglichst übereinander bleiben. Drücke die Last kraftvoll zurück, ohne die Schultern nach vorn zu verlieren.","Dumbbell Fly":"Stabilisiere bei Dumbbell Fly Schulterblätter und Rumpf und halte die Ellbogen leicht gebeugt. Führe die Arme in einem weiten Bogen kontrolliert zusammen, ohne die Schultern nach vorn zu schieben. Öffne langsam zurück, bis eine kontrollierte Dehnung der Brust entsteht.","Dumbbell Lateral Raise":"Stehe stabil und halte die Arme bei Dumbbell Lateral Raise leicht gebeugt. Hebe die Arme seitlich kontrolliert bis ungefähr Schulterhöhe, ohne Schwung oder Hochziehen der Schultern. Senke langsam zurück und behalte Spannung bis zur Ausgangsposition.","Dumbbell Row":"Richte dich für Dumbbell Row ein und beginne mit langen Armen. Halte Wirbelsäule und Rumpf stabil. Ziehe die Ellbogen nach hinten und die Schulterblätter kontrolliert zusammen. Strecke die Arme langsam wieder, ohne die Last fallen oder den Oberkörper mitschwingen zu lassen.","Dumbbell Shoulder Rotation":"Positioniere den Oberarm bei Dumbbell Shoulder Rotation stabil am Körper beziehungsweise in der vorgesehenen Schulterposition. Drehe den Oberarm kontrolliert gegen den Widerstand, ohne Ellbogen oder Rumpf ausweichen zu lassen. Kehre langsam zurück und arbeite nur im schmerzfreien Bewegungsumfang.","Face-Pull":"Ziehe das Seil auf Gesichts- bis Stirnhöhe und führe die Hände dabei auseinander. Halte Brustkorb und Rumpf ruhig und drehe die Oberarme kontrolliert nach außen, sodass die Schulterblätter nach hinten arbeiten. Strecke die Arme langsam wieder nach vorn, ohne die Schultern hochzuziehen.","Front Squat":"Stelle die Füße für Front Squat stabil und richte Knie und Fußspitzen in dieselbe Richtung. Beuge Hüfte und Knie kontrolliert und halte Rumpf sowie Fußsohle stabil. Drücke über den ganzen Fuß nach oben und strecke Hüfte und Knie gemeinsam, ohne die Knie hart durchzuschlagen.","Goblet Squat":"Stelle die Füße für Goblet Squat stabil und richte Knie und Fußspitzen in dieselbe Richtung. Beuge Hüfte und Knie kontrolliert und halte Rumpf sowie Fußsohle stabil. Drücke über den ganzen Fuß nach oben und strecke Hüfte und Knie gemeinsam, ohne die Knie hart durchzuschlagen.","Landmine Rotation":"Halte das Ende der Landmine mit beiden Händen vor dem Körper und stehe stabil. Führe die Hantel in einem kontrollierten Bogen von einer Seite zur anderen und drehe dabei Brustkorb und Hüfte koordiniert. Halte die Arme relativ lang und vermeide ein unkontrolliertes Verdrehen des unteren Rückens.","Paloff Press":"Stelle dich seitlich zum Kabelzug und halte den Griff vor der Brust. Spanne Rumpf und Gesäß an und drücke die Hände gerade nach vorn, ohne dich zum Zug zu drehen. Führe die Hände langsam zur Brust zurück und halte Becken und Brustkorb die ganze Zeit gerade.","Prone Arm Circles":"Lege dich bäuchlings hin, spanne Gesäß und Rumpf leicht an und hebe die Arme knapp vom Boden. Führe die gestreckten Arme langsam in einem weiten Kreis von über Kopf Richtung Hüfte und wieder zurück. Halte die Schultern weg von den Ohren und vermeide Schwung.","Pull-Over":"Lege dich stabil auf die Bank und halte die Last über der Brust. Führe die Arme mit leicht gebeugten Ellbogen kontrolliert hinter den Kopf, ohne die Rippen stark anzuheben oder ins Hohlkreuz zu gehen. Ziehe die Last in einem Bogen wieder über die Brust.","Romanian Deadlift":"Spanne für Romanian Deadlift den Rumpf an und halte die Wirbelsäule neutral. Schiebe die Hüfte nach hinten und halte die Last beziehungsweise Hantel dicht am Körper, während die Knie nur so weit wie nötig beugen. Strecke die Hüfte kontrolliert wieder nach vorn, ohne ins Hohlkreuz zu überstrecken.","Seated Dumbbell Shoulder Press":"Richte dich für Seated Dumbbell Shoulder Press stabil aus und spanne den Rumpf an. Drücke die Gewichte von Schulterhöhe kontrolliert über Kopf, ohne Rippen stark anzuheben oder ins Hohlkreuz auszuweichen. Senke sie langsam zurück auf Schulterhöhe.","Standing Shoulder Press":"Richte dich für Standing Shoulder Press stabil aus und spanne den Rumpf an. Drücke die Gewichte von Schulterhöhe kontrolliert über Kopf, ohne Rippen stark anzuheben oder ins Hohlkreuz auszuweichen. Senke sie langsam zurück auf Schulterhöhe.","Suitcase Carry":"Halte eine schwere Last einseitig neben dem Körper und richte dich auf. Gehe mit ruhigen, gleichmäßigen Schritten, ohne zur belasteten oder unbelasteten Seite zu kippen. Halte Schulter, Rippen und Becken möglichst waagerecht und setze die Last kontrolliert ab.","T-Bar Row":"Richte dich für T-Bar Row ein und beginne mit langen Armen. Halte Wirbelsäule und Rumpf stabil. Ziehe die Ellbogen nach hinten und die Schulterblätter kontrolliert zusammen. Strecke die Arme langsam wieder, ohne die Last fallen oder den Oberkörper mitschwingen zu lassen.","Tibialis Raise":"Lehne dich stabil an beziehungsweise stehe aufrecht und halte die Fersen am Boden. Ziehe die Fußspitzen so weit wie möglich Richtung Schienbein, ohne Knie oder Hüfte mitzubewegen. Senke die Füße langsam wieder ab und wiederhole aus dem Sprunggelenk.","Triceps Extension":"Stabilisiere bei Triceps Extension Schulter und Oberarm und halte den Rumpf ruhig. Strecke die Ellbogen kontrolliert gegen den Widerstand, ohne die Oberarme mitzubewegen. Kehre langsam in die gebeugte Ausgangsposition zurück.","Ab Wheel":"Knie vor dem Ab-Wheel und spanne Bauch und Gesäß an. Rolle das Rad langsam nach vorn, während Rippen und Becken kontrolliert bleiben und der untere Rücken nicht durchhängt. Ziehe das Rad aus der Rumpfspannung wieder zurück.","Bird Dog":"Starte im Vierfüßlerstand mit neutralem Rücken. Strecke einen Arm und das gegenüberliegende Bein, ohne Becken oder Brustkorb zu verdrehen. Halte kurz die lange Linie und führe beide kontrolliert zurück, bevor du die Seite wechselst.","Chin-Up":"Greife die Stange im Untergriff und starte im aktiven Hang. Ziehe die Schulterblätter nach unten und führe die Ellbogen Richtung Rippen, bis das Kinn kontrolliert über Stangenhöhe kommt. Senke dich langsam bis in die gestreckte Position zurück, ohne zu schwingen.","Clamshell":"Lege dich auf die Seite, Hüfte und Knie gebeugt und Füße übereinander. Halte das Becken ruhig und öffne das obere Knie, ohne nach hinten zu rollen oder die Füße zu trennen. Senke das Knie kontrolliert wieder ab.","Curtsy Lunge":"Nimm für Curtsy Lunge einen stabilen Schrittstand ein und halte Becken und Rumpf gerade. Senke den Körper durch Beugen beider Beine, wobei das vordere Knie der Fußrichtung folgt und die Ferse belastet bleibt. Drücke dich über den vorderen Fuß kontrolliert zurück in die Ausgangsposition.","Dip":"Stütze dich mit gestreckten Armen auf den Holmen ab und halte die Schultern aktiv. Beuge die Ellbogen und senke den Körper kontrolliert, bis Schulter und Brust einen schmerzfreien Bewegungsumfang erreichen. Drücke dich wieder hoch, ohne die Schultern nach vorn kollabieren zu lassen.","Glute Bridge":"Lege dich auf den Rücken, stelle die Füße hüftbreit auf und halte die Rippen kontrolliert. Drücke über die Fersen und strecke die Hüfte, bis Schulter, Hüfte und Knie eine Linie bilden. Spanne oben das Gesäß an und senke das Becken langsam zurück.","Hollow Body Hold":"Lege dich auf den Rücken und drücke den unteren Rücken aktiv Richtung Boden. Hebe Schulterblätter und Beine an und strecke Arme und Beine nur so weit, wie der Lendenbereich Kontakt behält. Atme ruhig und verkürze den Hebel, sobald der Rücken abhebt.","Hyperextensions":"Positioniere die Hüfte an der Polsterkante und fixiere die Füße. Senke den Oberkörper kontrolliert aus der Hüfte bei neutralem Rücken. Strecke die Hüfte wieder, bis der Körper eine gerade Linie bildet, ohne den unteren Rücken zu überstrecken.","Lunge":"Nimm für Lunge einen stabilen Schrittstand ein und halte Becken und Rumpf gerade. Senke den Körper durch Beugen beider Beine, wobei das vordere Knie der Fußrichtung folgt und die Ferse belastet bleibt. Drücke dich über den vorderen Fuß kontrolliert zurück in die Ausgangsposition.","Nordic Hamstring Curl":"Knie auf einer weichen Unterlage und fixiere die Fersen sicher. Halte Hüfte gestreckt und senke den Körper als gerade Linie aus den Knien langsam nach vorn. Bremse so lange wie möglich mit der Beinrückseite und fange dich bei Bedarf mit den Händen ab, bevor du kontrolliert zurückkehrst.","Plank":"Stütze dich auf Unterarme und Zehen und richte Ellbogen unter den Schultern aus. Spanne Bauch und Gesäß an und halte Kopf, Brustkorb, Becken und Beine in einer Linie. Atme ruhig weiter und beende den Satz, sobald die Hüfte deutlich absinkt oder hochwandert.","Pull-Up":"Greife die Stange im Obergriff und starte im aktiven Hang. Ziehe die Schulterblätter nach unten und führe die Ellbogen Richtung Rippen, bis das Kinn kontrolliert über Stangenhöhe kommt. Senke dich langsam bis in die gestreckte Position zurück, ohne zu schwingen.","Push-Up":"Setze die Hände etwa schulterbreit auf und halte den Körper von Kopf bis Ferse als gespannte Linie. Beuge die Ellbogen kontrolliert und senke die Brust Richtung Boden, ohne Hüfte oder unteren Rücken durchhängen zu lassen. Drücke den Boden weg, bis die Arme wieder gestreckt sind.","Reverse Lunge":"Nimm für Reverse Lunge einen stabilen Schrittstand ein und halte Becken und Rumpf gerade. Senke den Körper durch Beugen beider Beine, wobei das vordere Knie der Fußrichtung folgt und die Ferse belastet bleibt. Drücke dich über den vorderen Fuß kontrolliert zurück in die Ausgangsposition.","Reverse Nordics":"Knie aufrecht mit gestreckter Hüfte und angespanntem Gesäß. Lehne den gesamten Körper von den Knien aus kontrolliert nach hinten, ohne in der Hüfte einzuknicken. Ziehe dich über die Vorderseite der Oberschenkel wieder in die aufrechte Position.","Side Plank":"Stütze dich seitlich auf Unterarm und Fußkante, Ellbogen unter der Schulter. Hebe das Becken, bis Kopf, Rumpf und Beine eine Linie bilden, und halte Schulter und Becken übereinander. Atme ruhig und senke kontrolliert ab.","Step-Down":"Stehe auf einer niedrigen Box auf einem Bein und halte Becken und Rumpf stabil. Beuge das Standbein langsam und senke die freie Ferse kontrolliert Richtung Boden, während das Knie in Fußrichtung bleibt. Drücke dich über den Standfuß wieder hoch.","Step-Up":"Stelle den ganzen Fuß auf eine stabile Box oder Bank. Drücke dich überwiegend über das obere Bein hoch, bis Hüfte und Knie gestreckt sind, ohne dich stark mit dem hinteren Fuß abzustoßen. Senke dich kontrolliert wieder ab und halte das Knie in Fußrichtung.","90/90 Hip Switch":"Sitze mit beiden Knien gebeugt in einer 90/90-Position. Drehe beide Knie kontrolliert zur Gegenseite, ohne die Füße weit zu versetzen oder die Bewegung mit Schwung zu erzwingen. Richte den Oberkörper jeweils über der neuen Hüftposition auf und wechsle langsam zurück.","Ankle Dorsiflexion Mobilization":"Stelle einen Fuß flach vor dich und halte die Ferse fest am Boden. Schiebe das Knie langsam in Richtung der Zehen beziehungsweise leicht darüber, ohne dass das Fußgewölbe kollabiert. Gehe nur bis zu einer kontrollierten Dehnung im Sprunggelenk und kehre wieder zurück.","Cat-Cow":"Komme in den Vierfüßlerstand mit Händen unter den Schultern und Knien unter der Hüfte. Runde die Wirbelsäule langsam vom Becken bis zum oberen Rücken und wechsle anschließend kontrolliert in die Gegenbewegung. Kopple die Bewegung ruhig an die Atmung und erzwinge keine Endposition.","Couch Stretch":"Positioniere ein Knie nahe an Wand oder Bank und den Fuß nach oben, das andere Bein steht vorn. Richte Becken und Oberkörper auf und spanne das Gesäß der hinteren Seite leicht an. Verschiebe die Hüfte nur so weit nach vorn, bis eine deutliche, aber kontrollierte Dehnung an Hüftbeuger und Oberschenkel entsteht.","Deep Squat Hold":"Stelle die Füße stabil etwas breiter als hüftbreit und sinke in eine tiefe Kniebeuge. Halte Fersen belastet, Knie in Fußrichtung und Brustkorb aufgerichtet. Atme ruhig und nutze bei Bedarf die Ellbogen sanft gegen die Knie, ohne die Position zu erzwingen.","Open Book Rotation":"Lege dich auf die Seite, Hüfte und Knie gebeugt, beide Arme nach vorn gestreckt. Öffne den oberen Arm in einem weiten Bogen zur Gegenseite und lasse Brustkorb und Blick folgen, während die Knie zusammenbleiben. Kehre langsam zurück und bewege nur im schmerzfreien Bereich.","Shoulder CARs":"Stehe aufrecht und halte Rumpf und Rippen ruhig. Führe einen gestreckten Arm langsam in einem möglichst großen kontrollierten Kreis über Kopf nach hinten und wieder nach vorn. Drehe den Oberarm passend mit und vermeide Ausweichbewegungen der Wirbelsäule.","Thoracic Rotation":"Nimm einen stabilen Vierfüßler- oder Kniestand ein und fixiere Becken und unteren Rücken. Drehe den Brustkorb kontrolliert zur Seite, indem du Arm und Blick mitführst. Kehre langsam zur Mitte zurück und erzeuge die Bewegung vor allem aus der Brustwirbelsäule.","Wall Shoulder Flexion":"Stehe mit Rücken und Rippen kontrolliert an der Wand und halte den Bauch leicht angespannt. Führe die Arme gestreckt nach oben, ohne ins Hohlkreuz auszuweichen oder die Schultern hochzuziehen. Gehe nur so weit, wie Rückenposition und Schulterbewegung sauber bleiben.","Wrist CARs":"Halte Unterarm und Ellbogen ruhig und forme eine lockere Faust. Bewege das Handgelenk langsam durch einen möglichst großen Kreis aus Beugung, Seitbewegung und Streckung. Vermeide schnelle Bewegungen und halte den Unterarm während des gesamten Kreises stabil."};
@@ -1287,7 +1757,7 @@ function planLastUsedAt(p){
 }
 function sortedPlans(){const a=[...plans];a.sort((x,y)=>{if(planSort.key==="name")return planSort.dir*x.name.localeCompare(y.name,"de");if(planSort.key==="used"){const xv=planLastUsedAt(x),yv=planLastUsedAt(y);if(xv!==yv)return planSort.dir*(xv-yv);return x.name.localeCompare(y.name,"de")}const k=planSort.key==="created"?"createdAt":"updatedAt";return planSort.dir*((x[k]||0)-(y[k]||0))});return a}
 let plansQuickEdit=false;
-function renderPlans(){const defs=[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]];$("planSortChips").innerHTML=defs.map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("");document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.sort)planSort.dir*=-1;else{planSort.key=b.dataset.sort;planSort.dir=1}renderPlans()});$("planList").classList.toggle("quick-edit",plansQuickEdit);
+function renderPlans(){const defs=[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]];$("planSortChips").innerHTML=defs.map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("");document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.sort)planSort.dir*=-1;else{planSort.key=b.dataset.sort;planSort.dir=1}savePlanSort();renderPlans()});$("planList").classList.toggle("quick-edit",plansQuickEdit);
  $("plansEditBtn").textContent=plansQuickEdit?"Fertig":"Bearbeiten";
  $("planList").innerHTML=sortedPlans().map(p=>`<div class="plan-card ${plansQuickEdit?"plan-quick-edit":""}" data-plan="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span class="chev">›</span>${plansQuickEdit?`<button class="plan-quick-delete" data-quick-delete="${p.id}" aria-label="${esc(p.name)} löschen">−</button>`:`<button class="plan-swipe-delete" data-swipe-delete="${p.id}">Löschen</button>`}</div>`).join("");document.querySelectorAll("[data-plan]").forEach(card=>{const id=Number(card.dataset.plan);let timer,startX=0,startY=0,dx=0,dy=0,longFired=false;const cancelHold=()=>{clearTimeout(timer);timer=null};card.onclick=e=>{if(plansQuickEdit||e.target.closest("[data-swipe-delete],[data-quick-delete]")||longFired)return;editPlan(id)};card.oncontextmenu=e=>e.preventDefault();card.onpointerdown=e=>{startX=e.clientX;startY=e.clientY;dx=0;dy=0;longFired=false;card.classList.add("hold-armed");cancelHold();timer=setTimeout(()=>{longFired=true;card.classList.add("hold-ready");setTimeout(()=>{card.classList.remove("hold-armed","hold-ready");openPlanLongActions(id)},120)},700)};card.onpointermove=e=>{dx=e.clientX-startX;dy=e.clientY-startY;if(Math.abs(dx)>12||Math.abs(dy)>12)cancelHold()};card.onpointerup=()=>{cancelHold();card.classList.remove("hold-armed","hold-ready");if(!longFired){if(dx<-45){closeAllSwipeActions(card);card.classList.add("swipe-open")}else if(dx>25)card.classList.remove("swipe-open")}};card.onpointercancel=()=>{cancelHold();card.classList.remove("hold-armed","hold-ready")};card.onpointerleave=()=>{cancelHold();card.classList.remove("hold-armed","hold-ready")}});document.querySelectorAll("[data-swipe-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();deletePlanAsked(Number(b.dataset.swipeDelete))});
  document.querySelectorAll("[data-quick-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();const id=Number(b.dataset.quickDelete);plans=plans.filter(x=>x.id!==id);saveAll();renderPlans();renderWeek()})
@@ -1467,7 +1937,7 @@ function beginPlanAddConfig(name,from="picker",seed=null){
 function renderPlanAddConfig(){
  if(!planAddFlow?.current)return;
  const e=planAddFlow.current;
- renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=="time"?"active":""}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==="time"?"active":""}" id="paModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${Array.from({length:10},(_,n)=>`<option ${e.sets===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"pa"):methodRepConfigMarkup(e,"pa")}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
+ renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=="time"?"active":""}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==="time"?"active":""}" id="paModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${Array.from({length:10},(_,n)=>`<option ${e.sets===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"pa"):methodRepConfigMarkup(e,"pa")}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=="standard").map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
  requestAnimationFrame(()=>{const tabs=$("paMethodTabs");if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
  $("paModeReps").onclick=()=>{e.measureMode="reps";renderPlanAddConfig()};$("paModeTime").onclick=()=>{e.measureMode="time";e.timeSeconds=Math.min(180,Math.max(15,Number(e.timeSeconds)||60));renderPlanAddConfig()};
  document.querySelectorAll("[data-pa-method]").forEach(b=>b.onclick=()=>{const tabs=$("paMethodTabs");planAddFlow.methodScroll=tabs?.scrollLeft||0;if(planAddFlow.memberGroup)planAddFlow.memberMethodExplicit=true;prepareDraftForTargetMethod(e,b.dataset.paMethod,1);renderPlanAddConfig()});
@@ -1581,7 +2051,7 @@ function renderCompactPartnerConfig(){
   body:`<div class="compact-partner-card"><strong>${esc(e.name)}</strong><div class="small">${e.sets} Sätze · ${formatTime(e.rest)} Pause · als Teil derselben ${esc(METHOD_LABEL[method])}-Serie</div></div>
   <div class="mode-switch"><button type="button" class="chip ${e.measureMode!=="time"?"active":""}" id="partnerModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==="time"?"active":""}" id="partnerModeTime">Zeit</button></div>
   <div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"partner"):methodRepConfigMarkup(e,"partner")}</div>
-  ${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="partnerVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}
+  ${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="partnerVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=="standard").map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}
   <label class="compact-check"><input id="partnerPerSide" type="checkbox" ${e.perSide?"checked":""}> WDH. pro Seite</label>
   ${method==="dropset"?`<div class="grid2"><div class="form-field"><label>DROPS</label><select id="partnerDrops" class="field">${[1,2,3,4].map(n=>`<option ${Number(e.methodData?.dropCount||2)===n?"selected":""}>${n}</option>`).join("")}</select></div><div class="form-field"><label>REDUKTION %</label><select id="partnerDropPct" class="field">${[10,15,20,25,30].map(n=>`<option ${Number(e.methodData?.dropPercent||20)===n?"selected":""}>${n}</option>`).join("")}</select></div></div>`:""}
   <button id="partnerReplaceChoice" class="secondary" style="width:100%;margin-bottom:8px">⇄ Diese Übung austauschen</button>
@@ -1601,21 +2071,33 @@ function renderCompactPartnerConfig(){
  }
 }
 function confirmPlanAddDraft(){
- if(!planAddFlow?.current)return;savePlanAddFormToDraft();
+ if(!planAddFlow?.current)return;
+ savePlanAddFormToDraft();
  const validation=validateExerciseDraft(planAddFlow.current);if(validation)return toast(validation);
  const e=clone(planAddFlow.current),method=e.setTechnique||"standard";
  if(methodNeedsPartners(method)){
-  if(!planAddFlow.group){const target=method==="giant"?(e.methodData.giantCount||3):2;planAddFlow.group={id:`tg_${uid()}`,method,target};e.techniqueGroup=planAddFlow.group.id}
-  else e.techniqueGroup=planAddFlow.group.id;
+  const selectedTarget=method==="giant"
+    ? Math.min(6,Math.max(3,Number($("paGiantCount")?.value||e.methodData?.giantCount||planAddFlow.group?.target||3)))
+    : 2;
+  e.methodData=e.methodData||{};
+  if(method==="giant")e.methodData.giantCount=selectedTarget;
+  if(!planAddFlow.group){
+    planAddFlow.group={id:`tg_${uid()}`,method,target:selectedTarget};
+  }else{
+    planAddFlow.group.method=method;
+    if(method==="giant")planAddFlow.group.target=selectedTarget
+  }
+  e.techniqueGroup=planAddFlow.group.id;
   planAddFlow.drafts.push(e);
-  if(planAddFlow.drafts.length<planAddFlow.group.target){planAddFlow.current=null;renderPartnerExercisePicker();return}
-  // A partner series is one method. Every member must carry the same group and method.
+  if(planAddFlow.drafts.length<planAddFlow.group.target){
+    planAddFlow.current=null;renderPartnerExercisePicker();return
+  }
   const master=planAddFlow.drafts[0],gid=planAddFlow.group.id;
   planAddFlow.drafts.forEach(d=>{
     d.setTechnique=planAddFlow.group.method;
     d.techniqueGroup=gid;
     d.sets=master.sets;
-    d.rest=master.rest;
+    d.rest=master.rest
   });
   commitPlanAddFlow();return
  }
@@ -2390,7 +2872,22 @@ function openSummary(w){
 }
 function stretchSvg(){return`<svg class="stretch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M12 6.5v5m0-3L7.5 11M12 8.5l4.5 2.5M12 11.5l-4 6M12 11.5l4.5 5.5M8 17.5 5 20M16.5 17l2.5 3"/></svg>`}
 function validWeekPlans(day){const ids=Array.isArray(weekPlan[day])?weekPlan[day]:weekPlan[day]!=null?[weekPlan[day]]:[];return ids.map(id=>plans.find(p=>String(p.id)===String(id))).filter(Boolean)}
-function combinedWeekPlan(day){const ps=validWeekPlans(day);if(!ps.length)return null;return{id:`week_${weekKeyForOffset()}_${day}_${Date.now()}`,name:ps.map(x=>x.name).join(" + "),createdAt:Date.now(),updatedAt:Date.now(),weekSourceIds:ps.map(x=>x.id),weekDate:weekDateAt(day).toISOString().slice(0,10),exercises:ps.flatMap(x=>clone(x.exercises))}}
+function combinedWeekPlan(day){
+ const ps=validWeekPlans(day);if(!ps.length)return null;
+ const exercises=[];
+ ps.forEach((p,pi)=>{
+  const gidMap=new Map();
+  clone(p.exercises||[]).forEach((e,ei)=>{
+   if(e.techniqueGroup){
+    if(!gidMap.has(e.techniqueGroup))gidMap.set(e.techniqueGroup,`week_${p.id}_${day}_${pi}_${uid()}`);
+    e.techniqueGroup=gidMap.get(e.techniqueGroup)
+   }
+   e._weekSourcePlanId=p.id;e._weekSourceOrder=pi;e._weekSourceExerciseOrder=ei;
+   exercises.push(e)
+  })
+ });
+ return{id:`week_${weekKeyForOffset()}_${day}_${Date.now()}`,name:ps.map(x=>x.name).join(" + "),createdAt:Date.now(),updatedAt:Date.now(),weekSourceIds:ps.map(x=>x.id),weekDate:dateKeyLocal(weekDateAt(day)),exercises}
+}
 function weekCompletion(day){
  const date=weekDateAt(day).toISOString().slice(0,10),ids=validWeekPlans(day).map(p=>String(p.id));
  return history.some(w=>w.weekDate===date&&(w.finishedAt||0)>0&&(ids.length===0||ids.every(id=>(w.weekSourceIds||[]).map(String).includes(id))))
@@ -2409,7 +2906,7 @@ function renderWeek(){
  const days=["Mo","Di","Mi","Do","Fr","Sa","So"],from=weekDateAt(0),to=weekDateAt(6);
  $("weekRangeLabel").textContent=`${fmtShortDate(from)} – ${fmtShortDate(to)}`;
  $("weekOffsetLabel").textContent=weekOffset===0?"Diese Woche":weekOffset<0?`${Math.abs(weekOffset)} Woche${Math.abs(weekOffset)===1?"":"n"} zurück`:`${weekOffset} Woche${weekOffset===1?"":"n"} voraus`;
- $("weekPrevBtn").disabled=weekOffset<=-2;$("weekNextBtn").disabled=weekOffset>=2;
+ $("weekPrevBtn").disabled=weekOffset<=-104;$("weekNextBtn").disabled=weekOffset>=104;
  let changed=false;weekPlan=weekPlan.map((ids,i)=>{const valid=validWeekPlans(i).map(p=>p.id);if(JSON.stringify(valid)!==JSON.stringify(Array.isArray(ids)?ids:[]))changed=true;return valid});if(changed)saveAll();
  $("weekList").innerHTML=days.map((d,i)=>{const ps=validWeekPlans(i),ex=ps.reduce((n,p)=>n+p.exercises.length,0),sets=ps.reduce((n,p)=>n+countPlanSets(p),0),date=weekDateAt(i),done=ps.length&&weekCompletion(i);return`<div class="week-row"><div class="week-day">${d}</div><div class="week-card ${done?"week-completed":(ps.length?"week-scheduled":"")}"><button class="week-card-main" ${ps.length?`data-week-preview="${i}"`:""}><div class="week-card-date">${date.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}</div>${ps.length?`<strong>${esc(ps.map(p=>p.name).join(" + "))}</strong><small>${ps.length} Plan${ps.length===1?"":"e"} · ${ex} Übungen · ${sets} Sätze${done?" · Abgeschlossen":""}</small>`:`<div class="week-pause-wrap">${stretchSvg()}<div><strong>Pause</strong><small>Freier Tag</small></div></div>`}</button><div class="week-actions">${ps.length?`${done?"":`<button class="week-plus week-play" data-wstart="${i}" aria-label="Training starten">▶</button>`}<button class="week-menu" data-wm="${i}">⋮</button>`:`<button class="week-plus" data-wa="${i}" aria-label="Plan hinzufügen">+</button>`}</div></div></div>`}).join("");
  document.querySelectorAll("[data-wa]").forEach(b=>b.onclick=()=>openWeekPicker(Number(b.dataset.wa)));
@@ -2418,7 +2915,7 @@ function renderWeek(){
  document.querySelectorAll("[data-wm]").forEach(b=>b.onclick=e=>{e.stopPropagation();weekMenu(Number(b.dataset.wm))})
 }
 $("weekPrevBtn").onclick=()=>{saveCurrentWeekRefs();loadWeekOffset(weekOffset-1)};$("weekNextBtn").onclick=()=>{saveCurrentWeekRefs();loadWeekOffset(weekOffset+1)};
-function openWeekPicker(day){let selected=validWeekPlans(day).map(p=>p.id),q="";const render=()=>{const rows=sortedPlansForPicker(q);$("sheetBody").innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]].map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div>${rows.map(p=>`<button class="plan-card week-select-card ${selected.includes(p.id)?"selected":""}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${selected.includes(p.id)?"✓":"›"}</span></button>`).join("")}<div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`${selected.length} Pläne gewählt · ${weekDateAt(day).toLocaleDateString("de-DE")}`:"Kein Plan gewählt"}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;$("weekSearch").oninput=()=>{q=$("weekSearch").value;render()};$("weekSearchClear").onclick=()=>{q="";render()};document.querySelectorAll("[data-week-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}render()});document.querySelectorAll("[data-wpick]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick);selected.includes(id)?selected=selected.filter(x=>x!==id):selected.push(id);render()});$("weekApply").onclick=()=>{const hadPlans=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(hadPlans&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();if(typeof renderProfileProgress==="function")renderProfileProgress()}};openSheet("Trainingsplan auswählen","");render()}
+function openWeekPicker(day){let selected=validWeekPlans(day).map(p=>p.id),q="";const render=()=>{const rows=sortedPlansForPicker(q);$("sheetBody").innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]].map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div>${rows.map(p=>`<button class="plan-card week-select-card ${selected.includes(p.id)?"selected":""}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${selected.includes(p.id)?"✓":"›"}</span></button>`).join("")}<div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`${selected.length} Pläne gewählt · ${weekDateAt(day).toLocaleDateString("de-DE")}`:"Kein Plan gewählt"}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;$("weekSearch").oninput=()=>{q=$("weekSearch").value;render()};$("weekSearchClear").onclick=()=>{q="";render()};document.querySelectorAll("[data-week-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}savePlanSort();render()});document.querySelectorAll("[data-wpick]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick);selected.includes(id)?selected=selected.filter(x=>x!==id):selected.push(id);render()});$("weekApply").onclick=()=>{const hadPlans=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(hadPlans&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();if(typeof renderProfileProgress==="function")renderProfileProgress()}};openSheet("Trainingsplan auswählen","");render()}
 function startWeekDay(day){
  const fresh=combinedWeekPlan(day);if(!fresh||!(fresh.exercises||[]).length)return;
  pendingStartPlan=fresh;

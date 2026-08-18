@@ -3,7 +3,7 @@
   "short_name": "ReThink.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#cfd1d8",
+  "background_color": "#d9d9de",
   "theme_color": "#111114",
   "orientation": "portrait-primary",
   "icons": [
@@ -22,5 +22,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "version": "3.1"
 }

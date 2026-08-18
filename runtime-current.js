@@ -242,7 +242,14 @@
   document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderPlanAddConfig()});
   document.querySelectorAll('[data-time-preset]').forEach(b=>b.onclick=()=>{e.timeSeconds=Number(b.dataset.timePreset);renderPlanAddConfig()});
   bindPyramidCascade(e,'pa',renderPlanAddConfig);
-  $('paConfirm').onclick=()=>confirmPlanAddDraft()
+  if($('paGiantCount'))$('paGiantCount').onchange=()=>{
+    e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3;
+    if(planAddFlow.group&&planAddFlow.group.method==='giant')planAddFlow.group.target=e.methodData.giantCount
+  };
+  $('paConfirm').onclick=()=>{
+    if($('paGiantCount')){e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3;if(planAddFlow.group&&planAddFlow.group.method==='giant')planAddFlow.group.target=e.methodData.giantCount}
+    confirmPlanAddDraft()
+  }
  };
 
  // Partner exercises keep their own reps/time/AMRAP; pyramid is never offered as time even inside a connected series.
@@ -627,6 +634,13 @@
 
 
 
+ window.__allFoodsV52=allFoodsV52;
+ window.__foodServingV52=foodServingV52;
+ window.__nutrientsForV52=nutrientsForV52;
+ window.__mealTotalsV52=mealTotalsV52;
+ window.__openCustomFoodV52=openCustomFoodV52;
+ window.__openMealBuilderV52=openMealBuilderV52;
+ window.__openMealLogV52=openMealLogV52;
  renderProfile();
 })();
 
@@ -638,6 +652,7 @@
    const sameSession=sessionStorage.getItem(SESSION_MARKER)==="1";
    sessionStorage.setItem(SESSION_MARKER,"1");
    if(!sameSession){
+     profileDayOffset=0;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,"0");
      document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];$("bottomNav").classList.remove("hidden");
      currentTab="training";showTab("training",{reset:true});
      return
@@ -828,39 +843,6 @@
  if($("editorStartTrainingBtn"))$("editorStartTrainingBtn").onclick=startCurrentEditorPlan;
 })();
 
-/* Final compact progress cards */
-(function(){
-  function v61CurrentWeek(){
-    const d=new Date(),day=d.getDay()||7,start=new Date(d);start.setDate(d.getDate()-day+1);start.setHours(0,0,0,0);
-    const end=new Date(start);end.setDate(end.getDate()+7);
-    const th=new Date(start);th.setDate(th.getDate()+3);const ys=new Date(th.getFullYear(),0,1);
-    const week=Math.ceil((((th-ys)/86400000)+ys.getDay()+1)/7);
-    return{start,end,week}
-  }
-  function v61WeekDays(){
-    const {start,end}=v61CurrentWeek(),days=new Set();
-    history.forEach(w=>{
-      if(!w?.finishedAt)return;
-      const weekly=!!w.isWeekCombined||!!w.weekDate||(Array.isArray(w.weekSourceIds)&&w.weekSourceIds.length>0);
-      if(!weekly)return;
-      const t=Number(w.finishedAt);if(t<start.getTime()||t>=end.getTime())return;
-      days.add(String(w.weekDate||dateKeyLocal(t)))
-    });
-    return days.size
-  }
-  window.renderProfileProgress=function(){
-    const el=$("profileProgressOverview");if(!el)return;
-    const wt=weightTrend(),current=wt?.current!=null?Number(wt.current):null,target=wt?.target!=null?Number(wt.target):null;
-    const distance=(current!=null&&target!=null)?Math.max(0,Math.abs(Math.round((target-current)*10)/10)):null;
-    const wk=v61CurrentWeek(),train=v61WeekDays(),streak=typeof goalStreakV50==="function"?(Number(goalStreakV50())||0):0;
-    el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid">
-      <div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${current!=null?`${current} kg`:"–"}</strong><span class="progress-sub-label">Wunschgewicht</span><span class="progress-sub-value">${target!=null?`${target} kg${distance!=null?` · ${distance} kg bis Ziel`:""}`:"–"}</span></div>
-      <div class="card progress-stat"><div class="small">Streak</div><strong>${streak}</strong><span class="progress-sub-value">Wasser und Ernährung</span></div>
-      <div class="card progress-stat training-week-stat"><div class="small">Trainingstage</div><span class="progress-sub-label">KW ${wk.week}</span><strong>${train}/7</strong></div>
-    </div>`
-  };
-})();
-
 (function(){
  let token=0;
  function containerFor(el){return el.closest(".sheet-body")||el.closest(".page")||document.scrollingElement}
@@ -1041,4 +1023,725 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
   };
 
   try{renderProfileProgress();if(activeWorkout&&!$("livePage")?.classList.contains("hidden"))renderLive()}catch(e){console.error("v64 init",e)}
+})();
+
+
+/* v68 final integration */
+(function(){
+ const ANNUAL_CLEANUP_KEY='rethink_annual_cleanup_enabled_v1',ANNUAL_CLEANUP_YEAR='rethink_annual_cleanup_prompt_year_v1';
+
+ function moveRestDockV68(){
+   const bar=$('restBar');if(bar&&bar.parentElement!==document.body)document.body.appendChild(bar)
+ }
+ moveRestDockV68();
+ const baseStartRestV68=startRest;
+ startRest=function(sec,restored=false){moveRestDockV68();return baseStartRestV68(sec,restored)};
+
+ /* Preview uses the same workout card renderer, but remains read-only. */
+ window.openPreview=function(p){
+   $('previewTitle').textContent=p.name||'Workout Vorschau';
+   const pp={...clone(p),activeExerciseIndex:-1,exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
+   const saved=activeWorkout;activeWorkout=pp;
+   let markup='';
+   try{markup=liveVisualGroups(pp.exercises).map(g=>g.group?renderLiveGroupCard(g):renderLiveSingleCard(g.members[0].e,g.members[0].i)).join('')}
+   finally{activeWorkout=saved}
+   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact">${markup}</div>`;
+   $('previewBody').querySelectorAll('input,textarea,select').forEach(x=>{x.readOnly=true;x.tabIndex=-1});
+   $('previewBody').querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.liveDetail));
+   openPage('previewPage')
+ };
+
+ function weekRunningV68(day){
+   if(!activeWorkout?.weekDate)return false;
+   return String(activeWorkout.weekDate)===String(dateKeyLocal(weekDateAt(day)))
+ }
+ renderWeek=function(){
+   $('weekMotivation').innerHTML=`<div class="small">DIESE WOCHE</div><strong>${esc(weekMotivationText())}</strong>`;
+   const days=['Mo','Di','Mi','Do','Fr','Sa','So'],from=weekDateAt(0),to=weekDateAt(6);
+   $('weekRangeLabel').textContent=`${fmtShortDate(from)} – ${fmtShortDate(to)}`;
+   $('weekOffsetLabel').textContent=weekOffset===0?'Diese Woche':weekOffset<0?`${Math.abs(weekOffset)} Woche${Math.abs(weekOffset)===1?'':'n'} zurück`:`${weekOffset} Woche${weekOffset===1?'':'n'} voraus`;
+   $('weekPrevBtn').disabled=weekOffset<=-8;$('weekNextBtn').disabled=weekOffset>=8;
+   let changed=false;weekPlan=weekPlan.map((ids,i)=>{const valid=validWeekPlans(i).map(p=>p.id);if(JSON.stringify(valid)!==JSON.stringify(Array.isArray(ids)?ids:[]))changed=true;return valid});if(changed)saveAll();
+   $('weekList').innerHTML=days.map((d,i)=>{
+     const ps=validWeekPlans(i),ex=ps.reduce((n,p)=>n+p.exercises.length,0),sets=ps.reduce((n,p)=>n+countPlanSets(p),0),date=weekDateAt(i),done=ps.length&&weekCompletion(i),running=ps.length&&weekRunningV68(i);
+     const names=ps.map(p=>p.name).join(' + ');
+     return`<div class="week-row"><div class="week-day">${d}</div><div class="week-card ${done?'week-completed':(running?'week-running':(ps.length?'week-scheduled':''))}">
+       <button class="week-card-main" ${ps.length?`data-v68-week-main="${i}"`:''}><div class="week-card-date">${date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</div>
+       ${ps.length?`<strong>${esc(names)}</strong><small>${ps.length} Plan${ps.length===1?'':'e'} · ${ex} Übungen · ${sets} Sätze${done?' · Abgeschlossen':''}</small>${running?'<div class="week-running-label">WORKOUT LÄUFT</div>':''}`:`<div class="week-pause-wrap">${stretchSvg()}<div><strong>Pause</strong><small>Freier Tag</small></div></div>`}</button>
+       <div class="week-actions">${ps.length?`${done?'':(running?`<button class="week-plus week-play" data-v68-week-resume="${i}" aria-label="Workout öffnen">▶</button>`:`<button class="week-plus week-play" data-v68-week-start="${i}" aria-label="Training starten">▶</button>`)}<button class="week-menu" data-wm="${i}">⋮</button>`:`<button class="week-plus" data-wa="${i}" aria-label="Plan hinzufügen">+</button>`}</div></div></div>`
+   }).join('');
+   document.querySelectorAll('[data-wa]').forEach(b=>b.onclick=()=>openWeekPicker(Number(b.dataset.wa)));
+   document.querySelectorAll('[data-v68-week-main]').forEach(b=>b.onclick=()=>{const day=Number(b.dataset.v68WeekMain);if(weekRunningV68(day))openLive(false);else openWeekPreview(day)});
+   document.querySelectorAll('[data-v68-week-start]').forEach(b=>b.onclick=e=>{e.stopPropagation();const fresh=combinedWeekPlan(Number(b.dataset.v68WeekStart));if(fresh)confirmAndStartPlan(fresh)});
+   document.querySelectorAll('[data-v68-week-resume]').forEach(b=>b.onclick=e=>{e.stopPropagation();openLive(false)});
+   document.querySelectorAll('[data-wm]').forEach(b=>b.onclick=e=>{e.stopPropagation();weekMenu(Number(b.dataset.wm))})
+ };
+
+ /* Week picker: selected order is workout order and is always numbered. */
+ window.openWeekPicker=function(day){
+   let selected=validWeekPlans(day).map(p=>p.id),q='';
+   const render=()=>{
+     const rows=sortedPlansForPicker(q);
+     $('sheetBody').innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[['name','A–Z'],['created','Hinzugefügt'],['updated','Geändert'],['used','Genutzt']].map(([k,l])=>`<button class="chip ${planSort.key===k?'active':''}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?' ↑':' ↓'):''}</button>`).join('')}</div></div>
+       ${rows.map(p=>{const order=selected.indexOf(p.id)+1;return`<button class="plan-card week-select-card ${order?'selected':''}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${order?`<span class="week-order-badge">${order}</span>`:'›'}</span></button>`}).join('')}
+       <div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`Reihenfolge: ${selected.map((id,i)=>`${i+1}. ${esc(plans.find(p=>p.id===id)?.name||'Plan')}`).join(' · ')}`:'Kein Plan gewählt'}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;
+     $('weekSearch').oninput=()=>{q=$('weekSearch').value;render()};
+     $('weekSearchClear').onclick=()=>{q='';render()};
+     document.querySelectorAll('[data-week-sort]').forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}render()});
+     document.querySelectorAll('[data-wpick]').forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick),i=selected.indexOf(id);if(i>=0)selected.splice(i,1);else selected.push(id);render()});
+     $('weekApply').onclick=()=>{const had=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(had&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();renderProfileProgress?.()}
+   };
+   openSheet('Trainingsplan auswählen','');render()
+ };
+
+ /* Unified weekly plan-save question, identical order to normal workout. */
+ function cleanPlanExerciseV68(x){const y=clone(x);delete y.liveSets;delete y._lastRatings;delete y._weekSourcePlanId;delete y._weekSourceOrder;delete y._weekSourceExerciseOrder;return y}
+ function structureV68(ex){return clone(ex||[]).map(cleanPlanExerciseV68)}
+ function changedV68(){return !!activeWorkout&&(livePlanEdited||JSON.stringify(structureV68(activeWorkout.exercises))!==JSON.stringify(structureV68(activeWorkout.structureBaseline||[])))}
+ finishAndSaveWorkout=function(){
+   if(!activeWorkout)return;
+   if(changedV68()){
+     const hasOriginal=activeWorkout.isWeekCombined?(activeWorkout.weekSourceIds||[]).some(id=>plans.some(p=>String(p.id)===String(id))):plans.some(p=>String(p.id)===String(activeWorkout.sourcePlanId||activeWorkout.planId));
+     openSheet('Planänderungen speichern?',`<p class="small" style="margin:0 0 14px">Das Workout wird gespeichert. Was soll mit der veränderten Planstruktur passieren?</p><div class="save-choice-stack">${hasOriginal?'<button id="finishOverwritePlan" class="primary">Originalplan überschreiben</button>':''}<button id="finishWithPlanSave" class="secondary">Als neuen Plan speichern</button><button id="finishWithoutPlanSave" class="secondary danger">Planänderungen nicht speichern</button></div>`);
+     if($('finishOverwritePlan'))$('finishOverwritePlan').onclick=()=>finalizeWorkout({saveChangedPlan:'overwrite'});
+     $('finishWithPlanSave').onclick=()=>finalizeWorkout({saveChangedPlan:'new'});
+     $('finishWithoutPlanSave').onclick=()=>finalizeWorkout({saveChangedPlan:false});
+     return
+   }
+   finalizeWorkout({saveChangedPlan:false})
+ };
+ finalizeWorkout=function({saveChangedPlan=false}={}){
+   if(!activeWorkout)return;
+   activeWorkout.finishedAt=Date.now();
+   const current=clone(activeWorkout.exercises||[]),structural=current.map(cleanPlanExerciseV68),sourceId=activeWorkout.sourcePlanId||activeWorkout.planId;
+   if(saveChangedPlan==='overwrite'){
+     if(activeWorkout.isWeekCombined){
+       const sourceIds=(activeWorkout.weekSourceIds||[]).map(String);
+       const grouped=new Map(sourceIds.map(id=>[id,[]]));
+       current.forEach(e=>{let id=String(e._weekSourcePlanId||sourceIds[0]||'');if(!grouped.has(id))id=sourceIds[0];if(id&&grouped.has(id))grouped.get(id).push(cleanPlanExerciseV68(e))});
+       grouped.forEach((ex,id)=>{const p=plans.find(x=>String(x.id)===id);if(p){p.exercises=ex;p.updatedAt=Date.now();p.lastUsedAt=Date.now()}})
+     }else{
+       const p=plans.find(x=>String(x.id)===String(sourceId));if(p){p.exercises=structural;p.updatedAt=Date.now();p.lastUsedAt=Date.now();activeWorkout.planId=p.id;activeWorkout.planName=p.name}
+     }
+   }else if(saveChangedPlan==='new'){
+     const base=activeWorkout.isWeekCombined?(activeWorkout.name||'Wochenplan'):(activeWorkout.planName||activeWorkout.name||'Training');
+     const np={id:uid(),name:nextPlanVersionName(base),createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),sourcePlanId:sourceId,sourcePlanIds:clone(activeWorkout.weekSourceIds||[]),exercises:structural};
+     plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name
+   }
+   activeWorkout.sourcePlanId=sourceId;history.push(clone(activeWorkout));const done=clone(activeWorkout);
+   activeWorkout=null;livePlanEdited=false;restEnd=0;persistRestEnd();timeSetTimers.forEach(clearInterval);timeSetTimers.clear();saveAll();renderPlans();renderWeek();
+   closeSheet({all:true});document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));pageStack=[];$('bottomNav').classList.remove('hidden');showTab('training',{reset:false});openSummary(done)
+ };
+
+ /* Food / meal search */
+ function ensureVisibleV68(input){
+   if(!input)return;const body=input.closest('.sheet-body');if(!body)return;
+   requestAnimationFrame(()=>{const r=input.getBoundingClientRect(),vv=window.visualViewport,bottom=vv?vv.height+vv.offsetTop:innerHeight;if(r.bottom>bottom-12)body.scrollTop+=r.bottom-(bottom-12);else if(r.top<70)body.scrollTop=Math.max(0,body.scrollTop-(70-r.top))})
+ }
+ function mealTotalsProxyV68(m){return window.__mealTotalsV52?window.__mealTotalsV52(m.items||[]):{grams:0,kcal:0,protein:0,water:0}}
+ function openMealLogV68(meal){
+   const t=mealTotalsProxyV68(meal);
+   openSheet(meal.name,`<div class="meal-builder-total"><strong>${esc(meal.name)}</strong><div>1 Portion · ${Math.round(t.grams)} g · ${Math.round(t.kcal)} kcal · ${Math.round(t.protein*10)/10} g Protein · ${Math.round(t.water)} g Wasser</div></div><div class="food-quick-portions v68"><button data-v68-meal=".125">⅛</button><button data-v68-meal=".25">¼</button><button data-v68-meal=".5">½</button><button data-v68-meal="1">1</button></div><div class="form-field"><label>PORTION / MENGE</label><input id="v68MealAmount" class="field" inputmode="decimal" value="1"></div><div id="v68MealPreview" class="small"></div><button id="v68MealAdd" class="primary" style="width:100%;margin-top:10px">Mahlzeit eintragen</button>`);
+   const inp=$('v68MealAmount'),prev=$('v68MealPreview'),upd=()=>{const f=Math.max(.01,Number(String(inp.value).replace(',','.'))||1);prev.textContent=`${Math.round(t.grams*f)} g · ${Math.round(t.kcal*f)} kcal · ${Math.round(t.protein*f*10)/10} g Protein · ${Math.round(t.water*f)} g Wasser`};
+   document.querySelectorAll('[data-v68-meal]').forEach(b=>b.onclick=()=>{inp.value=b.dataset.v68Meal;upd();inp.focus();inp.select();ensureVisibleV68(inp)});
+   inp.oninput=upd;upd();inp.focus();inp.select();ensureVisibleV68(inp);
+   $('v68MealAdd').onclick=()=>{const f=Math.max(.01,Number(String(inp.value).replace(',','.'))||1);nutrition.foodLog=Array.isArray(nutrition.foodLog)?nutrition.foodLog:[];nutrition.foodLog.push({id:uid(),date:profileDateKey(),name:meal.name,category:'Mahlzeit',grams:Math.round(t.grams*f),kcal:Math.round(t.kcal*f),protein:Math.round(t.protein*f*10)/10,water:Math.round(t.water*f),mealId:meal.id,portions:f});recalcFoodTotals();saveAll();closeSheet({all:true});renderProfile()}
+ }
+ window.openFoodSearch=function(initialQuery='',options={}){
+   let q=String(initialQuery||'').trim().toLowerCase();
+   const foodList=()=>window.__allFoodsV52?window.__allFoodsV52():[];
+   const score=(f,q)=>{const n=String(f.name||'').toLowerCase(),c=String(f.category||'').toLowerCase();if(!q)return 0;if(n===q)return 100;if(n.startsWith(q))return 90;if(n.split(/[\s\\-_/()]+/).some(w=>w.startsWith(q)))return 80;if(c.startsWith(q))return 75;if(c.includes(q))return 40;if(n.includes(q))return 45;return-1};
+   const rows=()=>{
+     const foods=foodList().map(f=>({type:'food',item:f,score:score(f,q),used:(nutrition.foodLog||[]).filter(x=>String(x.name).toLowerCase()===String(f.name).toLowerCase()).length}));
+     const meals=(nutrition.meals||[]).map(m=>({type:'meal',item:m,score:score({name:m.name,category:'Mahlzeit'},q),used:(nutrition.foodLog||[]).filter(x=>String(x.mealId)===String(m.id)).length}));
+     return [...foods,...meals].filter(x=>q?x.score>=0:x.used>0).sort((a,b)=>b.score-a.score||b.used-a.used||String(a.item.name).localeCompare(String(b.item.name),'de')).slice(0,100)
+   };
+   const markup=()=>rows().map((x,i)=>{
+     if(x.type==='meal'){const t=mealTotalsProxyV68(x.item);return`<button class="food-result" data-v68-meal-result="${x.item.id}"><div class="food-result-copy"><strong>${esc(x.item.name)}</strong><small>Mahlzeit${x.used?` · ${x.used}× verwendet`:''}</small></div><span class="food-result-values">${Math.round(t.kcal)} kcal · ${Math.round(t.protein*10)/10} g Protein · ${Math.round(t.water)} g Wasser</span></button>`}
+     const f=x.item,s=window.__foodServingV52(f);return`<button class="food-result ${foodTone(f.category)}" data-v68-food-result="${esc(String(f._customId?`custom:${f._customId}`:`builtin:${f.name}`))}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category||'Eigenes Lebensmittel')}${x.used?` · ${x.used}× verwendet`:''}</small><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><span class="food-result-values">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser<br><small>je 100 g</small></span></button>`
+   }).join('')||(q?'<div class="small empty-food-note">Kein passender Treffer.</div>':'<div class="food-search-empty"><strong>Lebensmittel oder Mahlzeit suchen</strong></div>');
+   const body=()=>`<div class="food-search-sticky"><div class="search food-search"><span class="search-loupe">⌕</span><input id="v68FoodSearch" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel, Mahlzeit oder Kategorie" value="${esc(q)}"><button id="v68FoodClear" class="${q?'':'hidden'}">×</button></div></div><div id="v68FoodRows" class="food-results-scroll">${markup()}</div>`;
+   const bindRows=()=>{
+     document.querySelectorAll('[data-v68-meal-result]').forEach(b=>b.onclick=()=>{const m=(nutrition.meals||[]).find(x=>String(x.id)===String(b.dataset.v68MealResult));if(options.selectOnly){toast('Für eine Mahlzeit bitte einzelne Zutaten wählen.');return}if(m)openMealLogV68(m)});
+     document.querySelectorAll('[data-v68-food-result]').forEach(b=>b.onclick=()=>{
+       const key=b.dataset.v68FoodResult,all=foodList(),f=key.startsWith('custom:')?all.find(x=>String(x._customId)===key.slice(7)):all.find(x=>String(x.name)===key.slice(8));if(!f)return;
+       if(options.selectOnly&&typeof options.onSelect==='function'){options.onSelect(f);return}
+       const s=window.__foodServingV52(f);
+       openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser je 100 g</div><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><div class="food-quick-portions v68"><button data-v68-food-factor=".125">⅛</button><button data-v68-food-factor=".25">¼</button><button data-v68-food-factor=".5">½</button><button data-v68-food-factor="1">1</button></div><div class="form-field"><label>GRAMM</label><input id="v68FoodGrams" class="field" inputmode="decimal" value="${s.grams}"></div><div id="v68FoodPreview" class="small"></div><button id="v68FoodAdd" class="primary" style="width:100%;margin-top:10px">Hinzufügen</button>`);
+       const inp=$('v68FoodGrams'),prev=$('v68FoodPreview'),upd=()=>{const n=window.__nutrientsForV52(f,Number(String(inp.value).replace(',','.')));prev.textContent=`${n.kcal} kcal · ${n.protein} g Protein · ${n.water} g Wasser`};
+       document.querySelectorAll('[data-v68-food-factor]').forEach(btn=>btn.onclick=()=>{inp.value=Math.max(1,Math.round(s.grams*Number(btn.dataset.v68FoodFactor)));upd();inp.focus();inp.select();ensureVisibleV68(inp)});
+       inp.oninput=upd;upd();inp.focus();inp.select();ensureVisibleV68(inp);
+       $('v68FoodAdd').onclick=()=>{addFoodEntry(f,Number(String(inp.value).replace(',','.')));closeSheet({all:true})}
+     })
+   };
+   const bind=()=>{
+     const input=$('v68FoodSearch');input.oninput=()=>{q=input.value.trim().toLowerCase();$('v68FoodRows').innerHTML=markup();$('v68FoodClear').classList.toggle('hidden',!q);bindRows()};
+     $('v68FoodClear').onclick=()=>{q='';input.value='';$('v68FoodRows').innerHTML=markup();bindRows();input.focus()};
+     bindRows();input.focus()
+   };
+   openSheet(options.title||'Lebensmittel hinzufügen',body(),bind)
+ };
+
+ /* Drink choice focuses amount synchronously, which is required by iOS. */
+ openQuickDrinkEntry=function(){
+   ensureDrinks();let selectedId=nutrition.drinks[0]?.id||null;
+   const render=(focus=false)=>{
+     const d=nutrition.drinks.find(x=>String(x.id)===String(selectedId))||nutrition.drinks[0];if(!d)return;
+     $('sheetBody').innerHTML=`<div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?'active':''} ${drinkTone(x)}" data-v68-drink="${x.id}"><span class="drink-icon">${x.icon||'🥤'}</span><span>${esc(x.name)}</span></button>`).join('')}</div><div class="form-field" style="margin-top:12px"><label>MENGE ML</label><input id="v68DrinkAmount" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div><div class="small quick-drink-meta">${d.hydration}% Hydrierung · ${d.calories||0} kcal/250 ml · ${d.caffeine||0} mg Koffein</div><button id="v68DrinkApply" class="primary" style="width:100%;margin-top:12px">Eintragen</button>`;
+     document.querySelectorAll('[data-v68-drink]').forEach(b=>b.onclick=()=>{selectedId=b.dataset.v68Drink;render(true)});
+     $('v68DrinkApply').onclick=()=>{addDrinkEntry(d,$('v68DrinkAmount').value);closeSheet({all:true})};
+     if(focus){const a=$('v68DrinkAmount');a.focus();a.select();ensureVisibleV68(a)}
+   };
+   openSheet('Getränk eintragen','');render(false)
+ };
+ if($('addWaterBtn'))$('addWaterBtn').onclick=openQuickDrinkEntry;
+
+ /* Rebind saved meals to the new fraction picker after every profile render. */
+ const profileBeforeV68=window.renderProfile||renderProfile;
+ window.renderProfile=renderProfile=function(){
+   profileBeforeV68();
+   document.querySelectorAll('[data-meal-log]').forEach(b=>b.onclick=()=>{const m=(nutrition.meals||[]).find(x=>String(x.id)===String(b.dataset.mealLog));if(m)openMealLogV68(m)});
+   if($('addFoodTodayBtn'))$('addFoodTodayBtn').onclick=()=>openFoodSearch('')
+ };
+
+ /* Safe annual cleanup: opt-in, never deletes silently. Keeps current + previous calendar year. */
+ function annualCleanupV68(){
+   if(localStorage.getItem(ANNUAL_CLEANUP_KEY)!=='1')return;
+   const year=new Date().getFullYear(),last=Number(localStorage.getItem(ANNUAL_CLEANUP_YEAR)||year);
+   if(last>=year)return;
+   localStorage.setItem(ANNUAL_CLEANUP_YEAR,String(year));
+   const cutoff=new Date(year-1,0,1).getTime();
+   openSheet('Jährliche Datenbereinigung?',`<p class="small">Um lokalen Speicher zu sparen, können Verlaufs-, Ernährungs- und Hydrierungsdaten vor dem 01.01.${year-1} gelöscht werden. Pläne, eigene Lebensmittel, Mahlzeiten und Messungen bleiben erhalten.</p><button id="v68CleanupNow" class="secondary danger" style="width:100%">Alte Verlaufsdaten löschen</button><button id="v68CleanupLater" class="secondary" style="width:100%;margin-top:8px">Dieses Jahr behalten</button>`);
+   $('v68CleanupNow').onclick=()=>{history=history.filter(w=>Number(w.finishedAt||w.startedAt||0)>=cutoff);nutrition.foodLog=(nutrition.foodLog||[]).filter(x=>new Date(x.date+'T12:00:00').getTime()>=cutoff);const hyd=hydrationLog().filter(x=>Number(x.at)>=cutoff);write(HYDRATION_LOG_KEY,hyd);saveAll();closeSheet({all:true});toast('Alte Verlaufsdaten gelöscht')};
+   $('v68CleanupLater').onclick=()=>closeSheet({all:true})
+ }
+ const settingsBeforeV68=window.openSettingsPage||openSettingsPage;
+ window.openSettingsPage=openSettingsPage=function(){
+   settingsBeforeV68();
+   requestAnimationFrame(()=>{
+     const body=$('settingsBody');if(!body||$('v68CleanupSetting'))return;
+     const sec=document.createElement('div');sec.className='settings-section';sec.id='v68CleanupSetting';
+     sec.innerHTML=`<h3>Speicher</h3><div class="settings-card"><div class="settings-row"><div><strong>Jährliche Datenbereinigung</strong><small>Nur Erinnerung; gelöscht wird immer erst nach Bestätigung. Behält aktuelles + vorheriges Kalenderjahr.</small></div><label class="switch"><input id="v68CleanupToggle" type="checkbox" ${localStorage.getItem(ANNUAL_CLEANUP_KEY)==='1'?'checked':''}><span></span></label></div></div>`;
+     body.appendChild(sec);$('v68CleanupToggle').onchange=()=>{localStorage.setItem(ANNUAL_CLEANUP_KEY,$('v68CleanupToggle').checked?'1':'0');if($('v68CleanupToggle').checked)localStorage.setItem(ANNUAL_CLEANUP_YEAR,String(new Date().getFullYear()))}
+   })
+ };
+ setTimeout(annualCleanupV68,800)
+})();
+
+
+/* v69 hardening */
+(function(){
+ const CLEANUP_ENABLED='rethink_annual_cleanup_enabled_v1',CLEANUP_YEAR='rethink_annual_cleanup_prompt_year_v1';
+
+ function v69MoveRestBar(){
+   const bar=$('restBar');
+   if(bar&&bar.parentElement!==document.body)document.body.appendChild(bar)
+ }
+ v69MoveRestBar();
+ const startRestBeforeV69=startRest;
+ startRest=function(sec,restored=false){v69MoveRestBar();return startRestBeforeV69(sec,restored)};
+
+ /* Giant target remains authoritative through the entire partner flow. */
+ const confirmBeforeV69=confirmPlanAddDraft;
+ confirmPlanAddDraft=function(){
+   const e=planAddFlow?.current;
+   if(e?.setTechnique==='giant'){
+     e.methodData=e.methodData||{};
+     e.methodData.giantCount=Math.min(6,Math.max(3,Number($('paGiantCount')?.value||e.methodData.giantCount||planAddFlow.group?.target||3)));
+     if(planAddFlow.group){planAddFlow.group.method='giant';planAddFlow.group.target=e.methodData.giantCount}
+   }
+   return confirmBeforeV69()
+ };
+ const advanceBeforeV69=advancePartnerDraftFlow;
+ advancePartnerDraftFlow=function(){
+   const f=planAddFlow;
+   if(f?.group?.method==='giant'){
+     const target=Math.min(6,Math.max(3,Number(f.drafts?.[0]?.methodData?.giantCount||f.group.target||3)));
+     f.group.target=target
+   }
+   return advanceBeforeV69()
+ };
+
+ /* Exact read-only preview using live renderers. */
+ openPreview=function(p){
+   $('previewTitle').textContent=p.name||'Workout Vorschau';
+   const pp={...clone(p),activeExerciseIndex:-1,exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
+   const old=activeWorkout;activeWorkout=pp;
+   let markup='';
+   try{markup=liveVisualGroups(pp.exercises).map(g=>g.group?renderLiveGroupCard(g):renderLiveSingleCard(g.members[0].e,g.members[0].i)).join('')}
+   finally{activeWorkout=old}
+   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact">${markup}</div>`;
+   $('previewBody').querySelectorAll('input,textarea,select').forEach(x=>{x.readOnly=true;x.disabled=true;x.tabIndex=-1});
+   $('previewBody').querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.liveDetail));
+   openPage('previewPage')
+ };
+
+ /* Week running state + click back into running unit. */
+ function v69WeekDate(day){return dateKeyLocal(weekDateAt(day))}
+ function v69WeekRunning(day){return !!activeWorkout?.weekDate&&String(activeWorkout.weekDate)===String(v69WeekDate(day))}
+ renderWeek=function(){
+   $('weekMotivation').innerHTML=`<div class="small">DIESE WOCHE</div><strong>${esc(weekMotivationText())}</strong>`;
+   const days=['Mo','Di','Mi','Do','Fr','Sa','So'],from=weekDateAt(0),to=weekDateAt(6);
+   $('weekRangeLabel').textContent=`${fmtShortDate(from)} – ${fmtShortDate(to)}`;
+   $('weekOffsetLabel').textContent=weekOffset===0?'Diese Woche':weekOffset<0?`${Math.abs(weekOffset)} Woche${Math.abs(weekOffset)===1?'':'n'} zurück`:`${weekOffset} Woche${weekOffset===1?'':'n'} voraus`;
+   $('weekPrevBtn').disabled=weekOffset<=-104;$('weekNextBtn').disabled=weekOffset>=104;
+   let changed=false;weekPlan=weekPlan.map((ids,i)=>{const valid=validWeekPlans(i).map(p=>p.id);if(JSON.stringify(valid)!==JSON.stringify(Array.isArray(ids)?ids:[]))changed=true;return valid});if(changed)saveAll();
+   $('weekList').innerHTML=days.map((d,i)=>{
+     const ps=validWeekPlans(i),ex=ps.reduce((n,p)=>n+p.exercises.length,0),sets=ps.reduce((n,p)=>n+countPlanSets(p),0),date=weekDateAt(i),done=ps.length&&weekCompletion(i),running=ps.length&&v69WeekRunning(i),names=ps.map(p=>p.name).join(' + ');
+     return`<div class="week-row"><div class="week-day">${d}</div><div class="week-card ${done?'week-completed':running?'week-running':ps.length?'week-scheduled':''}">
+       <button class="week-card-main" ${ps.length?`data-v69-week-main="${i}"`:''}><div class="week-card-date">${date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</div>
+       ${ps.length?`<strong>${esc(names)}</strong><small>${ps.length} Plan${ps.length===1?'':'e'} · ${ex} Übungen · ${sets} Sätze${done?' · Abgeschlossen':''}</small>${running?'<div class="week-running-label">WORKOUT LÄUFT</div>':''}`:`<div class="week-pause-wrap">${stretchSvg()}<div><strong>Pause</strong><small>Freier Tag</small></div></div>`}</button>
+       <div class="week-actions">${ps.length?`${done?'':`<button class="week-plus week-play" data-v69-week-play="${i}" aria-label="${running?'Workout öffnen':'Training starten'}">▶</button>`}<button class="week-menu" data-wm="${i}">⋮</button>`:`<button class="week-plus" data-wa="${i}" aria-label="Plan hinzufügen">+</button>`}</div>
+     </div></div>`
+   }).join('');
+   document.querySelectorAll('[data-wa]').forEach(b=>b.onclick=()=>openWeekPicker(Number(b.dataset.wa)));
+   document.querySelectorAll('[data-v69-week-main]').forEach(b=>b.onclick=()=>{const day=Number(b.dataset.v69WeekMain);if(v69WeekRunning(day))openLive(false);else openWeekPreview(day)});
+   document.querySelectorAll('[data-v69-week-play]').forEach(b=>b.onclick=e=>{e.stopPropagation();const day=Number(b.dataset.v69WeekPlay);if(v69WeekRunning(day))openLive(false);else{const fresh=combinedWeekPlan(day);if(fresh)confirmAndStartPlan(fresh)}});
+   document.querySelectorAll('[data-wm]').forEach(b=>b.onclick=e=>{e.stopPropagation();weekMenu(Number(b.dataset.wm))})
+ };
+
+ /* Selected week-plan order is explicit and is workout order. */
+ openWeekPicker=function(day){
+   let selected=validWeekPlans(day).map(p=>p.id),q='';
+   const render=()=>{
+     const rows=sortedPlansForPicker(q);
+     $('sheetBody').innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div></div>
+       ${rows.map(p=>{const order=selected.indexOf(p.id)+1;return`<button class="plan-card week-select-card ${order?'selected':''}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${order?`<span class="week-order-badge">${order}</span>`:'›'}</span></button>`}).join('')}
+       <div class="small" style="margin:8px 0">${selected.length?`Reihenfolge: ${selected.map((id,i)=>`${i+1}. ${esc(plans.find(p=>p.id===id)?.name||'Plan')}`).join(' · ')}`:'Kein Plan gewählt'}</div>
+       <button id="weekApply" class="primary" style="width:100%">Übernehmen</button>`;
+     $('weekSearch').oninput=()=>{q=$('weekSearch').value;render()};
+     $('weekSearchClear').onclick=()=>{q='';render()};
+     document.querySelectorAll('[data-wpick]').forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick),i=selected.indexOf(id);if(i>=0)selected.splice(i,1);else selected.push(id);render()});
+     $('weekApply').onclick=()=>{const had=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(had&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();renderProfileProgress?.()}
+   };
+   openSheet('Trainingsplan auswählen','');render()
+ };
+
+ /* Stable food search + own foods + meals + requested portion units. */
+ function v69FoodList(){return window.__allFoodsV52?window.__allFoodsV52():[]}
+ function v69Serving(f){return window.__foodServingV52?window.__foodServingV52(f):{grams:100,label:'1 Portion'}}
+ function v69Nutrients(f,g){return window.__nutrientsForV52?window.__nutrientsForV52(f,g):{kcal:0,protein:0,water:0}}
+ function v69MealTotals(m){return window.__mealTotalsV52?window.__mealTotalsV52(m.items||[]):{grams:0,kcal:0,protein:0,water:0}}
+ function v69Reveal(input){
+   if(!input)return;
+   const body=input.closest('.sheet-body');if(!body)return;
+   const go=()=>{const vv=window.visualViewport,r=input.getBoundingClientRect(),bottom=vv?vv.offsetTop+vv.height:innerHeight;const delta=r.bottom-(bottom-12);if(delta>0)body.scrollTop+=delta+8};
+   requestAnimationFrame(go);setTimeout(go,80);setTimeout(go,220)
+ }
+ function v69MealEntry(meal){
+   const t=v69MealTotals(meal);
+   openSheet(meal.name,`<div class="meal-builder-total"><strong>${esc(meal.name)}</strong><div>1 Portion · ${Math.round(t.grams)} g · ${Math.round(t.kcal)} kcal · ${Math.round(t.protein*10)/10} g Protein · ${Math.round(t.water)} g Wasser</div></div>
+   <div class="food-quick-portions v69"><button data-v69-meal=".125">⅛</button><button data-v69-meal=".25">¼</button><button data-v69-meal=".5">½</button><button data-v69-meal="1">1</button></div>
+   <div class="form-field"><label>PORTIONEN</label><input id="v69MealAmount" class="field" inputmode="decimal" value="1"></div><div id="v69MealPreview" class="small"></div>
+   <button id="v69MealAdd" class="primary" style="width:100%;margin-top:10px">Eintragen</button>`);
+   const inp=$('v69MealAmount'),prev=$('v69MealPreview'),update=()=>{const f=Math.max(.01,Number(String(inp.value).replace(',','.'))||1);prev.textContent=`${Math.round(t.grams*f)} g · ${Math.round(t.kcal*f)} kcal · ${Math.round(t.protein*f*10)/10} g Protein · ${Math.round(t.water*f)} g Wasser`};
+   document.querySelectorAll('[data-v69-meal]').forEach(b=>b.onclick=()=>{inp.value=b.dataset.v69Meal;update();inp.focus();inp.select();v69Reveal(inp)});
+   inp.oninput=update;update();inp.focus();inp.select();v69Reveal(inp);
+   $('v69MealAdd').onclick=()=>{const f=Math.max(.01,Number(String(inp.value).replace(',','.'))||1);nutrition.foodLog=Array.isArray(nutrition.foodLog)?nutrition.foodLog:[];nutrition.foodLog.push({id:uid(),date:profileDateKey(),name:meal.name,category:'Mahlzeit',grams:Math.round(t.grams*f),kcal:Math.round(t.kcal*f),protein:Math.round(t.protein*f*10)/10,water:Math.round(t.water*f),mealId:meal.id,portions:f});recalcFoodTotals();saveAll();closeSheet({all:true});renderProfile()}
+ }
+ openFoodSearch=function(initialQuery='',options={}){
+   let q=String(initialQuery||'').trim().toLowerCase();
+   const score=(f)=>{const n=String(f.name||'').toLowerCase(),c=String(f.category||'').toLowerCase();if(!q)return 0;if(n===q)return 100;if(n.startsWith(q))return 90;if(n.split(/[\s\-_/()]+/).some(w=>w.startsWith(q)))return 80;if(c.startsWith(q))return 75;if(n.includes(q))return 45;if(c.includes(q))return 40;return-1};
+   const rows=()=>{
+     const foods=v69FoodList().map(f=>({type:'food',item:f,score:score(f),used:(nutrition.foodLog||[]).filter(x=>String(x.name).toLowerCase()===String(f.name).toLowerCase()).length}));
+     const meals=(nutrition.meals||[]).map(m=>({type:'meal',item:m,score:score({name:m.name,category:'Mahlzeit'}),used:(nutrition.foodLog||[]).filter(x=>String(x.mealId)===String(m.id)).length}));
+     return [...foods,...meals].filter(x=>q?x.score>=0:x.used>0).sort((a,b)=>b.score-a.score||b.used-a.used||String(a.item.name).localeCompare(String(b.item.name),'de')).slice(0,100)
+   };
+   const markup=()=>rows().map(x=>{
+     if(x.type==='meal'){const t=v69MealTotals(x.item);return`<button class="food-result" data-v69-meal-result="${x.item.id}"><div class="food-result-copy"><strong>${esc(x.item.name)}</strong><small>Mahlzeit${x.used?` · ${x.used}× verwendet`:''}</small></div><span class="food-result-values">${Math.round(t.kcal)} kcal · ${Math.round(t.protein*10)/10} g Protein · ${Math.round(t.water)} g Wasser</span></button>`}
+     const f=x.item,s=v69Serving(f),key=f._customId?`custom:${f._customId}`:`builtin:${f.name}`;return`<button class="food-result ${foodTone(f.category)}" data-v69-food-result="${esc(key)}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category||'Eigenes Lebensmittel')}${x.used?` · ${x.used}× verwendet`:''}</small><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><span class="food-result-values">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser</span></button>`
+   }).join('')||(q?'<div class="small empty-food-note">Kein passender Treffer.</div>':'<div class="food-search-empty"><strong>Lebensmittel oder Mahlzeit suchen</strong></div>');
+   const body=()=>`<div class="food-search-sticky"><div class="search food-search"><span class="search-loupe">⌕</span><input id="v69FoodSearch" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel, Mahlzeit oder Kategorie" value="${esc(q)}"><button id="v69FoodClear" class="${q?'':'hidden'}">×</button></div></div><div id="v69FoodRows">${markup()}</div>`;
+   const bindRows=()=>{
+     document.querySelectorAll('[data-v69-meal-result]').forEach(b=>b.onclick=()=>{const m=(nutrition.meals||[]).find(x=>String(x.id)===String(b.dataset.v69MealResult));if(options.selectOnly){toast('Bitte einzelne Zutaten wählen.');return}if(m)v69MealEntry(m)});
+     document.querySelectorAll('[data-v69-food-result]').forEach(b=>b.onclick=()=>{
+       const key=b.dataset.v69FoodResult,all=v69FoodList(),f=key.startsWith('custom:')?all.find(x=>String(x._customId)===key.slice(7)):all.find(x=>String(x.name)===key.slice(8));if(!f)return;
+       if(options.selectOnly&&typeof options.onSelect==='function'){options.onSelect(f);return}
+       const s=v69Serving(f);
+       openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser je 100 g</div><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div>
+       <div class="food-quick-portions v69"><button data-v69-food-factor=".125">⅛</button><button data-v69-food-factor=".25">¼</button><button data-v69-food-factor=".5">½</button><button data-v69-food-factor="1">1</button></div>
+       <div class="form-field"><label>GRAMM</label><input id="v69FoodGrams" class="field" inputmode="decimal" value="${s.grams}"></div><div id="v69FoodPreview" class="small"></div>
+       <button id="v69FoodAdd" class="primary" style="width:100%;margin-top:10px">Hinzufügen</button>`);
+       const inp=$('v69FoodGrams'),prev=$('v69FoodPreview'),upd=()=>{const n=v69Nutrients(f,Number(String(inp.value).replace(',','.')));prev.textContent=`${n.kcal} kcal · ${n.protein} g Protein · ${n.water} g Wasser`};
+       document.querySelectorAll('[data-v69-food-factor]').forEach(btn=>btn.onclick=()=>{inp.value=Math.max(1,Math.round(s.grams*Number(btn.dataset.v69FoodFactor)));upd();inp.focus();inp.select();v69Reveal(inp)});
+       inp.oninput=upd;upd();inp.focus();inp.select();v69Reveal(inp);
+       $('v69FoodAdd').onclick=()=>{addFoodEntry(f,Number(String(inp.value).replace(',','.')));closeSheet({all:true})}
+     })
+   };
+   const bind=()=>{
+     const input=$('v69FoodSearch');
+     input.oninput=()=>{q=input.value.trim().toLowerCase();$('v69FoodRows').innerHTML=markup();$('v69FoodClear').classList.toggle('hidden',!q);bindRows()};
+     $('v69FoodClear').onclick=()=>{q='';input.value='';$('v69FoodRows').innerHTML=markup();bindRows();input.focus()};
+     bindRows();input.focus()
+   };
+   openSheet(options.title||'Lebensmittel hinzufügen',body(),bind)
+ };
+
+ /* iOS requires focus directly in the user click event for the keyboard. */
+ openQuickDrinkEntry=function(){
+   ensureDrinks();let selectedId=nutrition.drinks[0]?.id||null;
+   const render=()=>{
+     const d=nutrition.drinks.find(x=>String(x.id)===String(selectedId))||nutrition.drinks[0];if(!d)return;
+     $('sheetBody').innerHTML=`<div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?'active':''} ${drinkTone(x)}" data-v69-drink="${x.id}"><span class="drink-icon">${x.icon||'🥤'}</span><span>${esc(x.name)}</span></button>`).join('')}</div>
+     <div class="form-field" style="margin-top:12px"><label>MENGE ML</label><input id="v69DrinkAmount" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div>
+     <div class="small quick-drink-meta">${d.hydration}% Hydrierung · ${d.calories||0} kcal/250 ml · ${d.caffeine||0} mg Koffein</div><button id="v69DrinkApply" class="primary" style="width:100%;margin-top:12px">Eintragen</button>`;
+     document.querySelectorAll('[data-v69-drink]').forEach(b=>b.onpointerup=()=>{selectedId=b.dataset.v69Drink;render();const inp=$('v69DrinkAmount');inp.focus({preventScroll:true});inp.select();v69Reveal(inp)});
+     $('v69DrinkApply').onclick=()=>{addDrinkEntry(d,$('v69DrinkAmount').value);closeSheet({all:true})}
+   };
+   openSheet('Getränk eintragen','');render()
+ };
+ if($('addWaterBtn'))$('addWaterBtn').onclick=openQuickDrinkEntry;
+
+ /* Reset profile day to Today on a true PWA process start. */
+ const restoreBeforeV69=restoreUI;
+ restoreUI=function(){
+   const same=sessionStorage.getItem(SESSION_MARKER)==='1';
+   if(!same){profileDayOffset=0;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,'0')}
+   return restoreBeforeV69()
+ };
+
+ /* Safe yearly cleanup remains opt-in and confirm-before-delete. */
+ if(localStorage.getItem(CLEANUP_ENABLED)==='1'&&!localStorage.getItem(CLEANUP_YEAR)){
+   localStorage.setItem(CLEANUP_YEAR,String(new Date().getFullYear()))
+ }
+})();
+
+
+/* v69 active-exercise normalization */
+(function(){
+ function exerciseDoneV69(e){return !!e&&(e.liveSets||[]).length>0&&(e.liveSets||[]).every(s=>s.completed)}
+ function firstOpenInVisualOrderV69(){
+   if(!activeWorkout)return 0;
+   const groups=liveVisualGroups(activeWorkout.exercises||[]);
+   for(const g of groups){
+     if(g.group){
+       const open=g.members.find(x=>!exerciseDoneV69(x.e));
+       if(open)return open.i
+     }else if(!exerciseDoneV69(g.members[0].e))return g.members[0].i
+   }
+   return Math.max(0,(activeWorkout.exercises||[]).length-1)
+ }
+ const renderBeforeV69Active=renderLive;
+ renderLive=function(){
+   if(activeWorkout?.exercises?.length){
+     const idx=Math.max(0,Math.min(Number(activeWorkout.activeExerciseIndex)||0,activeWorkout.exercises.length-1));
+     const current=activeWorkout.exercises[idx];
+     if(exerciseDoneV69(current))activeWorkout.activeExerciseIndex=firstOpenInVisualOrderV69()
+   }
+   return renderBeforeV69Active()
+ };
+})();
+
+
+/* v70 recurring week-plan rules */
+(function(){
+ const RECUR_KEY='rethink_week_recurring_rules_v1';
+ const EXCEPT_KEY='rethink_week_recurring_exceptions_v1';
+
+ function loadRulesV70(){const x=read(RECUR_KEY,[]);return Array.isArray(x)?x:[]}
+ function pruneOrphanRulesV70(){
+   const ids=new Set(plans.map(p=>String(p.id))),rules=loadRulesV70(),clean=rules.filter(r=>ids.has(String(r.planId)));
+   if(clean.length!==rules.length)saveRulesV70(clean)
+ }
+ function saveRulesV70(x){write(RECUR_KEY,Array.isArray(x)?x:[])}
+ function loadExceptionsV70(){const x=read(EXCEPT_KEY,{});return x&&typeof x==='object'?x:{}}
+ function saveExceptionsV70(x){write(EXCEPT_KEY,x&&typeof x==='object'?x:{})}
+ function dateKeyV70(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+ function noonV70(key){const d=new Date(`${key}T12:00:00`);return Number.isFinite(d.getTime())?d:null}
+ function weeksBetweenV70(a,b){const A=noonV70(a),B=noonV70(b);if(!A||!B)return 0;return Math.round((B-A)/604800000)}
+ function ruleActiveV70(rule,date){
+   const key=dateKeyV70(date),start=String(rule.startDate||'');
+   if(!start||key<start||Number(date.getDay()||7)!==Number(rule.isoWeekday||7))return false;
+   const diff=weeksBetweenV70(start,key);if(diff<0)return false;
+   if(rule.endMode==='count'&&Number(rule.countWeeks)>0&&diff>=Number(rule.countWeeks))return false;
+   if(rule.endMode==='date'&&rule.endDate&&key>String(rule.endDate))return false;
+   if(rule.stopBefore&&key>=String(rule.stopBefore))return false;
+   return true
+ }
+ function exceptionForV70(dateKey){const all=loadExceptionsV70();return all[dateKey]||{removedRuleIds:[],explicitPlanIds:null}}
+ function setExceptionV70(dateKey,value){
+   const all=loadExceptionsV70();
+   const clean={removedRuleIds:[...new Set((value?.removedRuleIds||[]).map(String))],explicitPlanIds:Array.isArray(value?.explicitPlanIds)?value.explicitPlanIds.map(Number):null};
+   if(!clean.removedRuleIds.length&&clean.explicitPlanIds===null)delete all[dateKey];else all[dateKey]=clean;
+   saveExceptionsV70(all)
+ }
+ function recurringEntriesForV70(day){
+   const date=weekDateAt(day),key=dateKeyV70(date),ex=exceptionForV70(key),removed=new Set((ex.removedRuleIds||[]).map(String));
+   return loadRulesV70().filter(r=>!removed.has(String(r.id))&&ruleActiveV70(r,date)&&plans.some(p=>String(p.id)===String(r.planId)))
+     .sort((a,b)=>Number(a.order||0)-Number(b.order||0)||Number(a.createdAt||0)-Number(b.createdAt||0))
+ }
+ function explicitIdsV70(day){
+   const key=dateKeyV70(weekDateAt(day)),ex=exceptionForV70(key);
+   if(Array.isArray(ex.explicitPlanIds))return ex.explicitPlanIds.filter(id=>plans.some(p=>String(p.id)===String(id)));
+   const ids=Array.isArray(weekPlan[day])?weekPlan[day]:weekPlan[day]!=null?[weekPlan[day]]:[];
+   return ids.filter(id=>plans.some(p=>String(p.id)===String(id)))
+ }
+ function effectiveIdsV70(day){
+   const key=dateKeyV70(weekDateAt(day)),ex=exceptionForV70(key);
+   if(Array.isArray(ex.explicitPlanIds))return ex.explicitPlanIds.filter(id=>plans.some(p=>String(p.id)===String(id)));
+   const out=[],seen=new Set();
+   recurringEntriesForV70(day).forEach(r=>{const id=Number(r.planId);if(!seen.has(String(id))){out.push(id);seen.add(String(id))}});
+   explicitIdsV70(day).forEach(id=>{if(!seen.has(String(id))){out.push(id);seen.add(String(id))}});
+   return out
+ }
+ window.validWeekPlans=function(day){return effectiveIdsV70(day).map(id=>plans.find(p=>String(p.id)===String(id))).filter(Boolean)};
+ function recurringRuleIdsV70(day){return recurringEntriesForV70(day).map(r=>String(r.id))}
+ function hasRecurringV70(day){return recurringRuleIdsV70(day).length>0}
+ function repeatMarkerV70(day){return hasRecurringV70(day)?'<span class="week-repeat-badge">↻</span>':''}
+
+ function upsertRecurrenceV70(day,selected,config){
+   const date=weekDateAt(day),start=dateKeyV70(date),iso=Number(date.getDay()||7),rules=loadRulesV70();
+   // From this start date, stop existing rules for this weekday/selected context so they do not overlap.
+   rules.forEach(r=>{if(Number(r.isoWeekday)===iso&&ruleActiveV70(r,date)&&selected.map(String).includes(String(r.planId)))r.stopBefore=start});
+   selected.forEach((planId,order)=>{
+     rules.push({
+       id:`wr_${uid()}`,planId:Number(planId),isoWeekday:iso,startDate:start,
+       endMode:config.mode,countWeeks:config.mode==='count'?Number(config.countWeeks||1):null,
+       endDate:config.mode==='date'?String(config.endDate||start):null,
+       order,createdAt:Date.now()
+     })
+   });
+   saveRulesV70(rules);
+   // Current week should be derived from recurrence, not duplicated in dated storage.
+   weekPlan[day]=[];
+   setExceptionV70(start,{removedRuleIds:[],explicitPlanIds:null});
+   saveAll()
+ }
+ function applyOnlyThisWeekV70(day,selected){
+   const key=dateKeyV70(weekDateAt(day)),ruleIds=recurringRuleIdsV70(day);
+   setExceptionV70(key,{removedRuleIds:ruleIds,explicitPlanIds:selected});
+   weekPlan[day]=[];saveAll()
+ }
+ function replaceFromHereV70(day,selected,repeatConfig=null){
+   const date=weekDateAt(day),key=dateKeyV70(date),iso=Number(date.getDay()||7),rules=loadRulesV70();
+   rules.forEach(r=>{if(Number(r.isoWeekday)===iso&&ruleActiveV70(r,date))r.stopBefore=key});
+   saveRulesV70(rules);
+   setExceptionV70(key,{removedRuleIds:[],explicitPlanIds:null});
+   if(repeatConfig&&repeatConfig.mode!=='once')upsertRecurrenceV70(day,selected,repeatConfig);
+   else{weekPlan[day]=selected;saveAll()}
+ }
+ function stopRecurringFromV70(day){
+   const date=weekDateAt(day),key=dateKeyV70(date),rules=loadRulesV70(),ids=new Set(recurringRuleIdsV70(day));
+   rules.forEach(r=>{if(ids.has(String(r.id)))r.stopBefore=key});
+   saveRulesV70(rules);setExceptionV70(key,{removedRuleIds:[...ids],explicitPlanIds:[]});weekPlan[day]=[];saveAll()
+ }
+ function removeOnlyOccurrenceV70(day){
+   const key=dateKeyV70(weekDateAt(day)),ids=recurringRuleIdsV70(day);
+   setExceptionV70(key,{removedRuleIds:ids,explicitPlanIds:[]});weekPlan[day]=[];saveAll()
+ }
+
+ /* Keep recurrence dynamic: never copy derived plans into dated-week storage. */
+ const saveWeekBeforeV70=saveCurrentWeekRefs;
+ saveCurrentWeekRefs=function(){
+   const all=loadDatedWeeks();
+   const explicit=weekPlan.map((ids,day)=>{
+     const key=dateKeyV70(weekDateAt(day)),ex=exceptionForV70(key);
+     if(Array.isArray(ex.explicitPlanIds))return []; // exception owns this occurrence
+     return Array.isArray(ids)?ids:[]
+   });
+   all[weekKeyForOffset()]=explicit;write(WEEK_DATED_KEY,all)
+ };
+
+ /* Weekly picker with recurrence controls. */
+ openWeekPicker=function(day){
+   let selected=validWeekPlans(day).map(p=>p.id),q='',repeatMode='once',repeatWeeks=8;
+   const start=weekDateAt(day),startKey=dateKeyV70(start),defaultEnd=new Date(start);defaultEnd.setDate(defaultEnd.getDate()+7*7);
+   let repeatEnd=dateKeyV70(defaultEnd);
+   const activeRules=recurringEntriesForV70(day),existingRecurring=activeRules.length>0,firstRule=activeRules[0]||null;
+   if(firstRule){
+     repeatMode=firstRule.endMode||'count';
+     if(repeatMode==='count'){
+       const used=Math.max(0,weeksBetweenV70(firstRule.startDate,startKey));
+       repeatWeeks=Math.max(2,Number(firstRule.countWeeks||8)-used)
+     }
+     if(repeatMode==='date'&&firstRule.endDate)repeatEnd=firstRule.endDate
+   }
+   const render=()=>{
+     const rows=sortedPlansForPicker(q);
+     $('sheetBody').innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div></div>
+       ${rows.map(p=>{const order=selected.indexOf(p.id)+1;return`<button class="plan-card week-select-card ${order?'selected':''}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${order?`<span class="week-order-badge">${order}</span>`:'›'}</span></button>`}).join('')}
+       <div class="small" style="margin:8px 0">${selected.length?`Reihenfolge: ${selected.map((id,i)=>`${i+1}. ${esc(plans.find(p=>p.id===id)?.name||'Plan')}`).join(' · ')}`:'Kein Plan gewählt'}</div>
+       <div class="repeat-config">
+         <div class="repeat-choice-line"><strong>Wiederholen</strong><select id="v70RepeatMode" class="field">
+           <option value="once" ${repeatMode==='once'?'selected':''}>Einmalig</option>
+           <option value="count" ${repeatMode==='count'?'selected':''}>Für X Wochen</option>
+           <option value="date" ${repeatMode==='date'?'selected':''}>Bis Datum</option>
+         </select></div>
+         ${repeatMode==='count'?`<div class="form-field"><label>ANZAHL WOCHEN</label><input id="v70RepeatWeeks" class="field" inputmode="numeric" min="2" max="104" value="${repeatWeeks}"></div>`:''}
+         ${repeatMode==='date'?`<div class="form-field"><label>BIS EINSCHLIESSLICH</label><input id="v70RepeatEnd" class="field" type="date" min="${dateKeyV70(start)}" value="${repeatEnd}"></div>`:''}
+         <div class="repeat-rule-note">Die Wiederholung speichert nur eine Regel. Es werden keine Plan-Kopien für jede Woche angelegt.</div>
+       </div>
+       <button id="weekApply" class="primary" style="width:100%">Übernehmen</button>`;
+     $('weekSearch').oninput=()=>{q=$('weekSearch').value;render()};
+     $('weekSearchClear').onclick=()=>{q='';render()};
+     document.querySelectorAll('[data-wpick]').forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick),i=selected.indexOf(id);if(i>=0)selected.splice(i,1);else selected.push(id);render()});
+     $('v70RepeatMode').onchange=()=>{repeatMode=$('v70RepeatMode').value;render()};
+     if($('v70RepeatWeeks'))$('v70RepeatWeeks').oninput=()=>{repeatWeeks=Math.min(104,Math.max(2,Number($('v70RepeatWeeks').value)||2))};
+     if($('v70RepeatEnd'))$('v70RepeatEnd').onchange=()=>{repeatEnd=$('v70RepeatEnd').value||dateKeyV70(start)};
+     $('weekApply').onclick=()=>{
+       const cfg={mode:repeatMode,countWeeks:repeatWeeks,endDate:repeatEnd};
+       if(existingRecurring){
+         openSheet('Wiederholung ändern?',`<div class="save-choice-stack">
+           <button id="v70OnlyThis" class="primary">Nur diese Woche</button>
+           <button id="v70ThisAndFollowing" class="secondary">Diese und folgende Wochen</button>
+           <button id="v70CancelChange" class="secondary">Abbrechen</button>
+         </div>`);
+         $('v70OnlyThis').onclick=()=>{applyOnlyThisWeekV70(day,selected);closeSheet({all:true});renderWeek()};
+         $('v70ThisAndFollowing').onclick=()=>{replaceFromHereV70(day,selected,cfg);closeSheet({all:true});renderWeek()};
+         $('v70CancelChange').onclick=()=>closeSheet({all:true});
+         return
+       }
+       if(repeatMode==='count'&&repeatWeeks<2)return toast('Bitte mindestens 2 Wochen wählen.');
+       if(repeatMode==='date'&&repeatEnd<dateKeyV70(start))return toast('Enddatum muss nach dem Start liegen.');
+       if(repeatMode==='once'){weekPlan[day]=selected;saveAll()}
+       else upsertRecurrenceV70(day,selected,cfg);
+       closeSheet({all:true});renderWeek();renderProfileProgress?.()
+     }
+   };
+   openSheet('Trainingsplan auswählen','');render()
+ };
+
+ /* Menu distinguishes one occurrence from the future series. */
+ weekMenu=function(day){
+   const ps=validWeekPlans(day);if(!ps.length)return;
+   const recurring=hasRecurringV70(day);
+   openSheet(ps.map(p=>p.name).join(' + '),`<button id="weekReplace" class="secondary" style="width:100%">⇄ Auswahl bearbeiten</button>
+     <button id="weekDelete" class="secondary danger" style="width:100%;margin-top:8px">× Auswahl löschen</button>`);
+   $('weekReplace').onclick=()=>{closeSheet({all:true});openWeekPicker(day)};
+   $('weekDelete').onclick=()=>{
+     if(!recurring){
+       if(confirm('Auswahl für diesen Tag wirklich löschen?')){clearWeekCompletionForDay(day);weekPlan[day]=[];saveAll();closeSheet({all:true});renderWeek();renderProfileProgress?.()}
+       return
+     }
+     openSheet('Wiederholung löschen?',`<div class="save-choice-stack">
+       <button id="v70DeleteOnly" class="primary">Nur dieses Workout entfernen</button>
+       <button id="v70DeleteFuture" class="secondary danger">Wiederholung ab hier beenden</button>
+       <button id="v70DeleteCancel" class="secondary">Abbrechen</button>
+     </div>`);
+     $('v70DeleteOnly').onclick=()=>{clearWeekCompletionForDay(day);removeOnlyOccurrenceV70(day);closeSheet({all:true});renderWeek();renderProfileProgress?.()};
+     $('v70DeleteFuture').onclick=()=>{stopRecurringFromV70(day);closeSheet({all:true});renderWeek();renderProfileProgress?.()};
+     $('v70DeleteCancel').onclick=()=>closeSheet({all:true})
+   }
+ };
+
+ /* Recurrence marker in week cards, while keeping v69 running/play behavior. */
+ const renderWeekBeforeV70=renderWeek;
+ renderWeek=function(){
+   renderWeekBeforeV70();
+   document.querySelectorAll('[data-v69-week-main]').forEach(btn=>{
+     const day=Number(btn.dataset.v69WeekMain),strong=btn.querySelector('strong');
+     if(strong&&hasRecurringV70(day)&&!strong.querySelector('.week-repeat-badge'))strong.insertAdjacentHTML('beforeend',repeatMarkerV70(day))
+   })
+ };
+
+ pruneOrphanRulesV70();
+ window.__weekRecurringV70={
+   rules:loadRulesV70,exceptions:loadExceptionsV70,active:(day)=>recurringEntriesForV70(day),effectiveIds:effectiveIdsV70,
+   create:upsertRecurrenceV70,applyOnly:applyOnlyThisWeekV70,replaceFrom:replaceFromHereV70,
+   removeOnly:removeOnlyOccurrenceV70,stopFrom:stopRecurringFromV70
+ };
+})();
+
+/* Rethink_v3.1 — persistent five-tab UI state */
+(function(){
+ const TAB_UI_STORAGE="rethink_tab_ui_state_v31";
+ function saveTabUiSnapshots(){
+   try{
+     if(typeof captureTabUiState==="function")captureTabUiState(currentTab);
+     localStorage.setItem(TAB_UI_STORAGE,JSON.stringify(tabUiState))
+   }catch{}
+ }
+ function loadTabUiSnapshots(){
+   try{
+     const saved=JSON.parse(localStorage.getItem(TAB_UI_STORAGE)||"null");
+     if(saved&&typeof saved==="object")Object.keys(tabUiState).forEach(k=>{if(saved[k])tabUiState[k]=saved[k]})
+   }catch{}
+ }
+ loadTabUiSnapshots();
+ document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")saveTabUiSnapshots()});
+ window.addEventListener("pagehide",saveTabUiSnapshots);
+ const persistBeforeTabState=persistUI;
+ persistUI=function(){saveTabUiSnapshots();return persistBeforeTabState()}
+})();
+
+
+/* Rethink_v3.1 — tab/input hardening */
+(function(){
+ function scrollContainerV31(el){return el.closest(".sheet-body")||el.closest(".page")||document.scrollingElement}
+ function revealInputV31(el){
+   if(!el?.isConnected)return;
+   const vv=window.visualViewport;
+   const viewportTop=vv?vv.offsetTop:0;
+   const viewportBottom=vv?(vv.offsetTop+vv.height):window.innerHeight;
+   const r=el.getBoundingClientRect();
+   const targetBottom=viewportBottom-14;
+   let delta=0;
+   if(r.bottom>targetBottom)delta=r.bottom-targetBottom+8;
+   else if(r.top<viewportTop+64)delta=r.top-(viewportTop+72);
+   if(Math.abs(delta)<2)return;
+   const c=scrollContainerV31(el);
+   if(c===document.scrollingElement||c===document.documentElement||c===document.body)window.scrollBy({top:delta,behavior:"auto"});
+   else c.scrollTop+=delta
+ }
+ function stabilizeV31(el){[0,60,140,260,380].forEach(ms=>setTimeout(()=>revealInputV31(el),ms))}
+ window.revealInputV31=revealInputV31;
+ document.addEventListener("focusin",e=>{
+   const el=e.target;if(!el.matches?.(".sheet-body input,.sheet-body textarea,.sheet-body select"))return;
+   stabilizeV31(el)
+ },true);
+ if(window.visualViewport){
+   visualViewport.addEventListener("resize",()=>{
+     const el=document.activeElement;
+     if(el?.matches?.(".sheet-body input,.sheet-body textarea,.sheet-body select"))stabilizeV31(el)
+   },true)
+ }
+ const oldOpenWeekPickerV31=openWeekPicker;
+ openWeekPicker=function(day){
+   oldOpenWeekPickerV31(day);
+   const attach=()=>{
+     const weeks=$("v70RepeatWeeks");
+     if(weeks){
+       const selectAll=()=>{try{weeks.select()}catch{};stabilizeV31(weeks)};
+       weeks.onfocus=selectAll;weeks.onclick=selectAll;weeks.onpointerup=()=>setTimeout(selectAll,0)
+     }
+     const date=$("v70RepeatEnd");
+     if(date){
+       date.min=date.min||dateKeyLocal(weekDateAt(day));
+       date.onfocus=()=>stabilizeV31(date);date.onclick=()=>stabilizeV31(date)
+     }
+   };
+   requestAnimationFrame(attach);setTimeout(attach,40)
+ };
+ document.addEventListener("change",e=>{
+   if(e.target?.id!=="v70RepeatMode")return;
+   setTimeout(()=>{
+     const weeks=$("v70RepeatWeeks");
+     if(weeks){
+       const selectAll=()=>{try{weeks.select()}catch{};stabilizeV31(weeks)};
+       weeks.onfocus=selectAll;weeks.onclick=selectAll;weeks.onpointerup=()=>setTimeout(selectAll,0)
+     }
+     const date=$("v70RepeatEnd");if(date)date.onfocus=()=>stabilizeV31(date)
+   },0)
+ },true);
+
+ const oldQuickDrinkV31=openQuickDrinkEntry;
+ openQuickDrinkEntry=function(){
+   oldQuickDrinkV31();
+   const bind=()=>{
+     document.querySelectorAll("[data-v69-drink],[data-quick-drink]").forEach(btn=>{
+       const oldPointer=btn.onpointerup,oldClick=btn.onclick;
+       btn.onpointerup=(ev)=>{
+         if(typeof oldPointer==="function")oldPointer.call(btn,ev);
+         else if(typeof oldClick==="function")oldClick.call(btn,ev);
+         setTimeout(()=>{
+           const input=$("v69DrinkAmount")||$("quickDrinkAmount");
+           if(input){input.focus({preventScroll:true});input.select?.();stabilizeV31(input)}
+         },0)
+       }
+     });
+     const input=$("v69DrinkAmount")||$("quickDrinkAmount");if(input)input.onfocus=()=>stabilizeV31(input)
+   };
+   requestAnimationFrame(bind);setTimeout(bind,50)
+ };
+ if($("addWaterBtn"))$("addWaterBtn").onclick=openQuickDrinkEntry;
 })();
