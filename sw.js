@@ -1,4 +1,4 @@
-const CACHE='rethink-v3-1-build-20260819j';
+const CACHE='rethink-v3-1-github-20260819-1';
 const ASSETS=[
  './', './index.html', './runtime-current.js', './foods.js', './manifest.webmanifest', './README.md', './AUDIT.md',
  './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'
