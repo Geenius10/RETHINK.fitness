@@ -493,3 +493,11 @@ Für alle fünf Haupt-Tabs gilt:
 - Reale Zubereitungs- oder Produktvarianten bleiben nur dort bestehen, wo sie als eigenständiger, klar benannter Datensatz angelegt wurden.
 - Nach Normalisierung der Namen existieren keine Namensdubletten mehr.
 - Entfernte Generatorvarianten wurden durch neue reale Lebensmittel, Zutaten, Proteinquellen, Getreide, Brote, Pasta, Milchprodukte, Fisch-/Fleischsorten, Snacks, Saucen, Gerichte und internationale Speisen ersetzt.
+
+## Rethink_v3.1 — Hydrierung Mengenbestätigung
+- Die Getränkemenge wird oben in der Hydrierungsmaske bearbeitet.
+- Rechts direkt in der Mengenbox befindet sich `+ Eintragen`.
+- Alternativ bestätigt die Enter-/Done-Taste der Bildschirmtastatur die Menge sofort.
+- Der bisherige separate große Eintragen-Button unterhalb der Getränkeliste wurde entfernt.
+
+- Fix: Sprachumschaltung verändert im Tab `Pläne` nur noch den Textknoten; das bestehende Plan-SVG-Symbol bleibt erhalten.

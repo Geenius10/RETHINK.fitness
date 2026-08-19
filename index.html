@@ -1257,6 +1257,16 @@ html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!
 .settings-system-select{width:142px;max-width:48vw}
 .distance-live-field{min-width:0!important}
 </style>
+
+<style id="rethink-v31-drink-inline-submit">
+.drink-amount-inline{position:relative;display:flex;align-items:center;width:100%}
+.drink-amount-inline .field{width:100%;padding-right:104px!important}
+.drink-amount-submit{
+  position:absolute;right:5px;top:50%;transform:translateY(-50%);
+  height:34px;min-width:92px;padding:0 10px;border:0;border-radius:9px;
+  background:var(--accent,#b7a4d8);color:#18131d;font-size:11px;font-weight:900
+}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>

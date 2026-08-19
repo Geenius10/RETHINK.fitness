@@ -2654,13 +2654,35 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      $("sheetBody").innerHTML=`
        <div class="final-drink-entry-top">
         <div class="final-drink-selected"><span class="drink-icon">${d.icon||"🥤"}</span><div><strong data-i18n-skip>${esc(d.name)}</strong><div class="small">${d.hydration}% Hydrierung · ${d.calories||0} kcal/250 ml · ${d.caffeine||0} mg Koffein</div></div></div>
-        <div class="form-field"><label>MENGE ${volumeUnit()}</label><input id="finalDrinkAmount" class="field" inputmode="decimal" value="${shown}"></div>
+        <div class="form-field"><label>MENGE ${volumeUnit()}</label>
+          <div class="drink-amount-inline">
+            <input id="finalDrinkAmount" class="field" inputmode="decimal" enterkeyhint="done" value="${shown}">
+            <button id="finalDrinkApplyInline" class="drink-amount-submit" type="button">+ Eintragen</button>
+          </div>
+        </div>
        </div>
-       <div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?"active":""} ${drinkTone(x)}" data-final-drink="${x.id}"><span class="drink-icon">${x.icon||"🥤"}</span><span data-i18n-skip>${esc(x.name)}</span></button>`).join("")}</div>
-       <button id="finalDrinkApply" class="primary" style="width:100%;margin-top:10px">Eintragen</button>`;
+       <div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?"active":""} ${drinkTone(x)}" data-final-drink="${x.id}"><span class="drink-icon">${x.icon||"🥤"}</span><span data-i18n-skip>${esc(x.name)}</span></button>`).join("")}</div>`;
+     const submit=()=>{
+       const input=$("finalDrinkAmount"),raw=String(input?.value??"").trim();
+       if(!raw){input?.focus();return}
+       const amount=volumeStore(raw);
+       if(!amount||Number(amount)<=0){input?.focus();input?.select?.();return}
+       addDrinkEntry(d,amount);closeSheet({all:true})
+     };
      document.querySelectorAll("[data-final-drink]").forEach(btn=>btn.onclick=()=>{selectedId=btn.dataset.finalDrink;render(true)});
-     $("finalDrinkApply").onclick=()=>{addDrinkEntry(d,volumeStore($("finalDrinkAmount").value));closeSheet({all:true})};
-     const input=$("finalDrinkAmount");if(input&&focusAmount){input.focus({preventScroll:true});input.select();window.revealFieldFinal?.(input)}
+     $("finalDrinkApplyInline").onclick=submit;
+     const input=$("finalDrinkAmount");
+     if(input){
+       input.onkeydown=e=>{
+         if(e.key==="Enter"){
+           e.preventDefault();e.stopPropagation();submit()
+         }
+       };
+       if(focusAmount){
+         try{input.focus({preventScroll:true})}catch{input.focus()}
+         input.select?.();window.revealFieldFinal?.(input)
+       }
+     }
      applyTranslationsV31()
    };
    openSheet("Getränk eintragen","");render(false)
@@ -2687,7 +2709,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
   "Sprache":"Language","Deutsch":"German","Englisch":"English",
   "Heute":"Today","Gestern":"Yesterday","Morgen":"Tomorrow","Messungen":"Measurements","Messung hinzufügen":"Add measurement",
   "Hydrierung heute":"Hydration today","Ernährung heute":"Nutrition today","Menge":"Amount","Ziel":"Goal","Getränke heute":"Drinks today","Meine Getränke":"My drinks",
-  "Getränk erstellen":"Create drink","Getränk eintragen":"Log drink","Eintragen":"Log","Hinzufügen":"Add","Übernehmen":"Apply","Speichern":"Save","Löschen":"Delete",
+  "Getränk erstellen":"Create drink","Getränk eintragen":"Log drink","Eintragen":"Log","+ Eintragen":"+ Log","Hinzufügen":"Add","Übernehmen":"Apply","Speichern":"Save","Löschen":"Delete",
   "Bearbeiten":"Edit","Abbrechen":"Cancel","Zurück":"Back","Trainingsplan auswählen":"Choose plan","Plan suchen":"Search plans",
   "Hinzugefügt":"Added","Geändert":"Changed","Genutzt":"Used","Diese Woche":"This week","Wiederholen":"Repeat","Einmalig":"Once","Für X Wochen":"For X weeks",
   "Bis Datum":"Until date","ANZAHL WOCHEN":"NUMBER OF WEEKS","BIS EINSCHLIESSLICH":"UNTIL AND INCLUDING",
@@ -2838,7 +2860,11 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      old(root);
      const p=window.rethinkSystemV31.prefs();
      document.querySelectorAll('#bottomNav button[data-tab="plans"]').forEach(b=>{
-       b.textContent=p.language==="en"?"Plans":"Pläne"
+       const icon=b.querySelector(".nav-icon");
+       const label=p.language==="en"?"Plans":"Pläne";
+       [...b.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).forEach(n=>n.remove());
+       b.append(document.createTextNode(label));
+       if(icon && b.firstElementChild!==icon)b.prepend(icon)
      })
    }
  }
