@@ -251,3 +251,9 @@ Diese Datei dokumentiert technische Nachweise des ausgelieferten v70-Stands. `PA
 - PASS — Textgröße Groß setzt die globale Textskalierung auf 115%; Sehr groß auf 130%.
 - PASS — Deutsch/Englisch-Umschaltung übersetzt UI-Navigation.
 - PASS — Übungsname und Planname bleiben bei Sprachumschaltung unverändert.
+
+## Lebensmitteldatenbank v3
+- PASS — 1.700 Datensätze.
+- PASS — 1.700 eindeutige Namen.
+- PASS — auch nach Vereinheitlichung von Groß-/Kleinschreibung, Sonderzeichen und Bindestrichen keine Namensdubletten.
+- PASS — alte automatisch erzeugte Suffix-Familien entfernt.

@@ -486,3 +486,10 @@ Für alle fünf Haupt-Tabs gilt:
 - Sprache besitzt **Deutsch** (Default) und **Englisch**.
 - UI-Texte werden übersetzt; **Übungsnamen, Plannamen, eigene Lebensmittel-/Mahlzeitennamen und Notizen bleiben unverändert**.
 - Ein bloßer Fokus/Klick in ein leeres Trainingsfeld verändert dessen Wert nicht. Ein leeres Feld darf insbesondere nicht automatisch `0` erhalten und übernimmt dadurch auch keinen grauen Vorwert.
+
+## Rethink_v3.1 — Lebensmitteldatenbank v3
+- Final bereinigter Stand: 1.700 Lebensmittel.
+- Alle automatisch erzeugten Suffix-Familien `– TK`, `– gegrillt`, `– gegart`, `– gedünstet`, `– geröstet`, `– fettarm`, `– light` und `– gekocht` wurden aus dem Altbestand entfernt.
+- Reale Zubereitungs- oder Produktvarianten bleiben nur dort bestehen, wo sie als eigenständiger, klar benannter Datensatz angelegt wurden.
+- Nach Normalisierung der Namen existieren keine Namensdubletten mehr.
+- Entfernte Generatorvarianten wurden durch neue reale Lebensmittel, Zutaten, Proteinquellen, Getreide, Brote, Pasta, Milchprodukte, Fisch-/Fleischsorten, Snacks, Saucen, Gerichte und internationale Speisen ersetzt.
