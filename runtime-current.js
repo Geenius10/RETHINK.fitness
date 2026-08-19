@@ -379,7 +379,7 @@
    baseOpenSettingsPage();
    const body=$("settingsBody");if(!body||$("themeSettingsV48"))return;
    const section=document.createElement("div");section.className="settings-section";section.id="themeSettingsV48";
-   section.innerHTML=`<h3>Darstellung</h3><div class="settings-card"><div class="settings-row" style="display:block"><div><strong>Hell / Dunkel</strong><small>System folgt automatisch der Darstellung des Geräts. Hell verwendet bewusst ein farbiges Grau statt Weiß.</small></div><div class="theme-choice-row">${[["system","System"],["light","Hell"],["dark","Dunkel"]].map(([v,l])=>`<button class="theme-choice ${themeModeV48()===v?"active":""}" data-theme-v48="${v}">${l}</button>`).join("")}</div></div></div>`;
+   section.innerHTML=`<h3>Darstellung</h3><div class="settings-card"><div class="settings-row" style="display:block"><div><strong>Hell / Dunkel</strong></div><div class="theme-choice-row">${[["system","System"],["light","Hell"],["dark","Dunkel"]].map(([v,l])=>`<button class="theme-choice ${themeModeV48()===v?"active":""}" data-theme-v48="${v}">${l}</button>`).join("")}</div></div></div>`;
    const training=[...body.querySelectorAll(".settings-section")].find(x=>x.querySelector("h3")?.textContent==="Training");
    if(training)body.insertBefore(section,training);else body.appendChild(section);
    section.querySelectorAll("[data-theme-v48]").forEach(b=>b.onclick=()=>{localStorage.setItem(THEME_KEY_V48,b.dataset.themeV48);applyThemeV48(b.dataset.themeV48);section.querySelectorAll("[data-theme-v48]").forEach(x=>x.classList.toggle("active",x===b))})
@@ -2807,15 +2807,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
        const legacy=$("prefWeekStart");if(legacy){legacy.value=sysPrefs.weekStart;legacy.dispatchEvent(new Event("change",{bubbles:true}))}
        else{renderWeek();renderProfile()}
      };
-     $("prefTextScaleFinal").onchange=()=>{
-       sysPrefs.textScale=$("prefTextScaleFinal").value;write(PREF_KEY,sysPrefs);
-       document.documentElement.dataset.textScale=sysPrefs.textScale
-     };
-     $("prefLanguage").onchange=()=>{
-       sysPrefs.language=$("prefLanguage").value;write(PREF_KEY,sysPrefs);
-       // Re-render major surfaces from source German strings, then translate once.
-       renderTrainingHome();renderExerciseLibrary();renderPlans();renderWeek();renderProfile();openSettingsPage()
-     };
+     $("prefTextScaleFinal").onchange=()=>{sysPrefs.textScale=$("prefTextScaleFinal").value;write(PREF_KEY,sysPrefs);try{captureTabUiState(currentTab);persistUI({capture:false});saveAll()}catch{}location.reload()};
+     $("prefLanguage").onchange=()=>{sysPrefs.language=$("prefLanguage").value;write(PREF_KEY,sysPrefs);try{captureTabUiState(currentTab);persistUI({capture:false});saveAll()}catch{}location.reload()};
      document.documentElement.dataset.textScale=sysPrefs.textScale;
      applyTranslationsV31()
    })
@@ -2868,4 +2861,377 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      })
    }
  }
+})();
+
+
+/* Rethink_v3.1 — vollständiges Backup / Wiederherstellung */
+(function(){
+ const BACKUP_SCHEMA="rethink-v3.1-backup",BACKUP_VERSION=1;
+ const SKIP=["rethink_ui","rethink_tab_ui","rethink_boot","rethink_session"];
+ function payload(){
+   try{saveAll()}catch{}
+   const data={};
+   for(let i=0;i<localStorage.length;i++){
+     const k=localStorage.key(i);
+     if(!k||SKIP.some(p=>k.toLowerCase().includes(p)))continue;
+     data[k]=localStorage.getItem(k)
+   }
+   return {schema:BACKUP_SCHEMA,version:BACKUP_VERSION,createdAt:new Date().toISOString(),app:"Rethink_v3.1",localStorage:data}
+ }
+ function filename(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `Rethink_Backup_${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}.json`}
+ async function exportBackup(){
+   const blob=new Blob([JSON.stringify(payload(),null,2)],{type:"application/json"});
+   const file=new File([blob],filename(),{type:"application/json"});
+   try{if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:"ReThink Backup"});return}}catch(e){if(e?.name==="AbortError")return}
+   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=file.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+ }
+ async function restore(file){
+   const x=JSON.parse(await file.text());
+   if(!x||x.schema!==BACKUP_SCHEMA||!x.localStorage||typeof x.localStorage!=="object")throw new Error("Keine gültige ReThink-Backupdatei.");
+   if(!confirm("Backup wirklich wiederherstellen? Die aktuellen Daten dieser ReThink-Installation werden durch den Backup-Stand ersetzt."))return;
+   localStorage.clear();
+   for(const [k,v] of Object.entries(x.localStorage))if(typeof v==="string")localStorage.setItem(k,v);
+   try{toast("Backup wiederhergestellt")}catch{}
+   setTimeout(()=>location.reload(),300)
+ }
+ function chooseRestore(){
+   let i=document.getElementById("rethinkBackupRestoreInput");
+   if(!i){i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.hidden=true;i.id="rethinkBackupRestoreInput";document.body.appendChild(i);
+     i.onchange=async()=>{const f=i.files?.[0];i.value="";if(!f)return;try{await restore(f)}catch(e){alert(e?.message||"Backup konnte nicht gelesen werden.")}}
+   }i.click()
+ }
+ window.rethinkBackup={export:exportBackup,restore:chooseRestore,payload};
+ const before=openSettingsPage;
+ openSettingsPage=function(){
+   const r=before();
+   requestAnimationFrame(()=>{
+     const body=$("settingsBody");if(!body||$("rethinkBackupSection"))return;
+     const sec=document.createElement("div");sec.className="settings-section";sec.id="rethinkBackupSection";
+     sec.innerHTML=`<h3>Daten & Backup</h3><div class="settings-card">
+       <div class="settings-row"><div><strong>Backup erstellen</strong><small>Alle dauerhaften persönlichen ReThink-Daten als Datei sichern.</small></div><button id="rethinkBackupExport" class="secondary compact-profile-edit">Sichern</button></div>
+       <div class="settings-row"><div><strong>Backup wiederherstellen</strong><small>Gesicherten Datenstand auf dieser Installation einspielen.</small></div><button id="rethinkBackupRestore" class="secondary compact-profile-edit">Wiederherstellen</button></div>
+       </div><div class="small" style="margin-top:10px">Das Backup enthält deine App-Daten, nicht den Programmcode.</div>`;
+     body.appendChild(sec);$("rethinkBackupExport").onclick=exportBackup;$("rethinkBackupRestore").onclick=chooseRestore;window.rethinkSystemV31?.translate?.(sec)
+   });return r
+ }
+})();
+
+
+/* v3.1 plans empty-state */
+(function(){
+ const base=renderPlans;
+ renderPlans=function(){
+   const out=base();
+   const list=$("planList");
+   if(list && plans.length===0){
+     list.innerHTML=`<div class="plan-welcome-card card"><div class="plan-welcome-mark">R.</div><h2>Dein Training beginnt hier.</h2><p>Erstelle deinen ersten Trainingsplan und stelle Übungen, Sätze und Trainingsmethoden passend zu deinem Training zusammen.</p><button id="planWelcomeCreate" class="primary plan-welcome-create">Trainingsplan erstellen</button></div>`;
+     $("planWelcomeCreate").onclick=()=>$("newPlanBtn").click();
+     try{window.rethinkSystemV31?.translate?.(list)}catch{}
+   }
+   return out
+ }
+})();
+
+
+/* Rethink_v3.1 — vollständige UI-Übersetzung DE/EN
+   Ausgenommen: Übungsnamen, Plannamen sowie freie Nutzertexte/Notizen. */
+(function(){
+ const EXTRA_DE_EN = {
+  "Dein Training beginnt hier.":"Your training starts here.",
+  "Erstelle deinen ersten Trainingsplan und stelle Übungen, Sätze und Trainingsmethoden passend zu deinem Training zusammen.":"Create your first training plan and combine exercises, sets and training methods to match your training.",
+  "Pläne":"Plans","Meine Pläne":"My plans","Trainingsplan":"Training plan","Trainingspläne":"Training plans",
+  "Trainingsplan erstellen":"Create training plan","Plan erstellen":"Create plan","Plan bearbeiten":"Edit plan",
+  "Plan speichern":"Save plan","Plan speichern?":"Save plan?","Plan wirklich speichern?":"Save plan?",
+  "Plan hinzufügen":"Add plan","Plan auswählen":"Choose plan","Kein Plan gewählt":"No plan selected",
+  "Training starten":"Start workout","Workout starten":"Start workout","Training erneut starten?":"Restart workout?",
+  "Training erneut starten":"Restart workout","Workout öffnen":"Open workout","Workout läuft":"Workout running",
+  "Training beenden":"Finish workout","Training verwerfen":"Discard workout","Bearbeiteten Plan starten?":"Start edited plan?",
+  "Übung":"Exercise","Übungen":"Exercises","Übung hinzufügen":"Add exercise","Übung bearbeiten":"Edit exercise",
+  "Übung austauschen":"Replace exercise","Übung löschen":"Delete exercise","Übung suchen":"Search exercise",
+  "Übungsdetails":"Exercise details","Übung hinzugefügt":"Exercise added","Änderung übernommen":"Change applied",
+  "Serie bearbeiten":"Edit series","Trainingsmethode":"Training method","Methode":"Method",
+  "Satz":"Set","Sätze":"Sets","Satz hinzufügen":"Add set","Satz löschen":"Delete set",
+  "Satz erledigt":"Set done","Runde":"Round","Pause":"Rest","Pausenzeit":"Rest time",
+  "Wiederholungen":"Reps","Wiederholungsziel":"Rep target","Gesamtziel":"Total target","Zeit":"Time",
+  "Gewicht":"Weight","Distanz":"Distance","Variante":"Variant","pro Seite":"per side","Notiz":"Note",
+  "Bewertung":"Rating","Letzte Bewertung":"Last rating","Bewertung letztes passendes Workout":"Last matching workout rating",
+  "Perfekt":"Perfect","Limit":"Limit","Zu schwer":"Too heavy","Zu leicht":"Too easy","Abgeschlossen":"Completed",
+  "Tipp nächstes Training":"Next workout tip","Erstes Training in dieser Methode – starte kontrolliert im vorgegebenen Wiederholungsbereich.":"First workout with this method – start conservatively within the prescribed rep range.",
+  "Letztes Mal zu schwer: Gewicht beibehalten oder leicht reduzieren.":"Last time was too heavy: keep the weight or reduce it slightly.",
+  "Letztes Mal deutlich zu leicht: Gewicht moderat erhöhen.":"Last time was clearly too easy: increase the weight moderately.",
+  "Sehr passend: Gewicht zunächst beibehalten und Ziel-WDH. wieder anpeilen.":"Very suitable: keep the weight for now and aim for the target reps again.",
+  "Am Limit: Gewicht eher beibehalten und saubere Wiederholungen bestätigen.":"At the limit: keep the weight and confirm clean reps.",
+  "Letzte Werte als Orientierung nutzen und nach Tagesform anpassen.":"Use the previous values as guidance and adjust to how you feel today.",
+  "Pyramidentraining wird über Wiederholungen konfiguriert, nicht über Zeit.":"Pyramid training is configured with reps, not time.",
+  "Gesamtwiederholungen in kurzen Teilblöcken sammeln. Sobald das Ziel erreicht ist, entfallen weitere Rest-Pause-Blöcke.":"Accumulate total reps in short blocks. Once the target is reached, remaining rest-pause blocks are removed.",
+  "Gesamtwiederholungen in kurzen Clustern sammeln. Leere Folgefelder können aus der ersten Eingabe übernommen werden.":"Accumulate total reps in short clusters. Empty following fields can inherit the first entry.",
+  "Auf einen schweren Top-Satz folgen leichtere Back-off-Sätze mit höherer Wiederholungszahl.":"A heavy top set is followed by lighter back-off sets with more reps.",
+  "Woche":"Week","Aktuelle Woche":"Current week","Diese Woche":"This week","Wiederholen":"Repeat",
+  "Einmalig":"Once","Für X Wochen":"For X weeks","Bis Datum":"Until date","Wiederholung ändern?":"Change recurrence?",
+  "Wiederholung löschen?":"Delete recurrence?","Nur diese Woche":"Only this week","Diese und folgende Wochen":"This and following weeks",
+  "Auswahl für diesen Tag wirklich löschen?":"Really delete the selection for this day?","Bitte mindestens 2 Wochen wählen.":"Please select at least 2 weeks.",
+  "Profil":"Profile","Profil bearbeiten":"Edit profile","Persönliche Daten":"Personal data","Aktivität & Ziel":"Activity & goal",
+  "Alter":"Age","Größe":"Height","Geschlecht":"Sex","Aktivität":"Activity","Ziel":"Goal",
+  "Nicht gewählt":"Not selected","Weiblich":"Female","Männlich":"Male","Wenig aktiv":"Low activity",
+  "Leicht aktiv":"Light activity","Moderat aktiv":"Moderately active","Sehr aktiv":"Very active","Extrem aktiv":"Extremely active",
+  "Gewicht reduzieren":"Lose weight","Gewicht halten":"Maintain weight","Muskelaufbau":"Build muscle",
+  "Wunschgewicht":"Target weight","Persönliche Werte und Ziele":"Personal values and goals",
+  "Gewichtstrend":"Weight trend","Trainingstage":"Training days","Streak":"Streak","Wasser und Ernährung":"Water and nutrition",
+  "Heute messen?":"Measure today?","Messung":"Measurement","Messungen":"Measurements","Messung hinzufügen":"Add measurement",
+  "Messung gelöscht":"Measurement deleted","Diese Messung wirklich löschen?":"Really delete this measurement?",
+  "Körperfett":"Body fat","Taille":"Waist","Brust":"Chest","Hüfte":"Hips","darüber":"above","bis Ziel":"to goal",
+  "Bitte Gewicht eintragen.":"Please enter a weight.","Bitte eine realistische Körpergröße eingeben.":"Please enter a realistic height.",
+  "Hydrierung heute":"Hydration today","Hydrierung":"Hydration","Getränke heute":"Drinks today","Meine Getränke":"My drinks",
+  "Getränk erstellen":"Create drink","Getränk eintragen":"Log drink","Getränke verwalten":"Manage drinks",
+  "Menge":"Amount","Eintragen":"Log","+ Eintragen":"+ Log","Wasser":"Water","Koffein":"Caffeine",
+  "Ernährung heute":"Nutrition today","Ernährung":"Nutrition","Lebensmittel heute":"Food today",
+  "Meine Lebensmittel & Mahlzeiten":"My foods & meals","Meine Lebensmittel":"My foods","Meine Mahlzeiten":"My meals",
+  "Eigenes Lebensmittel":"Custom food","Lebensmittel erstellen":"Create food","Lebensmittel bearbeiten":"Edit food",
+  "Mahlzeit erstellen":"Create meal","Mahlzeit":"Meal","Lebensmittel oder Kategorie":"Food or category",
+  "Lebensmittel, Mahlzeit oder Kategorie":"Food, meal or category","Kategorie":"Category","Portion":"Serving","Portionen":"Servings",
+  "Kalorien":"Calories","Protein":"Protein","Kalorienziel":"Calorie target","Flüssigkeitsziel":"Hydration target",
+  "Persönlichen Wert berechnen":"Calculate personal target","Eigenes Lebensmittel wirklich löschen?":"Really delete this custom food?",
+  "Mahlzeit wirklich löschen?":"Really delete this meal?","Bitte Name und Nährwerte vollständig eintragen.":"Please enter name and nutrition values completely.",
+  "Lebensmittel gespeichert":"Food saved","Bitte Name und mindestens ein Lebensmittel hinzufügen.":"Please enter a name and add at least one food.",
+  "Für eine Mahlzeit bitte einzelne Zutaten wählen.":"For a meal, please select individual ingredients.",
+  "Bitte einzelne Zutaten wählen.":"Please select individual ingredients.",
+  "Einstellungen":"Settings","Darstellung":"Appearance","Hell / Dunkel":"Light / Dark","Hell":"Light","Dunkel":"Dark","System":"System",
+  "Einheiten & Ansicht":"Units & View","Einheitensystem":"Unit system","Metrisch":"Metric","Imperial":"Imperial",
+  "Wochenstart":"Week starts","Montag":"Monday","Sonntag":"Sunday","Textgröße":"Text size","Standard":"Standard",
+  "Groß":"Large","Sehr groß":"Extra large","Sprache":"Language","Deutsch":"German","Englisch":"English",
+  "Daten & Backup":"Data & Backup","Backup erstellen":"Create backup","Backup wiederherstellen":"Restore backup",
+  "Sichern":"Back up","Wiederherstellen":"Restore","Keine gültige ReThink-Backupdatei.":"Not a valid ReThink backup file.",
+  "Backup wirklich wiederherstellen? Die aktuellen Daten dieser ReThink-Installation werden durch den Backup-Stand ersetzt.":"Really restore this backup? The current data in this ReThink installation will be replaced by the backup.",
+  "Jährliche Datenbereinigung?":"Annual data cleanup?","Alte Verlaufsdaten löschen":"Delete old history data","Alte Verlaufsdaten gelöscht":"Old history data deleted",
+  "Dieses Jahr behalten":"Keep this year",
+  "Speichern":"Save","Löschen":"Delete","Bearbeiten":"Edit","Fertig":"Done","Abbrechen":"Cancel","Zurück":"Back",
+  "Hinzufügen":"Add","Übernehmen":"Apply","Duplizieren":"Duplicate","Vorschau":"Preview","Reihenfolge":"Order",
+  "Suchen":"Search","Suche":"Search","Alle":"All","Keine Ergebnisse":"No results","Noch nicht eingerichtet":"Not set up yet",
+  "Noch keine Messung":"No measurement yet","Noch keine Messungen.":"No measurements yet.","Pause beendet":"Rest finished",
+  "Pause überspringen":"Skip rest","Ein Trainingsplan braucht mindestens eine Übung.":"A training plan needs at least one exercise.",
+  "Planänderungen speichern?":"Save plan changes?","Bestehenden Plan überschreiben":"Overwrite existing plan",
+  "Als neuen Plan speichern":"Save as new plan","Änderungen verwerfen":"Discard changes",
+  "Änderungen speichern oder verwerfen?":"Save or discard changes?","Plan wirklich speichern?":"Save plan?",
+  "Trainingsart":"Training type","Muskelgruppe":"Muscle group","Gewichte":"Weights","Körpergewicht":"Bodyweight",
+  "Explosivität":"Explosiveness","Geräte":"Machines","Ausführung":"Execution","Pyramide":"Pyramid",
+  "Vorermüdung":"Pre-exhaust","Drop-Satz":"Drop set","Back-off":"Back-off","Cluster":"Cluster","Rest-Pause":"Rest-pause",
+  "Superset":"Superset","Giant Set":"Giant set","AMRAP":"AMRAP",
+  "Lebensmittel hinzufügen":"Add food","Eigene Lebensmittel":"Custom foods",
+  "Plan suchen":"Search plans","Trainingsplan auswählen":"Choose training plan",
+  "Hinzugefügt":"Added","Geändert":"Changed","Genutzt":"Used",
+  "Bitte Planname eingeben.":"Please enter a plan name.",
+  "Bitte ein realistisches Alter eingeben.":"Please enter a realistic age.",
+  "Bitte ein realistisches Wunschgewicht eingeben.":"Please enter a realistic target weight.",
+  "Ernährungsziele":"Nutrition goals",
+  "Perfekt · 1–3 Wdh. mit guter Form übrig":"Perfect · 1–3 reps with good form left",
+  "Limit · 0 Wdh. mit guter Form übrig":"Limit · 0 reps with good form left",
+  "Zu schwer · Form zu früh verloren":"Too heavy · form broke down too early",
+  "Zu leicht · problemlos noch 3+ Wdh.":"Too easy · 3+ reps still possible",
+  "1 Stück":"1 piece","1 Brötchen":"1 roll","1 mittelgroße Kartoffel":"1 medium potato",
+  "1 mittelgroße Süßkartoffel":"1 medium sweet potato","z. B. Frühstück":"e.g. breakfast",
+  "z. B. Frühstück Bowl":"e.g. breakfast bowl"
+ };
+
+ function langV31(){return window.rethinkSystemV31?.prefs?.().language||"de"}
+ function protectedV31(el){
+   return !!el?.closest?.(
+     '[data-i18n-skip],.exercise-title-link,.combined-name,.combined-series-name,'+
+     '.plan-card strong,[data-plan-name],.exercise-card strong,[data-exercise-name],'+
+     '.food-result-copy strong,.final-drink-selected strong,.quick-drink-choice span:last-child,'+
+     '.user-note,.note-text'
+   )
+ }
+ function translateExactV31(text){
+   if(langV31()!=="en")return text;
+   const lead=(text.match(/^\s*/)||[""])[0],tail=(text.match(/\s*$/)||[""])[0],core=text.trim();
+   if(!core)return text;
+   if(EXTRA_DE_EN[core])return lead+EXTRA_DE_EN[core]+tail;
+
+   // Dynamic fixed UI phrases.
+   let x=core;
+   const replacements=[
+    [/^(\d+)\s+Übungen$/, "$1 exercises"],
+    [/^(\d+)\s+Sätze$/, "$1 sets"],
+    [/^(\d+)\s+Übungen\s+·\s+(\d+)\s+Sätze$/, "$1 exercises · $2 sets"],
+    [/^Übung\s+(\d+)\/(\d+)$/, "Exercise $1/$2"],
+    [/^Satz\s+(\d+)$/i, "Set $1"],
+    [/^SATZ\s+(\d+)$/, "SET $1"],
+    [/^Für\s+(.+)\s+bitte\s+(\d+)–(\d+)\s+Sätze wählen\.$/, "For $1, choose $2–$3 sets."],
+    [/^(\d+)\s+Wochen$/, "$1 weeks"],
+    [/^KW\s+(\d+)$/, "CW $1"],
+    [/^Ziel:\s*Gewicht reduzieren$/, "Goal: lose weight"],
+    [/^Ziel:\s*Muskelaufbau$/, "Goal: build muscle"],
+    [/^Ziel:\s*Gewicht halten$/, "Goal: maintain weight"],
+    [/^([^·]+)\s+·\s+(\d+)\s+Übungen\s+·\s+(\d+)\s+Sätze$/, "$1 · $2 exercises · $3 sets"]
+   ];
+   for(const [rx,repl] of replacements){if(rx.test(x))return lead+x.replace(rx,repl)+tail}
+   return text
+ }
+
+ function translateTreeV31(root=document.body){
+   if(langV31()!=="en")return;
+   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+   const nodes=[];let node;while((node=walker.nextNode()))nodes.push(node);
+   nodes.forEach(n=>{
+     const p=n.parentElement;
+     if(!p||protectedV31(p)||["SCRIPT","STYLE","TEXTAREA"].includes(p.tagName))return;
+     n.nodeValue=translateExactV31(n.nodeValue)
+   });
+   root.querySelectorAll?.("[placeholder]").forEach(el=>{
+     if(!protectedV31(el))el.placeholder=translateExactV31(el.placeholder)
+   });
+   root.querySelectorAll?.("[aria-label]").forEach(el=>{
+     if(!protectedV31(el))el.setAttribute("aria-label",translateExactV31(el.getAttribute("aria-label")))
+   })
+ }
+
+ const oldTranslate=window.rethinkSystemV31?.translate;
+ if(window.rethinkSystemV31){
+   window.rethinkSystemV31.translate=(root=document.body)=>{
+     try{oldTranslate?.(root)}catch{}
+     translateTreeV31(root)
+   }
+ }
+
+ // Translate browser dialogs without touching injected exercise/plan names.
+ const oldAlert=window.alert.bind(window), oldConfirm=window.confirm.bind(window), oldPrompt=window.prompt.bind(window);
+ window.alert=(msg)=>oldAlert(translateExactV31(String(msg)));
+ window.confirm=(msg)=>oldConfirm(translateExactV31(String(msg)));
+ window.prompt=(msg,def)=>oldPrompt(translateExactV31(String(msg)),def);
+
+ // All newly rendered fixed UI gets translated as well.
+ const mo=new MutationObserver(records=>{
+   if(langV31()!=="en")return;
+   const roots=new Set();
+   records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)roots.add(n)}));
+   roots.forEach(n=>translateTreeV31(n))
+ });
+ mo.observe(document.body,{childList:true,subtree:true});
+
+ window.rethinkTranslateAllV31=()=>translateTreeV31(document.body);
+ requestAnimationFrame(()=>translateTreeV31(document.body))
+})();
+
+
+/* Rethink_v3.1 — Plannamen müssen eindeutig sein */
+(function(){
+ function normalizedPlanNameV31(name){
+   return String(name||"").trim().replace(/\s+/g," ").toLocaleLowerCase("de-DE")
+ }
+ function duplicatePlanNameV31(name,excludeId=null){
+   const n=normalizedPlanNameV31(name);
+   return !!n && (plans||[]).some(p=>String(p.id)!==String(excludeId??"") && normalizedPlanNameV31(p.name)===n)
+ }
+ function duplicateMessageV31(){
+   const en=window.rethinkSystemV31?.prefs?.().language==="en";
+   return en?"A plan with this name already exists. Please choose a different name.":"Ein Plan mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen."
+ }
+ function guardEditorNameV31(){
+   const input=$("planName"),name=input?.value?.trim();
+   const exclude=currentPlan?._editingSourceId||currentPlan?.id||null;
+   if(name&&duplicatePlanNameV31(name,exclude)){
+     alert(duplicateMessageV31());
+     try{input.focus();input.select()}catch{}
+     return false
+   }
+   return true
+ }
+ window.rethinkPlanNameExistsV31=duplicatePlanNameV31;
+
+ // Intercept plan-editor save/start actions before any existing mutation can occur.
+ ["planSaveBtn","planPlayBtn"].forEach(id=>{
+   const el=$(id);if(!el)return;
+   el.addEventListener("click",e=>{
+     if(!guardEditorNameV31()){e.preventDefault();e.stopImmediatePropagation()}
+   },true)
+ });
+
+ // New-plan name field is checked on change/blur as early feedback too.
+ document.addEventListener("change",e=>{
+   if(e.target?.id!=="planName")return;
+   const name=e.target.value.trim(),exclude=currentPlan?._editingSourceId||currentPlan?.id||null;
+   if(name&&duplicatePlanNameV31(name,exclude)){
+     alert(duplicateMessageV31());
+     e.target.focus();e.target.select()
+   }
+ },true);
+
+ // Final persistence guard: if legacy/new code attempts to append an exact duplicate,
+ // remove only the newly appended duplicate and leave the existing plan untouched.
+ let lastPlanIdsV31=new Set((plans||[]).map(p=>String(p.id)));
+ const oldSaveAllV31=saveAll;
+ saveAll=function(){
+   if(Array.isArray(plans)){
+     const seen=new Map(),remove=new Set();
+     plans.forEach(p=>{
+       const key=normalizedPlanNameV31(p.name);if(!key)return;
+       if(!seen.has(key)){seen.set(key,p);return}
+       const first=seen.get(key);
+       // Prefer the pre-existing ID over a just-created duplicate.
+       const firstOld=lastPlanIdsV31.has(String(first.id)),thisOld=lastPlanIdsV31.has(String(p.id));
+       if(firstOld&&!thisOld)remove.add(String(p.id));
+       else if(!firstOld&&thisOld){remove.add(String(first.id));seen.set(key,p)}
+       else remove.add(String(p.id))
+     });
+     if(remove.size){
+       plans=plans.filter(p=>!remove.has(String(p.id)));
+       try{toast(duplicateMessageV31())}catch{}
+     }
+     lastPlanIdsV31=new Set(plans.map(p=>String(p.id)))
+   }
+   return oldSaveAllV31()
+ }
+})();
+
+
+/* Rethink_v3.1 — Ernährungsziele direkt im Profil */
+(function(){
+ function calculateNutritionGoalsHomeV31(){
+   const w=profileWeight(),age=Number(profile.age),height=Number(profile.height),sex=profile.sex,goal=profile.goal,activity=Number(profile.activity)||1.55,bf=currentBodyFatPct();
+   if(!w){openMeasurementEntry();requestAnimationFrame(()=>{$("measureWeight")?.focus()});return}
+   if(!age||!height||!sex||!goal){openProfileEditor();return}
+   const bmr=energyBMR(w,height,age,sex,bf),tdee=bmr*activity,goalFactor=goal==="cut"?.80:goal==="gain"?1.03:.95;
+   let kcal=Math.max(bmr*1.05,tdee*goalFactor)+measurementTrendAdjustment(goal);kcal=Math.round(kcal/25)*25;
+   const protein=Math.round(w*1.6);
+   const sexFloor=sex==="male"?3700:2700;
+   let water=Math.max(sexFloor,w*35)+activityWaterExtra(activity);
+   if(bf>0&&((sex==="male"&&bf<15)||(sex!=="male"&&bf<23)))water+=150;
+   water=Math.min(5500,Math.round(water/50)*50);
+
+   nutrition.calories=kcal;
+   nutrition.protein=protein;
+   nutrition.waterGoal=water;
+   nutrition.goalCalculatedAt=Date.now();
+   saveAll();
+   renderProfile();
+   const details=$("nutritionGoalsHome");
+   if(details)details.open=true;
+   try{toast("Ernährungsziele berechnet")}catch{}
+ }
+ function saveNutritionGoalsHomeV31(){
+   nutrition.calories=Math.max(0,Number($("goalCaloriesHome")?.value)||0)||"";
+   nutrition.protein=Math.max(0,Number($("goalProteinHome")?.value)||0)||"";
+   nutrition.waterGoal=Math.max(0,Number($("goalWaterHome")?.value)||0)||"";
+   saveAll();renderProfile();
+   try{toast("Ernährungsziele gespeichert")}catch{}
+ }
+ function bindNutritionGoalsHomeV31(){
+   const details=$("nutritionGoalsHome"),summaryCalc=$("calculateGoalsBtn"),expandedCalc=$("calculateGoalsExpanded"),save=$("goalSaveHome");
+   if(summaryCalc){
+     summaryCalc.onclick=e=>{e.preventDefault();e.stopPropagation();calculateNutritionGoalsHomeV31()}
+   }
+   if(expandedCalc)expandedCalc.onclick=e=>{e.preventDefault();calculateNutritionGoalsHomeV31()};
+   if(save)save.onclick=e=>{e.preventDefault();saveNutritionGoalsHomeV31()};
+   if(details){
+     details.addEventListener("toggle",()=>{
+       if(details.open){
+         if($("goalCaloriesHome"))$("goalCaloriesHome").value=nutrition.calories||"";
+         if($("goalProteinHome"))$("goalProteinHome").value=nutrition.protein||"";
+         if($("goalWaterHome"))$("goalWaterHome").value=nutrition.waterGoal||"";
+       }
+     })
+   }
+ }
+ document.addEventListener("DOMContentLoaded",bindNutritionGoalsHomeV31,{once:true});
+ requestAnimationFrame(bindNutritionGoalsHomeV31);
 })();

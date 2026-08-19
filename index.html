@@ -1267,6 +1267,83 @@ html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!
   background:var(--accent,#b7a4d8);color:#18131d;font-size:11px;font-weight:900
 }
 </style>
+
+<style id="rethink-v31-ui-polish">
+.plan-welcome-card{margin-top:18px;text-align:center;padding:30px 22px 24px}
+.plan-welcome-mark{width:52px;height:52px;margin:0 auto 15px;border-radius:16px;display:grid;place-items:center;background:var(--accent,#b7a4d8);color:#17131c;font-size:23px;font-weight:950}
+.plan-welcome-card h2{margin:0 0 8px;font-size:22px}.plan-welcome-card p{max-width:390px;margin:0 auto 20px;line-height:1.5;color:var(--muted)}
+.plan-welcome-create{width:100%;min-height:48px;background:var(--accent,#b7a4d8)!important;color:#17131c!important;font-weight:900}
+.nutrition-today-card .daily-bar-stat span{font-size:14px!important;font-weight:800}.nutrition-today-card .daily-bar-stat strong{font-size:19px!important;line-height:1.2}
+.nutrition-today-card .mini-progress{height:10px!important;margin-top:7px}
+#drinksDetails>summary>span:first-child,#myFoodsDetails>summary>span:first-child{font-size:16px!important;font-weight:850}
+#myFoodsDetails .food-manage-label{font-size:13px!important;font-weight:850;letter-spacing:.02em}
+html[data-text-scale="large"] .nutrition-today-card .daily-bar-stat strong{font-size:22px!important}
+html[data-text-scale="xlarge"] .nutrition-today-card .daily-bar-stat strong{font-size:25px!important}
+</style>
+
+<style id="rethink-v31-nutrition-goals-final">
+/* Ernährung: labels exactly like Menge/Ziel in Hydrierung. */
+.nutrition-today-card .daily-bar-stat span{
+  font-size:9px!important;
+  font-weight:850!important;
+  letter-spacing:.05em!important;
+  text-transform:uppercase!important;
+  color:var(--muted)!important;
+  margin-bottom:3px!important
+}
+/* Values stay prominent, bars exactly hydration thickness. */
+.nutrition-today-card .daily-bar-stat strong{font-size:19px!important;line-height:1.2!important}
+.nutrition-today-card .mini-progress{height:7px!important;margin-top:7px!important}
+
+/* Slightly smaller management summaries. */
+#drinksDetails>summary>span:first-child,
+#myFoodsDetails>summary>span:first-child{
+  font-size:14px!important;
+  font-weight:800!important
+}
+#myFoodsDetails .food-manage-label{font-size:11px!important;font-weight:800!important}
+
+/* New collapsible goals card. */
+.nutrition-goals-home{margin-top:10px!important;padding:0!important;overflow:hidden}
+.nutrition-goals-summary{
+  list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;
+  align-items:center;padding:14px;cursor:pointer
+}
+.nutrition-goals-summary::-webkit-details-marker{display:none}
+.nutrition-goals-summary>span{font-size:16px;font-weight:900}
+.nutrition-goals-summary:after{content:"⌄";font-size:18px;color:var(--muted);grid-column:1/2;grid-row:1;justify-self:end;margin-right:0}
+.nutrition-goals-summary .nutrition-goal-calc-summary{
+  grid-column:1/-1;grid-row:2;margin:3px 0 0!important;width:100%
+}
+.nutrition-goals-home[open] .nutrition-goals-summary:after{transform:rotate(180deg)}
+.nutrition-goals-content{padding:0 14px 14px;border-top:1px solid var(--line)}
+.nutrition-goal-description{margin:12px 0}
+.nutrition-goal-fields{display:grid;grid-template-columns:1fr;gap:0}
+.nutrition-goals-content .form-field{margin-bottom:10px}
+.nutrition-goals-content #goalSaveHome{width:100%;min-height:44px}
+.nutrition-goals-content #calculateGoalsExpanded{margin-top:8px}
+</style>
+
+<style id="rethink-v31-goals-summary-alignment">
+.nutrition-goals-summary{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 24px!important;
+  align-items:center!important;
+  column-gap:8px!important;
+  text-align:left!important
+}
+.nutrition-goals-summary>span{
+  grid-column:1!important;grid-row:1!important;
+  justify-self:start!important;text-align:left!important;width:auto!important
+}
+.nutrition-goals-summary:after{
+  grid-column:2!important;grid-row:1!important;
+  justify-self:end!important;margin:0!important;text-align:right!important
+}
+.nutrition-goals-summary .nutrition-goal-calc-summary{
+  grid-column:1/-1!important;grid-row:2!important
+}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
@@ -1295,7 +1372,7 @@ html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!
   <details id="drinksDetails" class="drink-details"><summary><span>Meine Getränke</span><span class="drink-summary-chevron">⌄</span></summary><div class="space drink-details-actions"><div class="small">Getränke verwalten</div><div class="drink-manage-actions"><button id="reorderDrinksBtn" class="icon-btn subtle-reorder-btn" aria-label="Reihenfolge ändern">⇅</button><button id="newDrinkBtn" class="secondary create-drink-btn">Getränk erstellen</button></div></div><div id="drinkList"></div></details>
 </div>
 
-<div class="space section-head streak-section-head"><h2>Ernährung heute</h2><div class="section-head-actions"><div id="nutritionStreakBadge" class="streak-flame" aria-label="Ernährungs-Streak">🔥 <strong>0</strong></div><button id="editGoalsBtn" class="secondary compact-profile-edit">Bearbeiten</button></div></div>
+<div class="space section-head streak-section-head"><h2>Ernährung heute</h2><div class="section-head-actions"><div id="nutritionStreakBadge" class="streak-flame" aria-label="Ernährungs-Streak">🔥 <strong>0</strong></div></div></div>
 <div class="card daily-track-card nutrition-today-card">
   <div class="daily-track-top nutrition-track-top">
     <div class="daily-bar-stat"><div><span>Kalorien</span><strong id="foodCaloriesCounter">0 / – kcal</strong></div><div class="mini-progress"><i id="foodCaloriesProgress"></i></div></div>
@@ -1314,10 +1391,22 @@ html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!
   </details>
 </div>
 
-<div class="card nutrition-target-card goal-calculation-card">
-  <div class="profile-grid"><div><div class="small">Kalorienziel</div><strong id="nutritionCalTarget">–</strong></div><div><div class="small">Flüssigkeitsziel</div><strong id="nutritionHydrationTarget">–</strong></div></div>
-  <button id="calculateGoalsBtn" class="goal-white-button">Persönlichen Wert berechnen</button>
-</div>
+<details id="nutritionGoalsHome" class="card nutrition-goals-home">
+  <summary class="nutrition-goals-summary">
+    <span>Ernährungsziele</span>
+    <button id="calculateGoalsBtn" class="goal-white-button nutrition-goal-calc-summary" type="button">Persönlichen Wert berechnen</button>
+  </summary>
+  <div class="nutrition-goals-content">
+    <div class="nutrition-goal-description small">Lege deine täglichen Zielwerte direkt fest oder lasse sie anhand deiner Profil- und Messdaten berechnen.</div>
+    <div class="nutrition-goal-fields">
+      <div class="form-field"><label>KALORIEN / TAG</label><input id="goalCaloriesHome" class="field" inputmode="numeric"></div>
+      <div class="form-field"><label>PROTEIN G / TAG</label><input id="goalProteinHome" class="field" inputmode="numeric"></div>
+      <div class="form-field"><label>FLÜSSIGKEIT ML / TAG</label><input id="goalWaterHome" class="field" inputmode="numeric"></div>
+    </div>
+    <button id="goalSaveHome" class="primary" type="button">Ziele speichern</button>
+    
+  </div>
+</details>
 </main>
 </div>
 <nav id="bottomNav" class="nav">
@@ -3084,7 +3173,7 @@ function renderWeek(){
  document.querySelectorAll("[data-wm]").forEach(b=>b.onclick=e=>{e.stopPropagation();weekMenu(Number(b.dataset.wm))})
 }
 $("weekPrevBtn").onclick=()=>{saveCurrentWeekRefs();loadWeekOffset(weekOffset-1)};$("weekNextBtn").onclick=()=>{saveCurrentWeekRefs();loadWeekOffset(weekOffset+1)};
-function openWeekPicker(day){let selected=validWeekPlans(day).map(p=>p.id),q="";const render=()=>{const rows=sortedPlansForPicker(q);$("sheetBody").innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]].map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div>${rows.map(p=>`<button class="plan-card week-select-card ${selected.includes(p.id)?"selected":""}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${selected.includes(p.id)?"✓":"›"}</span></button>`).join("")}<div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`${selected.length} Pläne gewählt · ${weekDateAt(day).toLocaleDateString("de-DE")}`:"Kein Plan gewählt"}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;$("weekSearch").oninput=()=>{q=$("weekSearch").value;render()};$("weekSearchClear").onclick=()=>{q="";render()};document.querySelectorAll("[data-week-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}savePlanSort();render()});document.querySelectorAll("[data-wpick]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick);selected.includes(id)?selected=selected.filter(x=>x!==id):selected.push(id);render()});$("weekApply").onclick=()=>{const hadPlans=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(hadPlans&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();if(typeof renderProfileProgress==="function")renderProfileProgress()}};openSheet("Trainingsplan auswählen","");render()}
+function openWeekPicker(day){let selected=validWeekPlans(day).map(p=>p.id),q="";const render=()=>{const rows=sortedPlansForPicker(q);$("sheetBody").innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]].map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div>${rows.map(p=>`<button class="plan-card week-select-card ${selected.includes(p.id)?"selected":""}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${selected.includes(p.id)?"✓":"›"}</span></button>`).join("")}<div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`${selected.length} Pläne gewählt · ${weekDateAt(day).toLocaleDateString("de-DE")}`:"Kein Plan gewählt"}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;$("weekSearch").oninput=()=>{q=$("weekSearch").value;const rows=sortedPlansForPicker(q),cards=Array.from(document.querySelectorAll("[data-wpick]"));cards.forEach(card=>{const id=Number(card.dataset.wpick);card.style.display=rows.some(p=>Number(p.id)===id)?"":"none"})};$("weekSearchClear").onclick=()=>{q="";render()};document.querySelectorAll("[data-week-sort]").forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}savePlanSort();render()});document.querySelectorAll("[data-wpick]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick);selected.includes(id)?selected=selected.filter(x=>x!==id):selected.push(id);render()});$("weekApply").onclick=()=>{const hadPlans=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(hadPlans&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();if(typeof renderProfileProgress==="function")renderProfileProgress()}};openSheet("Trainingsplan auswählen","");render()}
 function startWeekDay(day){
  const fresh=combinedWeekPlan(day);if(!fresh||!(fresh.exercises||[]).length)return;
  pendingStartPlan=fresh;
@@ -3177,7 +3266,7 @@ function renderProfileProgress(){
  const wt=weightTrend(),hyd=hydrationGoalDaysReached(),train=currentWeekTrainingDays();
  el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid"><div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${wt&&wt.hasTrend?(wt.delta>0?"+":"")+wt.delta+" kg":wt?wt.current+" kg":"–"}</strong><div class="goal-line">${wt?.target?`Wunschgewicht ${wt.target} kg · ${Math.abs(wt.distance)} kg ${wt.distance<0?"darüber":"bis Ziel"}`:wt&&wt.hasTrend?`${wt.from.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})} → ${wt.to.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}`:"Wunschgewicht im Profil eintragen"}</div></div><div class="card progress-stat"><div class="small">Hydrierungsziel erreicht</div><strong>${hyd}</strong><div class="goal-line">Tage insgesamt</div></div><div class="card progress-stat training-week-stat"><div class="small">Trainingstage Woche</div><div class="week-calendar-label">${selectedWeekInfo().label}</div><strong>${train} / 7</strong><div class="goal-line">Trainingstage</div></div></div>`
 }
-function renderProfile(){ dailyReset();ensureDrinks();recalcFoodTotals();$("profileDayLabel").textContent=profileDayLabel();$("profileDayDate").textContent=profileDate().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});$("profilePrevDay").onclick=()=>changeProfileDay(-1);$("profileNextDay").onclick=()=>changeProfileDay(1);const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),currentWeight=Number(latest?.weight||profile.weight||0),basis=hasGoalBasis();$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?profile.height+" cm":"",currentWeight?currentWeight+" kg":""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";$("profileGoalSummary").innerHTML=`<span>${profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele"}</span>${profile.targetWeight?`<span class="target-weight-line-profile">Wunschgewicht ${esc(profile.targetWeight)} kg</span>`:""}`;$("nutritionCalTarget").textContent=basis&&nutrition.calories?nutrition.calories+" kcal":"–";$("nutritionHydrationTarget").textContent=basis&&nutrition.waterGoal?`${nutrition.waterGoal} ml`:"–";
+function renderProfile(){ dailyReset();ensureDrinks();recalcFoodTotals();$("profileDayLabel").textContent=profileDayLabel();$("profileDayDate").textContent=profileDate().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});$("profilePrevDay").onclick=()=>changeProfileDay(-1);$("profileNextDay").onclick=()=>changeProfileDay(1);const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),currentWeight=Number(latest?.weight||profile.weight||0),basis=hasGoalBasis();$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?profile.height+" cm":"",currentWeight?currentWeight+" kg":""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";$("profileGoalSummary").innerHTML=`<span>${profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele"}</span>${profile.targetWeight?`<span class="target-weight-line-profile">Wunschgewicht ${esc(profile.targetWeight)} kg</span>`:""}`;if($("nutritionCalTarget"))$("nutritionCalTarget").textContent=basis&&nutrition.calories?nutrition.calories+" kcal":"–";if($("nutritionHydrationTarget"))$("nutritionHydrationTarget").textContent=basis&&nutrition.waterGoal?`${nutrition.waterGoal} ml`:"–";if($("goalCaloriesHome")&&document.activeElement!==$("goalCaloriesHome"))$("goalCaloriesHome").value=nutrition.calories||"";if($("goalProteinHome")&&document.activeElement!==$("goalProteinHome"))$("goalProteinHome").value=nutrition.protein||"";if($("goalWaterHome")&&document.activeElement!==$("goalWaterHome"))$("goalWaterHome").value=nutrition.waterGoal||"";
  const goal=basis?hydrateGoal():0,water=Number(nutrition.hydration)||0,cal=Number(nutrition.consumedCalories)||0,proteinToday=Number(nutrition.consumedProtein)||0;
  const calGoal=basis?Number(nutrition.calories)||0:0,proteinGoal=basis?Number(nutrition.protein)||0:0;
  $("foodCaloriesCounter").textContent=`${Math.round(cal)} / ${calGoal||"–"} kcal`;
@@ -3248,7 +3337,7 @@ function calculateProfileGoals(){
  $("applyCalculatedGoals").onclick=()=>{nutrition.calories=kcal;nutrition.protein=protein;nutrition.waterGoal=water;nutrition.goalCalculatedAt=Date.now();saveAll();closeSheet({all:true});renderProfile()}
 }
 $("addFoodTodayBtn").onclick=()=>openFoodSearch("");
-$("editProfileBtn").onclick=openProfileEditor;$("editGoalsBtn").onclick=openNutritionGoals;$("calculateGoalsBtn").onclick=calculateProfileGoals;
+$("editProfileBtn").onclick=openProfileEditor;
 function openQuickDrinkEntry(){
  ensureDrinks();let selectedId=nutrition.drinks[0]?.id||null;
  const render=()=>{const d=nutrition.drinks.find(x=>String(x.id)===String(selectedId))||nutrition.drinks[0];if(!d)return;

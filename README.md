@@ -501,3 +501,44 @@ Für alle fünf Haupt-Tabs gilt:
 - Der bisherige separate große Eintragen-Button unterhalb der Getränkeliste wurde entfernt.
 
 - Fix: Sprachumschaltung verändert im Tab `Pläne` nur noch den Textknoten; das bestehende Plan-SVG-Symbol bleibt erhalten.
+
+## Daten & Backup
+- Einstellungen: Backup erstellen / Backup wiederherstellen.
+- Exportiert dauerhafte Nutzerdaten als JSON; temporäre UI-Zustände nicht.
+- Wiederherstellung ersetzt nach Sicherheitsabfrage den lokalen Datenbestand und lädt die App neu.
+- Kein Programmcode wird verändert. Backup/Restore kann Daten zwischen getrennten lokalen PWA-Speichern übertragen; es ist kein automatischer Cloud-Sync.
+
+## UI-Feinschliff
+- Sprache und Textgröße speichern die Auswahl und lösen anschließend einen echten Reload aus; der aktuelle Sitzungs-/Öffnungsstand wird vorher gesichert.
+- Leerer Pläne-Tab: Begrüßungskarte mit `Trainingsplan erstellen`.
+- Kalorien-/Proteinwerte und Balken in `Ernährung heute` größer.
+- `Meine Getränke` und `Meine Lebensmittel & Mahlzeiten` typografisch angeglichen.
+- Erklärung unter Hell/Dunkel entfernt.
+- sichtbares `Plane` zu `Pläne` korrigiert.
+
+## Vollständige Deutsch-/Englisch-Oberfläche
+- Alle festen UI-Texte in Navigation, Tabs, Trainingsplaneditor, Übungsmasken, Live-Workout, Bewertungsdialogen, Wochenplan, Profil, Messungen, Hydrierung, Ernährung, Einstellungen, Backup und Sicherheitsabfragen werden bei Englisch übersetzt.
+- Dynamische feste Texte wie Satz-/Übungsanzahlen, Kalenderwoche und Methodenhinweise werden ebenfalls übersetzt.
+- Übungsnamen und Plannamen bleiben ausdrücklich unverändert. Freie Nutzertexte/Notizen werden ebenfalls nicht automatisch übersetzt.
+
+## Eindeutige Plannamen
+- Zwei Trainingspläne dürfen nicht denselben Namen besitzen.
+- Vergleich ignoriert Groß-/Kleinschreibung, führende/abschließende Leerzeichen und doppelte Leerzeichen.
+- Beim Bearbeiten darf ein Plan seinen eigenen bestehenden Namen behalten.
+- Bei Namenskollision wird Speichern/Starten blockiert und der Nutzer muss einen anderen Namen wählen.
+- Automatisch als neuer Plan erzeugte Versionen (`Push 2`, `Push 3` usw.) bleiben weiterhin eindeutig.
+
+## Ernährungsziele – Profil/Home
+- `Bearbeiten` neben `Ernährung heute` entfernt.
+- Kalorien-/Protein-Labels entsprechen typografisch `Menge`/`Ziel` der Hydrierung.
+- Kalorien-/Protein-Fortschrittsbalken haben dieselbe Höhe wie der Hydrierungsbalken.
+- Unter Ernährung befindet sich eine klappbare Karte `Ernährungsziele`.
+- Eingeklappt: Überschrift + `Persönlichen Wert berechnen`.
+- Aufgeklappt: exakt die drei Zielwerte Kalorien/Tag, Protein g/Tag und Flüssigkeit ml/Tag mit direkter Bearbeitung und `Ziele speichern`.
+- Die bestehende Zielberechnungsformel wird unverändert verwendet; berechnete Werte werden direkt gespeichert und in den Feldern angezeigt.
+- `Meine Getränke` und `Meine Lebensmittel & Mahlzeiten` wurden leicht kleiner gesetzt.
+
+## UI-Korrektur – Ernährungsziele & Wochenplan-Suche
+- `Ernährungsziele` steht normal linksbündig; der Auf-/Zuklapp-Pfeil sitzt rechtsbündig.
+- Die Plansuche beim Hinzufügen zum Wochenplan baut das Suchfeld während der Eingabe nicht mehr neu auf. Dadurch bleibt die Tastatur beim Tippen mehrerer Buchstaben geöffnet.
+- Tippen/Scrollen außerhalb kann die Tastatur weiterhin schließen.
