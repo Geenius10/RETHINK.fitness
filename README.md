@@ -380,9 +380,109 @@ Für alle fünf Haupt-Tabs gilt:
 - Nur der bewusste Reset über den bereits aktiven Tab setzt dessen Auswahl zurück; bei der Übungsbibliothek springen dann zusätzlich Trainingsart- und Muskelgruppenleiste ganz nach links.
 - Die Übungsfilter selbst werden zusammen mit dem Tabzustand in der Session-UI gespeichert.
 - Ein neu geladenes App-Dokument setzt die Profil-Tagesansicht auf **Heute**; reines Standby ohne Neuladen behält die aktuelle Ansicht.
-- Einstellungsbutton im Dunkelmodus bleibt neutral; der Messungs-Plusbutton verwendet wieder die neutrale Standarddarstellung statt Flieder.
+- Einstellungsbutton im Dunkelmodus ist Flieder; der Messungs-Plusbutton verwendet die neutrale Standarddarstellung statt Flieder.
 - Suchfelder in Bottom-Sheets sitzen näher an der jeweiligen Überschrift.
 - Wiederholungsfelder (`X Wochen` / Datum) sind auf schmale Displays begrenzt und dürfen nicht horizontal aus dem Sheet ragen.
 - `X Wochen`: Tippen/Fokus markiert die komplette Zahl, damit sie direkt überschrieben werden kann.
 - Eingabefelder in Sheets werden über `VisualViewport` oberhalb der Bildschirmtastatur gehalten; dies gilt insbesondere für Getränke-, Lebensmittel- und Wiederholungsmengen.
 - Der interne Service-Worker-Cache hat pro korrigiertem Build einen neuen Namen, damit die installierte PWA nicht versehentlich alte HTML-/Runtime-Dateien weiterverwendet.
+
+## Rethink_v3.1 — verifizierte Reparatur des Tab- und Tastaturverhaltens
+- Normaler Wechsel zwischen **Übungen, Trainingspläne, Training, Woche und Profil** bewahrt:
+  - vertikale Scrollposition;
+  - horizontale Chip-/Filterposition;
+  - Such-/Eingabefelder;
+  - offene `<details>`-Bereiche;
+  - logische Auswahlzustände wie Übungsfilter, betrachtete Woche und betrachteter Profiltag.
+- Der Fehler, bei dem der Zustand des Ziel-Tabs vor der Wiederherstellung mit der Scrollposition des vorherigen Tabs überschrieben wurde, ist behoben.
+- Aktiver Tab:
+  - erster Tap bei gescrolltem Tab → nur nach oben;
+  - nächster Tap am Seitenanfang → bewusster Reset.
+- Übungsbibliothek-Reset setzt dann Filter **und** beide horizontalen Filterleisten auf Anfang.
+- Einstellungsbutton im Dunkelmodus: Flieder.
+- Messungsbutton: neutral/weiß im Dunkelmodus, neutral im Hellmodus.
+- Wochenwiederholung:
+  - Datum und X-Wochen-Feld passen in schmale Displays;
+  - Enddatum kann nicht vor dem heutigen Tag liegen;
+  - Tap auf X-Wochen fokussiert das Feld und markiert die komplette Zahl;
+  - das Feld wird über der Softwaretastatur gehalten.
+- Suchfelder in Bottom-Sheets stehen näher an ihrer Überschrift.
+- Getränkewahl fokussiert direkt die Mengenbox; die Sheet-Scrollposition wird so angepasst, dass das Feld über der Softwaretastatur sichtbar bleibt.
+
+## Rethink_v3.1 — Live-Workout Korrekturen
+- Hydrierung: Nach Auswahl eines Getränks steht die Mengenbox oberhalb der Getränkeliste, erhält direkt Fokus und wird bei Tastaturöffnung innerhalb des Sheets sichtbar gehalten.
+- Eine Trainingskarte bleibt nur so lange methodenfarbig hervorgehoben, bis wirklich alle Sätze aller zugehörigen Übungen vollständig bewertet wurden.
+- Fertige Karten werden wieder neutral und zeigen oben rechts eine grüne Box `✓ Abgeschlossen`.
+- Superset, Giant Set und Pre-Exhaust: Jede einzelne Übung kann auch im laufenden Workout gelöscht werden.
+- Wird eine Übung aus einer verbundenen Gruppe gelöscht, werden alle verbleibenden Übungen dieser Gruppe an Ort und Stelle zu Standardübungen normalisiert.
+- Alle Eingabefelder im laufenden Workout verwenden eine eigene Keyboard-Sichtbarkeitslogik mit zusätzlichem dynamischem Bottom-Space.
+- Neue Workouts mit historischen Vorwerten zeigen vor der jeweiligen Satznummer einen kleinen Punkt in der Farbe der letzten Bewertung derselben Übung, Satzmethode und desselben WDH-/Zeitmodus.
+- Trainingsplan-Picker im Training-Tab zeigt Sortierung in der Reihenfolge: `A–Z`, `Hinzugefügt`, `Geändert`, `Genutzt`.
+
+## Rethink_v3.1 — Einheiten, Wochenstart und Textgröße
+- Einstellungen enthalten jetzt eine eigene Sektion **Einheiten & Ansicht**.
+- Gewicht: `kg` oder `lb`.
+  - Trainingswerte, historische Vorwerte, Körpergewicht und Wunschgewicht werden in der gewählten Einheit angezeigt.
+  - Bestehende Daten bleiben intern in kg gespeichert; Eingaben in lb werden beim Speichern zurück in kg konvertiert. Dadurch bleiben alte Pläne und Historien kompatibel.
+  - Die Übungs-/Methodenmaske zeigt die aktuell gewählte Gewichtseinheit als Kontext an.
+- Distanz: `km` oder `Miles`.
+  - Die globale Distanzpräferenz wird gespeichert und in der Übungs-/Methodenmaske angezeigt; Distanzfelder verwenden diese Präferenz.
+  - Intern bleibt die Basiseinheit km.
+- Messungen: `cm` oder `Inches`.
+  - Größe, Taille, Brust und Hüfte werden entsprechend angezeigt und eingegeben.
+  - Intern bleiben bestehende Messwerte in cm gespeichert.
+- Wochenstart: `Montag` oder `Sonntag`.
+  - Tagesreihenfolge, Datumsbereich und Wochenansicht passen sich an.
+  - Beim Umschalten werden vorhandene einmalige Wochenplan-Einträge anhand ihres echten Datums migriert, damit kein Workout auf einen falschen Tag rutscht.
+  - Wiederholungsregeln bleiben datumsbasiert erhalten.
+- Textgröße: `Standard`, `Groß`, `Sehr groß`.
+  - Überschriften, Hilfstexte, Karten, Buttons und Eingabefelder skalieren gemeinsam.
+- Bewertungspunkt aus dem letzten passenden Workout steht jetzt **hinter** der Satznummer: `1 •`, `1a •` usw.
+- Löschen aus Giant Sets im laufenden Workout normalisiert logisch:
+  - 4 → 3 Übungen: Giant Set bleibt Giant Set.
+  - 3 → 2 Übungen: Gruppe wird Superset.
+  - 2 → 1 Übung: verbleibende Übung wird Standard.
+
+## Rethink_v3.1 — Neustart, Standby, Empfehlungen und aktive Karte
+- **Echter App-/PWA-Neustart:** temporärer UI-Zustand wird auf Standard gesetzt:
+  - Starttab Training;
+  - Scrollpositionen aller fünf Tabs = Anfang;
+  - Übungsfilter = Standard;
+  - Wochenansicht = aktuelle Woche;
+  - Profilansicht = Heute;
+  - offene Unterseiten/Sheets werden nicht wiederhergestellt.
+- Dauerhafte Nutzereinstellungen bleiben bei einem Neustart erhalten, z. B. kg/lb, km/mi, cm/in, Wochenstart, Textgröße, Theme, Pläne und Historie.
+- **Standby / App nur im Hintergrund:** der vorhandene DOM-/UI-Zustand bleibt bestehen; beim Hintergrundwechsel wird der aktuelle Zustand zusätzlich gespeichert.
+- Historische Trainingswerte werden wieder als graue Orientierung in KG/LB und WDH. eingeblendet, aber nur bei gleicher Übung, gleicher Satzmethode und gleichem WDH-/Zeitmodus.
+- Zusätzlich erscheint wieder `Tipp nächstes Training` mit einer Empfehlung aus der letzten passenden Bewertung und den letzten sinnvollen Werten.
+- Das Antippen, Fokussieren oder Ausfüllen von KG-/WDH-/Zeitfeldern verändert die aktive Kartenmarkierung **niemals**.
+- Die aktive Kartenmarkierung richtet sich ausschließlich nach tatsächlich abgeschlossenen Bewertungen.
+- Eine Einzelkarte bleibt hervorgehoben, bis alle ihre Sätze bewertet sind.
+- Superset/Giant/Pre-Exhaust bleiben als gesamte Gruppe hervorgehoben, bis alle Sätze aller Gruppenmitglieder bewertet sind.
+- Erst nach der letzten notwendigen Bewertung wird die aktuelle Karte neutral/abgeschlossen und die nächste logische Trainingseinheit markiert.
+
+## Rethink_v3.1 — Textgröße und Eingabefokus
+- Textgröße hat drei globale Stufen: Standard, Groß und Sehr groß.
+- Die Skalierung gilt einheitlich für Überschriften, Karten, Buttons, kleine Hinweise, Labels, Suchfelder, Eingabefelder, Sheets und dynamisch erzeugte Inhalte.
+- Groß entspricht ca. +12 %, Sehr groß ca. +24 % gegenüber Standard.
+- Antippen/Fokussieren eines KG-/WDH-/Zeitfeldes ohne tatsächliche Eingabe verändert den Trainingsdatensatz nicht.
+- Ohne Eingabe entstehen weder `0` noch `_touched` noch andere versteckte Änderungen.
+- Grau hinterlegte Vorwerte bleiben nach Fokus/Blur grau als Orientierung erhalten.
+- Erst echte Nutzereingabe schreibt einen neuen Wert in den Satz.
+
+## Rethink_v3.1 — Einheitensystem, Sprache und Textgröße
+- Einstellungen verwenden jetzt eine gemeinsame Oberkategorie **Einheitensystem**:
+  - **Metrisch:** kg / km / cm / ml / g
+  - **Imperial:** lb / mi / in / oz; Lebensmittelmengen werden unter 1 lb in oz und ab 1 lb in lb angezeigt.
+- Intern bleiben bestehende Daten in den bisherigen Basiseinheiten gespeichert, damit alte Pläne, Workouts und Historien kompatibel bleiben.
+- Körpergröße wird im Imperial-System im Profil als **ft + in** dargestellt.
+- Gewicht wird kg ↔ lb umgerechnet.
+- Distanz wird km ↔ mi umgerechnet.
+- Körpermaße werden cm ↔ in umgerechnet.
+- Getränkemengen werden ml ↔ oz umgerechnet.
+- Bei zeit-/cardiobasierten Übungen kann pro Satz zusätzlich Distanz eingetragen werden.
+- Lebensmittelmengen werden bei Imperial sinnvoll als oz bzw. bei größeren Mengen als lb dargestellt.
+- Textgröße besitzt drei globale Stufen: **Standard / Groß / Sehr groß**. Die Skalierung gilt appweit einschließlich Formulare und Buttons.
+- Sprache besitzt **Deutsch** (Default) und **Englisch**.
+- UI-Texte werden übersetzt; **Übungsnamen, Plannamen, eigene Lebensmittel-/Mahlzeitennamen und Notizen bleiben unverändert**.
+- Ein bloßer Fokus/Klick in ein leeres Trainingsfeld verändert dessen Wert nicht. Ein leeres Feld darf insbesondere nicht automatisch `0` erhalten und übernimmt dadurch auch keinen grauen Vorwert.

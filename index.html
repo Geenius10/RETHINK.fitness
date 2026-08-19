@@ -1117,6 +1117,146 @@ html[data-theme="light"] #addMeasurementBtn{
   scroll-margin-top:12px;
 }
 </style>
+
+<style id="rethink-v31-repair-final">
+/* Settings button SHOULD be lilac in dark mode. */
+html[data-theme="dark"] #settingsBtn,
+:root:not([data-theme="light"]) #settingsBtn{
+  background:#b7a4d8!important;
+  border-color:#b7a4d8!important;
+  color:#211b29!important;
+}
+/* Measurement stays neutral, not lilac. */
+#addMeasurementBtn{
+  background:#fff!important;
+  border-color:#fff!important;
+  color:#111!important;
+}
+html[data-theme="light"] #addMeasurementBtn{
+  background:var(--surface2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+/* Less dead space between sheet title and its first search/control. */
+.sheet-top{
+  min-height:44px!important;
+  padding:2px 14px!important;
+}
+.sheet-body{padding-top:3px!important}
+.sheet-body>.plan-picker-tools:first-child,
+.sheet-body>.food-search-sticky:first-child,
+.sheet-body>.search:first-child{margin-top:0!important;padding-top:0!important}
+.plan-picker-tools .search,
+.food-search-sticky .search,
+.sheet-body>.search:first-child{
+  margin-top:0!important;
+  margin-bottom:5px!important;
+}
+/* Repeat area cannot overflow on narrow iPhones. */
+.repeat-config,.repeat-config *{box-sizing:border-box}
+.repeat-config{width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important}
+.repeat-config .repeat-choice-line{display:block!important}
+.repeat-config select,.repeat-config input,.repeat-config .field{
+  display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+}
+.repeat-config input[type="date"]{-webkit-appearance:auto!important;appearance:auto!important}
+</style>
+
+<style id="rethink-v31-search-gap-final">
+.sheet-top{min-height:42px!important;padding:0 14px!important}
+.sheet-body{padding-top:1px!important}
+.sheet-body>.plan-picker-tools:first-child,
+.sheet-body>.food-search-sticky:first-child,
+.sheet-body>.search:first-child{margin-top:0!important;padding-top:0!important}
+.plan-picker-tools .search,
+.food-search-sticky .search,
+.sheet-body>.search:first-child{margin-top:0!important;margin-bottom:4px!important}
+</style>
+
+<style id="rethink-v31-live-completion">
+.live-card-topline{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px
+}
+.live-card-topline .method-name{margin:0!important}
+.live-complete-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 8px;border-radius:9px;
+  background:#83c995;color:#102617;
+  border:1px solid rgba(20,90,42,.18);
+  font-size:9px;font-weight:900;white-space:nowrap;
+}
+.live-complete-badge .tick{font-size:12px;line-height:1}
+.live-group-member-head{
+  display:grid;grid-template-columns:20px minmax(0,1fr) 32px;gap:7px;align-items:center
+}
+.live-group-member-delete{
+  width:30px;height:30px;min-width:30px;border:0;border-radius:9px;
+  background:transparent;color:var(--muted);font-size:19px
+}
+.previous-rating-dot{
+  width:7px;height:7px;border-radius:50%;display:inline-block;flex:0 0 7px;margin-right:3px;
+  border:1px solid rgba(255,255,255,.25)
+}
+.previous-rating-dot.rating-green{background:#76d184}
+.previous-rating-dot.rating-yellow{background:#e9cb55}
+.previous-rating-dot.rating-red{background:#e27670}
+.previous-rating-dot.rating-blue{background:#79cce8}
+.set-index-with-history,.combined-index-with-history{display:flex;align-items:center;gap:3px;font-weight:900}
+.live-exercise-card.live-card-complete{
+  background:var(--surface)!important
+}
+.live-exercise-card:not(.live-card-complete).active-live-exercise{
+  background:color-mix(in srgb,var(--method) 24%,var(--surface))!important
+}
+html[data-theme="light"] .live-complete-badge{
+  background:#99cfa5;color:#18301e
+}
+/* Any focused workout entry field gets extra breathing room above the keyboard. */
+#livePage input:focus,#livePage textarea:focus,#livePage select:focus{
+  scroll-margin-top:84px!important;scroll-margin-bottom:100px!important
+}
+/* Hydration amount is intentionally above the drink list after a selection. */
+.final-drink-entry-top{
+  position:sticky;top:-1px;z-index:12;background:var(--bg);
+  padding:2px 0 10px;margin-bottom:5px
+}
+.final-drink-selected{
+  display:flex;align-items:center;gap:8px;margin-bottom:7px;
+  padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface)
+}
+</style>
+<style id="rethink-v31-units-settings">
+.set-index-with-history,.combined-index-with-history{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:4px!important;white-space:nowrap!important}
+.set-index-with-history .previous-rating-dot,.combined-index-with-history .previous-rating-dot{margin:0 0 0 2px!important;position:static!important;transform:none!important}
+.settings-unit-select{width:132px;max-width:46vw}.settings-unit-note{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.3}
+.unit-context-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:9px;font-weight:900;color:var(--muted);margin:0 0 8px}
+html[data-text-scale="large"] h1{font-size:33px!important}html[data-text-scale="large"] h2{font-size:20px!important}html[data-text-scale="large"] .small,html[data-text-scale="large"] small{font-size:12px!important}html[data-text-scale="large"] .exercise-card strong,html[data-text-scale="large"] .plan-card strong{font-size:15px!important}html[data-text-scale="large"] .chip,html[data-text-scale="large"] button{font-size:12px}html[data-text-scale="large"] input,html[data-text-scale="large"] select,html[data-text-scale="large"] textarea{font-size:17px!important}
+html[data-text-scale="xlarge"] h1{font-size:36px!important}html[data-text-scale="xlarge"] h2{font-size:22px!important}html[data-text-scale="xlarge"] .small,html[data-text-scale="xlarge"] small{font-size:13px!important}html[data-text-scale="xlarge"] .exercise-card strong,html[data-text-scale="xlarge"] .plan-card strong{font-size:16px!important}html[data-text-scale="xlarge"] .chip,html[data-text-scale="xlarge"] button{font-size:13px}html[data-text-scale="xlarge"] input,html[data-text-scale="xlarge"] select,html[data-text-scale="xlarge"] textarea{font-size:18px!important}
+</style>
+<style id="rethink-v31-live-recommendations">
+.live-recommendation{
+  margin:8px 0 6px;padding:8px 10px;border-radius:11px;
+  border:1px solid var(--line);background:color-mix(in srgb,var(--surface2) 82%,transparent);
+  font-size:10px;line-height:1.35;color:var(--muted)
+}
+.live-recommendation strong{color:var(--text);font-size:10px}
+</style>
+<style id="rethink-v31-global-text-scale-final"></style>
+<style id="rethink-v31-system-language">
+:root{--ui-text-adjust:100%}
+html[data-text-scale="normal"]{--ui-text-adjust:100%}
+html[data-text-scale="large"]{--ui-text-adjust:115%}
+html[data-text-scale="xlarge"]{--ui-text-adjust:130%}
+html,body{
+  -webkit-text-size-adjust:var(--ui-text-adjust)!important;
+  text-size-adjust:var(--ui-text-adjust)!important;
+}
+/* iOS does not always scale form controls with text-size-adjust, so these follow explicitly. */
+html[data-text-scale="large"] :is(button,input,select,textarea){font-size:115%!important}
+html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!important}
+.settings-system-select{width:142px;max-width:48vw}
+.distance-live-field{min-width:0!important}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
@@ -1319,9 +1459,9 @@ function exerciseSetCount(ex){return Number(ex?.sets)||0}
 function workoutSetCount(w){return(w?.exercises||[]).reduce((n,e)=>n+(e.liveSets?.length||Number(e.sets)||0),0)}
 function amrapText(v){const s=String(v||"");return s.toUpperCase().includes("AMRAP")?"AMRAP":s}
 function estimateMinutes(p){let sec=0;(p.exercises||[]).forEach(e=>{const sets=Number(e.sets)||3;if(e.measureMode==="time")sec+=sets*(Number(e.timeSeconds)||300);else sec+=sets*45;sec+=Math.max(0,sets-1)*(Number(e.rest)||90)});return Math.max(1,Math.round(sec/60))}
-function persistUI(){
+function persistUI({capture=true}={}){
  const visible=document.querySelector(".page:not(.hidden)");
- captureTabUiState(currentTab);
+ if(capture)captureTabUiState(currentTab);
  const state={
   tab:currentTab,tabScroll,tabUiState:clone(tabUiState),
   exerciseFilters:{type:exType,muscles:[...exMuscles]},
@@ -1505,11 +1645,25 @@ function captureTabUiState(name=currentTab){
    const key=el.id||`idx_${i}`;
    if(el.type==="checkbox"||el.type==="radio")s.inputs[key]={checked:!!el.checked};
    else s.inputs[key]={value:el.value}
- })
+ });
+ if(name==="exercises")s.logical={type:exType,muscles:[...exMuscles],search:$("exerciseSearch")?.value||""};
+ else if(name==="week")s.logical={weekOffset:Number(weekOffset)||0};
+ else if(name==="profile")s.logical={profileDayOffset:Number(profileDayOffset)||0};
+ else if(name==="plans")s.logical={plansQuickEdit:!!plansQuickEdit}
 }
 
 function restoreTabUiState(name,{scroll=true}={}){
  const tab=$("tab-"+name),s=tabUiState[name];if(!tab||!s)return;
+ if(s.logical){
+   if(name==="exercises"){
+     exType=s.logical.type||"Alle";exMuscles=new Set(Array.isArray(s.logical.muscles)?s.logical.muscles:[]);
+     if($("exerciseSearch")&&document.activeElement!==$("exerciseSearch"))$("exerciseSearch").value=s.logical.search||""
+   }else if(name==="week"){
+     weekOffset=Number(s.logical.weekOffset)||0;localStorage.setItem(WEEK_VIEW_OFFSET_KEY,String(weekOffset))
+   }else if(name==="profile"){
+     profileDayOffset=Number(s.logical.profileDayOffset)||0;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,String(profileDayOffset))
+   }else if(name==="plans")plansQuickEdit=!!s.logical.plansQuickEdit
+ }
  if(s.inputs){
    tab.querySelectorAll("input,textarea,select").forEach((el,i)=>{
      const key=el.id||`idx_${i}`,v=s.inputs[key];if(!v)return;
@@ -1536,15 +1690,19 @@ function restoreTabUiState(name,{scroll=true}={}){
 }
 
 function showTab(name,{reset=false,forceRender=false}={}){
- if(currentTab)captureTabUiState(currentTab);
+ const outgoing=currentTab;
+ if(outgoing)captureTabUiState(outgoing);
+ // Save the outgoing state now, but DO NOT capture the target before it has been restored.
+ persistUI({capture:false});
+
  document.querySelectorAll(".tab-screen").forEach(x=>x.classList.add("hidden"));
  $("tab-"+name).classList.remove("hidden");
  currentTab=name;
  document.querySelectorAll("#bottomNav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
 
- // Normal tab switching keeps the existing DOM and all user choices.
- // Render only on first visit, explicit reset, or explicit data refresh.
  if(!tabVisited[name]||reset||forceRender){
+   // On an ordinary first visit render the current logical globals.
+   // On a deliberate reset the reset function already established the canonical globals.
    renderTab(name);
    tabVisited[name]=true
  }
@@ -1552,14 +1710,15 @@ function showTab(name,{reset=false,forceRender=false}={}){
  requestAnimationFrame(()=>{
    if(reset){
      try{window.scrollTo({top:0,left:0,behavior:"auto"})}catch{window.scrollTo(0,0)}
+     const doc=document.scrollingElement||document.documentElement;if(doc)doc.scrollTop=0;
      tabScroll[name]=0
    }else{
      restoreTabUiState(name,{scroll:true});
-     // A second pass catches layouts whose width settles one frame later.
-     setTimeout(()=>restoreTabUiState(name,{scroll:true}),35)
+     setTimeout(()=>restoreTabUiState(name,{scroll:true}),45)
    }
- });
- persistUI()
+   // Persist only after the target was restored; don't recapture and overwrite it.
+   persistUI({capture:false})
+ })
 }
 function resetTabToStandard(name){
  document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];sheetStack=[];$("sheetWrap")?.classList.add("hidden");exerciseDetailReturn=null;$("bottomNav").classList.remove("hidden");
@@ -1663,8 +1822,8 @@ document.addEventListener("wheel",e=>{
 
 
 
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){saveAll();persistUI()}});
-window.addEventListener("pagehide",()=>{saveAll();persistUI()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){saveAll();captureTabUiState(currentTab);persistUI({capture:false})}});
+window.addEventListener("pagehide",()=>{saveAll();captureTabUiState(currentTab);persistUI({capture:false})});
 
 
 function renderTab(n){if(n==="exercises")renderExerciseLibrary();if(n==="plans")renderPlans();if(n==="training")renderTrainingHome();if(n==="week")renderWeek();if(n==="profile")renderProfile()}
@@ -2316,7 +2475,7 @@ function openExercisePicker(onPick,{returnToSheet=false,exclude=new Set(),title=
 }
 function sortedPlansForPicker(query=""){return sortedPlans().filter(p=>(p.exercises||[]).length>0).filter(p=>!query||p.name.toLowerCase().includes(query.toLowerCase()))}
 function planPickerMarkup(query=""){
- const rows=sortedPlansForPicker(query),defs=[["updated","Geändert"],["created","Hinzugefügt"],["used","Genutzt"],["name","A–Z"]];
+ const rows=sortedPlansForPicker(query),defs=[["name","A–Z"],["created","Hinzugefügt"],["updated","Geändert"],["used","Genutzt"]];
  return`<div class="plan-picker-tools"><div class="search"><input id="planPickerSearch" placeholder="Plan suchen" value="${esc(query)}"><button id="planPickerClear">×</button></div><div class="chips">${defs.map(([k,l])=>`<button class="chip ${planSort.key===k?"active":""}" data-picker-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?" ↑":" ↓"):""}</button>`).join("")}</div></div><div id="planPickerRows">${rows.map(p=>`<button class="plan-card" data-start="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span class="chev">›</span></button>`).join("")||'<div class="small">Keine passenden Pläne.</div>'}</div>`
 }
 let activeHomeClockTimer=null;
