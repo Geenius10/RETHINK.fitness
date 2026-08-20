@@ -554,3 +554,9 @@ Für alle fünf Haupt-Tabs gilt:
 
 ## Globaler Tastatur-/Eingabefeld-Fix
 Der iOS-Sichtbarkeitsschutz gilt jetzt appweit für alle relevanten Eingabefelder, nicht nur Ernährung. Dazu gehören insbesondere Übungssuche, Übungen hinzufügen/bearbeiten im Planeditor, laufendes Training, Zahlenfelder, Suchfelder, Profil und Wochenplan. Beim Öffnen bzw. Verändern der Tastatur wird das aktive Feld innerhalb des sichtbaren Bereichs gehalten.
+
+## iOS Tastatur – VisualViewport-Fix
+- Bei geöffneter Tastatur wird nicht mehr nur das Eingabefeld gescrollt.
+- Bottom-Sheets und geöffnete Vollseiten werden auf die tatsächlich sichtbare `visualViewport`-Höhe begrenzt.
+- Dadurch kann die umgebende Karte nicht mehr hinter der Tastatur liegen.
+- Das aktive Eingabefeld wird nach jeder Größenänderung der iOS-Tastatur zusätzlich in den sichtbaren Bereich nachgeführt.

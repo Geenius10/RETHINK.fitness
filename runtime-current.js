@@ -3318,3 +3318,84 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    visualViewport.addEventListener('scroll',sync,true)
  }
 })();
+
+/* ReThink v3.1 — authoritative iOS VisualViewport keyboard layout
+   Previous fixes only scrolled the input. This one resizes the actual visible
+   sheet/page so a card cannot remain underneath the keyboard. */
+(function(){
+ const vv=window.visualViewport;
+ if(!vv)return;
+
+ const editable='input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="file"]),textarea,[contenteditable="true"]';
+ let raf=0;
+
+ function keyboardIsVisible(){
+   // Compare visual viewport with the layout viewport. The generous threshold
+   // avoids treating address-bar movement as a keyboard.
+   return vv.height < Math.min(window.innerHeight,document.documentElement.clientHeight)-110;
+ }
+
+ function containerFor(el){
+   return el?.closest?.('.sheet-body')||el?.closest?.('.page')||document.scrollingElement
+ }
+
+ function revealInVisibleViewport(el){
+   if(!el?.isConnected||!el.matches?.(editable))return;
+   const top=vv.offsetTop,bottom=vv.offsetTop+vv.height;
+   const r=el.getBoundingClientRect();
+   const safeTop=top+68,safeBottom=bottom-22;
+   let delta=0;
+   if(r.bottom>safeBottom)delta=r.bottom-safeBottom+12;
+   else if(r.top<safeTop)delta=r.top-safeTop-10;
+   if(!delta)return;
+   const c=containerFor(el);
+   if(c===document.scrollingElement||c===document.documentElement||c===document.body){
+     window.scrollBy({top:delta,behavior:'auto'})
+   }else{
+     c.scrollTop+=delta
+   }
+ }
+
+ function syncViewport(){
+   cancelAnimationFrame(raf);
+   raf=requestAnimationFrame(()=>{
+     const open=keyboardIsVisible() && document.activeElement?.matches?.(editable);
+     document.documentElement.style.setProperty('--rethink-vv-top',`${vv.offsetTop}px`);
+     document.documentElement.style.setProperty('--rethink-vv-height',`${vv.height}px`);
+     document.documentElement.classList.toggle('rethink-keyboard-visible',!!open);
+
+     if(open){
+       const el=document.activeElement;
+       revealInVisibleViewport(el);
+       // iOS often settles keyboard geometry over several frames.
+       [40,100,180,300].forEach(ms=>setTimeout(()=>{
+         if(document.documentElement.classList.contains('rethink-keyboard-visible')&&document.activeElement===el){
+           revealInVisibleViewport(el)
+         }
+       },ms))
+     }
+   })
+ }
+
+ document.addEventListener('focusin',e=>{
+   if(e.target?.matches?.(editable)){
+     syncViewport();
+     setTimeout(syncViewport,40);
+     setTimeout(syncViewport,140)
+   }
+ },true);
+
+ document.addEventListener('focusout',()=>{
+   setTimeout(syncViewport,80)
+ },true);
+
+ document.addEventListener('input',e=>{
+   if(e.target?.matches?.(editable))revealInVisibleViewport(e.target)
+ },true);
+
+ vv.addEventListener('resize',syncViewport,true);
+ vv.addEventListener('scroll',syncViewport,true);
+ window.addEventListener('orientationchange',()=>setTimeout(syncViewport,120),true);
+
+ syncViewport()
+})();

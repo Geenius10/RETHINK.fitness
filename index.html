@@ -1349,6 +1349,46 @@ html[data-text-scale="xlarge"] .nutrition-today-card .daily-bar-stat strong{font
 .search:has(#v69FoodSearch){position:sticky;top:0;z-index:8;background:var(--surface);padding:2px 0 6px}
 .time-wheel-select{width:100%;height:48px;font-size:16px}
 </style>
+
+<style id="rethink-v31-visual-viewport-keyboard">
+:root{--rethink-vv-top:0px;--rethink-vv-height:100dvh}
+
+/* When the iOS keyboard is visible, sheets are physically constrained to the
+   visual viewport rather than the larger layout viewport behind the keyboard. */
+html.rethink-keyboard-visible .sheet-wrap{
+  top:var(--rethink-vv-top)!important;
+  bottom:auto!important;
+  height:var(--rethink-vv-height)!important;
+  max-height:var(--rethink-vv-height)!important;
+  align-items:flex-end!important
+}
+html.rethink-keyboard-visible .sheet{
+  max-height:calc(var(--rethink-vv-height) - 6px)!important;
+  height:auto!important;
+  margin-bottom:0!important
+}
+html.rethink-keyboard-visible .sheet-body{
+  min-height:0!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain
+}
+
+/* Full-page editors/search screens also use only the actually visible area. */
+html.rethink-keyboard-visible .page:not(.hidden){
+  top:var(--rethink-vv-top)!important;
+  bottom:auto!important;
+  height:var(--rethink-vv-height)!important;
+  max-height:var(--rethink-vv-height)!important;
+  overflow-y:auto!important
+}
+
+/* Give focused controls a little breathing room above the keyboard. */
+html.rethink-keyboard-visible input:focus,
+html.rethink-keyboard-visible textarea:focus{
+  scroll-margin-top:72px!important;
+  scroll-margin-bottom:28px!important
+}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
