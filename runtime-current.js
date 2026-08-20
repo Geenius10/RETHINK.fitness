@@ -2635,7 +2635,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  // Hydration display/input: ml <-> fl oz.
  function patchHydrationUnitsV31(){
    const imperial=sysPrefs.unitSystem==="imperial";
-   const current=todayHydrationEntries().reduce((sum,x)=>sum+(Number(x.size)||0)*(Number(x.hydration)||0)/100,0);
+   const current=todayHydrationEntries().reduce((sum,x)=>sum+(Number(x.size)||0)*(Number(x.hydration)||0)/100,0)+todayFoodEntries().reduce((sum,x)=>sum+Number(x.water||0),0);
    const goal=hasGoalBasis()?hydrateGoal():Number(nutrition.waterGoal)||0;
    if($("waterView"))$("waterView").textContent=`${volumeDisplay(current)} ${imperial?"oz":"ml"}`;
    if($("waterGoalView"))$("waterGoalView").textContent=goal?`${volumeDisplay(goal)} ${imperial?"oz":"ml"}`:"–";
@@ -2881,9 +2881,10 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  function filename(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `Rethink_Backup_${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}.json`}
  async function exportBackup(){
    const blob=new Blob([JSON.stringify(payload(),null,2)],{type:"application/json"});
-   const file=new File([blob],filename(),{type:"application/json"});
-   try{if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:"ReThink Backup"});return}}catch(e){if(e?.name==="AbortError")return}
-   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=file.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename();a.style.display="none";
+   document.body.appendChild(a);a.click();a.remove();
+   setTimeout(()=>URL.revokeObjectURL(a.href),1200);
+   try{toast("Backup erstellt")}catch{}
  }
  async function restore(file){
    const x=JSON.parse(await file.text());
@@ -3234,4 +3235,86 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  }
  document.addEventListener("DOMContentLoaded",bindNutritionGoalsHomeV31,{once:true});
  requestAnimationFrame(bindNutritionGoalsHomeV31);
+})();
+
+/* ReThink v3.1 — Ernährung: aktive Eingabe bleibt über der iOS-Tastatur sichtbar */
+(function(){
+ const selector='#sheetBody #v69FoodSearch,#sheetBody #v69FoodGrams,#sheetBody #v69MealAmount,#sheetBody [data-meal-grams],#sheetBody #mealName,#sheetBody #cfName,#sheetBody #cfCategory,#sheetBody #cfKcal,#sheetBody #cfProtein,#sheetBody #cfWater,#sheetBody #cfServing,#sheetBody #cfServingLabel,#goalCaloriesHome,#goalProteinHome,#goalWaterHome';
+ function isNutritionInput(el){return !!el?.matches?.(selector)}
+ function reveal(el){
+   if(!isNutritionInput(el))return;
+   const body=el.closest('.sheet-body')||el.closest('.tab-screen')||document.scrollingElement;
+   const adjust=()=>{
+     const vv=window.visualViewport,bottom=vv?vv.offsetTop+vv.height:innerHeight,top=vv?vv.offsetTop:0,r=el.getBoundingClientRect();
+     if(r.bottom>bottom-18){
+       const d=r.bottom-(bottom-18)+12;
+       if(body===document.scrollingElement)window.scrollBy(0,d);else body.scrollTop+=d
+     }else if(r.top<top+62){
+       const d=(top+62)-r.top;
+       if(body===document.scrollingElement)window.scrollBy(0,-d);else body.scrollTop=Math.max(0,body.scrollTop-d)
+     }
+   };
+   adjust();requestAnimationFrame(adjust);[60,140,260,420].forEach(ms=>setTimeout(adjust,ms))
+ }
+ document.addEventListener('focusin',e=>{if(isNutritionInput(e.target))reveal(e.target)},true);
+ document.addEventListener('input',e=>{if(isNutritionInput(e.target))reveal(e.target)},true);
+ if(window.visualViewport){
+   visualViewport.addEventListener('resize',()=>reveal(document.activeElement),true);
+   visualViewport.addEventListener('scroll',()=>reveal(document.activeElement),true)
+ }
+})();
+
+/* ReThink v3.1 — globaler iOS-Tastatur-/Eingabefeld-Schutz
+   Gilt für alle Text-, Zahlen-, Such- und Textarea-Felder der App:
+   Planeditor, Übungen hinzufügen/bearbeiten, laufendes Training,
+   Ernährung, Profil, Wochenplan und weitere Sheets. */
+(function(){
+ const editable='input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="file"]),textarea,[contenteditable="true"]';
+ let active=null,token=0;
+
+ function scrollContainer(el){
+   return el.closest('.sheet-body')||el.closest('.page')||el.closest('.tab-screen')||document.scrollingElement
+ }
+ function reveal(el){
+   if(!el?.isConnected||!el.matches?.(editable))return;
+   active=el;const mine=++token;
+   const adjust=()=>{
+     if(mine!==token||!el.isConnected)return;
+     const vv=window.visualViewport;
+     const top=vv?vv.offsetTop:0,bottom=vv?(vv.offsetTop+vv.height):window.innerHeight;
+     const r=el.getBoundingClientRect();
+     const safeTop=top+64,safeBottom=bottom-18;
+     const c=scrollContainer(el);
+     let delta=0;
+     if(r.bottom>safeBottom)delta=r.bottom-safeBottom+12;
+     else if(r.top<safeTop)delta=r.top-safeTop-12;
+     if(!delta)return;
+     if(c===document.scrollingElement||c===document.documentElement||c===document.body)window.scrollBy({top:delta,behavior:'auto'});
+     else c.scrollTop+=delta
+   };
+   adjust();requestAnimationFrame(adjust);
+   [50,120,220,360,520].forEach(ms=>setTimeout(adjust,ms))
+ }
+
+ // pointerdown happens inside the user gesture, important for iOS keyboard activation.
+ document.addEventListener('pointerdown',e=>{
+   const el=e.target?.closest?.(editable);
+   if(!el)return;
+   active=el;
+   requestAnimationFrame(()=>reveal(el))
+ },true);
+
+ document.addEventListener('focusin',e=>{
+   if(e.target?.matches?.(editable))reveal(e.target)
+ },true);
+
+ document.addEventListener('input',e=>{
+   if(e.target?.matches?.(editable))reveal(e.target)
+ },true);
+
+ if(window.visualViewport){
+   const sync=()=>{const el=document.activeElement?.matches?.(editable)?document.activeElement:active;if(el)reveal(el)};
+   visualViewport.addEventListener('resize',sync,true);
+   visualViewport.addEventListener('scroll',sync,true)
+ }
 })();

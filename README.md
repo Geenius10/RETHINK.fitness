@@ -542,3 +542,15 @@ Für alle fünf Haupt-Tabs gilt:
 - `Ernährungsziele` steht normal linksbündig; der Auf-/Zuklapp-Pfeil sitzt rechtsbündig.
 - Die Plansuche beim Hinzufügen zum Wochenplan baut das Suchfeld während der Eingabe nicht mehr neu auf. Dadurch bleibt die Tastatur beim Tippen mehrerer Buchstaben geöffnet.
 - Tippen/Scrollen außerhalb kann die Tastatur weiterhin schließen.
+
+## ReThink v3.1 – Ernährungs-, Zeit-, Partner- und Backup-Fixes
+- Wasser aus Lebensmitteln wird in der Hydrierungsanzeige mitgerechnet.
+- Ernährungsfelder bleiben bei geöffneter iOS-Tastatur sichtbar; die Lebensmittelsuche bleibt stabil.
+- `Dead Hang` und `Calf Raises` ergänzt.
+- Zeitübungen verwenden den nativen iOS-Auswahl-Roller: Cardio bis 60:00, sonstige Zeitübungen bis 10:00.
+- Partnerübung 2+ nutzt für `Wiederholungen pro Seite` dasselbe Formularlayout wie Übung 1.
+- Neu erstellte Supersets/Giant Sets/Pre-Exhaust behalten exakt die Auswahlreihenfolge A, B, C …
+- Backup erstellt direkt die JSON-Datei; kein vorgeschalteter Teilen-Dialog.
+
+## Globaler Tastatur-/Eingabefeld-Fix
+Der iOS-Sichtbarkeitsschutz gilt jetzt appweit für alle relevanten Eingabefelder, nicht nur Ernährung. Dazu gehören insbesondere Übungssuche, Übungen hinzufügen/bearbeiten im Planeditor, laufendes Training, Zahlenfelder, Suchfelder, Profil und Wochenplan. Beim Öffnen bzw. Verändern der Tastatur wird das aktive Feld innerhalb des sichtbaren Bereichs gehalten.
