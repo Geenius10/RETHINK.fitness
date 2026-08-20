@@ -1,4 +1,4 @@
-const CACHE='rethink-v3-1-github-20260821-vvkeyboard2';
+const CACHE='rethink-v3-1-github-20260821-actualcatalog1';
 const ASSETS=[
  './', './index.html', './runtime-current.js', './foods.js', './manifest.webmanifest', './README.md', './AUDIT.md',
  './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'

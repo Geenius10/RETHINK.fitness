@@ -560,3 +560,6 @@ Der iOS-Sichtbarkeitsschutz gilt jetzt appweit für alle relevanten Eingabefelde
 - Bottom-Sheets und geöffnete Vollseiten werden auf die tatsächlich sichtbare `visualViewport`-Höhe begrenzt.
 - Dadurch kann die umgebende Karte nicht mehr hinter der Tastatur liegen.
 - Das aktive Eingabefeld wird nach jeder Größenänderung der iOS-Tastatur zusätzlich in den sichtbaren Bereich nachgeführt.
+
+## Katalogkorrektur
+- `Dead Hang` und `Calf Raises` wurden in die tatsächlich von `allExercises()` verwendete Datenquelle `DEFAULT_EXERCISES` aufgenommen. Dadurch erscheinen sie jetzt im sichtbaren Übungskatalog, in der Suche und beim Hinzufügen zu Plänen/Partnergruppen.
