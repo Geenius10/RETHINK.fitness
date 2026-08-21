@@ -2939,6 +2939,12 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 
    if(!confirm(`${normalized.format} wiederherstellen? ${entries.length} Datenbereiche werden eingespielt. Vorhandene Daten, die nicht im Backup stehen, bleiben erhalten.`))return;
 
+   // Lock all normal app persistence before restoring. Without this,
+   // pagehide/visibilitychange would immediately write the old in-memory
+   // state back over the freshly restored localStorage values.
+   window.__rethinkRestoreInProgress=true;
+   try{sessionStorage.setItem("rethink_restore_reload_v1","1")}catch{}
+
    let written=0;
    for(const [k,v] of entries){
      try{
@@ -2951,7 +2957,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    if(!written)throw new Error("Es konnten keine Daten geschrieben werden.");
 
    try{toast(`${written} Datenbereiche wiederhergestellt`)}catch{}
-   setTimeout(()=>location.reload(),500)
+   // Keep the lock active while iOS dispatches visibilitychange/pagehide.
+   setTimeout(()=>location.replace(location.href),650)
  }
  function chooseRestore(){
    const old=document.getElementById("rethinkBackupRestoreInput");
@@ -3523,4 +3530,14 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    document.addEventListener("focusout",()=>setTimeout(sync,80),true);
    vv.addEventListener("resize",sync,true);vv.addEventListener("scroll",sync,true);sync()
  }
+})();
+
+/* ReThink. Fitness — Restore reload marker cleanup */
+(function(){
+ try{
+   if(sessionStorage.getItem("rethink_restore_reload_v1")==="1"){
+     sessionStorage.removeItem("rethink_restore_reload_v1");
+     window.__rethinkRestoreInProgress=false;
+   }
+ }catch{}
 })();

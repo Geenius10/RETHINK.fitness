@@ -670,3 +670,8 @@ Die Wiederherstellung akzeptiert jetzt:
 - rohe LocalStorage-Key/Value-JSONs
 
 Der starre Schema-Abgleich wurde für den Import entfernt. Dadurch können ältere von ReThink erzeugte JSON-Sicherungen wieder eingespielt werden. Die JSON-Datei wird validiert; unbekannte JSON-Strukturen werden mit einer verständlichen Fehlermeldung abgelehnt. Der iOS-Dateiauswahldialog wird bei jedem Restore frisch erzeugt, sodass auch dieselbe Datei erneut gewählt werden kann.
+
+## Kritischer Restore-Fix
+Die Wiederherstellung war zuvor anfällig für eine Race Condition: Nach dem Schreiben der JSON-Werte lösten `location.reload()`, `visibilitychange` und `pagehide` noch einmal das normale `saveAll()` aus. Dabei konnte der alte, noch im Arbeitsspeicher befindliche App-Zustand die gerade wiederhergestellten Werte überschreiben.
+
+Während eines Restore ist die normale Persistenz jetzt vollständig gesperrt. Erst in der neu geladenen App-Instanz wird diese Sperre aufgehoben. Dadurch bleiben die aus der JSON geschriebenen Werte bestehen.
