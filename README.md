@@ -651,3 +651,13 @@ Der zentrale Trainingsstart-Button wird mit einer abschließenden, spezifischen 
 
 ## Training läuft – Startbutton
 Sobald `activeWorkout` existiert, werden sowohl die gesamte Karte „Training starten“ als auch der Play-/Startbutton explizit ausgeblendet und deaktiviert. Die `hidden`-Regel besitzt `!important`, damit die Inline-Darstellung des großen Play-Buttons das Ausblenden nicht mehr übersteuern kann. Nach Beenden oder Verwerfen des laufenden Trainings erscheint der Startbereich wieder.
+
+## Vollbackup v5 – Datensicherheit
+Die Backup-Funktion erstellt jetzt einen vollständigen Snapshot von **allen `localStorage`-Einträgen** der App. Damit werden nicht mehr nur vorher definierte Schlüssel gesichert, sondern auch Datenbereiche, die durch neue Funktionen später hinzukommen.
+
+Dazu gehören damit insbesondere Trainingspläne, eigene Übungen, Übungshistorie und Empfehlungen, abgeschlossene Trainings, laufende Trainings, Wochenpläne, Profil, Gewicht/Körpermaße, Ernährung, Lebensmittel, Mahlzeiten, Hydrierung, Getränke, Ziele, Einstellungen und weitere persistente App-Daten.
+
+### Restore-Sicherheitsregel
+Beim Wiederherstellen wird `localStorage` **niemals geleert**. Ebenso werden keine vorhandenen Schlüssel gelöscht, nur weil sie in einem älteren Backup fehlen. Die im Backup enthaltenen Werte werden über die entsprechenden gespeicherten Werte geschrieben; neuere zusätzliche Datenbereiche bleiben bestehen.
+
+HTML, CSS, JavaScript, `DEFAULT_EXERCISES` und andere Dateien der installierten App sind keine `localStorage`-Daten und werden durch dieses Backup daher nicht zurückgesetzt.

@@ -2868,42 +2868,30 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 (function(){
  const BACKUP_SCHEMA="rethink-v3.1-backup",BACKUP_VERSION=1;
  const SKIP=["rethink_ui","rethink_tab_ui","rethink_boot","rethink_session"];
- function personalBackupKeysV31(){
-   return [...new Set([
-     STORAGE.plans,                         // Trainingspläne
-     STORAGE.custom,                        // selbst hinzugefügte Übungen
-     STORAGE.history,                       // abgeschlossene Trainings / Verlauf
-     STORAGE.active,                        // laufendes Workout, falls vorhanden
-     STORAGE.measurements,                  // Gewicht und sämtliche Körpermaße
-     STORAGE.nutrition,                     // Ernährung, Lebensmittel, Mahlzeiten, Ziele, Getränkedefinitionen
-     STORAGE.profile,                       // vollständiger Profilbereich
-     HYDRATION_LOG_KEY,                     // kompletter Trink-/Hydrierungsverlauf
-     WEEK_KEY,                              // Wochenplan
-     WEEK_DATED_KEY,                        // datumsbasierte Wochenpläne
-     "rethink_week_recurring_rules_v1",     // wiederkehrende Wochenpläne
-     "rethink_week_recurring_exceptions_v1",// Wochenplan-Ausnahmen
-     "rethink_annual_cleanup_enabled_v1",   // persönliche Datenaufbewahrungswahl
-     "rethink_annual_cleanup_prompt_year_v1"
-   ].filter(Boolean))]
+ function fullLocalStorageSnapshot(){
+   const data={};
+   for(let i=0;i<localStorage.length;i++){
+     const k=localStorage.key(i);
+     if(k!==null){
+       const v=localStorage.getItem(k);
+       if(v!==null)data[k]=v
+     }
+   }
+   return data
  }
  function payload(){
    try{saveAll()}catch{}
-   const data={};
-   personalBackupKeysV31().forEach(k=>{
-     const v=localStorage.getItem(k);
-     if(v!==null)data[k]=v
-   });
    return {
      schema:BACKUP_SCHEMA,
-     version:4,
-     mode:"full-safe",
-     scope:"all-personal-data",
+     version:5,
+     mode:"true-full",
+     scope:"complete-localStorage",
      createdAt:new Date().toISOString(),
      app:"ReThink. Fitness",
-     localStorage:data
+     localStorage:fullLocalStorageSnapshot()
    }
  }
- function filename(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `ReThink_Fitness_FullSafe_${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}.json`}
+ function filename(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `ReThink_Fitness_FULL_${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}.json`}
  async function exportBackup(){
    const blob=new Blob([JSON.stringify(payload(),null,2)],{type:"application/json"});
    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename();a.style.display="none";
@@ -2916,21 +2904,18 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    if(!x||x.schema!==BACKUP_SCHEMA||!x.localStorage||typeof x.localStorage!=="object")
      throw new Error("Keine gültige ReThink. Fitness Backupdatei.");
 
-   if(!confirm("Full Safe Backup wirklich wiederherstellen? Alle persönlichen ReThink. Fitness Daten werden durch den Backup-Stand ersetzt. App-Code, integrierter Übungskatalog und technische Oberfläche bleiben auf dem aktuellen Stand."))return;
+   const entries=Object.entries(x.localStorage).filter(([k,v])=>typeof k==="string"&&typeof v==="string");
+   if(!entries.length)throw new Error("Das Backup enthält keine gespeicherten App-Daten.");
 
-   const allowed=personalBackupKeysV31();
+   if(!confirm(`Vollbackup wiederherstellen? ${entries.length} gespeicherte Datenbereiche werden eingespielt. Vorhandene Daten, die im Backup nicht enthalten sind, werden NICHT gelöscht.`))return;
 
-   // Full Safe bedeutet: alle persönlichen persistenten Daten ersetzen,
-   // aber niemals App-Code, DEFAULT_EXERCISES, Cache, Filter-/Scrollzustände
-   // oder sonstige technische UI-Zustände.
-   allowed.forEach(k=>localStorage.removeItem(k));
-   allowed.forEach(k=>{
-     const v=x.localStorage[k];
-     if(typeof v==="string")localStorage.setItem(k,v)
-   });
+   // Critical safety rule:
+   // Never clear localStorage and never remove a key merely because an older
+   // backup did not contain it. This prevents a restore from deleting newer data.
+   entries.forEach(([k,v])=>localStorage.setItem(k,v));
 
-   try{toast("Full Safe Backup wiederhergestellt")}catch{}
-   setTimeout(()=>location.reload(),300)
+   try{toast("Vollbackup wiederhergestellt")}catch{}
+   setTimeout(()=>location.reload(),350)
  }
  function chooseRestore(){
    let i=document.getElementById("rethinkBackupRestoreInput");
@@ -2945,9 +2930,9 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    requestAnimationFrame(()=>{
      const body=$("settingsBody");if(!body||$("rethinkBackupSection"))return;
      const sec=document.createElement("div");sec.className="settings-section";sec.id="rethinkBackupSection";
-     sec.innerHTML=`<h3>Daten & Full Safe Backup</h3><div class="settings-card">
-       <div class="settings-row"><div><strong>Backup erstellen</strong><small>Full Safe sichert alle persönlichen Daten: Profil, Messungen, Ernährung, Hydrierung, Trainingspläne, Wochenplan, eigene Übungen, abgeschlossene Trainings und ein laufendes Workout.</small></div><button id="rethinkBackupExport" class="secondary compact-profile-edit">Sichern</button></div>
-       <div class="settings-row"><div><strong>Backup wiederherstellen</strong><small>Full Safe wiederherstellen – App-Code und integrierter Übungskatalog bleiben immer aktuell.</small></div><button id="rethinkBackupRestore" class="secondary compact-profile-edit">Wiederherstellen</button></div>
+     sec.innerHTML=`<h3>Daten & Vollbackup</h3><div class="settings-card">
+       <div class="settings-row"><div><strong>Backup erstellen</strong><small>Vollbackup sichert den vollständigen lokalen Datenbestand dieser ReThink. Fitness Installation.</small></div><button id="rethinkBackupExport" class="secondary compact-profile-edit">Sichern</button></div>
+       <div class="settings-row"><div><strong>Backup wiederherstellen</strong><small>Vollbackup wiederherstellen. Fehlende Schlüssel werden beim Restore niemals gelöscht.</small></div><button id="rethinkBackupRestore" class="secondary compact-profile-edit">Wiederherstellen</button></div>
        </div><div class="small" style="margin-top:10px">Full Safe sichert ausschließlich persönliche Nutzerdaten. Code, Standard-Übungskatalog, Cache sowie Scroll-/Filter-/UI-Zustände werden niemals aus einem Backup zurückgeschrieben.</div>`;
      body.appendChild(sec);$("rethinkBackupExport").onclick=exportBackup;$("rethinkBackupRestore").onclick=chooseRestore;window.rethinkSystemV31?.translate?.(sec)
    });return r
