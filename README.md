@@ -615,3 +615,33 @@ Dadurch bleiben eigene Übungen erhalten, während ein App-/Firmware-Update den 
 - Großer zentraler Play-Button auf der Trainingsseite.
 - Runtime/foods mit Cache-Busting-URL und neuem Service-Worker-Cache.
 - VisualViewport-Tastaturfix wieder enthalten.
+
+## Trainingsstart-Button
+- Der zentrale Play-Button auf der Trainingsseite ist jetzt größer und rechteckig mit stark abgerundeten Ecken.
+- Farbgebung und Kontrast bleiben im bestehenden ReThink-Flieder-/Kartenstil.
+
+## ReThink. Fitness — Full Safe Backup
+Ab diesem Stand trägt die ausgelieferte Datei den Namen `ReThink. Fitness`.
+
+`Full Safe` sichert alle persönlichen persistenten Nutzerdaten:
+- Trainingspläne
+- selbst hinzugefügte Übungen
+- abgeschlossene Trainings / Workout-Historie
+- ein aktuell laufendes Workout
+- Wochenplan inklusive datumsbasierter Wochen, Wiederholungen und Ausnahmen
+- vollständiges Profil
+- Gewicht und sämtliche Körpermessungen
+- Ernährungstagebuch
+- Ernährungsziele
+- eigene Lebensmittel und Mahlzeiten
+- Getränkedefinitionen
+- vollständiger Hydrierungs-/Trinkverlauf
+- persönliche Datenaufbewahrungsoptionen
+
+Nicht Bestandteil eines Full-Safe-Backups:
+- App-Code / HTML / JavaScript / CSS
+- integrierter Standard-Übungskatalog
+- Service Worker / Cache
+- Scrollpositionen, Filter, geöffnete Screens und sonstige temporäre UI-Zustände
+
+Dadurch bleiben Code-Updates, neue Standardübungen und größere Funktionsänderungen der jeweils installierten App-Version erhalten, auch wenn danach ein älteres Full-Safe-Backup wiederhergestellt wird.
