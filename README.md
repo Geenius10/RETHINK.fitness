@@ -645,3 +645,6 @@ Nicht Bestandteil eines Full-Safe-Backups:
 - Scrollpositionen, Filter, geöffnete Screens und sonstige temporäre UI-Zustände
 
 Dadurch bleiben Code-Updates, neue Standardübungen und größere Funktionsänderungen der jeweils installierten App-Version erhalten, auch wenn danach ein älteres Full-Safe-Backup wiederhergestellt wird.
+
+## Play-Button – finale Geometrie
+Der zentrale Trainingsstart-Button wird mit einer abschließenden, spezifischen CSS-Regel auf 132 × 104 px und 22 px Eckenradius festgesetzt. Breite, Höhe, min/max-Dimensionen, `appearance` und `clip-path` werden explizit überschrieben, damit ältere runde `.icon-btn`-/Button-Regeln ihn nicht mehr kreisförmig darstellen können.

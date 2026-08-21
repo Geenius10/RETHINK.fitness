@@ -1447,6 +1447,42 @@ html[data-theme="light"] .training-main-play{
   border-color:rgba(54,43,65,.10)!important;
 }
 </style>
+
+<style id="rethink-fitness-play-authoritative">
+/* Final authoritative training-start control: app-card geometry, never circular. */
+#startTrainingCard #choosePlanStart.training-main-play{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  box-sizing:border-box!important;
+  width:132px!important;
+  height:104px!important;
+  min-width:132px!important;
+  min-height:104px!important;
+  max-width:132px!important;
+  max-height:104px!important;
+  flex:0 0 132px!important;
+  border-radius:22px!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  padding:0 0 0 7px!important;
+  display:grid!important;
+  place-items:center!important;
+  background:var(--accent,#c9b8e3)!important;
+  color:#1d1821!important;
+  font-size:42px!important;
+  line-height:1!important;
+  font-weight:900!important;
+}
+#startTrainingCard #choosePlanStart.training-main-play::before,
+#startTrainingCard #choosePlanStart.training-main-play::after{
+  border-radius:0!important;
+}
+html[data-theme="light"] #startTrainingCard #choosePlanStart.training-main-play{
+  background:#b8a5cf!important;
+  color:#28202e!important;
+}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
