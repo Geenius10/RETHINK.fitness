@@ -563,3 +563,45 @@ Der iOS-Sichtbarkeitsschutz gilt jetzt appweit für alle relevanten Eingabefelde
 
 ## Katalogkorrektur
 - `Dead Hang` und `Calf Raises` wurden in die tatsächlich von `allExercises()` verwendete Datenquelle `DEFAULT_EXERCISES` aufgenommen. Dadurch erscheinen sie jetzt im sichtbaren Übungskatalog, in der Suche und beim Hinzufügen zu Plänen/Partnergruppen.
+
+## Selektives Backup v2
+Das Backup sichert nur noch persönliche Nutzerdaten:
+- Profil einschließlich Gewicht und Körpermessungen
+- Ernährung und Hydrierung einschließlich eigener Lebensmittel/Mahlzeiten und Ziele
+- Trainingspläne
+- eigene Übungen, soweit sie als Abhängigkeit von Trainingsplänen benötigt werden
+- Wochenplan einschließlich Wiederholungsregeln
+
+Nicht gesichert bzw. nicht wiederhergestellt werden:
+- Programmcode
+- UI-, Scroll-, Filter- oder Seitenzustände
+- Cache-/Session-Daten
+- Theme, Sprache und sonstige technische Preferences
+- laufendes Workout
+- Workout-Historie
+
+Damit kann ein Restore neue Codeänderungen nicht mehr durch alte technische LocalStorage-Werte überlagern.
+
+## Persönliches Backup v3
+Das Backup enthält jetzt vollständig die persönlichen Nutzerdaten:
+- Trainingspläne
+- selbst hinzugefügte Übungen
+- abgeschlossene Trainings / Workout-Historie
+- Wochenplan einschließlich datumsbasierter Wochen und Wiederholungsregeln
+- Profil
+- Gewicht und sämtliche Körpermessungen
+- Ernährungstagebuch
+- Ernährungsziele
+- eigene Lebensmittel und Mahlzeiten
+- Getränkedefinitionen
+- vollständiger Trink-/Hydrierungsverlauf
+
+Bewusst NICHT Bestandteil des Backups:
+- integrierter Standard-Übungskatalog (`DEFAULT_EXERCISES`)
+- App-Code
+- Service Worker / Cache
+- UI-, Scroll- und Filterzustände
+- laufendes Workout
+- technische App-Einstellungen
+
+Dadurch bleiben eigene Übungen erhalten, während ein App-/Firmware-Update den integrierten Übungskatalog erweitern oder korrigieren kann. Ein Restore ersetzt nur persönliche Daten und kann neue Standardübungen aus einer neueren App-Version nicht entfernen.

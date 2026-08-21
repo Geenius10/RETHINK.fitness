@@ -2868,15 +2868,36 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 (function(){
  const BACKUP_SCHEMA="rethink-v3.1-backup",BACKUP_VERSION=1;
  const SKIP=["rethink_ui","rethink_tab_ui","rethink_boot","rethink_session"];
+ function personalBackupKeysV31(){
+   return [...new Set([
+     STORAGE.plans,                         // gespeicherte Trainingspläne
+     STORAGE.custom,                        // ausschließlich selbst hinzugefügte Übungen
+     STORAGE.history,                       // abgeschlossene Trainings / Workout-Historie
+     STORAGE.measurements,                  // Gewicht, Körperfett, Taille, Brust, Hüfte ...
+     STORAGE.nutrition,                     // Essen, Lebensmittel, Mahlzeiten, Ernährungsziele, Getränke-Definitionen
+     STORAGE.profile,                       // persönliche Profildaten, Aktivität, Ziel, Wunschgewicht ...
+     HYDRATION_LOG_KEY,                     // tatsächlicher Trinkverlauf
+     WEEK_KEY,                              // Wochenplan aktuell / Legacy
+     WEEK_DATED_KEY,                        // Wochenpläne nach Kalenderwoche
+     "rethink_week_recurring_rules_v1",     // wöchentliche Wiederholungen
+     "rethink_week_recurring_exceptions_v1"// Ausnahmen einzelner Wochen
+   ].filter(Boolean))]
+ }
  function payload(){
    try{saveAll()}catch{}
    const data={};
-   for(let i=0;i<localStorage.length;i++){
-     const k=localStorage.key(i);
-     if(!k||SKIP.some(p=>k.toLowerCase().includes(p)))continue;
-     data[k]=localStorage.getItem(k)
+   personalBackupKeysV31().forEach(k=>{
+     const v=localStorage.getItem(k);
+     if(v!==null)data[k]=v
+   });
+   return {
+     schema:BACKUP_SCHEMA,
+     version:3,
+     scope:"personal-data",
+     createdAt:new Date().toISOString(),
+     app:"Rethink_v3.1",
+     localStorage:data
    }
-   return {schema:BACKUP_SCHEMA,version:BACKUP_VERSION,createdAt:new Date().toISOString(),app:"Rethink_v3.1",localStorage:data}
  }
  function filename(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `Rethink_Backup_${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}.json`}
  async function exportBackup(){
@@ -2888,11 +2909,23 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  }
  async function restore(file){
    const x=JSON.parse(await file.text());
-   if(!x||x.schema!==BACKUP_SCHEMA||!x.localStorage||typeof x.localStorage!=="object")throw new Error("Keine gültige ReThink-Backupdatei.");
-   if(!confirm("Backup wirklich wiederherstellen? Die aktuellen Daten dieser ReThink-Installation werden durch den Backup-Stand ersetzt."))return;
-   localStorage.clear();
-   for(const [k,v] of Object.entries(x.localStorage))if(typeof v==="string")localStorage.setItem(k,v);
-   try{toast("Backup wiederhergestellt")}catch{}
+   if(!x||x.schema!==BACKUP_SCHEMA||!x.localStorage||typeof x.localStorage!=="object")
+     throw new Error("Keine gültige ReThink-Backupdatei.");
+
+   if(!confirm("Backup wirklich wiederherstellen? Deine persönlichen Daten werden durch den Backup-Stand ersetzt. App-Code und integrierter Übungskatalog bleiben auf dem aktuellen Stand."))return;
+
+   const allowed=personalBackupKeysV31();
+
+   // Nur persönliche Daten ersetzen. DEFAULT_EXERCISES / integrierter Katalog,
+   // UI, Cache, Sprache, Darstellung und sonstige technische App-Zustände
+   // werden niemals aus dem Backup zurückgeschrieben.
+   allowed.forEach(k=>localStorage.removeItem(k));
+   allowed.forEach(k=>{
+     const v=x.localStorage[k];
+     if(typeof v==="string")localStorage.setItem(k,v)
+   });
+
+   try{toast("Persönliche Daten wiederhergestellt")}catch{}
    setTimeout(()=>location.reload(),300)
  }
  function chooseRestore(){
@@ -2909,9 +2942,9 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      const body=$("settingsBody");if(!body||$("rethinkBackupSection"))return;
      const sec=document.createElement("div");sec.className="settings-section";sec.id="rethinkBackupSection";
      sec.innerHTML=`<h3>Daten & Backup</h3><div class="settings-card">
-       <div class="settings-row"><div><strong>Backup erstellen</strong><small>Alle dauerhaften persönlichen ReThink-Daten als Datei sichern.</small></div><button id="rethinkBackupExport" class="secondary compact-profile-edit">Sichern</button></div>
-       <div class="settings-row"><div><strong>Backup wiederherstellen</strong><small>Gesicherten Datenstand auf dieser Installation einspielen.</small></div><button id="rethinkBackupRestore" class="secondary compact-profile-edit">Wiederherstellen</button></div>
-       </div><div class="small" style="margin-top:10px">Das Backup enthält deine App-Daten, nicht den Programmcode.</div>`;
+       <div class="settings-row"><div><strong>Backup erstellen</strong><small>Profil, Ernährung, Hydrierung, Messungen, Trainingspläne, Wochenplan, eigene Übungen und abgeschlossene Trainings als JSON sichern.</small></div><button id="rethinkBackupExport" class="secondary compact-profile-edit">Sichern</button></div>
+       <div class="settings-row"><div><strong>Backup wiederherstellen</strong><small>Persönliche Daten wiederherstellen – App-Code und integrierter Übungskatalog bleiben aktuell.</small></div><button id="rethinkBackupRestore" class="secondary compact-profile-edit">Wiederherstellen</button></div>
+       </div><div class="small" style="margin-top:10px">Gesichert werden nur persönliche Daten. Der integrierte Übungskatalog, Code, UI-Zustände und technische App-Einstellungen bleiben Bestandteil der jeweils installierten App-Version.</div>`;
      body.appendChild(sec);$("rethinkBackupExport").onclick=exportBackup;$("rethinkBackupRestore").onclick=chooseRestore;window.rethinkSystemV31?.translate?.(sec)
    });return r
  }
