@@ -2899,29 +2899,82 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    setTimeout(()=>URL.revokeObjectURL(a.href),1200);
    try{toast("Backup erstellt")}catch{}
  }
+ function normalizeBackupInput(x){
+   if(!x||typeof x!=="object")throw new Error("Die JSON-Datei ist leer oder ungültig.");
+
+   // Current ReThink full-backup format.
+   if(x.localStorage&&typeof x.localStorage==="object"&&!Array.isArray(x.localStorage)){
+     return {data:x.localStorage,format:"ReThink Vollbackup"}
+   }
+
+   // Older backup variants may have stored the snapshot under data/storage.
+   if(x.data&&typeof x.data==="object"&&!Array.isArray(x.data)){
+     if(x.data.localStorage&&typeof x.data.localStorage==="object")return {data:x.data.localStorage,format:"älteres ReThink Backup"};
+     return {data:x.data,format:"älteres ReThink Backup"}
+   }
+   if(x.storage&&typeof x.storage==="object"&&!Array.isArray(x.storage)){
+     return {data:x.storage,format:"älteres ReThink Backup"}
+   }
+
+   // Also accept a raw key/value localStorage export.
+   const vals=Object.values(x);
+   if(vals.length&&vals.every(v=>typeof v==="string"||v===null)){
+     return {data:x,format:"LocalStorage JSON"}
+   }
+
+   throw new Error("Diese JSON-Datei enthält kein erkennbares ReThink-Backup. Bitte eine von ReThink erstellte Backup-JSON auswählen.")
+ }
  async function restore(file){
-   const x=JSON.parse(await file.text());
-   if(!x||x.schema!==BACKUP_SCHEMA||!x.localStorage||typeof x.localStorage!=="object")
-     throw new Error("Keine gültige ReThink. Fitness Backupdatei.");
+   if(!file)throw new Error("Keine Datei ausgewählt.");
+   let text;
+   try{text=await file.text()}catch{throw new Error("Die ausgewählte Datei konnte nicht gelesen werden.")}
+   let x;
+   try{x=JSON.parse(String(text||"").replace(/^\uFEFF/,""))}catch{
+     throw new Error("Die Datei ist keine gültige JSON-Datei.")
+   }
 
-   const entries=Object.entries(x.localStorage).filter(([k,v])=>typeof k==="string"&&typeof v==="string");
-   if(!entries.length)throw new Error("Das Backup enthält keine gespeicherten App-Daten.");
+   const normalized=normalizeBackupInput(x);
+   const entries=Object.entries(normalized.data).filter(([k,v])=>typeof k==="string"&&(typeof v==="string"||v!==undefined));
+   if(!entries.length)throw new Error("Das Backup enthält keine gespeicherten Daten.");
 
-   if(!confirm(`Vollbackup wiederherstellen? ${entries.length} gespeicherte Datenbereiche werden eingespielt. Vorhandene Daten, die im Backup nicht enthalten sind, werden NICHT gelöscht.`))return;
+   if(!confirm(`${normalized.format} wiederherstellen? ${entries.length} Datenbereiche werden eingespielt. Vorhandene Daten, die nicht im Backup stehen, bleiben erhalten.`))return;
 
-   // Critical safety rule:
-   // Never clear localStorage and never remove a key merely because an older
-   // backup did not contain it. This prevents a restore from deleting newer data.
-   entries.forEach(([k,v])=>localStorage.setItem(k,v));
+   let written=0;
+   for(const [k,v] of entries){
+     try{
+       localStorage.setItem(k,typeof v==="string"?v:JSON.stringify(v));
+       written++
+     }catch(e){
+       throw new Error(`Wiederherstellung bei „${k}“ abgebrochen: ${e?.message||"Speicherfehler"}`)
+     }
+   }
+   if(!written)throw new Error("Es konnten keine Daten geschrieben werden.");
 
-   try{toast("Vollbackup wiederhergestellt")}catch{}
-   setTimeout(()=>location.reload(),350)
+   try{toast(`${written} Datenbereiche wiederhergestellt`)}catch{}
+   setTimeout(()=>location.reload(),500)
  }
  function chooseRestore(){
-   let i=document.getElementById("rethinkBackupRestoreInput");
-   if(!i){i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.hidden=true;i.id="rethinkBackupRestoreInput";document.body.appendChild(i);
-     i.onchange=async()=>{const f=i.files?.[0];i.value="";if(!f)return;try{await restore(f)}catch(e){alert(e?.message||"Backup konnte nicht gelesen werden.")}}
-   }i.click()
+   const old=document.getElementById("rethinkBackupRestoreInput");
+   if(old)old.remove();
+   const i=document.createElement("input");
+   i.type="file";
+   i.accept=".json,application/json,text/json";
+   i.id="rethinkBackupRestoreInput";
+   i.style.position="fixed";
+   i.style.left="-10000px";
+   i.style.top="0";
+   document.body.appendChild(i);
+   i.addEventListener("change",async()=>{
+     const f=i.files&&i.files[0];
+     try{
+       if(f)await restore(f)
+     }catch(e){
+       alert(e?.message||"Backup konnte nicht gelesen oder wiederhergestellt werden.")
+     }finally{
+       i.remove()
+     }
+   },{once:true});
+   i.click()
  }
  window.rethinkBackup={export:exportBackup,restore:chooseRestore,payload};
  const before=openSettingsPage;

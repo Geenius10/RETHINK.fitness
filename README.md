@@ -661,3 +661,12 @@ Dazu gehören damit insbesondere Trainingspläne, eigene Übungen, Übungshistor
 Beim Wiederherstellen wird `localStorage` **niemals geleert**. Ebenso werden keine vorhandenen Schlüssel gelöscht, nur weil sie in einem älteren Backup fehlen. Die im Backup enthaltenen Werte werden über die entsprechenden gespeicherten Werte geschrieben; neuere zusätzliche Datenbereiche bleiben bestehen.
 
 HTML, CSS, JavaScript, `DEFAULT_EXERCISES` und andere Dateien der installierten App sind keine `localStorage`-Daten und werden durch dieses Backup daher nicht zurückgesetzt.
+
+## JSON-Wiederherstellung – kompatibler Import
+Die Wiederherstellung akzeptiert jetzt:
+- aktuelle ReThink-Vollbackups (`localStorage`)
+- ältere ReThink-Backupvarianten mit `data` oder `storage`
+- ältere verschachtelte `data.localStorage`-Backups
+- rohe LocalStorage-Key/Value-JSONs
+
+Der starre Schema-Abgleich wurde für den Import entfernt. Dadurch können ältere von ReThink erzeugte JSON-Sicherungen wieder eingespielt werden. Die JSON-Datei wird validiert; unbekannte JSON-Strukturen werden mit einer verständlichen Fehlermeldung abgelehnt. Der iOS-Dateiauswahldialog wird bei jedem Restore frisch erzeugt, sodass auch dieselbe Datei erneut gewählt werden kann.
