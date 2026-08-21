@@ -3432,3 +3432,53 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 
  syncViewport()
 })();
+
+/* ReThink v3.1 — visible runtime correction M */
+(function(){
+ const migrationKey="rethink_v31_visible_catalog_20260821m";
+ if(localStorage.getItem(migrationKey)!=="1"){
+   try{
+     const lib=read(STORAGE.library,{hidden:[]})||{hidden:[]};
+     if(Array.isArray(lib.hidden)){
+       lib.hidden=lib.hidden.filter(n=>!["Dead Hang","Calf Raises"].includes(String(n)));
+       write(STORAGE.library,lib)
+     }
+   }catch{}
+   localStorage.setItem(migrationKey,"1")
+ }
+
+ function normalizeMethodLabels(root=document){
+   root.querySelectorAll?.(".method-name").forEach(el=>{
+     if(String(el.textContent||"").trim().toLowerCase()==="normal")el.textContent="Standard"
+   })
+ }
+ const mo=new MutationObserver(rs=>rs.forEach(r=>r.addedNodes.forEach(n=>{
+   if(n.nodeType===1)normalizeMethodLabels(n)
+ })));
+ mo.observe(document.body,{childList:true,subtree:true});
+ requestAnimationFrame(()=>normalizeMethodLabels(document));
+
+ const vv=window.visualViewport;
+ if(vv){
+   const editable='input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="file"]),textarea,[contenteditable="true"]';
+   function keyboardOpen(){return vv.height<Math.min(innerHeight,document.documentElement.clientHeight)-110}
+   function reveal(el){
+     if(!el?.isConnected||!el.matches?.(editable))return;
+     const top=vv.offsetTop,bottom=vv.offsetTop+vv.height,r=el.getBoundingClientRect(),c=el.closest(".sheet-body")||el.closest(".page")||document.scrollingElement;
+     let d=0;if(r.bottom>bottom-20)d=r.bottom-(bottom-20)+12;else if(r.top<top+64)d=r.top-(top+64)-10;
+     if(!d)return;
+     if(c===document.scrollingElement||c===document.documentElement||c===document.body)window.scrollBy({top:d,behavior:"auto"});else c.scrollTop+=d
+   }
+   function sync(){
+     const el=document.activeElement,open=keyboardOpen()&&el?.matches?.(editable);
+     document.documentElement.style.setProperty("--rethink-vv-top",vv.offsetTop+"px");
+     document.documentElement.style.setProperty("--rethink-vv-height",vv.height+"px");
+     document.documentElement.classList.toggle("rethink-keyboard-visible",!!open);
+     if(open){reveal(el);[50,120,220,360].forEach(ms=>setTimeout(()=>document.activeElement===el&&reveal(el),ms))}
+   }
+   document.addEventListener("focusin",e=>{if(e.target?.matches?.(editable)){sync();setTimeout(sync,60);setTimeout(sync,160)}},true);
+   document.addEventListener("input",e=>{if(e.target?.matches?.(editable))reveal(e.target)},true);
+   document.addEventListener("focusout",()=>setTimeout(sync,80),true);
+   vv.addEventListener("resize",sync,true);vv.addEventListener("scroll",sync,true);sync()
+ }
+})();

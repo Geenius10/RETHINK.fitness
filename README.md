@@ -605,3 +605,13 @@ Bewusst NICHT Bestandteil des Backups:
 - technische App-Einstellungen
 
 Dadurch bleiben eigene Übungen erhalten, während ein App-/Firmware-Update den integrierten Übungskatalog erweitern oder korrigieren kann. Ein Restore ersetzt nur persönliche Daten und kann neue Standardübungen aus einer neueren App-Version nicht entfernen.
+
+## Sichtbarer Fix M
+- Dead Hang und Calf Raises im tatsächlich verwendeten Standardkatalog abgesichert.
+- Legacy-Hide-Einträge für genau diese neuen Übungen werden einmalig entfernt.
+- `NORMAL` wird sichtbar zu `STANDARD`.
+- Die alte zweite Empfehlung `.recommendation` wird ausgeblendet; nur `Tipp nächstes Training` bleibt.
+- Pausensignal deutlich länger und kräftiger.
+- Großer zentraler Play-Button auf der Trainingsseite.
+- Runtime/foods mit Cache-Busting-URL und neuem Service-Worker-Cache.
+- VisualViewport-Tastaturfix wieder enthalten.

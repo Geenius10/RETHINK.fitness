@@ -1389,11 +1389,45 @@ html.rethink-keyboard-visible textarea:focus{
   scroll-margin-bottom:28px!important
 }
 </style>
+
+<style id="rethink-v31-visible-fixes-m">
+#liveBody .recommendation{display:none!important}
+#startTrainingCard{
+ display:flex!important;flex-direction:column!important;align-items:center!important;
+ text-align:center!important;gap:18px!important;padding:22px 18px 24px!important
+}
+#startTrainingCard .training-start-copy{width:100%}
+#startTrainingCard .training-start-copy strong{font-size:19px!important}
+#startTrainingCard .training-start-copy .small{margin-top:5px!important}
+.training-main-play{
+ width:88px!important;height:88px!important;min-width:88px!important;border-radius:50%!important;
+ border:0!important;display:grid!important;place-items:center!important;
+ background:var(--accent,#c9b8e3)!important;color:#1d1821!important;
+ font-size:34px!important;font-weight:900!important;padding-left:6px!important;
+ box-shadow:0 8px 28px rgba(0,0,0,.20)!important
+}
+html[data-theme="light"] .training-main-play{background:#b8a5cf!important;color:#28202e!important}
+
+:root{--rethink-vv-top:0px;--rethink-vv-height:100dvh}
+html.rethink-keyboard-visible .sheet-wrap{
+ top:var(--rethink-vv-top)!important;bottom:auto!important;
+ height:var(--rethink-vv-height)!important;max-height:var(--rethink-vv-height)!important;
+ align-items:flex-end!important
+}
+html.rethink-keyboard-visible .sheet{
+ max-height:calc(var(--rethink-vv-height) - 6px)!important;height:auto!important;margin-bottom:0!important
+}
+html.rethink-keyboard-visible .sheet-body{min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain}
+html.rethink-keyboard-visible .page:not(.hidden){
+ top:var(--rethink-vv-top)!important;bottom:auto!important;height:var(--rethink-vv-height)!important;
+ max-height:var(--rethink-vv-height)!important;overflow-y:auto!important
+}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
 <main id="tab-plans" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Meine Pläne</h1></div><div class="plan-header-actions"><button id="plansEditBtn" class="secondary plan-edit-toggle">Bearbeiten</button><button id="newPlanBtn" class="icon-btn plus-btn">+</button></div></div><div class="chips" id="planSortChips"></div><div id="planList"></div></main>
-<main id="tab-training" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Training</h1></div></div><div id="activeBanner"></div><div id="startTrainingCard" class="card"><div class="space"><div><strong>Training starten</strong><div class="small">Wähle einen Plan.</div></div><button id="choosePlanStart" class="icon-btn plus-btn" aria-label="Training starten">▶</button></div></div><div class="space" style="margin:18px 0 8px"><h2>Zuletzt</h2><button id="clearHistoryBtn" class="text-action danger">Verlauf löschen</button></div><div id="historyList"></div></main>
+<main id="tab-training" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Training</h1></div></div><div id="activeBanner"></div><div id="startTrainingCard" class="card"><div class="training-start-copy"><strong>Training starten</strong><div class="small">Wähle einen Plan.</div></div><button id="choosePlanStart" class="training-main-play" aria-label="Training starten">▶</button></div><div class="space" style="margin:18px 0 8px"><h2>Zuletzt</h2><button id="clearHistoryBtn" class="text-action danger">Verlauf löschen</button></div><div id="historyList"></div></main>
 <main id="tab-week" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Wochenplan</h1></div></div><div id="weekMotivation" class="card week-motivation"></div><div class="week-nav"><button id="weekPrevBtn" class="icon-btn">‹</button><div class="week-range"><strong id="weekRangeLabel"></strong><span id="weekOffsetLabel" class="small"></span></div><button id="weekNextBtn" class="icon-btn">›</button></div><div id="weekList" class="week-list"></div></main>
 <main id="tab-profile" class="tab-screen hidden">
 <div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Körper und Ernährung</h1></div><button id="settingsBtn" class="icon-btn profile-settings-icon" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></button></div>
@@ -1469,7 +1503,7 @@ html.rethink-keyboard-visible textarea:focus{
 <section id="summaryPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2 id="summaryTitle">Training</h2><div></div></div><div id="summaryBody"></div></section><section id="settingsPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2>Einstellungen</h2><div></div></div><div id="settingsBody"></div></section>
 <div id="sheetWrap" class="sheet-wrap hidden"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-top"><button id="sheetBack" class="icon-btn">‹</button><h2 id="sheetTitle">Auswahl</h2><button id="sheetClose" class="icon-btn">×</button></div><div id="sheetBody" class="sheet-body"></div></div></div>
 
-<script src="./foods.js"></script>
+<script src="./foods.js?v=20260821m"></script>
 <script>
 "use strict";
 const STORAGE={plans:"gymapp_plans",custom:"gymapp_custom_exercises",library:"gymapp_exercise_library",history:"gymapp_workout_history",active:"gymapp_active_workout",measurements:"gymapp_measurements",nutrition:"gymapp_nutrition",profile:"gymapp_profile"};
@@ -1488,7 +1522,26 @@ let weekOffset=Math.max(-104,Math.min(104,Number(localStorage.getItem(WEEK_VIEW_
 
 function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1500)}
 function ensureAudio(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}catch{return null}}
-function signalTone(){const c=ensureAudio();if(!c)return;try{const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.setValueAtTime(880,c.currentTime);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.18,c.currentTime+.015);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.28);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.3);setTimeout(()=>{try{const o2=c.createOscillator(),g2=c.createGain();o2.frequency.value=1175;g2.gain.setValueAtTime(.0001,c.currentTime);g2.gain.exponentialRampToValueAtTime(.14,c.currentTime+.01);g2.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.22);o2.connect(g2);g2.connect(c.destination);o2.start();o2.stop(c.currentTime+.24)}catch{}},110)}catch{}}
+function signalTone(){
+ const c=ensureAudio();if(!c)return;
+ try{
+  const now=c.currentTime,master=c.createGain();
+  master.gain.setValueAtTime(.0001,now);
+  master.gain.exponentialRampToValueAtTime(.68,now+.025);
+  master.gain.setValueAtTime(.68,now+.85);
+  master.gain.exponentialRampToValueAtTime(.0001,now+1.35);
+  master.connect(c.destination);
+  [[740,0,.36],[980,.32,.40],[1240,.70,.50]].forEach(([freq,offset,len])=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type="square";o.frequency.setValueAtTime(freq,now+offset);
+    g.gain.setValueAtTime(.0001,now+offset);
+    g.gain.exponentialRampToValueAtTime(.42,now+offset+.015);
+    g.gain.setValueAtTime(.34,now+offset+Math.max(.03,len-.08));
+    g.gain.exponentialRampToValueAtTime(.0001,now+offset+len);
+    o.connect(g);g.connect(master);o.start(now+offset);o.stop(now+offset+len+.03)
+  })
+ }catch{}
+}
 function requestTimerNotifications(){if("Notification" in window&&Notification.permission==="default")Notification.requestPermission().catch(()=>{})}
 function backgroundTimerNotice(text){if(document.visibilityState!=="hidden"||!("Notification" in window)||Notification.permission!=="granted")return;navigator.serviceWorker?.ready.then(r=>r.showNotification("ReThink.",{body:text,tag:"rethink-timer",renotify:true})).catch(()=>{})}
 
@@ -3464,5 +3517,5 @@ if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catc
 
 
 
-<script src="./runtime-current.js"></script>
+<script src="./runtime-current.js?v=20260821m"></script>
 </body></html>

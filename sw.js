@@ -1,6 +1,6 @@
-const CACHE='rethink-v3-1-github-20260821-backup-v3';
+const CACHE='rethink-v3-1-github-20260821-visible-m';
 const ASSETS=[
- './', './index.html', './runtime-current.js', './foods.js', './manifest.webmanifest', './README.md', './AUDIT.md',
+ './', './index.html', './runtime-current.js?v=20260821m', './foods.js?v=20260821m', './manifest.webmanifest', './README.md', './AUDIT.md',
  './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'
 ];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});
