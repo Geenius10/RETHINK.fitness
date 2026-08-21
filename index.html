@@ -1483,11 +1483,38 @@ html[data-theme="light"] #startTrainingCard #choosePlanStart.training-main-play{
   color:#28202e!important;
 }
 </style>
+
+<style id="rethink-fitness-play-definitive">
+#startTrainingCard{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+}
+#startTrainingCard > #choosePlanStart{
+  width:148px!important;
+  height:108px!important;
+  min-width:148px!important;
+  min-height:108px!important;
+  max-width:148px!important;
+  max-height:108px!important;
+  border-radius:16px!important;
+  flex:none!important;
+  aspect-ratio:auto!important;
+}
+</style>
+
+<style id="rethink-fitness-active-workout-start-guard">
+#choosePlanStart.hidden,
+#startTrainingCard.hidden{
+  display:none!important;
+}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
 <main id="tab-plans" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Meine Pläne</h1></div><div class="plan-header-actions"><button id="plansEditBtn" class="secondary plan-edit-toggle">Bearbeiten</button><button id="newPlanBtn" class="icon-btn plus-btn">+</button></div></div><div class="chips" id="planSortChips"></div><div id="planList"></div></main>
-<main id="tab-training" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Training</h1></div></div><div id="activeBanner"></div><div id="startTrainingCard" class="card"><div class="training-start-copy"><strong>Training starten</strong><div class="small">Wähle einen Plan.</div></div><button id="choosePlanStart" class="training-main-play" aria-label="Training starten">▶</button></div><div class="space" style="margin:18px 0 8px"><h2>Zuletzt</h2><button id="clearHistoryBtn" class="text-action danger">Verlauf löschen</button></div><div id="historyList"></div></main>
+<main id="tab-training" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Training</h1></div></div><div id="activeBanner"></div><div id="startTrainingCard" class="card"><div class="training-start-copy"><strong>Training starten</strong><div class="small">Wähle einen Plan.</div></div><button id="choosePlanStart" class="training-main-play" aria-label="Training starten"
+style="-webkit-appearance:none;appearance:none;width:148px;height:108px;min-width:148px;min-height:108px;max-width:148px;max-height:108px;border-radius:16px;border:1px solid rgba(255,255,255,.10);padding:0 0 0 8px;display:grid;place-items:center;background:var(--accent,#c9b8e3);color:#1d1821;font-size:44px;line-height:1;font-weight:900;clip-path:none;-webkit-clip-path:none;">▶</button></div><div class="space" style="margin:18px 0 8px"><h2>Zuletzt</h2><button id="clearHistoryBtn" class="text-action danger">Verlauf löschen</button></div><div id="historyList"></div></main>
 <main id="tab-week" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Wochenplan</h1></div></div><div id="weekMotivation" class="card week-motivation"></div><div class="week-nav"><button id="weekPrevBtn" class="icon-btn">‹</button><div class="week-range"><strong id="weekRangeLabel"></strong><span id="weekOffsetLabel" class="small"></span></div><button id="weekNextBtn" class="icon-btn">›</button></div><div id="weekList" class="week-list"></div></main>
 <main id="tab-profile" class="tab-screen hidden">
 <div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Körper und Ernährung</h1></div><button id="settingsBtn" class="icon-btn profile-settings-icon" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></button></div>
@@ -2766,6 +2793,9 @@ function renderTrainingHome(){
  clearInterval(activeHomeClockTimer);
  $("activeBanner").innerHTML=activeWorkout?`<div class="active-workout-card"><button class="active-resume-area" id="resumeWorkout"><div class="space"><div><div class="active-kicker">Training läuft</div><div class="active-name">${esc(activeWorkout.name)}</div><div class="active-meta">${activeWorkout.exercises?.length||0} Übungen · ${workoutSetCount(activeWorkout)} Sätze</div></div><div id="activeHomeClock" class="active-time">${formatDuration(Date.now()-activeWorkout.startedAt)}</div></div><div class="active-current">${esc(currentWorkoutExerciseLabel())}</div></button><div class="active-workout-actions"><button id="homeDiscardWorkout" class="secondary danger">Verwerfen</button><button id="homeFinishWorkout" class="secondary">Beenden</button></div></div>`:"";
  $("startTrainingCard").classList.toggle("hidden",!!activeWorkout);
+ $("choosePlanStart").classList.toggle("hidden",!!activeWorkout);
+ $("choosePlanStart").disabled=!!activeWorkout;
+ $("choosePlanStart").setAttribute("aria-hidden",activeWorkout?"true":"false");
  if(activeWorkout){$("resumeWorkout").onclick=()=>openLive();$("homeFinishWorkout").onclick=openFinishWorkoutSheet;$("homeDiscardWorkout").onclick=discardWorkoutAsked;activeHomeClockTimer=setInterval(updateActiveHomeClock,1000)}
  $("historyList").innerHTML=history.slice().reverse().slice(0,30).map((w,i)=>{const idx=history.length-1-i,exists=historyPlanExists(w),ex=completedExerciseCount(w),sets=completedSetCount(w);return`<div class="plan-card history-card ${exists?"":"history-orphan"}"><div ${exists?`data-history="${idx}"`:""}><strong>${esc(w.name||w.planName||"Training")}</strong><small>${historyDateTime(w)} · ${ex} abgeschlossene Übung${ex===1?"":"en"} · ${sets} abgeschlossene Sätze${exists?"":" · Plan gelöscht"}</small></div><div class="history-actions">${exists?`<button class="icon-btn" data-history-open="${idx}">›</button>`:""}<button class="icon-btn danger" data-history-delete="${idx}">−</button></div></div>`}).join("")||'<div class="card small">Noch keine Trainings.</div>';
  document.querySelectorAll("[data-history-open]").forEach(b=>b.onclick=()=>openSummary(history[Number(b.dataset.historyOpen)]));
@@ -2773,7 +2803,7 @@ function renderTrainingHome(){
  document.querySelectorAll("[data-history-delete]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.historyDelete);if(confirm("Diesen Verlaufseintrag löschen?")){history.splice(i,1);saveAll();renderTrainingHome()}});
 }
 $("clearHistoryBtn").onclick=()=>{if(history.length&&confirm("Gesamten Trainingsverlauf löschen?")){history=[];saveAll();renderTrainingHome()}};
-$("choosePlanStart").onclick=()=>openPlanStartSheet();
+$("choosePlanStart").onclick=()=>{if(activeWorkout)return;openPlanStartSheet()};
 function openPlanStartSheet(){
  if(!plans.length){
   currentPlan={id:uid(),name:"",createdAt:Date.now(),updatedAt:Date.now(),exercises:[],_isNew:true};

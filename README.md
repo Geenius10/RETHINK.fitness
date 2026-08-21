@@ -648,3 +648,6 @@ Dadurch bleiben Code-Updates, neue Standardübungen und größere Funktionsände
 
 ## Play-Button – finale Geometrie
 Der zentrale Trainingsstart-Button wird mit einer abschließenden, spezifischen CSS-Regel auf 132 × 104 px und 22 px Eckenradius festgesetzt. Breite, Höhe, min/max-Dimensionen, `appearance` und `clip-path` werden explizit überschrieben, damit ältere runde `.icon-btn`-/Button-Regeln ihn nicht mehr kreisförmig darstellen können.
+
+## Training läuft – Startbutton
+Sobald `activeWorkout` existiert, werden sowohl die gesamte Karte „Training starten“ als auch der Play-/Startbutton explizit ausgeblendet und deaktiviert. Die `hidden`-Regel besitzt `!important`, damit die Inline-Darstellung des großen Play-Buttons das Ausblenden nicht mehr übersteuern kann. Nach Beenden oder Verwerfen des laufenden Trainings erscheint der Startbereich wieder.
