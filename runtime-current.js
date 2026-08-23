@@ -27,22 +27,26 @@
  function groupContextFor(collection,i){
   const old=collection?.[i];if(!old||!groupMethod(old.setTechnique)||!old.techniqueGroup)return null;
   const idx=collection.map((x,j)=>x.techniqueGroup===old.techniqueGroup&&x.setTechnique===old.setTechnique?j:-1).filter(j=>j>=0);
-  return {id:old.techniqueGroup,method:old.setTechnique,indexes:idx,count:idx.length,originalIndex:i}
+  const firstIndex=idx[0],groupRest=(collection[firstIndex]?.rest===0||collection[firstIndex]?.rest==="0")?0:normalizedRest(collection[firstIndex]?.rest,90);
+  return {id:old.techniqueGroup,method:old.setTechnique,indexes:idx,count:idx.length,originalIndex:i,firstIndex,groupRest,isFirst:i===firstIndex}
  }
  function baseEditFlow(context,i,seed){
   const collection=context==='live'?activeWorkout?.exercises:currentPlan?.exercises;if(!collection?.[i])return;
   const g=groupContextFor(collection,i),draft=clone(seed||collection[i]);delete draft.liveSets;
-  // A single member of a connected series is configured like a normal single exercise.
-  // The wrapper (Superset/Giant/Pre-Exhaust) is restored only on commit.
-  if(g){draft.setTechnique='standard';draft.techniqueGroup=null;draft.linkedExerciseNames=[];draft.methodData={};if(!draft.reps||['20','30','20-30'].includes(String(draft.reps)))draft.reps='8-12'}
+  // Editing a connected series changes only this member. The group's method stays visible.
+  // Only the first member may change the group method or the shared pause.
+  if(g){
+    draft.setTechnique=g.method;draft.techniqueGroup=g.id;draft.linkedExerciseNames=[];
+    if(!g.isFirst)draft.rest=g.groupRest;
+  }
   planAddFlow={context,step:'config',q:exercisePickerState.q||'',type:exercisePickerState.type||'Alle',muscles:new Set(exercisePickerState.muscles||[]),drafts:[],history:[],methodScroll:0,editSourceIndexes:[i],memberGroup:g,memberMethodExplicit:false,current:draft,from:'edit'};
   renderPlanAddConfig()
  }
  function startReplacement(context,i,name){
   const collection=context==='live'?activeWorkout?.exercises:currentPlan?.exercises,old=collection?.[i];if(!old)return;
   const g=groupContextFor(collection,i),fresh=findExercise(name);
-  const keep={measureMode:old.measureMode,reps:old.reps,timeSeconds:old.timeSeconds,sets:old.sets,rest:old.rest,variant:'',perSide:old.perSide,note:old.note};
-  let seed=normPlanEx({...fresh,...keep,setTechnique:g?'standard':(old.setTechnique||'standard'),methodData:g?{}:clone(old.methodData||{})});
+  const keep={measureMode:old.measureMode,reps:old.reps,timeSeconds:old.timeSeconds,sets:old.sets,rest:g?g.groupRest:old.rest,variant:'',perSide:old.perSide,note:old.note};
+  let seed=normPlanEx({...fresh,...keep,setTechnique:g?g.method:(old.setTechnique||'standard'),methodData:clone(old.methodData||{})});
   baseEditFlow(context,i,seed)
  }
  window.configureExercise=function(i){baseEditFlow('plan',i)};
@@ -69,6 +73,7 @@
   if(planAddFlow.memberGroup&&!planAddFlow.memberMethodExplicit){
    const g=planAddFlow.memberGroup;e.setTechnique=g.method;e.techniqueGroup=g.id;e.linkedExerciseNames=[];
    if(g.method==='giant'){e.methodData=e.methodData||{};e.methodData.giantCount=g.count}
+   e.rest=g.isFirst?e.rest:g.groupRest;
    planAddFlow.drafts=[e];commitPlanAddFlow();return
   }
   // If the user explicitly selects a different method while editing a group member,
@@ -76,12 +81,12 @@
   // as every other exercise, including partner selection for Superset/Giant/Pre-Exhaust.
   if(planAddFlow.memberGroup&&planAddFlow.memberMethodExplicit){e.techniqueGroup=null;e.linkedExerciseNames=[]}
   if(methodNeedsPartners(method)){
-   if(!planAddFlow.group){const target=method==='giant'?(e.methodData.giantCount||3):2;planAddFlow.group={id:`tg_${uid()}`,method,target};e.techniqueGroup=planAddFlow.group.id}
+   if(!planAddFlow.group){const target=method==='giant'?(e.methodData.giantCount||3):2;planAddFlow.group={id:`tg_${uid()}`,method,target,rest:e.rest};e.techniqueGroup=planAddFlow.group.id}
    else e.techniqueGroup=planAddFlow.group.id;
    planAddFlow.drafts.push(e);
    if(planAddFlow.drafts.length<planAddFlow.group.target){planAddFlow.current=null;renderPartnerExercisePicker();return}
    const master=planAddFlow.drafts[0],gid=planAddFlow.group.id;
-   planAddFlow.drafts.forEach(d=>{d.setTechnique=planAddFlow.group.method;d.techniqueGroup=gid});
+   planAddFlow.drafts.forEach(d=>{d.setTechnique=planAddFlow.group.method;d.techniqueGroup=gid;d.rest=planAddFlow.group.rest});
    commitPlanAddFlow();return
   }
   planAddFlow.drafts.push(e);commitPlanAddFlow()
@@ -112,7 +117,13 @@
   let insertAt=collection.length;
   if(edited){const indexes=[...planAddFlow.editSourceIndexes].sort((a,b)=>a-b);insertAt=indexes[0];[...indexes].sort((a,b)=>b-a).forEach(i=>collection.splice(i,1));collection.splice(insertAt,0,...drafts,...detached)}
   else collection.push(...drafts);
-  if(memberGroup){normalizeGroupCollection(collection,memberGroup.id);if(liveContext){collection.filter(x=>x.techniqueGroup===memberGroup.id).forEach(x=>x.liveSets=rebuildLiveSetsForExercise(x,x.liveSets||[]))}}
+  if(memberGroup){
+   normalizeGroupCollection(collection,memberGroup.id);
+   const groupMembers=collection.filter(x=>x.techniqueGroup===memberGroup.id);
+   const sharedRest=memberGroup.isFirst?(drafts[0]?.rest??memberGroup.groupRest):memberGroup.groupRest;
+   groupMembers.forEach(x=>x.rest=sharedRest);
+   if(liveContext)groupMembers.forEach(x=>x.liveSets=rebuildLiveSetsForExercise(x,x.liveSets||[]))
+  }
   if(liveContext){livePlanEdited=true;saveAll();renderLive()}else{markEditorDirty();renderEditorExercises();persistUI()}
   const wasEdit=edited;planAddFlow=null;sheetStack=[];currentSheetState=null;$('sheetWrap').classList.add('hidden');
   toast(wasEdit?'Änderung übernommen':(drafts.length>1?`${drafts.length} Übungen hinzugefügt`:'Übung hinzugefügt'))
@@ -169,7 +180,12 @@
  const DEFAULT_SETS={standard:3,superset:3,giant:3,preexhaust:3,dropset:2,restpause:1,cluster:3,pyramid:4,backoff:3};
  function optionsForMethod(m){return SET_OPTIONS[m]||SET_OPTIONS.standard}
  function nearestSetCount(m,value){const a=optionsForMethod(m),n=Number(value);if(a.includes(n))return n;const d=DEFAULT_SETS[m]||3;return a.includes(d)?d:a[0]}
- function setOptionsMarkup(e){e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);return optionsForMethod(e.setTechnique||'standard').map(n=>`<option value="${n}" ${Number(e.sets)===n?'selected':''}>${n}</option>`).join('')}
+ function setOptionsMarkup(e){
+  const cur=Math.max(1,Number(e.sets)||1),vals=[...optionsForMethod(e.setTechnique||'standard')];
+  if(!vals.includes(cur))vals.push(cur);
+  vals.sort((a,b)=>a-b);
+  return vals.map(n=>`<option value="${n}" ${cur===n?'selected':''}>${n}</option>`).join('')
+ }
  window.methodSetOptions=optionsForMethod;
 
  // Pyramid = repetitions only. Direction means LOAD up/down; reps move inversely.
@@ -190,9 +206,25 @@
   e.methodData.weightPct=window.pyramidPctForSets(e.sets,dir)
  };
  window.prepareDraftForTargetMethod=function(e,method,oldGroupCount=1){
-  const prev=e.setTechnique||'standard';basePrepare(e,method,oldGroupCount);
-  e.sets=nearestSetCount(method,prev===method?e.sets:(DEFAULT_SETS[method]||e.sets));
-  if(method==='pyramid'){e.measureMode='reps';e.methodData=e.methodData||{};e.methodData.pyramidDirection='loadUp';e.methodData.reps=buildPyramidReps(12,e.sets,'loadUp');e.methodData.weightPct=window.pyramidPctForSets(e.sets,'loadUp')}
+  method=METHOD_KEYS.includes(method)?method:'standard';
+  const keep={sets:e.sets,rest:e.rest,measureMode:e.measureMode,timeSeconds:e.timeSeconds,reps:e.reps,variant:e.variant,perSide:e.perSide};
+  e.setTechnique=method;e.methodData=clone(e.methodData||{});
+  e.sets=keep.sets;e.rest=keep.rest;e.measureMode=keep.measureMode;e.timeSeconds=keep.timeSeconds;e.reps=keep.reps;e.variant=keep.variant;e.perSide=keep.perSide;
+  if(method==='dropset'){
+    if(!Number(e.methodData.dropCount))e.methodData.dropCount=2;
+    if(!Number(e.methodData.dropPercent))e.methodData.dropPercent=20
+  }else if(method==='giant'){
+    if(!Number(e.methodData.giantCount))e.methodData.giantCount=Math.max(3,Math.min(6,Number(oldGroupCount)||3))
+  }else if(method==='backoff'){
+    if(!Number(e.methodData.topReps))e.methodData.topReps=5;
+    if(!Number(e.methodData.backoffReps))e.methodData.backoffReps=8;
+    if(!Number(e.methodData.backoffPercent))e.methodData.backoffPercent=15
+  }else if(method==='cluster'){
+    if(!e.reps)e.reps='10'
+  }else if(method==='restpause'){
+    if(!e.reps)e.reps='20'
+  }
+  if(!groupMethod(method)){e.techniqueGroup=null;e.linkedExerciseNames=[]}
   return e
  };
  window.validateExerciseDraft=function(e){
@@ -232,30 +264,62 @@
 
  // One familiar add/edit mask for all exercise actions, now with method-aware set counts.
  window.renderPlanAddConfig=function(){
-  if(!planAddFlow?.current)return;const e=planAddFlow.current;if(e.setTechnique==='pyramid')ensurePyramidData(e);if(e.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);
-  renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?'active':''}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join('')}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=='time'?'active':''}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==='time'?'active':''}" id="paModeTime" ${e.setTechnique==='pyramid'?'disabled':''}>Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e)}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?'selected':''}>${v?formatTime(v):'Keine'}</option>`).join('')}</select></div></div><div class="form-field"><label>${e.measureMode==='time'?'ZEIT':'WDH.-VORGABE'}</label>${e.measureMode==='time'?timePresetMarkup(e,'pa'):methodRepConfigMarkup(e,'pa')}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`:''}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?'checked':''}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
-  requestAnimationFrame(()=>{const tabs=$('paMethodTabs');if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
-  $('paModeReps').onclick=()=>{e.measureMode='reps';renderPlanAddConfig()};
-  if($('paModeTime')&&!$('paModeTime').disabled)$('paModeTime').onclick=()=>{e.measureMode='time';const max=String(e.category||"").toLowerCase()==="cardio"?3600:600;e.timeSeconds=Math.min(max,Math.max(15,Number(e.timeSeconds)||60));renderPlanAddConfig()};
-  document.querySelectorAll('[data-pa-method]').forEach(b=>b.onclick=()=>{const tabs=$('paMethodTabs');planAddFlow.methodScroll=tabs?.scrollLeft||0;if(planAddFlow.memberGroup)planAddFlow.memberMethodExplicit=true;prepareDraftForTargetMethod(e,b.dataset.paMethod,1);renderPlanAddConfig()});
-  $('paSets').onchange=()=>{e.sets=Math.max(1,Number($('paSets').value)||1);if(e.setTechnique==='pyramid'){ensurePyramidData(e);renderPlanAddConfig()}};
-  document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderPlanAddConfig()});
-  const paTimeWheel=$('paTimeWheel');
-  if(paTimeWheel){
-    const syncTime=()=>{e.measureMode='time';e.timeSeconds=Math.max(15,Number(paTimeWheel.value)||60)};
-    paTimeWheel.oninput=syncTime;paTimeWheel.onchange=syncTime
-  }
-  bindPyramidCascade(e,'pa',renderPlanAddConfig);
-  if($('paGiantCount'))$('paGiantCount').onchange=()=>{
-    e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3;
-    if(planAddFlow.group&&planAddFlow.group.method==='giant')planAddFlow.group.target=e.methodData.giantCount
+  if(!planAddFlow?.current)return;
+  const e=planAddFlow.current,g=planAddFlow.memberGroup||null;
+  if(e.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;
+  const methodLocked=!!g&&!g.isFirst;
+  const restLocked=!!g&&!g.isFirst;
+  const methodMarkup=methodLocked
+    ?`<div class="form-field"><label>TRAININGSMETHODE</label><div class="field readonly-field">${esc(METHOD_LABEL[g.method]||g.method)}</div></div>`
+    :`<div class="form-field"><label>TRAININGSMETHODE</label><div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?'active':''}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join('')}</div></div>`;
+  const restMarkup=restLocked
+    ?`<div class="form-field"><label>PAUSE</label><div class="field readonly-field">${g.groupRest===0?'Keine':formatTime(g.groupRest)} <span class="small">· durch Übung A festgelegt</span></div></div>`
+    :`<div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${restOptionsMarkup(e.rest)}</select></div>`;
+
+  renderSheetState({title:e.name,scroll:0,body:
+   `${methodMarkup}
+    <div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e)}</select></div>
+    ${restMarkup}
+    <div class="form-field"><label>AUSFÜHRUNG</label><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=='time'?'active':''}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==='time'?'active':''}" id="paModeTime">Zeit</button></div></div>
+    <div class="form-field"><label>${e.measureMode==='time'?'ZEIT':'WDH.-VORGABE'}</label>${e.measureMode==='time'?timePresetMarkup(e,'pa'):methodRepConfigMarkup(e,'pa')}</div>
+    ${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=='standard').map(v=>`<option ${e.variant===v?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`:''}
+    <div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?'checked':''}> Wiederholungen pro Seite</label></div>
+    ${planAddMethodExtra(e)}
+    <button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
+
+  const captureGeneric=()=>{
+    if($('paSets'))e.sets=Math.max(1,Number($('paSets').value)||1);
+    if($('paRest'))e.rest=Math.max(0,Number($('paRest').value)||0);
+    if($('paTimeWheel')&&e.measureMode==='time')e.timeSeconds=Math.max(15,Number($('paTimeWheel').value)||60);
+    if($('paVariant'))e.variant=$('paVariant').value;
+    e.perSide=!!$('paPerSide')?.checked;
+    saveMethodRepConfig(e,'pa')
   };
+
+  requestAnimationFrame(()=>{const tabs=$('paMethodTabs');if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
+  $('paSets').onchange=()=>{e.sets=Math.max(1,Number($('paSets').value)||1)};
+  if($('paRest'))$('paRest').onchange=()=>{e.rest=Number($('paRest').value)};
+
+  $('paModeReps').onclick=()=>{captureGeneric();e.measureMode='reps';renderPlanAddConfig()};
+  $('paModeTime').onclick=()=>{captureGeneric();e.measureMode='time';if(!Number(e.timeSeconds))e.timeSeconds=60;renderPlanAddConfig()};
+
+  document.querySelectorAll('[data-pa-method]').forEach(b=>b.onclick=()=>{
+    captureGeneric();
+    const next=b.dataset.paMethod;
+    planAddFlow.methodScroll=$('paMethodTabs')?.scrollLeft||0;
+    if(g&&g.isFirst)planAddFlow.memberMethodExplicit=next!==g.method;
+    prepareDraftForTargetMethod(e,next,g?.count||1);
+    renderPlanAddConfig()
+  });
+
+  document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset});
+  const time=$('paTimeWheel');if(time){const sync=()=>{e.measureMode='time';e.timeSeconds=Math.max(15,Number(time.value)||60)};time.oninput=sync;time.onchange=sync}
+  bindPyramidCascade(e,'pa',renderPlanAddConfig);
+  if($('paGiantCount'))$('paGiantCount').onchange=()=>{e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3};
+
   $('paConfirm').onclick=()=>{
-    const sets=$('paSets'),rest=$('paRest'),time=$('paTimeWheel');
-    if(sets)e.sets=Math.max(1,Number(sets.value)||1);
-    if(rest)e.rest=Math.max(0,Number(rest.value)||0);
-    if(time){e.measureMode='time';e.timeSeconds=Math.max(15,Number(time.value)||60)}
-    if($('paGiantCount')){e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3;if(planAddFlow.group&&planAddFlow.group.method==='giant')planAddFlow.group.target=e.methodData.giantCount}
+    captureGeneric();
+    if(restLocked)e.rest=g.groupRest;
     confirmPlanAddDraft()
   }
  };

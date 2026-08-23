@@ -1581,7 +1581,10 @@ html[data-theme="light"] #startTrainingCard #choosePlanStart.training-main-play{
 <link rel="icon" type="image/png" sizes="64x64" href="./favicon.png?v=20260823-icon-final-6">
 <link rel="manifest" href="./manifest.webmanifest?v=20260823-icon-final-6">
 <meta name="theme-color" content="#221d2a">
-</head><body>
+<style id="rethink-fixed-group-rest">
+.readonly-field{display:flex;align-items:center;min-height:46px;box-sizing:border-box;opacity:.78;cursor:default}
+.readonly-field .small{margin-left:4px}
+</style></head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
 <main id="tab-plans" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Meine Pläne</h1></div><div class="plan-header-actions"><button id="plansEditBtn" class="secondary plan-edit-toggle">Bearbeiten</button><button id="newPlanBtn" class="icon-btn plus-btn">+</button></div></div><div class="chips" id="planSortChips"></div><div id="planList"></div></main>
@@ -1760,13 +1763,32 @@ function timePresetMarkup(e,prefix){
 function repPresetMarkup(e){const opts=repsForMethod(e.setTechnique||"standard"),cur=amrapText(e.reps||defaultRepsForMethod(e.setTechnique));return`<div class="rep-presets">${opts.map(v=>`<button type="button" class="rep-preset ${cur===v?"active":""}" data-rep-preset="${v}">${v}</button>`).join("")}</div>`}
 function defaultRepsForMethod(m){return m==="superset"||m==="preexhaust"?"10-15":m==="restpause"?"20":m==="cluster"?"10":m==="backoff"?"5":"8-12"}
 function prepareDraftForTargetMethod(e,method,oldGroupCount=1){
- method=METHOD_KEYS.includes(method)?method:"standard";e.setTechnique=method;e.methodData={};e.reps=defaultRepsForMethod(method);
- if(method==="dropset")e.methodData={dropCount:2,dropPercent:20};
- else if(method==="giant")e.methodData={giantCount:Math.max(3,Math.min(6,Number(oldGroupCount)||3))};
- else if(method==="pyramid"){e.sets=Math.max(3,Number(e.sets)||5);e.methodData={};ensurePyramidData(e)}
- else if(method==="backoff"){e.sets=Math.max(2,Number(e.sets)||3);e.methodData={topReps:5,backoffReps:8,backoffPercent:15};}
- else if(method==="cluster")e.reps="10";
- else if(method==="restpause")e.reps="20";
+ method=METHOD_KEYS.includes(method)?method:"standard";
+ const keep={
+   sets:e.sets,rest:e.rest,measureMode:e.measureMode,timeSeconds:e.timeSeconds,
+   reps:e.reps,variant:e.variant,perSide:e.perSide
+ };
+ const oldData=clone(e.methodData||{});
+ e.setTechnique=method;
+ e.methodData=oldData;
+ // Generic choices are independent and never reset by changing the method.
+ e.sets=keep.sets;e.rest=keep.rest;e.measureMode=keep.measureMode;
+ e.timeSeconds=keep.timeSeconds;e.reps=keep.reps;e.variant=keep.variant;e.perSide=keep.perSide;
+ // Only method-specific data is initialized when missing.
+ if(method==="dropset"){
+   if(!Number(e.methodData.dropCount))e.methodData.dropCount=2;
+   if(!Number(e.methodData.dropPercent))e.methodData.dropPercent=20
+ }else if(method==="giant"){
+   if(!Number(e.methodData.giantCount))e.methodData.giantCount=Math.max(3,Math.min(6,Number(oldGroupCount)||3))
+ }else if(method==="backoff"){
+   if(!Number(e.methodData.topReps))e.methodData.topReps=5;
+   if(!Number(e.methodData.backoffReps))e.methodData.backoffReps=8;
+   if(!Number(e.methodData.backoffPercent))e.methodData.backoffPercent=15
+ }else if(method==="cluster"){
+   if(!e.reps)e.reps="10"
+ }else if(method==="restpause"){
+   if(!e.reps)e.reps="20"
+ }
  if(!groupMethod(method)){e.techniqueGroup=null;e.linkedExerciseNames=[]}
  return e
 }
@@ -2679,6 +2701,7 @@ function renderPartnerExercisePicker(){
 function startCompactPartnerConfig(name,seed=null,order=null){
  planAddFlow.reservedPartnerNames=Array.from(new Set([...(planAddFlow.reservedPartnerNames||[]),name]));
  const base=seed?clone(seed):normPlanEx(findExercise(name));
+ if(planAddFlow?.group)base.rest=planAddFlow.group.rest;
  if(!seed){
    base.setTechnique=planAddFlow.group.method;
    base.techniqueGroup=planAddFlow.group.id;
@@ -2718,7 +2741,7 @@ function renderCompactPartnerConfig(){
   title:`${METHOD_LABEL[method]} · ${esc(e.name)}`,
   scroll:0,
   body:`<div class="compact-partner-card"><strong>${esc(e.name)}</strong><div class="small">Eigene Einstellungen für diese Übung innerhalb des ${esc(METHOD_LABEL[method])}.</div></div>
-  <div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="partnerSets" class="field">${setOptionsMarkup(e,e.sets,"partner")}</select></div><div class="form-field"><label>PAUSE</label><select id="partnerRest" class="field">${restOptionsMarkup(e.rest)}</select></div></div>
+  <div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="partnerSets" class="field">${setOptionsMarkup(e,e.sets,"partner")}</select></div><div class="form-field"><label>PAUSE</label><div class="field readonly-field">${planAddFlow.group.rest===0?"Keine":formatTime(planAddFlow.group.rest)} <span class="small">· durch Übung A festgelegt</span></div></div></div>
   <div class="mode-switch"><button type="button" class="chip ${e.measureMode!=="time"?"active":""}" id="partnerModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==="time"?"active":""}" id="partnerModeTime">Zeit</button></div>
   <div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"partner"):methodRepConfigMarkup(e,"partner")}</div>
   ${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="partnerVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=="standard").map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}
@@ -2732,10 +2755,10 @@ function renderCompactPartnerConfig(){
  $("partnerModeReps").onclick=()=>{e.measureMode="reps";renderCompactPartnerConfig()};$("partnerModeTime").onclick=()=>{e.measureMode="time";e.timeSeconds=Math.max(15,Number(e.timeSeconds)||60);renderCompactPartnerConfig()};
  document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderCompactPartnerConfig()});
  const partnerTimeWheel=$("partnerTimeWheel");if(partnerTimeWheel){const sync=()=>{e.measureMode="time";e.timeSeconds=Math.max(15,Number(partnerTimeWheel.value)||60)};partnerTimeWheel.oninput=sync;partnerTimeWheel.onchange=sync;}
- $("partnerReplaceChoice").onclick=()=>openExercisePicker(name=>{const x=normPlanEx(findExercise(name));x.setTechnique=method;x.techniqueGroup=planAddFlow.group.id;x._draftOrder=e._draftOrder;x.sets=Math.max(1,Number(x.sets)||3);x.rest=Number.isFinite(Number(x.rest))?Math.max(0,Number(x.rest)):90;x.measureMode=x.measureMode==="time"?"time":"reps";if(x.measureMode==="time")x.timeSeconds=Math.max(15,Number(x.timeSeconds)||60);else if(!x.reps)x.reps="8-12";planAddFlow.current=x;renderCompactPartnerConfig()},{exclude:currentPartnerReservedNames(),title:"Übung austauschen",detailAdd:true,returnToSheet:true});
+ $("partnerReplaceChoice").onclick=()=>openExercisePicker(name=>{const x=normPlanEx(findExercise(name));x.setTechnique=method;x.techniqueGroup=planAddFlow.group.id;x._draftOrder=e._draftOrder;x.sets=Math.max(1,Number(x.sets)||3);x.rest=planAddFlow.group.rest;x.measureMode=x.measureMode==="time"?"time":"reps";if(x.measureMode==="time")x.timeSeconds=Math.max(15,Number(x.timeSeconds)||60);else if(!x.reps)x.reps="8-12";planAddFlow.current=x;renderCompactPartnerConfig()},{exclude:currentPartnerReservedNames(),title:"Übung austauschen",detailAdd:true,returnToSheet:true});
  $("partnerConfirm").onclick=()=>{
   if($("partnerSets"))e.sets=Math.max(1,Number($("partnerSets").value)||1);
-  if($("partnerRest"))e.rest=Math.max(0,Number($("partnerRest").value)||0);
+  e.rest=planAddFlow.group.rest;
   if($("partnerTimeWheel")){e.measureMode="time";e.timeSeconds=Number($("partnerTimeWheel").value)||Number(e.timeSeconds)||60}
   if($("partnerVariant"))e.variant=$("partnerVariant").value;e.perSide=!!$("partnerPerSide")?.checked;e.methodData=e.methodData||{};
   if($("partnerDrops"))e.methodData.dropCount=Number($("partnerDrops").value)||2;if($("partnerDropPct"))e.methodData.dropPercent=Number($("partnerDropPct").value)||20;saveMethodRepConfig(e,"partner");
@@ -2755,7 +2778,7 @@ function confirmPlanAddDraft(){
   e.methodData=e.methodData||{};
   if(method==="giant")e.methodData.giantCount=selectedTarget;
   if(!planAddFlow.group){
-    planAddFlow.group={id:`tg_${uid()}`,method,target:selectedTarget};
+    planAddFlow.group={id:`tg_${uid()}`,method,target:selectedTarget,rest:e.rest};
   }else{
     planAddFlow.group.method=method;
     if(method==="giant")planAddFlow.group.target=selectedTarget
@@ -2769,7 +2792,8 @@ function confirmPlanAddDraft(){
   const gid=planAddFlow.group.id;
   planAddFlow.drafts.forEach(d=>{
     d.setTechnique=planAddFlow.group.method;
-    d.techniqueGroup=gid
+    d.techniqueGroup=gid;
+    d.rest=planAddFlow.group.rest
   });
   commitPlanAddFlow();return
  }
@@ -2953,7 +2977,7 @@ function beginExistingPartnerReplacement(sourceIndexes,firstDraft,editIndex=sour
  const others=ordered.filter(x=>x.idx!==editIndex);
  const startFlow=selected=>{
   const pending=selected.sort((a,b)=>a.pos-b.pos).map(x=>{const d=clone(x.exercise);if(d.setTechnique!==method)prepareDraftForTargetMethod(d,method,target);else{d.setTechnique=method;d.methodData=d.methodData||{};if(method==="giant")d.methodData.giantCount=target}d.techniqueGroup=gid;return{exercise:d,order:x.pos}});
-  planAddFlow={step:"partnerPicker",q:exercisePickerState.q||"",type:exercisePickerState.type||"Alle",muscles:new Set(exercisePickerState.muscles||[]),drafts:[first],pendingSeeds:pending,current:null,group:{id:gid,method,target},reservedPartnerNames:ordered.map(x=>x.exercise.name),history:[],methodScroll:0,editSourceIndexes:[...sourceIndexes],editInsertAt:Math.min(...sourceIndexes),nextOrder:sourceIndexes.length};
+  planAddFlow={step:"partnerPicker",q:exercisePickerState.q||"",type:exercisePickerState.type||"Alle",muscles:new Set(exercisePickerState.muscles||[]),drafts:[first],pendingSeeds:pending,current:null,group:{id:gid,method,target,rest:first.rest},reservedPartnerNames:ordered.map(x=>x.exercise.name),history:[],methodScroll:0,editSourceIndexes:[...sourceIndexes],editInsertAt:Math.min(...sourceIndexes),nextOrder:sourceIndexes.length};
   advancePartnerDraftFlow()
  };
  const keepNeeded=target-1;
