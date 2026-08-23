@@ -675,3 +675,10 @@ Der starre Schema-Abgleich wurde für den Import entfernt. Dadurch können älte
 Die Wiederherstellung war zuvor anfällig für eine Race Condition: Nach dem Schreiben der JSON-Werte lösten `location.reload()`, `visibilitychange` und `pagehide` noch einmal das normale `saveAll()` aus. Dabei konnte der alte, noch im Arbeitsspeicher befindliche App-Zustand die gerade wiederhergestellten Werte überschreiben.
 
 Während eines Restore ist die normale Persistenz jetzt vollständig gesperrt. Erst in der neu geladenen App-Instanz wird diese Sperre aufgehoben. Dadurch bleiben die aus der JSON geschriebenen Werte bestehen.
+
+## Backup/Restore v6 – Roundtrip-Fix
+Backup-Erstellung liest den persistenten Speicher nur noch aus und ruft vorher kein `saveAll()` mehr auf. Dadurch kann ein leerer/veralteter RAM-Zustand gute gespeicherte Daten nicht unmittelbar vor der Sicherung überschreiben. Die JSON enthält eine Inhaltsübersicht. Beim Restore werden alle geschriebenen Schlüssel zurückgelesen und verifiziert; währenddessen bleibt die normale App-Persistenz gesperrt.
+
+## Homescreen & Trainingsstart
+- Großer Play-Button jetzt über „Training starten / Wähle einen Plan“.
+- Neues ReThink. Fitness Homescreen-Icon in 180, 192 und 512 px; Manifest und Apple-Touch-Icon aktualisiert.

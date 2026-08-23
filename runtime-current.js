@@ -2879,25 +2879,54 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    }
    return data
  }
+ function safeJsonParseV31(v,fallback=null){try{return JSON.parse(v)}catch{return fallback}}
+ function backupSummaryV31(data){
+   const plans=safeJsonParseV31(data["gymapp_plans"],[])||[];
+   const custom=safeJsonParseV31(data["gymapp_custom_exercises"],[])||[];
+   const history=safeJsonParseV31(data["gymapp_workout_history"],[])||[];
+   const measurements=safeJsonParseV31(data["gymapp_measurements"],[])||[];
+   const nutrition=safeJsonParseV31(data["gymapp_nutrition"],{})||{};
+   const hydration=safeJsonParseV31(data["rethink_hydration_log_v1"],[])||[];
+   const weekDated=safeJsonParseV31(data["rethink_week_plan_dated_v1"],{})||{};
+   return {
+     storageKeys:Object.keys(data).length,
+     plans:Array.isArray(plans)?plans.length:0,
+     customExercises:Array.isArray(custom)?custom.length:0,
+     completedWorkouts:Array.isArray(history)?history.length:0,
+     measurements:Array.isArray(measurements)?measurements.length:0,
+     foodEntries:Array.isArray(nutrition.foodLog)?nutrition.foodLog.length:0,
+     meals:Array.isArray(nutrition.meals)?nutrition.meals.length:0,
+     drinks:Array.isArray(nutrition.drinks)?nutrition.drinks.length:0,
+     hydrationEntries:Array.isArray(hydration)?hydration.length:0,
+     datedWeeks:weekDated&&typeof weekDated==="object"?Object.keys(weekDated).length:0
+   }
+ }
  function payload(){
-   try{saveAll()}catch{}
+   const data=fullLocalStorageSnapshot();
    return {
      schema:BACKUP_SCHEMA,
-     version:5,
-     mode:"true-full",
+     version:6,
+     mode:"true-full-readonly",
      scope:"complete-localStorage",
      createdAt:new Date().toISOString(),
      app:"ReThink. Fitness",
-     localStorage:fullLocalStorageSnapshot()
+     summary:backupSummaryV31(data),
+     localStorage:data
    }
  }
  function filename(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `ReThink_Fitness_FULL_${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}.json`}
  async function exportBackup(){
-   const blob=new Blob([JSON.stringify(payload(),null,2)],{type:"application/json"});
-   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename();a.style.display="none";
+   const p=payload(),s=p.summary||{};
+   if(!p.localStorage||!Object.keys(p.localStorage).length){
+     alert("Es sind keine gespeicherten App-Daten vorhanden. Es wurde kein leeres Backup erstellt.");
+     return
+   }
+   const blob=new Blob([JSON.stringify(p,null,2)],{type:"application/json"});
+   const a=document.createElement("a");
+   a.href=URL.createObjectURL(blob);a.download=filename();a.style.display="none";
    document.body.appendChild(a);a.click();a.remove();
-   setTimeout(()=>URL.revokeObjectURL(a.href),1200);
-   try{toast("Backup erstellt")}catch{}
+   setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+   try{toast(`Backup: ${s.storageKeys||0} Datenbereiche · ${s.plans||0} Pläne · ${s.completedWorkouts||0} Trainings`)}catch{}
  }
  function normalizeBackupInput(x){
    if(!x||typeof x!=="object")throw new Error("Die JSON-Datei ist leer oder ungültig.");
@@ -2926,39 +2955,43 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  }
  async function restore(file){
    if(!file)throw new Error("Keine Datei ausgewählt.");
-   let text;
-   try{text=await file.text()}catch{throw new Error("Die ausgewählte Datei konnte nicht gelesen werden.")}
-   let x;
-   try{x=JSON.parse(String(text||"").replace(/^\uFEFF/,""))}catch{
-     throw new Error("Die Datei ist keine gültige JSON-Datei.")
-   }
+   let text;try{text=await file.text()}catch{throw new Error("Die ausgewählte Datei konnte nicht gelesen werden.")}
+   let x;try{x=JSON.parse(String(text||"").replace(/^\uFEFF/,""))}catch{throw new Error("Die Datei ist keine gültige JSON-Datei.")}
 
    const normalized=normalizeBackupInput(x);
-   const entries=Object.entries(normalized.data).filter(([k,v])=>typeof k==="string"&&(typeof v==="string"||v!==undefined));
+   const entries=Object.entries(normalized.data).filter(([k,v])=>typeof k==="string"&&v!==undefined&&v!==null);
    if(!entries.length)throw new Error("Das Backup enthält keine gespeicherten Daten.");
 
-   if(!confirm(`${normalized.format} wiederherstellen? ${entries.length} Datenbereiche werden eingespielt. Vorhandene Daten, die nicht im Backup stehen, bleiben erhalten.`))return;
+   const summary=x.summary||backupSummaryV31(normalized.data);
+   const preview=[`${summary.plans||0} Pläne`,`${summary.completedWorkouts||0} abgeschlossene Trainings`,`${summary.customExercises||0} eigene Übungen`,`${summary.measurements||0} Messungen`,`${summary.foodEntries||0} Ernährungseinträge`,`${summary.hydrationEntries||0} Getränkeeinträge`].join(" · ");
+   if(!confirm(`${normalized.format} wiederherstellen?\n\n${preview}\n\n${entries.length} Datenbereiche werden eingespielt. Vorhandene Daten, die nicht im Backup stehen, bleiben erhalten.`))return;
 
-   // Lock all normal app persistence before restoring. Without this,
-   // pagehide/visibilitychange would immediately write the old in-memory
-   // state back over the freshly restored localStorage values.
    window.__rethinkRestoreInProgress=true;
    try{sessionStorage.setItem("rethink_restore_reload_v1","1")}catch{}
 
    let written=0;
    for(const [k,v] of entries){
+     const serialized=typeof v==="string"?v:JSON.stringify(v);
      try{
-       localStorage.setItem(k,typeof v==="string"?v:JSON.stringify(v));
+       localStorage.setItem(k,serialized);
+       if(localStorage.getItem(k)!==serialized)throw new Error("Wert konnte nach dem Schreiben nicht bestätigt werden.");
        written++
      }catch(e){
+       window.__rethinkRestoreInProgress=false;
        throw new Error(`Wiederherstellung bei „${k}“ abgebrochen: ${e?.message||"Speicherfehler"}`)
      }
    }
-   if(!written)throw new Error("Es konnten keine Daten geschrieben werden.");
 
-   try{toast(`${written} Datenbereiche wiederhergestellt`)}catch{}
-   // Keep the lock active while iOS dispatches visibilitychange/pagehide.
-   setTimeout(()=>location.replace(location.href),650)
+   const critical=["gymapp_plans","gymapp_custom_exercises","gymapp_workout_history","gymapp_measurements","gymapp_nutrition","gymapp_profile","rethink_hydration_log_v1","rethink_week_plan","rethink_week_plan_dated_v1"];
+   const failed=critical.filter(k=>Object.prototype.hasOwnProperty.call(normalized.data,k)&&localStorage.getItem(k)===null);
+   if(failed.length){
+     window.__rethinkRestoreInProgress=false;
+     throw new Error(`Wiederherstellung unvollständig. Fehlend: ${failed.join(", ")}`)
+   }
+
+   try{sessionStorage.setItem("rethink_restore_result_v2",JSON.stringify({written,summary,at:Date.now()}))}catch{}
+   try{toast(`${written} Datenbereiche geprüft und wiederhergestellt`)}catch{}
+   setTimeout(()=>location.replace(location.href),700)
  }
  function chooseRestore(){
    const old=document.getElementById("rethinkBackupRestoreInput");
@@ -3539,5 +3572,15 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      sessionStorage.removeItem("rethink_restore_reload_v1");
      window.__rethinkRestoreInProgress=false;
    }
+ }catch{}
+})();
+
+(function(){
+ try{
+   const raw=sessionStorage.getItem("rethink_restore_result_v2");
+   if(!raw)return;
+   sessionStorage.removeItem("rethink_restore_result_v2");
+   const r=JSON.parse(raw),s=r.summary||{};
+   setTimeout(()=>{try{toast(`Wiederhergestellt: ${s.plans||0} Pläne · ${s.completedWorkouts||0} Trainings · ${s.measurements||0} Messungen`)}catch{}},700)
  }catch{}
 })();
