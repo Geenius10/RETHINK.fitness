@@ -1,4 +1,4 @@
-const CACHE='rethink-fitness-20260823-ios-icon-rdot';
+const CACHE='rethink-fitness-20260823-preview-time-layout-v3';
 const ASSETS=[
  './', './index.html', './runtime-current.js?v=20260821m', './foods.js?v=20260821m', './manifest.webmanifest', './README.md', './AUDIT.md',
  './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'

@@ -81,7 +81,7 @@
    planAddFlow.drafts.push(e);
    if(planAddFlow.drafts.length<planAddFlow.group.target){planAddFlow.current=null;renderPartnerExercisePicker();return}
    const master=planAddFlow.drafts[0],gid=planAddFlow.group.id;
-   planAddFlow.drafts.forEach(d=>{d.setTechnique=planAddFlow.group.method;d.techniqueGroup=gid;d.sets=master.sets;d.rest=master.rest});
+   planAddFlow.drafts.forEach(d=>{d.setTechnique=planAddFlow.group.method;d.techniqueGroup=gid});
    commitPlanAddFlow();return
   }
   planAddFlow.drafts.push(e);commitPlanAddFlow()
@@ -91,7 +91,7 @@
   if(!planAddFlow?.drafts?.length)return;
   let drafts=planAddFlow.drafts.map(clone);
   const detached=drafts.flatMap(d=>Array.isArray(d._detachedAfterConversion)?d._detachedAfterConversion.map(clone):[]);
-  if(drafts.some(d=>Number.isFinite(Number(d._draftOrder))))drafts.sort((a,b)=>(Number.isFinite(Number(a._draftOrder))?Number(a._draftOrder):999)-(Number.isFinite(Number(b._draftOrder))?Number(b._draftOrder):999));
+  if(drafts.some(d=>Number.isFinite(Number(d._draftOrder))))drafts=drafts.map((d,i)=>({d,i,order:Number.isFinite(Number(d._draftOrder))?Number(d._draftOrder):i})).sort((a,b)=>a.order-b.order||a.i-b.i).map(x=>x.d);
   drafts.forEach(d=>{delete d._draftOrder;delete d._detachedAfterConversion});
   detached.forEach(d=>{d.techniqueGroup=null;d.linkedExerciseNames=[];d.setTechnique='standard';d.methodData={};if(!d.reps||['20','30','20-30'].includes(String(d.reps)))d.reps='8-12';delete d.liveSets});
   const memberGroup=planAddFlow.memberGroup;
@@ -156,15 +156,15 @@
 
  // Practical per-exercise / per-series working-set ranges. These are UI guardrails, not training prescriptions.
  const SET_OPTIONS={
-  standard:[1,2,3,4,5,6],
-  superset:[2,3,4,5],
-  giant:[2,3,4],
-  preexhaust:[2,3,4],
-  dropset:[1,2,3,4],
-  restpause:[1,2,3],
-  cluster:[2,3,4,5,6],
-  pyramid:[3,4,5,6,7],
-  backoff:[2,3,4,5]
+  standard:[1,2,3,4,5,6,7,8,9,10],
+  superset:[1,2,3,4,5,6,7,8,9,10],
+  giant:[1,2,3,4,5,6,7,8,9,10],
+  preexhaust:[1,2,3,4,5,6,7,8,9,10],
+  dropset:[1,2,3,4,5,6],
+  restpause:[1,2,3,4,5,6],
+  cluster:[1,2,3,4,5,6],
+  pyramid:[3,4,5,6,7,8,9,10],
+  backoff:[2,3,4,5,6]
  };
  const DEFAULT_SETS={standard:3,superset:3,giant:3,preexhaust:3,dropset:2,restpause:1,cluster:3,pyramid:4,backoff:3};
  function optionsForMethod(m){return SET_OPTIONS[m]||SET_OPTIONS.standard}
@@ -236,17 +236,25 @@
   renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?'active':''}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join('')}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=='time'?'active':''}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==='time'?'active':''}" id="paModeTime" ${e.setTechnique==='pyramid'?'disabled':''}>Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e)}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?'selected':''}>${v?formatTime(v):'Keine'}</option>`).join('')}</select></div></div><div class="form-field"><label>${e.measureMode==='time'?'ZEIT':'WDH.-VORGABE'}</label>${e.measureMode==='time'?timePresetMarkup(e,'pa'):methodRepConfigMarkup(e,'pa')}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`:''}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?'checked':''}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
   requestAnimationFrame(()=>{const tabs=$('paMethodTabs');if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
   $('paModeReps').onclick=()=>{e.measureMode='reps';renderPlanAddConfig()};
-  if($('paModeTime')&&!$('paModeTime').disabled)$('paModeTime').onclick=()=>{e.measureMode='time';e.timeSeconds=Math.min(180,Math.max(15,Number(e.timeSeconds)||60));renderPlanAddConfig()};
+  if($('paModeTime')&&!$('paModeTime').disabled)$('paModeTime').onclick=()=>{e.measureMode='time';const max=String(e.category||"").toLowerCase()==="cardio"?3600:600;e.timeSeconds=Math.min(max,Math.max(15,Number(e.timeSeconds)||60));renderPlanAddConfig()};
   document.querySelectorAll('[data-pa-method]').forEach(b=>b.onclick=()=>{const tabs=$('paMethodTabs');planAddFlow.methodScroll=tabs?.scrollLeft||0;if(planAddFlow.memberGroup)planAddFlow.memberMethodExplicit=true;prepareDraftForTargetMethod(e,b.dataset.paMethod,1);renderPlanAddConfig()});
-  $('paSets').onchange=()=>{e.sets=Number($('paSets').value);if(e.setTechnique==='pyramid')ensurePyramidData(e);renderPlanAddConfig()};
+  $('paSets').onchange=()=>{e.sets=Math.max(1,Number($('paSets').value)||1);if(e.setTechnique==='pyramid'){ensurePyramidData(e);renderPlanAddConfig()}};
   document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderPlanAddConfig()});
-  document.querySelectorAll('[data-time-preset]').forEach(b=>b.onclick=()=>{e.timeSeconds=Number(b.dataset.timePreset);renderPlanAddConfig()});
+  const paTimeWheel=$('paTimeWheel');
+  if(paTimeWheel){
+    const syncTime=()=>{e.measureMode='time';e.timeSeconds=Math.max(15,Number(paTimeWheel.value)||60)};
+    paTimeWheel.oninput=syncTime;paTimeWheel.onchange=syncTime
+  }
   bindPyramidCascade(e,'pa',renderPlanAddConfig);
   if($('paGiantCount'))$('paGiantCount').onchange=()=>{
     e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3;
     if(planAddFlow.group&&planAddFlow.group.method==='giant')planAddFlow.group.target=e.methodData.giantCount
   };
   $('paConfirm').onclick=()=>{
+    const sets=$('paSets'),rest=$('paRest'),time=$('paTimeWheel');
+    if(sets)e.sets=Math.max(1,Number(sets.value)||1);
+    if(rest)e.rest=Math.max(0,Number(rest.value)||0);
+    if(time){e.measureMode='time';e.timeSeconds=Math.max(15,Number(time.value)||60)}
     if($('paGiantCount')){e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3;if(planAddFlow.group&&planAddFlow.group.method==='giant')planAddFlow.group.target=e.methodData.giantCount}
     confirmPlanAddDraft()
   }
@@ -871,9 +879,19 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
       <button class="picker-quick-add" type="button" data-v64-partner-pick="${esc(x.name)}" aria-label="${esc(x.name)} hinzufügen">+</button>
     </div>`).join("")
   }
+  function choosePartnerExerciseV64(name){
+    const f=planAddFlow;if(!f?.group)return;
+    if(typeof window.rethinkStartPartnerConfig!=="function"){toast("Übungsauswahl konnte nicht geöffnet werden.");return}
+    try{
+      window.rethinkStartPartnerConfig(name)
+    }catch(err){
+      console.error("Partnerübung konnte nicht geöffnet werden",err);
+      toast("Partnerübung konnte nicht geöffnet werden");
+    }
+  }
   function bindPartnerCatalogRowsV64(){
-    document.querySelectorAll("[data-v64-partner-pick]").forEach(b=>b.onclick=()=>startCompactPartnerConfig(b.dataset.v64PartnerPick));
-    document.querySelectorAll("[data-v64-partner-info]").forEach(b=>b.onclick=()=>renderPartnerDetailV64(b.dataset.v64PartnerInfo))
+    document.querySelectorAll("[data-v64-partner-pick]").forEach(b=>{b.onclick=(ev)=>{ev.preventDefault();ev.stopPropagation();choosePartnerExerciseV64(b.dataset.v64PartnerPick)}});
+    document.querySelectorAll("[data-v64-partner-info]").forEach(b=>{b.onclick=(ev)=>{ev.preventDefault();ev.stopPropagation();renderPartnerDetailV64(b.dataset.v64PartnerInfo)}})
   }
   function renderPartnerDetailV64(name){
     const f=planAddFlow;if(!f?.group)return;
@@ -896,7 +914,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
       onBack:()=>renderPartnerExercisePicker(),
       onClose:cancelPlanAddFlow
     });
-    $("v64PartnerFromDetail").onclick=()=>startCompactPartnerConfig(name)
+    $("v64PartnerFromDetail").onclick=()=>choosePartnerExerciseV64(name)
   }
 
   window.renderPartnerExercisePicker=function(){
@@ -949,6 +967,15 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
       $("sheetBody").scrollTop=Number(f.partnerPickerScroll)||0
     })
   };
+
+  /* Capture fallback: partner rows are frequently replaced by search/filter rerenders.
+     This guarantees selection even if a later renderer replaced a node after binding. */
+  document.addEventListener("click",ev=>{
+    const pick=ev.target.closest?.("[data-v64-partner-pick]");
+    if(pick&&planAddFlow?.step==="partnerPicker"){ev.preventDefault();ev.stopImmediatePropagation();choosePartnerExerciseV64(pick.dataset.v64PartnerPick);return}
+    const info=ev.target.closest?.("[data-v64-partner-info]");
+    if(info&&planAddFlow?.step==="partnerPicker"){ev.preventDefault();ev.stopImmediatePropagation();renderPartnerDetailV64(info.dataset.v64PartnerInfo)}
+  },true);
 
   /* Back from partner detail always returns to the same filtered catalog position. */
   const previousPlanAddBackV64=window.planAddBack||planAddBack;
@@ -1247,7 +1274,10 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    const e=planAddFlow?.current;
    if(e?.setTechnique==='giant'){
      e.methodData=e.methodData||{};
-     e.methodData.giantCount=Math.min(6,Math.max(3,Number($('paGiantCount')?.value||e.methodData.giantCount||planAddFlow.group?.target||3)));
+     const chosen=planAddFlow?.group?.method==='giant'
+       ? Number(planAddFlow.group.target)
+       : Number($('paGiantCount')?.value||e.methodData.giantCount||3);
+     e.methodData.giantCount=Math.min(6,Math.max(3,chosen||3));
      if(planAddFlow.group){planAddFlow.group.method='giant';planAddFlow.group.target=e.methodData.giantCount}
    }
    return confirmBeforeV69()
@@ -1256,8 +1286,9 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  advancePartnerDraftFlow=function(){
    const f=planAddFlow;
    if(f?.group?.method==='giant'){
-     const target=Math.min(6,Math.max(3,Number(f.drafts?.[0]?.methodData?.giantCount||f.group.target||3)));
-     f.group.target=target
+     f.group.target=Math.min(6,Math.max(3,Number(f.group.target)||3));
+     (f.drafts||[]).forEach(d=>{d.methodData=d.methodData||{};d.methodData.giantCount=f.group.target});
+     (f.pendingSeeds||[]).forEach(x=>{if(x?.exercise){x.exercise.methodData=x.exercise.methodData||{};x.exercise.methodData.giantCount=f.group.target}})
    }
    return advanceBeforeV69()
  };
@@ -2595,31 +2626,10 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    }
  },true);
 
- // Distance is useful for timed/cardio work only.
- function supportsDistanceV31(e){
-   const cat=String(e?.category||"").toLowerCase(),tracking=String(findExercise?.(e?.name)?.tracking||e?.tracking||"").toLowerCase();
-   return cat.includes("cardio")||e?.measureMode==="time"||tracking.includes("time")
- }
- function addDistanceFieldsV31(){
-   if(!activeWorkout)return;
-   document.querySelectorAll("#liveBody [data-time-play]").forEach(play=>{
-     const [ei,si]=play.dataset.timePlay.split("|").map(Number),e=activeWorkout.exercises[ei],s=e?.liveSets?.[si];
-     if(!e||!s||!supportsDistanceV31(e))return;
-     const controls=play.closest(".time-controls,.combined-time-controls,.time-row")||play.parentElement;
-     if(!controls||controls.querySelector(`[data-input="${ei}|${si}|distance"]`))return;
-     const inp=document.createElement("input");
-     inp.type="text";inp.inputMode="decimal";inp.className="distance-live-field";
-     inp.dataset.input=`${ei}|${si}|distance`;
-     inp.placeholder=distanceUnit();
-     inp.value=String(s.distance??"").trim()===""?"":String(distanceDisplay(s.distance));
-     controls.insertBefore(inp,controls.querySelector(".set-check")||null);
-     inp.onfocus=()=>{inp.select();window.revealLiveWorkoutFieldV31?.(inp)};
-     inp.oninput=()=>{const shown=inp.value;s.distance=shown.trim()===""?"":distanceStore(shown);saveAll()};
-     inp.onblur=()=>{if(inp.value.trim()==="")s.distance="";saveAll()}
-   })
- }
- const renderLiveBeforeDistV31=renderLive;
- renderLive=function(){const r=renderLiveBeforeDistV31();addDistanceFieldsV31();applyTranslationsV31();return r};
+ // Timed exercises intentionally show only Zeit + Leistung.
+  // Existing stored distance values remain untouched for backward compatibility.
+  const renderLiveBeforeDistV31=renderLive;
+  renderLive=function(){const r=renderLiveBeforeDistV31();applyTranslationsV31();return r};
 
  // Profile height in imperial is shown as feet + inches; circumferences stay inches.
  const renderProfileBeforeSystemV31=renderProfile;
@@ -3583,4 +3593,212 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    const r=JSON.parse(raw),s=r.summary||{};
    setTimeout(()=>{try{toast(`Wiederhergestellt: ${s.plans||0} Pläne · ${s.completedWorkouts||0} Trainings · ${s.measurements||0} Messungen`)}catch{}},700)
  }catch{}
+})();
+
+/* ReThink. Fitness — definitive workout → plan transfer */
+(function(){
+ function planExerciseSnapshotV31(e){
+   if(Array.isArray(e?.liveSets)&&e.liveSets.length)e.sets=e.liveSets.length;
+   const y=clone(e);
+   delete y.liveSets;
+   delete y._lastRatings;
+   delete y._weekSourcePlanId;
+   delete y._weekSourceOrder;
+   delete y._weekSourceExerciseOrder;
+   // Explicitly preserve all plan-defining fields.
+   y.name=e.name;
+   y.setTechnique=e.setTechnique||"standard";
+   y.measureMode=e.measureMode==="time"?"time":"reps";
+   y.timeSeconds=Number(e.timeSeconds)||60;
+   y.reps=e.reps;
+   y.sets=Math.max(1,Number(e.sets)||1);
+   y.rest=Math.max(0,Number(e.rest)||0);
+   y.variant=e.variant||"";
+   y.perSide=!!e.perSide;
+   y.methodData=clone(e.methodData||{});
+   y.techniqueGroup=e.techniqueGroup||null;
+   y.linkedExerciseNames=Array.isArray(e.linkedExerciseNames)?clone(e.linkedExerciseNames):[];
+   return y
+ }
+ function planStructureV31(list){return (list||[]).map(planExerciseSnapshotV31)}
+ function structureChangedV31(){
+   if(!activeWorkout)return false;
+   return !!livePlanEdited||JSON.stringify(planStructureV31(activeWorkout.exercises))!==JSON.stringify(planStructureV31(activeWorkout.structureBaseline||[]))
+ }
+
+ window.finishAndSaveWorkout=function(){
+   if(!activeWorkout)return;
+   if(structureChangedV31()){
+     const sourceId=activeWorkout.sourcePlanId||activeWorkout.planId;
+     const hasOriginal=activeWorkout.isWeekCombined
+       ?(activeWorkout.weekSourceIds||[]).some(id=>plans.some(p=>String(p.id)===String(id)))
+       :plans.some(p=>String(p.id)===String(sourceId));
+     openSheet("Planänderungen speichern?",`<p class="small" style="margin:0 0 14px">Das Workout wird gespeichert. Was soll mit den geänderten Übungen, Satz-, Pausen- und Zeitparametern passieren?</p><div class="save-choice-stack">${hasOriginal?'<button id="finishOverwritePlan" class="primary">Originalplan überschreiben</button>':''}<button id="finishWithPlanSave" class="secondary">Als neuen Plan speichern</button><button id="finishWithoutPlanSave" class="secondary danger">Planänderungen nicht speichern</button></div>`);
+     if($("finishOverwritePlan"))$("finishOverwritePlan").onclick=()=>window.finalizeWorkout({saveChangedPlan:"overwrite"});
+     $("finishWithPlanSave").onclick=()=>window.finalizeWorkout({saveChangedPlan:"new"});
+     $("finishWithoutPlanSave").onclick=()=>window.finalizeWorkout({saveChangedPlan:false});
+     return
+   }
+   window.finalizeWorkout({saveChangedPlan:false})
+ };
+
+ window.finalizeWorkout=function({saveChangedPlan=false}={}){
+   if(!activeWorkout)return;
+   activeWorkout.finishedAt=Date.now();
+   const structural=planStructureV31(activeWorkout.exercises);
+   const sourceId=activeWorkout.sourcePlanId||activeWorkout.planId;
+
+   if(saveChangedPlan==="overwrite"){
+     if(activeWorkout.isWeekCombined){
+       const ids=(activeWorkout.weekSourceIds||[]).map(String);
+       const grouped=new Map(ids.map(id=>[id,[]]));
+       (activeWorkout.exercises||[]).forEach(e=>{
+         let id=String(e._weekSourcePlanId||ids[0]||"");
+         if(!grouped.has(id))id=ids[0];
+         if(id&&grouped.has(id))grouped.get(id).push(planExerciseSnapshotV31(e))
+       });
+       grouped.forEach((ex,id)=>{
+         const p=plans.find(x=>String(x.id)===id);
+         if(p){p.exercises=ex;p.updatedAt=Date.now();p.lastUsedAt=Date.now()}
+       })
+     }else{
+       const p=plans.find(x=>String(x.id)===String(sourceId));
+       if(p){
+         p.exercises=structural;
+         p.updatedAt=Date.now();
+         p.lastUsedAt=Date.now();
+         activeWorkout.planId=p.id;
+         activeWorkout.planName=p.name
+       }
+     }
+   }else if(saveChangedPlan==="new"){
+     const base=activeWorkout.isWeekCombined?(activeWorkout.name||"Wochenplan"):(activeWorkout.planName||activeWorkout.name||"Training");
+     const np={id:uid(),name:nextPlanVersionName(base),createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),sourcePlanId:sourceId,sourcePlanIds:clone(activeWorkout.weekSourceIds||[]),exercises:structural};
+     plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name
+   }
+
+   activeWorkout.sourcePlanId=sourceId;
+   history.push(clone(activeWorkout));
+   const done=clone(activeWorkout);
+   activeWorkout=null;livePlanEdited=false;restEnd=0;
+   persistRestEnd();timeSetTimers.forEach(clearInterval);timeSetTimers.clear();
+   saveAll();renderPlans();renderWeek();
+   closeSheet({all:true});
+   document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));
+   pageStack=[];$("bottomNav").classList.remove("hidden");
+   showTab("training",{reset:false});openSummary(done)
+ };
+
+ // Make all existing finish buttons use the definitive function.
+ if($("finishWorkoutBtn"))$("finishWorkoutBtn").onclick=()=>window.finishAndSaveWorkout();
+ if($("liveTopStop"))$("liveTopStop").onclick=()=>window.finishAndSaveWorkout();
+})();
+
+/* ReThink. Fitness — canonical plan creation/edit synchronization */
+(function(){
+ function normalizePlanGroupPrescriptionV31(list){
+   // Partner exercises intentionally keep their own prescription.
+   // Only group identity/linking is normalized elsewhere.
+   return list
+ }
+ const oldCommit=window.commitPlanAddFlow;
+ if(typeof oldCommit==="function"){
+   window.commitPlanAddFlow=function(){
+     const r=oldCommit.apply(this,arguments);
+     try{
+       if(planAddFlow?.context==="plan"&&currentPlan?.exercises)normalizePlanGroupPrescriptionV31(currentPlan.exercises)
+     }catch{}
+     return r
+   }
+ }
+ window.rethinkNormalizePlanPrescriptionV31=normalizePlanGroupPrescriptionV31
+})();
+
+/* ReThink. Fitness — canonical set-count rules */
+(function(){
+ window.rethinkSetOptionsForMethod=function(method){
+   if(method==="pyramid")return [3,4,5,6,7,8,9,10];
+   if(method==="backoff")return [2,3,4,5,6];
+   if(["cluster","restpause","dropset"].includes(method))return [1,2,3,4,5,6];
+   return [1,2,3,4,5,6,7,8,9,10]
+ };
+})();
+
+/* ReThink. Fitness — stable set/time controls on iOS */
+(function(){
+ document.addEventListener("click",e=>{
+   const btn=e.target.closest?.("#paConfirm");
+   if(!btn||!window.planAddFlow?.current)return;
+   const d=window.planAddFlow.current;
+   const sets=document.getElementById("paSets"),rest=document.getElementById("paRest"),time=document.getElementById("paTimeWheel");
+   if(sets)d.sets=Math.max(1,Number(sets.value)||1);
+   if(rest)d.rest=Math.max(0,Number(rest.value)||0);
+   if(time){d.measureMode="time";d.timeSeconds=Math.max(15,Number(time.value)||60)}
+ },true)
+})();
+
+/* ReThink. Fitness — final set/time invariant guard (must remain last) */
+(function(){
+ const SETS_FINAL={
+   standard:[1,2,3,4,5,6,7,8,9,10],
+   superset:[1,2,3,4,5,6,7,8,9,10],
+   giant:[1,2,3,4,5,6,7,8,9,10],
+   preexhaust:[1,2,3,4,5,6,7,8,9,10],
+   dropset:[1,2,3,4,5,6],
+   restpause:[1,2,3,4,5,6],
+   cluster:[1,2,3,4,5,6],
+   pyramid:[3,4,5,6,7,8,9,10],
+   backoff:[2,3,4,5,6]
+ };
+ window.rethinkSetOptionsForMethod=function(m){return SETS_FINAL[m]||SETS_FINAL.standard};
+
+ function captureUnifiedValues(){
+   const e=planAddFlow?.current;if(!e)return;
+   const sets=$("paSets"),rest=$("paRest"),time=$("paTimeWheel");
+   if(sets)e.sets=Math.max(1,Number(sets.value)||1);
+   if(rest)e.rest=Math.max(0,Number(rest.value)||0);
+   if(time&&e.measureMode==="time")e.timeSeconds=Math.max(15,Number(time.value)||60)
+ }
+
+ document.addEventListener("change",ev=>{
+   const e=planAddFlow?.current;if(!e)return;
+   if(ev.target?.id==="paSets")e.sets=Math.max(1,Number(ev.target.value)||1);
+   if(ev.target?.id==="paRest")e.rest=Math.max(0,Number(ev.target.value)||0);
+   if(ev.target?.id==="paTimeWheel"){
+     e.measureMode="time";
+     e.timeSeconds=Math.max(15,Number(ev.target.value)||60)
+   }
+ },true);
+
+ document.addEventListener("click",ev=>{
+   if(ev.target?.id==="paModeReps"&&planAddFlow?.current)planAddFlow.current.measureMode="reps";
+   if(ev.target?.id==="paModeTime"&&planAddFlow?.current&&planAddFlow.current.setTechnique!=="pyramid"){
+     planAddFlow.current.measureMode="time";
+     if(!Number(planAddFlow.current.timeSeconds))planAddFlow.current.timeSeconds=60
+   }
+   if(ev.target?.id==="paConfirm")captureUnifiedValues()
+ },true);
+})();
+
+/* ReThink. Fitness — partner exercises are prescription-independent */
+(function(){
+ window.rethinkPartnerPrescriptionIndependent=true;
+ // Group membership never implies identical sets/rest/reps/time.
+ // Each member's own plan object is authoritative.
+})();
+
+/* ReThink. Fitness — partner edit/back exclusion invariant */
+(function(){
+ const oldStartReserved=window.rethinkStartPartnerConfig;
+ window.rethinkStartPartnerConfig=function(name,seed=null,order=null){
+   if(planAddFlow?.group){
+     planAddFlow.reservedPartnerNames=Array.from(new Set([...(planAddFlow.reservedPartnerNames||[]),name]));
+   }
+   return oldStartReserved(name,seed,order)
+ };
+})();
+
+/* ReThink. Fitness — group growth + exclusion invariant */
+(function(){
+ window.rethinkGroupGrowthEnabled=true;
 })();

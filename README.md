@@ -693,8 +693,96 @@ Backup-Erstellung liest den persistenten Speicher nur noch aus und ruft vorher k
 - Zeittraining zeigt nur Zeit, Timer, Leistung, Bewertung und Löschen; KG und S/W entfallen.
 - Jefferson Curl mit Ausführungsbeschreibung ergänzt.
 
-## iPhone Homescreen-Icon – R.
-- Neues eindeutiges iPhone-Icon `R.` mit neuem Dateinamen, damit iOS nicht weiter die alte Icon-Datei aus dem Cache verwendet.
-- Apple-Touch-Icon liegt zusätzlich im Hauptverzeichnis als `apple-touch-icon.png`.
-- Zusätzlich ist `apple-touch-icon-precomposed.png` vorhanden.
-- Manifest-Icons wurden ebenfalls aktualisiert.
+## Definitiver Workout→Plan-Transfer
+- Beim Start eines bearbeiteten Plans verweist `sourcePlanId` jetzt auf den echten Originalplan statt auf die temporäre Draft-ID.
+- `Übernehmen` liest Zeit, Pause und Satzanzahl unmittelbar aus den sichtbaren Feldern.
+- `measureMode`, `timeSeconds`, `rest`, `sets`, Übungsname, Methode, Varianten und Gruppenstruktur werden explizit in den Plan-Snapshot übernommen.
+- Beim Trainingsende wird dieser Snapshot direkt zum Überschreiben bzw. Erstellen des Plans verwendet.
+- Wechsel Wiederholungen ↔ Zeit, geänderte Zeit, Pausenänderungen und ausgetauschte Übungen gelten damit als echte Planänderungen.
+
+## Plan neu erstellen / Satzanzahl – Fix
+- Beim Erstellen eines neuen Plans werden Satzanzahl, Pause, Messmodus, Zeitwert und Wiederholungsvorgabe direkt aus der Übungsmaske in das gespeicherte Planobjekt übernommen.
+- Alle drei Speicherwege (`Speichern`, `Original überschreiben`, `Als neuen Plan speichern`) verwenden jetzt denselben kanonischen Plan-Snapshot.
+- Beim laufenden Training aktualisiert `Satz hinzufügen` jetzt neben `liveSets` auch `exercise.sets`; Löschen tat dies bereits.
+- Beim Workout→Plan-Speichern wird `sets` zusätzlich aus der tatsächlichen Anzahl `liveSets` synchronisiert.
+- Partnergruppen teilen Satzanzahl, Pause, Wiederholungen/Zeitmodus und Zeitwert konsistent.
+
+## Satzanzahl – Auswahlregeln
+- Standard, Superset, Giant Set und Pre-Exhaust: 1–10 Sätze.
+- Drop Set, Rest-Pause und Cluster: 1–6 Sätze.
+- Back-off: mindestens 2 Sätze.
+- Pyramide: mindestens 3 Sätze.
+- Damit ist insbesondere `1 Satz` jetzt auch bei Superset, Giant Set und Pre-Exhaust auswählbar.
+
+## Satz-/Zeitauswahl – stabiler iOS-Commit
+Satzanzahl und Zeit-Roller bauen die Maske bei normalen Änderungen nicht mehr sofort neu auf. Der gewählte Wert bleibt im Draft bestehen und wird bei `Übernehmen` nochmals direkt aus dem sichtbaren Feld gelesen. Das verhindert das Zurückspringen der iOS-Auswahl und stellt sicher, dass `measureMode=time`, `timeSeconds`, `sets` und `rest` gemeinsam übernommen werden.
+
+## Root-Fix Satzanzahl & Zeit
+Der Fehler lag in einem später geladenen Runtime-Override, der ältere Satzbereiche wieder eingesetzt hat (`Superset/Giant/Pre-Exhaust` ab 2 Sätzen) und weiterhin auf die frühere Zeit-Button-UI statt auf den aktuellen Zeit-Select hörte.
+
+Jetzt gilt in der tatsächlich zuletzt ausgeführten Runtime:
+- Standard, Superset, Giant Set, Pre-Exhaust: 1–10.
+- Drop Set, Rest-Pause, Cluster: 1–6.
+- Back-off: 2–6.
+- Pyramide: 3–10.
+- Satzwahl wird ohne unnötigen kompletten Re-Render übernommen.
+- `Zeit` setzt `measureMode=time`.
+- Der aktuelle Wert des nativen Zeit-Selects wird bei Änderung und unmittelbar vor `Übernehmen` in `timeSeconds` geschrieben.
+- Cardio erlaubt weiterhin bis 60 Minuten, andere Zeitübungen bis 10 Minuten.
+
+## Partnerübungen – unabhängige Parameter
+- Jede Übung eines Supersets, Giant Sets oder Pre-Exhaust hat ihre eigene Konfigurationsmaske.
+- B/C/D übernehmen keine Satzanzahl, Pause, Wiederholungen, Zeitwahl oder Zeitdauer von Übung A.
+- Jede Partnerübung kann unabhängig `Wiederholungen` oder `Zeit` verwenden.
+- Jede Partnerübung besitzt eigene Sätze, Pause, WDH/Zeit, Variante und `pro Seite`.
+- Ein Giant Set mit drei Übungen wird nach Löschen einer Übung zu einem Superset aus den zwei verbleibenden Übungen.
+- Erst wenn eine Zweier-Partnergruppe auf eine Übung reduziert wird, wird die verbleibende Übung zu Standard.
+
+## Zeittraining – Anzeige
+- KM/MI wird bei Zeitübungen nicht mehr als Eingabebox eingeblendet.
+- Zeittraining zeigt nur noch Zeit, Leistung, Bewertung und Löschen.
+- Vorhandene alte Distanzwerte bleiben im Speicher erhalten und werden nicht destruktiv gelöscht.
+
+## Partner-Übungskatalog – Klick-Fix
+- Der spät geladene Partner-Katalog hat bisher eine Funktion aus dem Inline-Skript direkt aufgerufen, die aus `runtime-current.js` nicht im selben JavaScript-Scope verfügbar war.
+- Dadurch waren die +/Auswahl-Buttons ab Übung 2 sichtbar, reagierten aber nicht.
+- Der Runtime-Katalog besitzt jetzt eine eigene Auswahlbrücke und öffnet die unabhängige Konfigurationsmaske der gewählten Partnerübung.
+- Die neue Übung startet weiterhin mit ihren eigenen Parametern und übernimmt keine Daten von Übung A.
+
+## Kritischer Partnerauswahl-Fix
+Der scheinbar nicht klickbare Partnerkatalog hatte einen tatsächlichen Laufzeitfehler:
+`renderCompactPartnerConfig()` verwendete `REST_OPTIONS`, obwohl diese Konstante nicht definiert war. Der Klick auf Übung 2/3/4 wurde ausgeführt, die unmittelbar danach zu öffnende Maske brach jedoch mit einem `ReferenceError` ab.
+
+`REST_OPTIONS` ist jetzt als gemeinsame Pausenliste definiert. Der komplette Partnerpfad wurde zusätzlich auf seine benötigten Funktionen/Variablen geprüft. Fehler beim Öffnen einer Partnerübung werden künftig sichtbar geloggt und nicht mehr wie ein toter Button wirken.
+
+## Partnerbearbeitung / Giant Set
+- Beim Bearbeiten einer vorhandenen Partnergruppe werden bereits verwendete Übungen weiterhin aus dem Auswahlkatalog ausgeblendet.
+- Dabei werden bestätigte Drafts, noch ausstehende bestehende Gruppenmitglieder und die ursprünglichen Gruppenmitglieder berücksichtigt.
+- Die bei Giant Set gewählte Anzahl 3–6 wird einmal als Gruppenstruktur festgelegt und bleibt bis zum Abschluss des Flows verbindlich.
+- Übung B/C/D/E/F wird nicht erneut aufgefordert, die Anzahl der Giant-Set-Übungen festzulegen.
+- Die Trainingsparameter jeder Partnerübung bleiben trotzdem vollständig eigenständig.
+
+## Vorschau / Pause / Partnerfilter
+- Vorschauen verwenden ein eigenes stabiles 3-Spalten-Layout und nicht mehr die interaktiven Live-Grid-Geometrien.
+- Partnerübungen werden in Vorschauen einzeln mit ihren eigenen Sätzen und WDH/Zeit-Werten dargestellt.
+- `Pause = Keine` ist jetzt der echte Wert `0` und wird nicht mehr über `|| 90` auf 1:30 zurückgesetzt.
+- Beim Bearbeiten und Zurücknavigieren in Superset, Giant Set und Pre-Exhaust werden alle bereits zur Folge gehörenden bzw. bereits gewählten Übungen dauerhaft aus dem Partnerkatalog ausgeblendet.
+
+## Gruppenbearbeitung – gemeinsamer Fix
+- Beim Austauschen/Bearbeiten einer Übung innerhalb Superset, Giant Set und Pre-Exhaust werden sämtliche bereits in dieser Gruppe verwendeten Übungen aus dem Katalog ausgeschlossen.
+- Auch die Partner-Konfigurationsmaske verwendet dieselbe zentrale Ausschlussliste.
+- Jede Gruppenkarte im Planeditor besitzt jetzt `+ Übung hinzufügen`.
+- Superset/Pre-Exhaust mit 2 Übungen + eine Übung → Giant Set mit 3 Übungen.
+- Giant Set 3 → 4 → 5 → 6 möglich.
+- Die neu hinzugefügte Übung erhält ihre eigene vollständige Maske und übernimmt keine Trainingsdaten der bestehenden Übungen.
+- Maximal 6 Übungen pro Giant Set.
+- Vorschauen nutzen einen vollständig isolierten Renderer und sind nicht mehr von Live-Workout-Grid-CSS abhängig.
+- `Pause = Keine` bleibt als Wert 0 erhalten.
+
+## Vorschau – Wiederholungen vs. Zeit
+- Wiederholungsübungen zeigen ausschließlich `Satz | KG | WDH.`.
+- Zeitübungen zeigen ausschließlich `Satz | Zeit | Leistung`.
+- Bei Zeitübungen erscheinen weder `KG` noch `S/W`.
+- Die Leistungsbox ist breiter als die Zeitbox.
+- Alle Felder bleiben in einer einzigen Zeile.
+- Minus-/Löschen-/Aktionsbuttons sind in sämtlichen Vorschauen ausgeblendet.

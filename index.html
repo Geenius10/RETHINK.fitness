@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
-<meta name="theme-color" content="#070708"><link rel="manifest" href="./manifest.webmanifest?v=20260823rdot"><title>ReThink. Fitness</title>
+<meta name="theme-color" content="#070708"><link rel="manifest" href="manifest.webmanifest"><title>ReThink. Fitness</title>
 <style>
 :root{--bg:#070708;--surface:#111114;--surface2:#18181d;--line:#29292f;--text:#f8f8fa;--muted:#909098;--danger:#ff655f;--nav-h:76px;--side:16px;--max:520px;color-scheme:dark}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}body{min-height:100dvh}.hidden{display:none!important}
@@ -1509,11 +1509,107 @@ html[data-theme="light"] #startTrainingCard #choosePlanStart.training-main-play{
   display:none!important;
 }
 </style>
-<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon-rdot-20260823.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png?v=20260823r2">
 <style id="rethink-time-performance-layout">
 .time-head,.time-row{grid-template-columns:34px minmax(78px,1fr) 42px minmax(86px,1fr) 40px 22px!important;gap:6px!important}
 .time-row .remove-mini{grid-column:6!important}
-</style><link rel="apple-touch-icon-precomposed" sizes="180x180" href="./apple-touch-icon-precomposed.png">
+</style>
+<style id="rethink-preview-clean-final">
+.preview-live-shell{display:grid!important;gap:12px!important;width:100%!important}
+.preview-live-shell .method-card{width:100%!important;min-width:0!important;overflow:hidden!important;padding:14px!important}
+.preview-live-shell .connected-method-card{padding:14px!important}
+.preview-live-shell .preview-group-member{
+  padding:10px 0 0!important;margin:0!important;border-top:1px solid var(--line)!important;min-width:0!important
+}
+.preview-live-shell .preview-group-member:first-of-type{border-top:0!important;padding-top:6px!important}
+.preview-live-shell .exercise-title-link,
+.preview-live-shell .preview-group-member>strong{
+  display:block!important;width:100%!important;text-align:left!important;white-space:normal!important;overflow-wrap:anywhere!important
+}
+.preview-live-shell .prescription{margin:4px 0 8px!important;line-height:1.35!important}
+.preview-table{display:grid!important;gap:5px!important;width:100%!important;min-width:0!important;margin-top:7px!important}
+.preview-table-head,.preview-table-row{
+  display:grid!important;grid-template-columns:40px minmax(0,1fr) minmax(0,1fr)!important;gap:7px!important;align-items:center!important;width:100%!important
+}
+.preview-table-head{font-size:9.5px!important;color:var(--muted)!important;font-weight:850!important;padding:0 2px!important}
+.preview-table-row>strong{font-size:12px!important;text-align:center!important}
+.preview-table .preview-value{
+  height:38px!important;min-width:0!important;width:100%!important;border:1px solid var(--line)!important;
+  border-radius:10px!important;background:var(--surface2)!important;color:var(--muted)!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;font-size:11px!important;font-weight:750!important;
+  padding:0 6px!important;box-sizing:border-box!important
+}
+/* Old live-row grids must never control preview geometry. */
+.preview-live-shell .set-head,.preview-live-shell .set-row,
+.preview-live-shell .advanced-head,.preview-live-shell .advanced-row,
+.preview-live-shell .time-head,.preview-live-shell .time-row,
+.preview-live-shell .group-round,.preview-live-shell .group-ex-row{max-width:100%!important}
+</style>
+
+<style id="rethink-preview-isolated-v2">
+.rt-preview-list{display:flex;flex-direction:column;gap:12px;width:100%;padding:0;margin:0}
+.rt-preview-card{display:block;width:100%;box-sizing:border-box;border:2px solid var(--method,#b7a4d8);border-radius:16px;background:var(--surface);padding:14px;overflow:hidden}
+.rt-preview-method{font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;color:var(--method,#b7a4d8)}
+.rt-preview-help{font-size:10px;color:var(--muted);line-height:1.35;margin-bottom:8px}
+.rt-preview-member{display:block;width:100%;box-sizing:border-box;padding:10px 0;border-top:1px solid var(--line)}
+.rt-preview-member:first-of-type{border-top:0}
+.rt-preview-title{font-size:15px;font-weight:900;line-height:1.25;overflow-wrap:anywhere}
+.rt-preview-prescription{font-size:10.5px;color:var(--muted);margin:3px 0 8px;line-height:1.35}
+.rt-preview-card .preview-table{width:100%!important;display:block!important}
+.rt-preview-card .preview-table-head,.rt-preview-card .preview-table-row{display:grid!important;grid-template-columns:38px minmax(0,1fr) minmax(0,1fr)!important;gap:6px!important;width:100%!important;align-items:center!important;box-sizing:border-box!important}
+.rt-preview-card .preview-table-head{font-size:9px;color:var(--muted);margin-bottom:5px}
+.rt-preview-card .preview-table-row{margin-bottom:5px}
+.rt-preview-card .preview-value{width:100%!important;min-width:0!important;height:36px!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;border:1px solid var(--line)!important;border-radius:9px!important;background:var(--surface2)!important;color:var(--muted)!important;font-size:10.5px!important}
+</style>
+
+<style id="rethink-preview-time-layout-v3">
+.rt-preview-card .preview-table-head,
+.rt-preview-card .preview-table-row{
+  display:grid!important;
+  width:100%!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+  gap:6px!important;
+}
+.rt-preview-card .preview-rep-head,
+.rt-preview-card .preview-rep-row{
+  grid-template-columns:38px minmax(0,1fr) minmax(0,1fr)!important;
+}
+.rt-preview-card .preview-time-head,
+.rt-preview-card .preview-time-row{
+  grid-template-columns:38px minmax(74px,.8fr) minmax(120px,1.6fr)!important;
+}
+.rt-preview-card .preview-value{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  height:38px!important;
+  box-sizing:border-box!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.rt-preview-card .preview-performance-value{
+  min-width:120px!important;
+  font-size:11px!important;
+  font-weight:800!important;
+}
+.rt-preview-card .preview-time-value{
+  min-width:74px!important;
+}
+.preview-live-shell .remove-mini,
+.rt-preview-list .remove-mini,
+.preview-live-shell [data-remove-live-set],
+.rt-preview-list [data-remove-live-set],
+.preview-live-shell .live-delete-ex,
+.rt-preview-list .live-delete-ex,
+.preview-live-shell .measurement-delete,
+.rt-preview-list .measurement-delete,
+.preview-live-shell .icon-btn,
+.rt-preview-list .icon-btn{
+  display:none!important;
+}
+</style>
 </head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
@@ -1595,7 +1691,7 @@ style="-webkit-appearance:none;appearance:none;width:148px;height:108px;min-widt
 <section id="summaryPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2 id="summaryTitle">Training</h2><div></div></div><div id="summaryBody"></div></section><section id="settingsPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2>Einstellungen</h2><div></div></div><div id="settingsBody"></div></section>
 <div id="sheetWrap" class="sheet-wrap hidden"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-top"><button id="sheetBack" class="icon-btn">‹</button><h2 id="sheetTitle">Auswahl</h2><button id="sheetClose" class="icon-btn">×</button></div><div id="sheetBody" class="sheet-body"></div></div></div>
 
-<script src="./foods.js?v=20260821m"></script>
+<script src="./foods.js?v=20260823-partner2"></script>
 <script>
 "use strict";
 const STORAGE={plans:"gymapp_plans",custom:"gymapp_custom_exercises",library:"gymapp_exercise_library",history:"gymapp_workout_history",active:"gymapp_active_workout",measurements:"gymapp_measurements",nutrition:"gymapp_nutrition",profile:"gymapp_profile"};
@@ -1603,6 +1699,7 @@ const WEEK_KEY="rethink_week_plan",WEEK_DATED_KEY="rethink_week_plan_dated_v1",R
 const DEFAULT_EXERCISES=[{"name":"Jefferson Curl","category":"Gewichte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Beine/Füße","Gesäß/Hüfte","Core"]},{"name":"Back Lever","category":"Calisthenics","tracking":"reps_time","subcategory":"Rücken","muscles":["Rücken","Schulter","Core"]},{"name":"Dragon Flag","category":"Calisthenics","tracking":"reps","subcategory":"Core","muscles":["Core","Rücken"]},{"name":"Front Lever","category":"Calisthenics","tracking":"reps_time","subcategory":"Rücken","muscles":["Rücken","Core","Arme/Hände"]},{"name":"Handstand","category":"Calisthenics","tracking":"reps_time","subcategory":"Schulter","muscles":["Schulter","Arme/Hände","Core"]},{"name":"Handstand Push-Up","category":"Calisthenics","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Arme/Hände","Core"]},{"name":"Hanging Leg Raise","category":"Calisthenics","tracking":"reps","subcategory":"Core","muscles":["Core","Arme/Hände"]},{"name":"Human Flag","category":"Calisthenics","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter","Arme/Hände"]},{"name":"L-Sit/V-Sit","category":"Calisthenics","tracking":"reps_time","subcategory":"Core","muscles":["Core","Arme/Hände"]},{"name":"Muscle-Up","category":"Calisthenics","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände","Brust","Core"]},{"name":"Pistol Squat","category":"Calisthenics","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Core"]},{"name":"Planche","category":"Calisthenics","tracking":"reps_time","subcategory":"Schulter","muscles":["Schulter","Brust","Arme/Hände","Core"]},{"name":"Planche Push-Up","category":"Calisthenics","tracking":"reps","subcategory":"Brust","muscles":["Brust","Schulter","Arme/Hände","Core"]},{"name":"Sissy Squat","category":"Calisthenics","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"AirBike","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße","Arme/Hände"],"subcategory":"Beine/Füße"},{"name":"CrossTrainer","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße","Arme/Hände"],"subcategory":"Beine/Füße"},{"name":"Fahrradergometer","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße"],"subcategory":"Beine/Füße"},{"name":"Laufband","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße"],"subcategory":"Beine/Füße"},{"name":"Ruderergometer","category":"Cardio","tracking":"cardio","muscles":["Rücken","Beine/Füße","Arme/Hände","Core"],"subcategory":"Rücken"},{"name":"Seilspringen","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße","Sprünge"],"subcategory":"Beine/Füße"},{"name":"Skiergometer","category":"Cardio","tracking":"cardio","muscles":["Rücken","Arme/Hände","Core"],"subcategory":"Rücken"},{"name":"StairMaster","category":"Cardio","tracking":"cardio","muscles":["Beine/Füße","Gesäß/Hüfte"],"subcategory":"Beine/Füße"},{"name":"Box Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Broad Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Clean Pull","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine/Füße","Gesäß/Hüfte","Rücken"]},{"name":"Countermovement Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Depth Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Athletik"]},{"name":"Half Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine/Füße","Gesäß/Hüfte"]},{"name":"Hang Power Clean","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine/Füße","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"High Pull","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Rücken","Schulter","Beine/Füße"]},{"name":"Jump Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Sprünge","Beine/Füße","Gesäß/Hüfte"]},{"name":"Kettlebell Swing","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Gesäß/Hüfte","Beine/Füße","Core"]},{"name":"Landmine Push Press","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme/Hände","Core"]},{"name":"Lateral Bound","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Loaded Jump Squat","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Sprünge","Beine/Füße","Gesäß/Hüfte"]},{"name":"Medicine Ball Chest Pass","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Brust","Arme/Hände"]},{"name":"Medicine Ball Overhead Throw","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme/Hände","Core"]},{"name":"Medicine Ball Rotational Throw","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Schulter"]},{"name":"Medicine Ball Scoop Toss","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Gesäß/Hüfte"]},{"name":"Medicine Ball Shot Put","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Brust","Schulter","Arme/Hände"]},{"name":"Medicine Ball Slam","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Core","Schulter","Arme/Hände"]},{"name":"Pogo Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Athletik"]},{"name":"Power Clean","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Beine/Füße","Gesäß/Hüfte","Rücken","Schulter"]},{"name":"Push Press","category":"Explosivität","subcategory":"Athletik","tracking":"reps","muscles":["Athletik","Schulter","Arme/Hände","Beine/Füße"]},{"name":"Repeated Broad Jump","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Single-Leg Bound","category":"Explosivität","subcategory":"Sprünge","tracking":"reps","muscles":["Sprünge","Beine/Füße","Gesäß/Hüfte","Athletik"]},{"name":"Butterfly Machine","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Cable Biceps Curl","category":"Geräte","tracking":"reps","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Cable Fly","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Cable Lateral Raise","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Cable Row","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Cable Shoulder Rotation","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Cable Triceps Extension","category":"Geräte","tracking":"reps","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Calf Machine","category":"Geräte","tracking":"reps","variants":["Seated","Standing"],"subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Chest Press","category":"Geräte","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter"]},{"name":"Chest Supported Row","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Crunch Machine","category":"Geräte","tracking":"reps","subcategory":"Core","muscles":["Core"]},{"name":"Hip Abduction Machine","category":"Geräte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine/Füße"]},{"name":"Hip Adduction Machine","category":"Geräte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Hip Thrust Machine","category":"Geräte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine/Füße"]},{"name":"Lat Pull-Down","category":"Geräte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Leg Curl","category":"Geräte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Leg Extension","category":"Geräte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Leg Press","category":"Geräte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Reverse Fly","category":"Geräte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"ATG Split Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Barbell Bench Press","category":"Gewichte","tracking":"reps","variants":["Standard","Incline","Decline"],"subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter"]},{"name":"Barbell Deadlift","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Rücken","Core"]},{"name":"Barbell Good Morning","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Rücken"]},{"name":"Barbell Hip Thrust","category":"Gewichte","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine/Füße"]},{"name":"Barbell Row","category":"Gewichte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Barbell Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Core"]},{"name":"Biceps Curl","category":"Gewichte","tracking":"reps","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Bulgarian Split Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Cable-Fly","category":"Gewichte","tracking":"reps","subcategory":"Brust","muscles":["Brust"]},{"name":"Dumbbell Bench Press","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter"]},{"name":"Dumbbell Fly","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Brust","muscles":["Brust"]},{"name":"Dumbbell Lateral Raise","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Dumbbell Row","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Dumbbell Shoulder Rotation","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Face-Pull","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"Front Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Core","Gesäß/Hüfte"]},{"name":"Goblet Squat","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Core"]},{"name":"Landmine Rotation","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Paloff Press","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core"]},{"name":"Prone Arm Circles","category":"Gewichte","tracking":"reps","subcategory":"Schulter","muscles":["Schulter","Rücken"]},{"name":"Pull-Over","category":"Gewichte","tracking":"reps","subcategory":"Brust","muscles":["Brust","Rücken"]},{"name":"Romanian Deadlift","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte","Rücken"]},{"name":"Seated Dumbbell Shoulder Press","category":"Gewichte","tracking":"reps","variants":["Bilateral","Unilateral"],"subcategory":"Schulter","muscles":["Schulter","Arme/Hände"]},{"name":"Standing Shoulder Press","category":"Gewichte","tracking":"reps","variants":["Dumbbell","Barbell"],"subcategory":"Schulter","muscles":["Schulter","Arme/Hände"]},{"name":"Suitcase Carry","category":"Gewichte","tracking":"reps","subcategory":"Core","muscles":["Core","Arme/Hände"]},{"name":"T-Bar Row","category":"Gewichte","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Tibialis Raise","category":"Gewichte","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Triceps Extension","category":"Gewichte","tracking":"reps","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Ab Wheel","category":"Körpergewicht","tracking":"reps","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Bird Dog","category":"Körpergewicht","tracking":"reps","subcategory":"Core","muscles":["Core","Gesäß/Hüfte"]},{"name":"Chin-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände"]},{"name":"Clamshell","category":"Körpergewicht","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte"]},{"name":"Curtsy Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Dip","category":"Körpergewicht","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter"]},{"name":"Glute Bridge","category":"Körpergewicht","tracking":"reps","subcategory":"Gesäß/Hüfte","muscles":["Gesäß/Hüfte","Beine/Füße"]},{"name":"Hollow Body Hold","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core"]},{"name":"Hyperextensions","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Gesäß/Hüfte","Beine/Füße"]},{"name":"Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Nordic Hamstring Curl","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Plank","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Pull-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Rücken","muscles":["Rücken","Arme/Hände","Core"]},{"name":"Push-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Brust","muscles":["Brust","Arme/Hände","Schulter","Core"]},{"name":"Reverse Lunge","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Reverse Nordics","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Side Plank","category":"Körpergewicht","tracking":"reps_time","subcategory":"Core","muscles":["Core","Schulter"]},{"name":"Step-Down","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"Step-Up","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße","Gesäß/Hüfte"]},{"name":"90/90 Hip Switch","category":"Mobilität","tracking":"time","subcategory":"Beine/Füße","muscles":["Beine/Füße","Core"]},{"name":"Ankle Dorsiflexion Mobilization","category":"Mobilität","tracking":"time","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Cat-Cow","category":"Mobilität","tracking":"time","subcategory":"Rücken","muscles":["Rücken","Core"]},{"name":"Couch Stretch","category":"Mobilität","tracking":"time","subcategory":"Beine/Füße","muscles":["Beine/Füße"]},{"name":"Deep Squat Hold","category":"Mobilität","tracking":"time","subcategory":"Beine/Füße","muscles":["Beine/Füße","Core"]},{"name":"Open Book Rotation","category":"Mobilität","tracking":"time","subcategory":"Rücken","muscles":["Rücken","Core"]},{"name":"Shoulder CARs","category":"Mobilität","tracking":"time","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Thoracic Rotation","category":"Mobilität","tracking":"time","subcategory":"Rücken","muscles":["Rücken"]},{"name":"Wall Shoulder Flexion","category":"Mobilität","tracking":"time","subcategory":"Schulter","muscles":["Schulter"]},{"name":"Wrist CARs","category":"Mobilität","tracking":"time","subcategory":"Arme/Hände","muscles":["Arme/Hände"]},{"name":"Dead Hang","category":"Calisthenics","tracking":"time","subcategory":"Arme/Hände","muscles":["Arme/Hände","Rücken","Schulter"]},{"name":"Calf Raises","category":"Körpergewicht","tracking":"reps","subcategory":"Beine/Füße","muscles":["Beine/Füße"],"variants":["Beidbeinig","Einbeinig"]}];
 const METHOD_LABEL={standard:"Standard",normal:"Standard",superset:"Superset",giant:"Giant Set",preexhaust:"Pre-Exhaust",dropset:"Drop Set",restpause:"Rest-Pause",cluster:"Cluster",pyramid:"Pyramide",backoff:"Back-off"};
 const METHOD_KEYS=["standard","superset","giant","preexhaust","dropset","restpause","cluster","pyramid","backoff"];
+const REST_OPTIONS=[0,30,45,60,90,120,150,180,240,300];
 const $=id=>document.getElementById(id),clone=o=>JSON.parse(JSON.stringify(o)),uid=()=>Date.now()+Math.floor(Math.random()*1e5);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 const read=(k,f)=>{try{const x=localStorage.getItem(k);return x?JSON.parse(x):f}catch{return f}},write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
@@ -1696,15 +1793,29 @@ function prepareDraftForTargetMethod(e,method,oldGroupCount=1){
  if(method==="dropset")e.methodData={dropCount:2,dropPercent:20};
  else if(method==="giant")e.methodData={giantCount:Math.max(3,Math.min(6,Number(oldGroupCount)||3))};
  else if(method==="pyramid"){e.sets=Math.max(3,Number(e.sets)||5);e.methodData={};ensurePyramidData(e)}
- else if(method==="backoff")e.methodData={topReps:5,backoffReps:8,backoffPercent:15};
+ else if(method==="backoff"){e.sets=Math.max(2,Number(e.sets)||3);e.methodData={topReps:5,backoffReps:8,backoffPercent:15};}
  else if(method==="cluster")e.reps="10";
  else if(method==="restpause")e.reps="20";
  if(!groupMethod(method)){e.techniqueGroup=null;e.linkedExerciseNames=[]}
  return e
 }
+function setOptionsForMethod(method){
+ method=method||"standard";
+ if(method==="pyramid")return [3,4,5,6,7,8,9,10];
+ if(method==="backoff")return [2,3,4,5,6];
+ if(method==="cluster")return [1,2,3,4,5,6];
+ if(method==="restpause")return [1,2,3,4,5,6];
+ if(method==="dropset")return [1,2,3,4,5,6];
+ return [1,2,3,4,5,6,7,8,9,10];
+}
+function setOptionsMarkup(e,selected,prefix=""){
+ const vals=setOptionsForMethod(e?.setTechnique||"standard"),cur=Math.max(1,Number(selected)||1);
+ return vals.map(n=>`<option value="${n}" ${cur===n?"selected":""}>${n}</option>`).join("")
+}
 function validateExerciseDraft(e){
  if(!e||!e.name)return"Bitte eine Übung auswählen.";
- const sets=Number(e.sets);if(!Number.isInteger(sets)||sets<1||sets>10)return"Bitte eine gültige Satzanzahl festlegen.";
+ const sets=Number(e.sets),minSets=e.setTechnique==="pyramid"?3:e.setTechnique==="backoff"?2:1;
+ if(!Number.isInteger(sets)||sets<minSets||sets>10)return`Für ${METHOD_LABEL[e.setTechnique||"standard"]||"diese Methode"} bitte ${minSets===1?"mindestens 1 Satz":`mindestens ${minSets} Sätze`} wählen.`;
  const rest=Number(e.rest);if(!Number.isFinite(rest)||rest<0)return"Bitte eine gültige Pausenzeit festlegen.";
  if(e.measureMode==="time"){
   const t=Number(e.timeSeconds),max=String(e.category||"").toLowerCase()==="cardio"?3600:600;
@@ -1723,7 +1834,8 @@ function validateExerciseDraft(e){
   const md=e.methodData||{},c=Number(md.dropCount),pct=Number(md.dropPercent);if(![1,2,3,4].includes(c)||![10,15,20,25,30].includes(pct))return"Bitte Anzahl der Drops und Gewichtsreduktion vollständig festlegen.";
  }
  if((e.setTechnique||"")==="giant"){
-  const c=Number(e.methodData?.giantCount);if(![3,4,5,6].includes(c))return"Bitte die Anzahl der Übungen im Giant Set festlegen.";
+  const c=Number(e.methodData?.giantCount||planAddFlow?.group?.target);
+  if(![3,4,5,6].includes(c))return"Bitte die Anzahl der Übungen im Giant Set festlegen.";
  }
  return""
 }
@@ -1756,7 +1868,7 @@ function methodHelp(m){return METHOD_HELP[m||"standard"]||METHOD_HELP.standard}
 function exerciseSetCount(ex){return Number(ex?.sets)||0}
 function workoutSetCount(w){return(w?.exercises||[]).reduce((n,e)=>n+(e.liveSets?.length||Number(e.sets)||0),0)}
 function amrapText(v){const s=String(v||"");return s.toUpperCase().includes("AMRAP")?"AMRAP":s}
-function estimateMinutes(p){let sec=0;(p.exercises||[]).forEach(e=>{const sets=Number(e.sets)||3;if(e.measureMode==="time")sec+=sets*(Number(e.timeSeconds)||300);else sec+=sets*45;sec+=Math.max(0,sets-1)*(Number(e.rest)||90)});return Math.max(1,Math.round(sec/60))}
+function estimateMinutes(p){let sec=0;(p.exercises||[]).forEach(e=>{const sets=Number(e.sets)||3;if(e.measureMode==="time")sec+=sets*(Number(e.timeSeconds)||300);else sec+=sets*45;sec+=Math.max(0,sets-1)*normalizedRest(e.rest,90)});return Math.max(1,Math.round(sec/60))}
 function persistUI({capture=true}={}){
  const visible=document.querySelector(".page:not(.hidden)");
  if(capture)captureTabUiState(currentTab);
@@ -2251,13 +2363,33 @@ $("planEditorBack").onclick=()=>{
 
 function planStructureSnapshot(p){const x=clone(p||{});delete x.name;delete x.updatedAt;delete x.lastUsedAt;delete x._editingSourceId;delete x._originalName;delete x._isNew;delete x.id;delete x.createdAt;delete x.sourcePlanId;return JSON.stringify(x)}
 function editorOnlyRenamed(){if(!currentPlan?._editingSourceId)return false;const src=plans.find(p=>p.id===currentPlan._editingSourceId);return !!src&&planStructureSnapshot(src)===planStructureSnapshot(currentPlan)&&String(src.name)!==String($("planName").value.trim())}
-function overwriteCurrentPlan(){const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");const src=plans.find(p=>p.id===currentPlan._editingSourceId);if(!src)return null;const saved=clone(currentPlan);saved.id=src.id;saved.name=entered;saved.createdAt=src.createdAt;saved.updatedAt=Date.now();delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;plans=plans.map(p=>p.id===src.id?clone(saved):p);currentPlan=clone(saved);saveAll();setEditorBaseline();return saved}
-function savePlanAsNew(){const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");if(!(currentPlan.exercises||[]).length)return alert("Ein Trainingsplan braucht mindestens eine Übung.");const saved=clone(currentPlan);saved.id=uid();saved.name=nextPlanVersionName(currentPlan._originalName||entered);saved.createdAt=Date.now();saved.updatedAt=Date.now();saved.sourcePlanId=currentPlan._editingSourceId||currentPlan.id;delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;plans.push(clone(saved));currentPlan=clone(saved);saveAll();setEditorBaseline();return saved}
+function canonicalPlanExerciseForSave(e){
+ const x=clone(e||{});
+ delete x.liveSets;delete x._lastRatings;
+ x.name=String(e?.name||x.name||"Übung");
+ x.setTechnique=e?.setTechnique||"standard";
+ x.measureMode=e?.measureMode==="time"?"time":"reps";
+ x.timeSeconds=Math.max(15,Number(e?.timeSeconds)||60);
+ x.reps=e?.reps;
+ x.sets=Math.max(1,Number(e?.sets)||1);
+ x.rest=Math.max(0,Number(e?.rest)||0);
+ x.variant=e?.variant||"";
+ x.perSide=!!e?.perSide;
+ x.methodData=clone(e?.methodData||{});
+ x.techniqueGroup=e?.techniqueGroup||null;
+ x.linkedExerciseNames=Array.isArray(e?.linkedExerciseNames)?clone(e.linkedExerciseNames):[];
+ return x
+}
+function canonicalizePlanForSave(p){
+ const out=clone(p||{});out.exercises=(p?.exercises||[]).map(canonicalPlanExerciseForSave);return out
+}
+function overwriteCurrentPlan(){const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");const src=plans.find(p=>p.id===currentPlan._editingSourceId);if(!src)return null;const saved=canonicalizePlanForSave(currentPlan);saved.id=src.id;saved.name=entered;saved.createdAt=src.createdAt;saved.updatedAt=Date.now();delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;plans=plans.map(p=>p.id===src.id?clone(saved):p);currentPlan=clone(saved);saveAll();setEditorBaseline();return saved}
+function savePlanAsNew(){const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");if(!(currentPlan.exercises||[]).length)return alert("Ein Trainingsplan braucht mindestens eine Übung.");const saved=canonicalizePlanForSave(currentPlan);saved.id=uid();saved.name=nextPlanVersionName(currentPlan._originalName||entered);saved.createdAt=Date.now();saved.updatedAt=Date.now();saved.sourcePlanId=currentPlan._editingSourceId||currentPlan.id;delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;plans.push(clone(saved));currentPlan=clone(saved);saveAll();setEditorBaseline();return saved}
 function askExistingPlanSave(after){if(editorOnlyRenamed()){overwriteCurrentPlan();after?.();return}openSheet("Planänderungen speichern?",`<p class="muted">Möchtest du den bisherigen Plan überschreiben oder die Bearbeitung als neuen Plan speichern?</p><div class="save-choice-stack"><button id="overwritePlan" class="primary">Alten Plan überschreiben</button><button id="newPlanVersion" class="secondary">Neuen Plan erstellen</button><button id="cancelPlanSave" class="secondary">Abbrechen</button></div>`);$("overwritePlan").onclick=()=>{if(overwriteCurrentPlan()){closeSheet({all:true});after?.()}};$("newPlanVersion").onclick=()=>{if(savePlanAsNew()){closeSheet({all:true});after?.()}};$("cancelPlanSave").onclick=()=>closeSheet({all:true})}
 function saveCurrentPlan(){
  const entered=$("planName").value.trim();if(!entered)return alert("Bitte Planname eingeben.");
  if(!(currentPlan.exercises||[]).length){alert("Ein Trainingsplan braucht mindestens eine Übung.");return null}
- let saved=clone(currentPlan);
+ let saved=canonicalizePlanForSave(currentPlan);
  if(currentPlan._editingSourceId){
   saved.id=uid();saved.name=nextPlanVersionName(currentPlan._originalName||entered);saved.createdAt=Date.now();saved.updatedAt=Date.now();saved.sourcePlanId=currentPlan._editingSourceId;
   delete saved._editingSourceId;delete saved._originalName;delete saved._isNew;
@@ -2283,13 +2415,13 @@ function startCurrentEditorPlan(){const p=currentEditorTransientPlan();if(p)conf
 $("planPlayBtn").onclick=startCurrentEditorPlan;
 function planPrescription(e){
  const m=e.setTechnique||"standard";
- if(e.measureMode==="time")return`${formatTime(e.timeSeconds||300)} · Pause ${formatTime(e.rest||90)}`;
+ if(e.measureMode==="time")return`${formatTime(e.timeSeconds||300)} · Pause ${restLabel(e.rest)}`;
  if(m==="restpause")return`${Number(e.reps)||20} WDH. Gesamtziel`;
  if(m==="cluster")return`Empfehlung: ${amrapText(e.reps||"1-4")} WDH. je Cluster · ${e.methodData?.blocks||3} Cluster`;
  if(m==="dropset")return`${amrapText(e.reps||"8-12")}${String(e.reps||"").toUpperCase().includes("AMRAP")?"":" WDH."} · ${e.methodData?.dropCount||2} Drops`;
  if(m==="pyramid"){ensurePyramidData(e);return`${e.methodData.reps.join(" · ")} WDH. · ${e.methodData.weightPct.join(" · ")}%`};
  if(m==="backoff")return`${e.methodData?.topReps||5}/${e.methodData?.backoffReps||8} WDH. · −${e.methodData?.backoffPercent||15}%`;
- const r=amrapText(e.reps||"8-12");return`${e.sets||3}× ${r}${r==="AMRAP"?"":" WDH."} · Pause ${formatTime(e.rest||90)}`
+ const r=amrapText(e.reps||"8-12");return`${e.sets||3}× ${r}${r==="AMRAP"?"":" WDH."} · Pause ${restLabel(e.rest)}`
 }
 function editorVisualGroups(exercises){
  const out=[];
@@ -2304,20 +2436,81 @@ function editorVisualGroups(exercises){
  return out
 }
 function renderEditorExerciseInner(e,i,letter=""){
- return `<div class="editor-group-exercise"><div class="space"><button class="exercise-title-link" data-editor-detail="${i}">${letter?`<span class="group-letter">${letter}</span> `:""}${esc(e.name)}</button><button class="remove-mini" data-remove-ex="${i}">−</button></div>${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}<div class="editor-ex-meta"><span class="meta-pill">${e.sets||3} Sätze</span><span class="meta-pill">${e.measureMode==="time"?formatTime(e.timeSeconds||300):(amrapText(e.reps||"8-12")+(amrapText(e.reps||"")==="AMRAP"?"":" WDH."))}</span><span class="meta-pill">${formatTime(e.rest||90)} Pause</span></div><div class="editor-action-row"><button class="secondary edit-mini" data-config="${i}">Bearbeiten</button><button class="secondary edit-mini" data-replace="${i}">⇄ Austauschen</button></div></div>`
+ return `<div class="editor-group-exercise"><div class="space"><button class="exercise-title-link" data-editor-detail="${i}">${letter?`<span class="group-letter">${letter}</span> `:""}${esc(e.name)}</button><button class="remove-mini" data-remove-ex="${i}">−</button></div>${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}<div class="editor-ex-meta"><span class="meta-pill">${e.sets||3} Sätze</span><span class="meta-pill">${e.measureMode==="time"?formatTime(e.timeSeconds||300):(amrapText(e.reps||"8-12")+(amrapText(e.reps||"")==="AMRAP"?"":" WDH."))}</span><span class="meta-pill">${restLabel(e.rest)} Pause</span></div><div class="editor-action-row"><button class="secondary edit-mini" data-config="${i}">Bearbeiten</button><button class="secondary edit-mini" data-replace="${i}">⇄ Austauschen</button></div></div>`
 }
 function renderEditorExercises(){
  const ep=currentPlan||{exercises:[]};
  $("editorPlanStats").innerHTML=`<div class="stat-grid editor-stat-grid"><div class="stat"><strong>${ep.exercises.length}</strong><span>ÜBUNGEN</span></div><div class="stat"><strong>${countPlanSets(ep)}</strong><span>SÄTZE</span></div><div class="stat"><strong>~${estimateMinutes(ep)} Min.</strong><span>DAUER</span></div></div>`;
  $("editorExerciseList").innerHTML=editorVisualGroups(currentPlan.exercises).map(g=>{
    const grouped=groupMethod(g.method);
-   return `<div class="method-card method-${g.method} ${grouped?"connected-method-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map(({e,i},j)=>renderEditorExerciseInner(e,i,grouped?String.fromCharCode(97+j):"")).join("")}${grouped?`<div class="editor-action-row"><button class="secondary edit-mini" data-detach="${g.items[0].i}">⌁ Verknüpfung lösen</button></div>`:""}</div>`
+   return `<div class="method-card method-${g.method} ${grouped?"connected-method-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map(({e,i},j)=>renderEditorExerciseInner(e,i,grouped?String.fromCharCode(97+j):"")).join("")}${grouped?`<div class="editor-action-row">${g.items.length<6?`<button class="secondary edit-mini" data-group-add-exercise="${g.items[0].i}">+ Übung hinzufügen</button>`:""}<button class="secondary edit-mini" data-detach="${g.items[0].i}">⌁ Verknüpfung lösen</button></div>`:""}</div>`
  }).join("");
  document.querySelectorAll("[data-editor-detail]").forEach(b=>b.onclick=()=>openExerciseDetail(currentPlan.exercises[Number(b.dataset.editorDetail)].name));
  document.querySelectorAll("[data-remove-ex]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.removeEx),name=currentPlan.exercises[i]?.name||"diese Übung";if(!confirm(`„${name}“ wirklich aus dem Trainingsplan löschen?`))return;const removed=currentPlan.exercises.splice(i,1)[0];normalizeBrokenPlanGroupAfterDelete(removed);markEditorDirty();renderEditorExercises();persistUI()});
  document.querySelectorAll("[data-config]").forEach(b=>b.onclick=()=>configureExercise(Number(b.dataset.config)));
  document.querySelectorAll("[data-replace]").forEach(b=>b.onclick=()=>replacePlanExercise(Number(b.dataset.replace)));
- document.querySelectorAll("[data-detach]").forEach(b=>b.onclick=()=>detachExerciseGroup(Number(b.dataset.detach)))
+ document.querySelectorAll("[data-detach]").forEach(b=>b.onclick=()=>detachExerciseGroup(Number(b.dataset.detach)));
+ document.querySelectorAll("[data-group-add-exercise]").forEach(b=>b.onclick=()=>addExerciseToExistingGroup(Number(b.dataset.groupAddExercise)))
+}
+function addExerciseToExistingGroup(i){
+ const collection=currentPlan?.exercises||[],first=collection[i];if(!first||!first.techniqueGroup||!groupMethod(first.setTechnique))return;
+ const members=collection.map((e,idx)=>e.techniqueGroup===first.techniqueGroup?{e,idx}:null).filter(Boolean);
+ if(members.length>=6)return toast("Ein Giant Set kann maximal 6 Übungen enthalten.");
+ const used=new Set(members.map(x=>x.e.name));
+ openExercisePicker(name=>{
+   const fresh=normPlanEx(findExercise(name));
+   const newMethod=members.length>=2?"giant":first.setTechnique;
+   const newCount=members.length+1;
+   fresh.setTechnique=newMethod;
+   fresh.techniqueGroup=first.techniqueGroup;
+   fresh.methodData=fresh.methodData||{};
+   if(newMethod==="giant")fresh.methodData.giantCount=newCount;
+   // New member keeps its own default prescription.
+   fresh.sets=Math.max(1,Number(fresh.sets)||3);
+   fresh.rest=Number.isFinite(Number(fresh.rest))?Number(fresh.rest):90;
+   fresh.measureMode=fresh.measureMode==="time"?"time":"reps";
+   if(fresh.measureMode==="time")fresh.timeSeconds=Math.max(15,Number(fresh.timeSeconds)||60);
+   else if(!fresh.reps)fresh.reps="8-12";
+   configureNewGroupMember(fresh,members,newMethod,newCount)
+ },{exclude:used,title:`${members.length+1}. Übung hinzufügen`,detailAdd:true})
+}
+function configureNewGroupMember(draft,members,newMethod,newCount){
+ const render=()=>{
+  openSheet(`${METHOD_LABEL[newMethod]} · ${esc(draft.name)}`,`<div class="compact-partner-card"><strong>${esc(draft.name)}</strong><div class="small">Eigene Einstellungen für die neue Übung.</div></div>
+   <div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="growSets" class="field">${setOptionsMarkup(draft,draft.sets,"grow")}</select></div><div class="form-field"><label>PAUSE</label><select id="growRest" class="field">${REST_OPTIONS.map(x=>`<option value="${x}" ${Number(draft.rest)===x?"selected":""}>${x===0?"Keine":formatTime(x)}</option>`).join("")}</select></div></div>
+   <div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="growModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="growModeTime">Zeit</button></div>
+   <div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"grow"):methodRepConfigMarkup(draft,"grow")}</div>
+   ${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="growVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=="standard").map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}
+   <div class="form-field"><label><input id="growPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div>
+   <button id="growConfirm" class="primary" style="width:100%">Übung hinzufügen</button>`,null,{replace:true});
+  $("growModeReps").onclick=()=>{draft.measureMode="reps";render()};
+  $("growModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,Number(draft.timeSeconds)||60);render()};
+  document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});
+  const tw=$("growTimeWheel");if(tw){const sync=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,Number(tw.value)||60)};tw.oninput=sync;tw.onchange=sync}
+  $("growConfirm").onclick=()=>{
+    draft.sets=Math.max(1,Number($("growSets")?.value)||1);
+    draft.rest=Math.max(0,Number($("growRest")?.value)||0);
+    if($("growTimeWheel")){draft.measureMode="time";draft.timeSeconds=Math.max(15,Number($("growTimeWheel").value)||60)}
+    if($("growVariant"))draft.variant=$("growVariant").value;
+    draft.perSide=!!$("growPerSide")?.checked;
+    saveMethodRepConfig(draft,"grow");
+    const validation=validateExerciseDraft(draft);if(validation)return toast(validation);
+    const gid=members[0].e.techniqueGroup;
+    members.forEach(x=>{
+      x.e.setTechnique=newMethod;x.e.techniqueGroup=gid;x.e.methodData=x.e.methodData||{};
+      if(newMethod==="giant")x.e.methodData.giantCount=newCount;
+      x.e.linkedExerciseNames=[...members.map(m=>m.e.name),draft.name].filter(n=>n!==x.e.name)
+    });
+    draft.setTechnique=newMethod;draft.techniqueGroup=gid;draft.methodData=draft.methodData||{};
+    if(newMethod==="giant")draft.methodData.giantCount=newCount;
+    draft.linkedExerciseNames=members.map(m=>m.e.name);
+    const insertAt=Math.max(...members.map(x=>x.idx))+1;
+    currentPlan.exercises.splice(insertAt,0,draft);
+    markEditorDirty();closeSheet({all:true});renderEditorExercises();persistUI();
+    toast(newMethod==="giant"?`Giant Set auf ${newCount} Übungen erweitert`:"Übung hinzugefügt")
+  }
+ };
+ render()
 }
 function replacePlanExercise(i){
  const old=currentPlan.exercises[i];if(!old)return;
@@ -2326,18 +2519,18 @@ function replacePlanExercise(i){
   const fresh=findExercise(name),keep={setTechnique:old.setTechnique,measureMode:old.measureMode,reps:old.reps,sets:old.sets,rest:old.rest,methodData:clone(old.methodData||{}),note:old.note,variant:"",perSide:old.perSide,linkedExerciseNames:clone(old.linkedExerciseNames||[]),techniqueGroup:old.techniqueGroup||null};
   const replacement=normPlanEx({...fresh,...keep});
   configureReplacementDraft(i,sourceIndexes,replacement)
- },{exclude:new Set([old.name]),title:"Übung austauschen",detailAdd:true})
+ },{exclude:groupUsedNames(currentPlan.exercises,i),title:"Übung austauschen",detailAdd:true})
 }
 function configureReplacementDraft(i,sourceIndexes,draft){
  let methodScroll=0;
  const render=()=>{
-  openSheet(draft.name+" konfigurieren",`<div class="method-tabs" id="repMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-rep-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(draft.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="repModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="repModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="repSets" class="field">${Array.from({length:10},(_,n)=>`<option ${Number(draft.sets)===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="repRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"rep"):methodRepConfigMarkup(draft,"rep")}</div>${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="repVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="repPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${existingEditMethodMarkup(draft,sourceIndexes.length)}<button id="repConfirm" class="primary" style="width:100%">Übernehmen</button>`,null,{replace:true});
+  openSheet(draft.name+" konfigurieren",`<div class="method-tabs" id="repMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-rep-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(draft.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="repModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="repModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="repSets" class="field">${setOptionsMarkup(draft,draft.sets,"rep")}</select></div><div class="form-field"><label>PAUSE</label><select id="repRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"rep"):methodRepConfigMarkup(draft,"rep")}</div>${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="repVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="repPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${existingEditMethodMarkup(draft,sourceIndexes.length)}<button id="repConfirm" class="primary" style="width:100%">Übernehmen</button>`,null,{replace:true});
   requestAnimationFrame(()=>{const t=$("repMethodTabs");if(t)t.scrollLeft=methodScroll});
   $("repRest").onchange=()=>{draft.rest=Number($("repRest").value)};$("repModeReps").onclick=()=>{draft.measureMode="reps";render()};
   $("repModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,Number(draft.timeSeconds)||60);render()};
   document.querySelectorAll("[data-rep-method]").forEach(b=>b.onclick=()=>{methodScroll=$("repMethodTabs")?.scrollLeft||0;prepareDraftForTargetMethod(draft,b.dataset.repMethod,sourceIndexes.length);render()});
   document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});
-  const repTimeWheel=$("repTimeWheel");if(repTimeWheel)repTimeWheel.onchange=()=>{draft.timeSeconds=Number(repTimeWheel.value);render()};
+  const repTimeWheel=$("repTimeWheel");if(repTimeWheel){const sync=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,Number(repTimeWheel.value)||60)};repTimeWheel.oninput=sync;repTimeWheel.onchange=sync;}
   $("repConfirm").onclick=()=>{draft.sets=Number($("repSets").value);draft.rest=Number($("repRest").value);if($("repVariant"))draft.variant=$("repVariant").value;draft.perSide=!!$("repPerSide")?.checked;draft.methodData=draft.methodData||{};if($("cfgDrops"))draft.methodData.dropCount=Number($("cfgDrops").value)||2;if($("cfgDropPct"))draft.methodData.dropPercent=Number($("cfgDropPct").value)||20;if($("cfgGiantCount"))draft.methodData.giantCount=Number($("cfgGiantCount").value)||3;saveMethodRepConfig(draft,"rep");const validation=validateExerciseDraft(draft);if(validation)return toast(validation);if(methodNeedsPartners(draft.setTechnique)){beginExistingPartnerReplacement(sourceIndexes,draft,i);return}if(sourceIndexes.length>1){const preserved=sourceIndexes.map(idx=>clone(currentPlan.exercises[idx])),pos=sourceIndexes.indexOf(i);preserved[pos]=clone(draft);preserved.forEach(x=>{x.techniqueGroup=null;x.linkedExerciseNames=[];x.setTechnique="standard";x.methodData={};if(!x.reps||["20","30","20-30"].includes(String(x.reps)))x.reps="8-12"});commitAtomicPlanGroup(sourceIndexes,preserved,i);return}commitAtomicPlanGroup(sourceIndexes,[draft],i)}
  };
  render()
@@ -2354,7 +2547,7 @@ function startPlanExerciseAddFlow(){
  renderPlanAddPicker()
 }
 function planAddFiltered(){
- const all=allExercises(),f=planAddFlow,used=new Set((f?.drafts||[]).map(x=>x.name));
+ const all=allExercises(),f=planAddFlow,used=f?.group?currentPartnerReservedNames():new Set((f?.drafts||[]).map(x=>x.name));
  return all.filter(x=>!used.has(x.name)&&(f.type==="Alle"||x.category===f.type)&&(!f.muscles.size||[...f.muscles].every(m=>(x.muscles||[]).includes(m)))&&(!f.q||x.name.toLowerCase().includes(f.q))).sort(groupedExerciseSort)
 }
 function renderPlanAddPicker(){
@@ -2394,14 +2587,30 @@ function beginPlanAddConfig(name,from="picker",seed=null){
 function renderPlanAddConfig(){
  if(!planAddFlow?.current)return;
  const e=planAddFlow.current;
- renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=="time"?"active":""}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==="time"?"active":""}" id="paModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${Array.from({length:10},(_,n)=>`<option ${e.sets===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"pa"):methodRepConfigMarkup(e,"pa")}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=="standard").map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
+ renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?"active":""}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=="time"?"active":""}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==="time"?"active":""}" id="paModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e,e.sets,"pa")}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"pa"):methodRepConfigMarkup(e,"pa")}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=="standard").map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
  requestAnimationFrame(()=>{const tabs=$("paMethodTabs");if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
- $("paModeReps").onclick=()=>{e.measureMode="reps";renderPlanAddConfig()};$("paModeTime").onclick=()=>{e.measureMode="time";e.timeSeconds=Math.max(15,Number(e.timeSeconds)||60);renderPlanAddConfig()};
- document.querySelectorAll("[data-pa-method]").forEach(b=>b.onclick=()=>{const tabs=$("paMethodTabs");planAddFlow.methodScroll=tabs?.scrollLeft||0;if(planAddFlow.memberGroup)planAddFlow.memberMethodExplicit=true;prepareDraftForTargetMethod(e,b.dataset.paMethod,1);renderPlanAddConfig()});
- $("paSets").onchange=()=>{e.sets=Number($("paSets").value);if(e.setTechnique==="pyramid")ensurePyramidData(e);renderPlanAddConfig()};
+ $("paModeReps").onclick=()=>{if($("paSets"))e.sets=Math.max(1,Number($("paSets").value)||e.sets||1);if($("paRest"))e.rest=Math.max(0,Number($("paRest").value)||0);e.measureMode="reps";renderPlanAddConfig()};
+ $("paModeTime").onclick=()=>{if($("paSets"))e.sets=Math.max(1,Number($("paSets").value)||e.sets||1);if($("paRest"))e.rest=Math.max(0,Number($("paRest").value)||0);e.measureMode="time";e.timeSeconds=Math.max(15,Number(e.timeSeconds)||60);renderPlanAddConfig()};
+ document.querySelectorAll("[data-pa-method]").forEach(b=>b.onclick=()=>{const tabs=$("paMethodTabs");planAddFlow.methodScroll=tabs?.scrollLeft||0;if(planAddFlow.memberGroup)planAddFlow.memberMethodExplicit=true;prepareDraftForTargetMethod(e,b.dataset.paMethod,1);const allowed=setOptionsForMethod(e.setTechnique);if(!allowed.includes(Number(e.sets)))e.sets=allowed[0];renderPlanAddConfig()});
+ const paSets=$("paSets");
+ if(paSets){
+   const syncSets=()=>{e.sets=Math.max(1,Number(paSets.value)||1)};
+   paSets.oninput=syncSets;
+   paSets.onchange=()=>{syncSets();if(e.setTechnique==="pyramid"){ensurePyramidData(e);renderPlanAddConfig()}}
+ }
  document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderPlanAddConfig()});
- const paTimeWheel=$("paTimeWheel");if(paTimeWheel)paTimeWheel.onchange=()=>{e.timeSeconds=Number(paTimeWheel.value);renderPlanAddConfig()};
- $("paConfirm").onclick=()=>confirmPlanAddDraft()
+ const paTimeWheel=$("paTimeWheel");
+ if(paTimeWheel){
+   const syncTime=()=>{e.timeSeconds=Math.max(15,Number(paTimeWheel.value)||60)};
+   paTimeWheel.oninput=syncTime;
+   paTimeWheel.onchange=syncTime
+ }
+ $("paConfirm").onclick=()=>{
+   if($("paSets"))e.sets=Math.max(1,Number($("paSets").value)||1);
+   if($("paRest"))e.rest=Math.max(0,Number($("paRest").value)||0);
+   if($("paTimeWheel")){e.measureMode="time";e.timeSeconds=Math.max(15,Number($("paTimeWheel").value)||60)}
+   confirmPlanAddDraft()
+ }
 }
 function defaultPyramidReps(sets=5){
  const templates={
@@ -2461,10 +2670,19 @@ function planAddMethodExtra(e){
  return""
 }
 function savePlanAddFormToDraft(){
- const e=planAddFlow.current;e.sets=Number($("paSets").value);e.rest=Number($("paRest").value);if($("paVariant"))e.variant=$("paVariant").value;e.perSide=!!$("paPerSide")?.checked;e.methodData=e.methodData||{};
+ const e=planAddFlow.current;
+ const setsEl=$("paSets"),restEl=$("paRest"),timeEl=$("paTimeWheel");
+ if(setsEl)e.sets=Math.max(1,Number(setsEl.value)||1);
+ if(restEl)e.rest=Math.max(0,Number(restEl.value)||0);
+ if(timeEl)e.timeSeconds=Math.max(15,Number(timeEl.value)||Number(e.timeSeconds)||60);
+ e.measureMode=e.measureMode==="time"?"time":"reps";
+ if($("paVariant"))e.variant=$("paVariant").value;
+ e.perSide=!!$("paPerSide")?.checked;
+ e.methodData=e.methodData||{};
  if($("paGiantCount"))e.methodData.giantCount=Number($("paGiantCount").value)||3;
  if($("paDrops"))e.methodData.dropCount=Number($("paDrops").value)||2;
- if($("paDropPct"))e.methodData.dropPercent=Number($("paDropPct").value)||20;saveMethodRepConfig(e,"pa")
+ if($("paDropPct"))e.methodData.dropPercent=Number($("paDropPct").value)||20;
+ saveMethodRepConfig(e,"pa")
 }
 
 function renderPartnerExercisePicker(){
@@ -2488,15 +2706,38 @@ function renderPartnerExercisePicker(){
  document.querySelectorAll("[data-partner-detail]").forEach(b=>b.onclick=()=>startCompactPartnerConfig(b.dataset.partnerDetail))
 }
 function startCompactPartnerConfig(name,seed=null,order=null){
- const master=planAddFlow.drafts[0],base=seed?clone(seed):normPlanEx({...findExercise(name),sets:master.sets||3,rest:master.rest||90});
- if(!seed)prepareDraftForTargetMethod(base,planAddFlow.group.method,planAddFlow.group.target);
- else{base.setTechnique=planAddFlow.group.method;base.techniqueGroup=planAddFlow.group.id;base.sets=master.sets;base.rest=master.rest;if(!base.reps)base.reps=defaultRepsForMethod(planAddFlow.group.method)}
+ planAddFlow.reservedPartnerNames=Array.from(new Set([...(planAddFlow.reservedPartnerNames||[]),name]));
+ const base=seed?clone(seed):normPlanEx(findExercise(name));
+ if(!seed){
+   base.setTechnique=planAddFlow.group.method;
+   base.techniqueGroup=planAddFlow.group.id;
+   base.methodData=base.methodData||{};
+   if(planAddFlow.group.method==="giant")base.methodData.giantCount=planAddFlow.group.target;
+   // Every partner starts from this exercise's own defaults, never from exercise A.
+   base.sets=Math.max(1,Number(base.sets)||3);
+   base.rest=Math.max(0,normalizedRest(base.rest,90));
+   base.measureMode=base.measureMode==="time"?"time":"reps";
+   if(base.measureMode==="time")base.timeSeconds=Math.max(15,Number(base.timeSeconds)||60);
+   else if(!base.reps)base.reps="8-12"
+ }else{
+   base.setTechnique=planAddFlow.group.method;base.techniqueGroup=planAddFlow.group.id;
+   base.methodData=base.methodData||{};
+   if(planAddFlow.group.method==="giant")base.methodData.giantCount=planAddFlow.group.target;
+   if(!base.reps&&base.measureMode!=="time")base.reps="8-12"
+ }
  base.techniqueGroup=planAddFlow.group.id;if(order!=null)base._draftOrder=order;else if(Array.isArray(planAddFlow.editSourceIndexes)){base._draftOrder=Number(planAddFlow.nextOrder)||planAddFlow.editSourceIndexes.length;planAddFlow.nextOrder=base._draftOrder+1}
  planAddFlow.current=base;planAddFlow.step="partnerConfig";renderCompactPartnerConfig()
 }
+// Public bridge for the late partner-catalog runtime. Keeping the canonical
+// implementation here prevents scope/order problems between inline and external scripts.
+window.rethinkStartPartnerConfig=function(name,seed=null,order=null){
+ return startCompactPartnerConfig(name,seed,order)
+};
+window.rethinkRenderPartnerConfig=function(){ return renderCompactPartnerConfig() };
+
 function advancePartnerDraftFlow(){
  const f=planAddFlow;if(!f?.group)return;
- if(f.drafts.length>=f.group.target){const master=f.drafts[0];f.drafts.forEach(d=>{d.setTechnique=f.group.method;d.techniqueGroup=f.group.id;d.sets=master.sets;d.rest=master.rest;d.measureMode=master.measureMode;d.timeSeconds=master.timeSeconds});commitPlanAddFlow();return}
+ if(f.drafts.length>=f.group.target){const master=f.drafts[0];f.drafts.forEach(d=>{d.setTechnique=f.group.method;d.techniqueGroup=f.group.id;});commitPlanAddFlow();return}
  if(Array.isArray(f.pendingSeeds)&&f.pendingSeeds.length){const next=f.pendingSeeds.shift();startCompactPartnerConfig(next.exercise.name,next.exercise,next.order);return}
  renderPartnerExercisePicker()
 }
@@ -2505,7 +2746,8 @@ function renderCompactPartnerConfig(){
  renderSheetState({
   title:`${METHOD_LABEL[method]} · ${esc(e.name)}`,
   scroll:0,
-  body:`<div class="compact-partner-card"><strong>${esc(e.name)}</strong><div class="small">${e.sets} Sätze · ${formatTime(e.rest)} Pause · als Teil derselben ${esc(METHOD_LABEL[method])}-Serie</div></div>
+  body:`<div class="compact-partner-card"><strong>${esc(e.name)}</strong><div class="small">Eigene Einstellungen für diese Übung innerhalb des ${esc(METHOD_LABEL[method])}.</div></div>
+  <div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="partnerSets" class="field">${setOptionsMarkup(e,e.sets,"partner")}</select></div><div class="form-field"><label>PAUSE</label><select id="partnerRest" class="field">${REST_OPTIONS.map(x=>`<option value="${x}" ${normalizedRest(e.rest,90)===x?"selected":""}>${x===0?"Keine":formatTime(x)}</option>`).join("")}</select></div></div>
   <div class="mode-switch"><button type="button" class="chip ${e.measureMode!=="time"?"active":""}" id="partnerModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==="time"?"active":""}" id="partnerModeTime">Zeit</button></div>
   <div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"partner"):methodRepConfigMarkup(e,"partner")}</div>
   ${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="partnerVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=="standard").map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}
@@ -2513,18 +2755,21 @@ function renderCompactPartnerConfig(){
   ${method==="dropset"?`<div class="grid2"><div class="form-field"><label>DROPS</label><select id="partnerDrops" class="field">${[1,2,3,4].map(n=>`<option ${Number(e.methodData?.dropCount||2)===n?"selected":""}>${n}</option>`).join("")}</select></div><div class="form-field"><label>REDUKTION %</label><select id="partnerDropPct" class="field">${[10,15,20,25,30].map(n=>`<option ${Number(e.methodData?.dropPercent||20)===n?"selected":""}>${n}</option>`).join("")}</select></div></div>`:""}
   <button id="partnerReplaceChoice" class="secondary" style="width:100%;margin-bottom:8px">⇄ Diese Übung austauschen</button>
   <button id="partnerConfirm" class="primary" style="width:100%">Übung übernehmen</button>`,
-  onBack:()=>{if(Array.isArray(planAddFlow.pendingSeeds)&&e._draftOrder!=null)planAddFlow.pendingSeeds.unshift({exercise:clone(e),order:e._draftOrder});planAddFlow.current=null;renderPartnerExercisePicker()},
+  onBack:()=>{planAddFlow.reservedPartnerNames=Array.from(new Set([...(planAddFlow.reservedPartnerNames||[]),e.name]));if(Array.isArray(planAddFlow.pendingSeeds)&&e._draftOrder!=null)planAddFlow.pendingSeeds.unshift({exercise:clone(e),order:e._draftOrder});planAddFlow.current=null;renderPartnerExercisePicker()},
   onClose:cancelPlanAddFlow
  });
  $("partnerModeReps").onclick=()=>{e.measureMode="reps";renderCompactPartnerConfig()};$("partnerModeTime").onclick=()=>{e.measureMode="time";e.timeSeconds=Math.max(15,Number(e.timeSeconds)||60);renderCompactPartnerConfig()};
  document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderCompactPartnerConfig()});
- const partnerTimeWheel=$("partnerTimeWheel");if(partnerTimeWheel)partnerTimeWheel.onchange=()=>{e.timeSeconds=Number(partnerTimeWheel.value);renderCompactPartnerConfig()};
- $("partnerReplaceChoice").onclick=()=>openExercisePicker(name=>{const keep={sets:e.sets,rest:e.rest,measureMode:e.measureMode,timeSeconds:e.timeSeconds,reps:e.reps,methodData:clone(e.methodData||{}),setTechnique:method,techniqueGroup:planAddFlow.group.id,perSide:e.perSide,_draftOrder:e._draftOrder};const x=normPlanEx({...findExercise(name),...keep,variant:""});planAddFlow.current=x;renderCompactPartnerConfig()},{exclude:new Set([e.name]),title:"Übung austauschen",detailAdd:true,returnToSheet:true});
+ const partnerTimeWheel=$("partnerTimeWheel");if(partnerTimeWheel){const sync=()=>{e.measureMode="time";e.timeSeconds=Math.max(15,Number(partnerTimeWheel.value)||60)};partnerTimeWheel.oninput=sync;partnerTimeWheel.onchange=sync;}
+ $("partnerReplaceChoice").onclick=()=>openExercisePicker(name=>{const x=normPlanEx(findExercise(name));x.setTechnique=method;x.techniqueGroup=planAddFlow.group.id;x._draftOrder=e._draftOrder;x.sets=Math.max(1,Number(x.sets)||3);x.rest=Number.isFinite(Number(x.rest))?Math.max(0,Number(x.rest)):90;x.measureMode=x.measureMode==="time"?"time":"reps";if(x.measureMode==="time")x.timeSeconds=Math.max(15,Number(x.timeSeconds)||60);else if(!x.reps)x.reps="8-12";planAddFlow.current=x;renderCompactPartnerConfig()},{exclude:currentPartnerReservedNames(),title:"Übung austauschen",detailAdd:true,returnToSheet:true});
  $("partnerConfirm").onclick=()=>{
+  if($("partnerSets"))e.sets=Math.max(1,Number($("partnerSets").value)||1);
+  if($("partnerRest"))e.rest=Math.max(0,Number($("partnerRest").value)||0);
+  if($("partnerTimeWheel")){e.measureMode="time";e.timeSeconds=Number($("partnerTimeWheel").value)||Number(e.timeSeconds)||60}
   if($("partnerVariant"))e.variant=$("partnerVariant").value;e.perSide=!!$("partnerPerSide")?.checked;e.methodData=e.methodData||{};
   if($("partnerDrops"))e.methodData.dropCount=Number($("partnerDrops").value)||2;if($("partnerDropPct"))e.methodData.dropPercent=Number($("partnerDropPct").value)||20;saveMethodRepConfig(e,"partner");
   const validation=validateExerciseDraft(e);if(validation)return toast(validation);
-  const copy=clone(e);copy.setTechnique=method;copy.techniqueGroup=planAddFlow.group.id;if(!Array.isArray(planAddFlow.editSourceIndexes)&&!Number.isFinite(Number(copy._draftOrder)))copy._draftOrder=planAddFlow.drafts.length;planAddFlow.drafts.push(copy);planAddFlow.current=null;advancePartnerDraftFlow()
+  const copy=clone(e);copy.setTechnique=method;copy.techniqueGroup=planAddFlow.group.id;copy.methodData=copy.methodData||{};if(method==="giant")copy.methodData.giantCount=planAddFlow.group.target;if(!Array.isArray(planAddFlow.editSourceIndexes)&&!Number.isFinite(Number(copy._draftOrder)))copy._draftOrder=planAddFlow.drafts.length;planAddFlow.drafts.push(copy);planAddFlow.current=null;advancePartnerDraftFlow()
  }
 }
 function confirmPlanAddDraft(){
@@ -2550,12 +2795,10 @@ function confirmPlanAddDraft(){
   if(planAddFlow.drafts.length<planAddFlow.group.target){
     planAddFlow.current=null;renderPartnerExercisePicker();return
   }
-  const master=planAddFlow.drafts[0],gid=planAddFlow.group.id;
+  const gid=planAddFlow.group.id;
   planAddFlow.drafts.forEach(d=>{
     d.setTechnique=planAddFlow.group.method;
-    d.techniqueGroup=gid;
-    d.sets=master.sets;
-    d.rest=master.rest
+    d.techniqueGroup=gid
   });
   commitPlanAddFlow();return
  }
@@ -2592,7 +2835,10 @@ function planAddBack(){
   return
  }
  if(planAddFlow.step==="detail"){renderPlanAddPicker();return}
- if(planAddFlow.step==="partnerConfig"){planAddFlow.current=null;renderPartnerExercisePicker();return}
+ if(planAddFlow.step==="partnerConfig"){
+  if(planAddFlow.current?.name)planAddFlow.reservedPartnerNames=Array.from(new Set([...(planAddFlow.reservedPartnerNames||[]),planAddFlow.current.name]));
+  planAddFlow.current=null;renderPartnerExercisePicker();return
+ }
  if(planAddFlow.step==="partnerPicker"){if(planAddFlow.drafts.length){const prev=planAddFlow.drafts.pop();planAddFlow.current=prev;planAddFlow.step="config";renderPlanAddConfig();return}renderPlanAddPicker();return}
  if(planAddFlow.step==="picker"&&planAddFlow.drafts.length){
   // Return to the previously confirmed draft and edit it before the whole group is committed.
@@ -2607,9 +2853,17 @@ function openReorderSheet(){const units=reorderUnits(currentPlan.exercises);open
 function movePlanUnit(ui,d){const units=reorderUnits(currentPlan.exercises),j=ui+d;if(j<0||j>=units.length)return;const chunks=units.map(u=>u.indexes.map(i=>currentPlan.exercises[i]));[chunks[ui],chunks[j]]=[chunks[j],chunks[ui]];currentPlan.exercises=chunks.flat();markEditorDirty();closeSheet({all:true});renderEditorExercises();openReorderSheet()}
 function normalizeGroupCollection(exercises,gid){
  const members=exercises.filter(e=>e.techniqueGroup===gid);if(!members.length)return;
- const method=members[0].setTechnique||"standard",min=method==="giant"?3:2;
- if(members.length<min){members.forEach(e=>{e.techniqueGroup=null;e.setTechnique="standard";e.linkedExerciseNames=[];if(!e.reps||["20","30","20-30"].includes(String(e.reps)))e.reps="8-12"})}
- else members.forEach(e=>{e.setTechnique=method;e.techniqueGroup=gid;e.linkedExerciseNames=members.filter(x=>x!==e).map(x=>x.name)})
+ const originalMethod=members[0].setTechnique||"standard";
+ if(originalMethod==="giant"&&members.length===2){
+   members.forEach(e=>{e.setTechnique="superset";e.techniqueGroup=gid;e.methodData=e.methodData||{};delete e.methodData.giantCount;e.linkedExerciseNames=members.filter(x=>x!==e).map(x=>x.name)});
+   return
+ }
+ const min=originalMethod==="giant"?3:2;
+ if(members.length<min){
+   members.forEach(e=>{e.techniqueGroup=null;e.setTechnique="standard";e.linkedExerciseNames=[];e.methodData={}})
+ }else{
+   members.forEach(e=>{e.setTechnique=originalMethod;e.techniqueGroup=gid;e.linkedExerciseNames=members.filter(x=>x!==e).map(x=>x.name)})
+ }
 }
 function normalizeBrokenPlanGroupAfterDelete(removed){if(removed&&groupMethod(removed.setTechnique)&&removed.techniqueGroup)normalizeGroupCollection(currentPlan.exercises,removed.techniqueGroup)}
 function normalizeBrokenLiveGroupAfterDelete(removed){if(!removed||!groupMethod(removed.setTechnique)||!removed.techniqueGroup)return;normalizeGroupCollection(activeWorkout.exercises,removed.techniqueGroup);activeWorkout.exercises.forEach(e=>{if(e.techniqueGroup===removed.techniqueGroup||!e.techniqueGroup)e.liveSets=rebuildLiveSetsForExercise(e,e.liveSets||[])})}
@@ -2618,6 +2872,22 @@ function methodMinPartners(m){return m==="giant"?2:1}
 function groupIndexesFor(index){
  const e=currentPlan.exercises[index];if(!e||!groupMethod(e.setTechnique)||!e.techniqueGroup)return[index];
  return currentPlan.exercises.map((x,i)=>x.techniqueGroup===e.techniqueGroup&&x.setTechnique===e.setTechnique?i:-1).filter(i=>i>=0)
+}
+function groupUsedNames(collection,index){
+ const e=collection?.[index];if(!e)return new Set();
+ if(!groupMethod(e.setTechnique)||!e.techniqueGroup)return new Set([e.name]);
+ return new Set((collection||[]).filter(x=>x.techniqueGroup===e.techniqueGroup).map(x=>x.name))
+}
+function currentPartnerReservedNames(){
+ const f=planAddFlow,names=new Set(f?.reservedPartnerNames||[]);
+ (f?.drafts||[]).forEach(x=>x?.name&&names.add(x.name));
+ (f?.pendingSeeds||[]).forEach(x=>x?.exercise?.name&&names.add(x.exercise.name));
+ if(Array.isArray(f?.editSourceIndexes)){
+   const collection=f.context==="live"?activeWorkout?.exercises:currentPlan?.exercises;
+   f.editSourceIndexes.forEach(i=>collection?.[i]?.name&&names.add(collection[i].name))
+ }
+ f?.current?.name&&names.add(f.current.name);
+ return names
 }
 function ensureTechniqueGroup(index,method){
  const e=currentPlan.exercises[index];
@@ -2642,7 +2912,7 @@ function configureExercise(i,flow=null){
   $("sheetBody").innerHTML=`<div class="method-tabs" id="cfgMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div>
   <div class="method-help">${esc(methodHelp(draft.setTechnique))}</div>
   <div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="cfgModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="cfgModeTime">Zeit</button></div>
-  <div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="cfgSets" class="field">${Array.from({length:10},(_,n)=>`<option ${Number(draft.sets)===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="cfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div>
+  <div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="cfgSets" class="field">${setOptionsMarkup(draft,draft.sets,"cfg")}</select></div><div class="form-field"><label>PAUSE</label><select id="cfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div>
   <div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"cfg"):methodRepConfigMarkup(draft,"cfg")}</div>
   ${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="cfgVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}
   <div class="form-field"><label><input id="cfgPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div>
@@ -2659,7 +2929,7 @@ function configureExercise(i,flow=null){
     prepareDraftForTargetMethod(draft,b.dataset.method,originalGroup.length);
     render()
   });
-  const cfgTimeWheel=$("cfgTimeWheel");if(cfgTimeWheel)cfgTimeWheel.onchange=()=>{draft.timeSeconds=Number(cfgTimeWheel.value);render()};
+  const cfgTimeWheel=$("cfgTimeWheel");if(cfgTimeWheel){const sync=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,Number(cfgTimeWheel.value)||60)};cfgTimeWheel.oninput=sync;cfgTimeWheel.onchange=sync;}
   document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});
   $("cfgSave").onclick=()=>{
     draft.sets=Number($("cfgSets").value);draft.rest=Number($("cfgRest").value);
@@ -2711,8 +2981,8 @@ function beginExistingPartnerReplacement(sourceIndexes,firstDraft,editIndex=sour
  const first=clone(firstDraft);first.setTechnique=method;first.techniqueGroup=gid;first._draftOrder=editedPos;
  const others=ordered.filter(x=>x.idx!==editIndex);
  const startFlow=selected=>{
-  const pending=selected.sort((a,b)=>a.pos-b.pos).map(x=>{const d=clone(x.exercise);if(d.setTechnique!==method)prepareDraftForTargetMethod(d,method,target);else{d.setTechnique=method;d.methodData=d.methodData||{};if(method==="giant")d.methodData.giantCount=target}d.sets=first.sets;d.rest=first.rest;d.measureMode=first.measureMode;d.timeSeconds=first.timeSeconds;d.techniqueGroup=gid;return{exercise:d,order:x.pos}});
-  planAddFlow={step:"partnerPicker",q:exercisePickerState.q||"",type:exercisePickerState.type||"Alle",muscles:new Set(exercisePickerState.muscles||[]),drafts:[first],pendingSeeds:pending,current:null,group:{id:gid,method,target},history:[],methodScroll:0,editSourceIndexes:[...sourceIndexes],editInsertAt:Math.min(...sourceIndexes),nextOrder:sourceIndexes.length};
+  const pending=selected.sort((a,b)=>a.pos-b.pos).map(x=>{const d=clone(x.exercise);if(d.setTechnique!==method)prepareDraftForTargetMethod(d,method,target);else{d.setTechnique=method;d.methodData=d.methodData||{};if(method==="giant")d.methodData.giantCount=target}d.techniqueGroup=gid;return{exercise:d,order:x.pos}});
+  planAddFlow={step:"partnerPicker",q:exercisePickerState.q||"",type:exercisePickerState.type||"Alle",muscles:new Set(exercisePickerState.muscles||[]),drafts:[first],pendingSeeds:pending,current:null,group:{id:gid,method,target},reservedPartnerNames:ordered.map(x=>x.exercise.name),history:[],methodScroll:0,editSourceIndexes:[...sourceIndexes],editInsertAt:Math.min(...sourceIndexes),nextOrder:sourceIndexes.length};
   advancePartnerDraftFlow()
  };
  const keepNeeded=target-1;
@@ -2728,7 +2998,7 @@ function continueGroupAdd(flow){
  if(members.length>=flow.target){renderEditorExercises();return}
  const used=new Set(members.map(x=>x.name));
  openExercisePicker(name=>{
-   const base=members[0],fresh=normPlanEx({...findExercise(name),sets:base.sets||3,setTechnique:flow.method,reps:base.reps||"8-12",rest:base.rest||90,techniqueGroup:flow.groupId,methodData:{...(base.methodData||{})}});
+   const base=members[0],fresh=normPlanEx({...findExercise(name),sets:base.sets||3,setTechnique:flow.method,reps:base.reps||"8-12",rest:normalizedRest(base.rest,90),techniqueGroup:flow.groupId,methodData:{...(base.methodData||{})}});
    const groupIdx=currentPlan.exercises.map((x,i)=>x.techniqueGroup===flow.groupId?i:-1).filter(i=>i>=0);
    const insertAt=(groupIdx.length?Math.max(...groupIdx)+1:currentPlan.exercises.length);
    currentPlan.exercises.splice(insertAt,0,fresh);markEditorDirty();renderEditorExercises();persistUI();
@@ -2840,24 +3110,42 @@ function previewVisualGroups(exercises){
  });
  return out
 }
+function renderPlanPreviewClean(exercises){
+ return `<div class="rt-preview-list">${previewVisualGroups(exercises).map(g=>`<section class="rt-preview-card rt-preview-${g.method}">
+   <div class="rt-preview-method">${esc(METHOD_LABEL[g.method]||g.method)}</div>
+   <div class="rt-preview-help">${esc(methodHelp(g.method))}</div>
+   ${g.items.map((e,j)=>`<div class="rt-preview-member"><div class="rt-preview-title">${groupMethod(g.method)?`${String.fromCharCode(65+j)} · `:""}${esc(e.name)}</div><div class="rt-preview-prescription">${esc(planPrescription(e))}</div>${renderPreviewSets(e)}</div>`).join("")}
+ </section>`).join("")}</div>`
+}
 function openPreview(p){
  $("previewTitle").textContent=p.name||"Workout Vorschau";
- const pp={...clone(p),exercises:clone(p.exercises).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
- $("previewBody").innerHTML=`<div class="preview-live-shell">${previewVisualGroups(pp.exercises).map(g=>`<div class="method-card method-${g.method} ${groupMethod(g.method)?"connected-method-card":""}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map((e,j)=>`<div class="preview-group-member"><div class="live-card-head"><div><button class="exercise-title-link">${groupMethod(g.method)?`${String.fromCharCode(97+j)} · `:""}${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div></div>${renderPreviewSets(e)}</div>`).join("")}</div>`).join("")}</div>`;
+ const pp={...clone(p),exercises:clone(p.exercises).map(e=>normPlanEx(e))};
+ $("previewBody").innerHTML=renderPlanPreviewClean(pp.exercises);
  openPage("previewPage")
 }
 function renderPreviewSets(e){
- const staticCell=(txt,cls="preview-value")=>`<span class="${cls}">${esc(String(txt??""))}</span>`;
- if(groupMethod(e.setTechnique)){
-  return e.liveSets.map((s,si)=>`<div class="group-round"><div class="group-round-title">Runde ${si+1}</div>${s.segments.map((g,gi)=>`<div class="group-ex-row preview-static-row"><span class="group-ex-name">${String.fromCharCode(97+gi)} · ${esc(g.name)}</span>${staticCell("KG")}${staticCell("WDH.")}</div>`).join("")}</div>`).join("")
- }
+ const sets=Math.max(1,Number(e.sets)||1);
+ const rows=Array.from({length:sets},(_,i)=>i);
+
  if(e.measureMode==="time"){
-  return `<div class="time-head"><span>SATZ</span><span>ZEIT</span><span></span><span>LEISTUNG</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="time-row preview-static-row"><span>${si+1}</span>${staticCell(formatTime(s.time||e.timeSeconds||300))}<span></span>${staticCell(s.level||"Leistung")}<span></span><span></span></div>`).join("")}`
+   return `<div class="preview-table preview-time-table">
+     <div class="preview-table-head preview-time-head"><span>SATZ</span><span>ZEIT</span><span>LEISTUNG</span></div>
+     ${rows.map(i=>`<div class="preview-table-row preview-time-row"><strong>${i+1}</strong><span class="preview-value preview-time-value">${formatTime(e.timeSeconds||60)}</span><span class="preview-value preview-performance-value">Leistung</span></div>`).join("")}
+   </div>`
  }
- if(["dropset","restpause","cluster"].includes(e.setTechnique)){
-  return e.liveSets.map((s,si)=>`<div class="advanced-head"><span>SATZ ${si+1}</span><span></span><span>KG</span><span>WDH.</span><span></span><span></span></div>${s.segments.map((g,gi)=>`<div class="advanced-row preview-static-row"><span>${gi+1}</span><span class="small">${esc(g.label)}</span>${staticCell("KG")}${staticCell(g.reps||"WDH.")}<span></span><span></span></div>`).join("")}`).join("")
+
+ if(e.setTechnique==="pyramid"){
+   const reps=Array.isArray(e.methodData?.reps)?e.methodData.reps:[];
+   return `<div class="preview-table preview-rep-table">
+     <div class="preview-table-head preview-rep-head"><span>SATZ</span><span>KG</span><span>WDH.</span></div>
+     ${rows.map(i=>`<div class="preview-table-row preview-rep-row"><strong>${i+1}</strong><span class="preview-value">KG</span><span class="preview-value">${esc(reps[i]??e.reps??"WDH.")}</span></div>`).join("")}
+   </div>`
  }
- return `<div class="set-head"><span>SATZ</span><span>KG</span><span>WDH.</span><span></span><span></span></div>${e.liveSets.map((s,si)=>`<div class="set-row preview-static-row"><span>${si+1}</span>${staticCell("KG")}${staticCell(s.reps||"WDH.")}<span></span><span></span></div>`).join("")}`
+
+ return `<div class="preview-table preview-rep-table">
+   <div class="preview-table-head preview-rep-head"><span>SATZ</span><span>KG</span><span>WDH.</span></div>
+   ${rows.map(i=>`<div class="preview-table-row preview-rep-row"><strong>${i+1}</strong><span class="preview-value">KG</span><span class="preview-value">${esc(e.reps||"WDH.")}</span></div>`).join("")}
+ </div>`
 }
 function openPreStart(id){
  const p=plans.find(x=>String(x.id)===String(id));
@@ -2918,7 +3206,7 @@ function initSet(e,i){
  if(["dropset","restpause","cluster"].includes(e.setTechnique))return{segments:Array.from({length:e.setTechnique==="dropset"?(e.methodData?.dropCount||2)+1:e.setTechnique==="cluster"?(e.methodData?.blocks||5):6},(_,g)=>({label:e.setTechnique==="dropset"?(g?`Drop ${g}`:"Basis"):e.setTechnique==="restpause"?(g?`RP ${g}`:"Start"):`C${g+1}`,weight:"",reps:"",completed:false})),completed:false,rating:""};
  return{weight:"",reps:["pyramid","backoff"].includes(e.setTechnique)?(e.setTechnique==="backoff"?(i===0?(e.methodData?.topReps||5):(e.methodData?.backoffReps||8)):(e.methodData?.reps||[12,10,8,10,12])[i]||8):"",completed:false,rating:""}
 }
-function startWorkout(p){requestTimerNotifications();if(!p||(p.exercises||[]).length===0)return alert("Ein leeres Training kann nicht gestartet werden.");const stored=plans.find(x=>x.id===p.id);if(stored)stored.lastUsedAt=Date.now();const previous=lastWorkoutForPlan(p);activeWorkout={id:uid(),planId:p.id,sourcePlanId:p.id,name:p.name,planName:p.name,startedAt:Date.now(),note:"",restEnd:0,activeExerciseIndex:0,structureBaseline:null,weekSourceIds:clone(p.weekSourceIds||[]),weekDate:p.weekDate||null,isWeekCombined:Array.isArray(p.weekSourceIds)&&p.weekSourceIds.length>0,exercises:clone(p.exercises).map(e=>({...normPlanEx(e),liveSets:Array.from({length:e.sets||3},(_,i)=>initSet(e,i))}))};activeWorkout.structureBaseline=clone(activeWorkout.exercises);applyPreviousWorkoutSuggestions(activeWorkout,previous);saveAll();openLive(true)}
+function startWorkout(p){requestTimerNotifications();if(!p||(p.exercises||[]).length===0)return alert("Ein leeres Training kann nicht gestartet werden.");const stored=plans.find(x=>x.id===p.id);if(stored)stored.lastUsedAt=Date.now();const previous=lastWorkoutForPlan(p);activeWorkout={id:uid(),planId:p.id,sourcePlanId:p.sourcePlanId||p.id,name:p.name,planName:p.name,startedAt:Date.now(),note:"",restEnd:0,activeExerciseIndex:0,structureBaseline:null,weekSourceIds:clone(p.weekSourceIds||[]),weekDate:p.weekDate||null,isWeekCombined:Array.isArray(p.weekSourceIds)&&p.weekSourceIds.length>0,exercises:clone(p.exercises).map(e=>({...normPlanEx(e),liveSets:Array.from({length:e.sets||3},(_,i)=>initSet(e,i))}))};activeWorkout.structureBaseline=clone(activeWorkout.exercises);applyPreviousWorkoutSuggestions(activeWorkout,previous);saveAll();openLive(true)}
 function setActiveExercise(index,scroll=false,behavior="auto"){
  if(!activeWorkout)return;index=Math.max(0,Math.min(Number(index)||0,(activeWorkout.exercises||[]).length-1));activeWorkout.activeExerciseIndex=index;saveAll();
  document.querySelectorAll("[data-live-card]").forEach(c=>c.classList.toggle("active-live-exercise",Number(c.dataset.liveCard)===index));
@@ -2997,7 +3285,7 @@ function renderLive(){
   if(x.dataset.timeField){x.onfocus=()=>setTimeout(()=>x.select(),0);x.addEventListener("click",ev=>{ev.stopPropagation();x.select()})}
   x.addEventListener("pointerdown",ev=>ev.stopPropagation());if(!x.dataset.timeField)x.addEventListener("click",ev=>ev.stopPropagation())
  });
- document.querySelectorAll("[data-add-set]").forEach(b=>b.onclick=()=>{const e=activeWorkout.exercises[Number(b.dataset.addSet)];e.liveSets.push(initSet(e,e.liveSets.length));livePlanEdited=true;saveAll();renderLive()});
+ document.querySelectorAll("[data-add-set]").forEach(b=>b.onclick=()=>{const e=activeWorkout.exercises[Number(b.dataset.addSet)];e.liveSets.push(initSet(e,e.liveSets.length));e.sets=e.liveSets.length;livePlanEdited=true;saveAll();renderLive()});
  document.querySelectorAll("[data-add-group-set]").forEach(b=>b.onclick=()=>{const gid=b.dataset.addGroupSet,members=activeWorkout.exercises.map((x,i)=>x.techniqueGroup===gid?i:-1).filter(i=>i>=0);members.forEach(i=>{const e=activeWorkout.exercises[i];e.liveSets.push(initSet(e,e.liveSets.length));e.sets=e.liveSets.length});livePlanEdited=true;saveAll();renderLive()});
  document.querySelectorAll("[data-remove-live-set]").forEach(b=>b.onclick=()=>removeLiveSet(b.dataset.removeLiveSet));
  document.querySelectorAll("[data-time-play]").forEach(b=>b.onclick=()=>toggleTimeTimer(b.dataset.timePlay,b));
@@ -3236,19 +3524,19 @@ function beginLivePartnerReplacement(sourceIndexes,firstDraft,editIndex=sourceIn
  const method=firstDraft.setTechnique,target=method==="giant"?(Number(firstDraft.methodData?.giantCount)||3):2,gid=`tg_${uid()}`;
  const ordered=sourceIndexes.map((idx,pos)=>({idx,pos,exercise:clone(activeWorkout.exercises[idx])})),editedPos=Math.max(0,ordered.findIndex(x=>x.idx===editIndex)),first=clone(firstDraft);first.setTechnique=method;first.techniqueGroup=gid;first._draftOrder=editedPos;
  const others=ordered.filter(x=>x.idx!==editIndex),keepNeeded=target-1;
- const startFlow=selected=>{const pending=selected.sort((a,b)=>a.pos-b.pos).map(x=>{const d=clone(x.exercise);delete d.liveSets;if(d.setTechnique!==method)prepareDraftForTargetMethod(d,method,target);else{d.setTechnique=method;d.methodData=d.methodData||{};if(method==="giant")d.methodData.giantCount=target}d.sets=first.sets;d.rest=first.rest;d.measureMode=first.measureMode;d.timeSeconds=first.timeSeconds;d.techniqueGroup=gid;return{exercise:d,order:x.pos}});planAddFlow={context:"live",step:"partnerPicker",q:exercisePickerState.q||"",type:exercisePickerState.type||"Alle",muscles:new Set(exercisePickerState.muscles||[]),drafts:[first],pendingSeeds:pending,current:null,group:{id:gid,method,target},history:[],methodScroll:0,editSourceIndexes:[...sourceIndexes],editInsertAt:Math.min(...sourceIndexes),nextOrder:sourceIndexes.length};advancePartnerDraftFlow()};
+ const startFlow=selected=>{const pending=selected.sort((a,b)=>a.pos-b.pos).map(x=>{const d=clone(x.exercise);delete d.liveSets;if(d.setTechnique!==method)prepareDraftForTargetMethod(d,method,target);else{d.setTechnique=method;d.methodData=d.methodData||{};if(method==="giant")d.methodData.giantCount=target}d.techniqueGroup=gid;return{exercise:d,order:x.pos}});planAddFlow={context:"live",step:"partnerPicker",q:exercisePickerState.q||"",type:exercisePickerState.type||"Alle",muscles:new Set(exercisePickerState.muscles||[]),drafts:[first],pendingSeeds:pending,current:null,group:{id:gid,method,target},reservedPartnerNames:ordered.map(x=>x.exercise.name),history:[],methodScroll:0,editSourceIndexes:[...sourceIndexes],editInsertAt:Math.min(...sourceIndexes),nextOrder:sourceIndexes.length};advancePartnerDraftFlow()};
  if(others.length>keepNeeded){let chosen=new Set(others.slice(0,keepNeeded).map(x=>x.idx));const renderChoice=()=>{openSheet(`${METHOD_LABEL[method]} · Struktur festlegen`,`<div class="method-config-note">Wähle genau ${keepNeeded} bestehende${keepNeeded===1?" Übung":" Übungen"} für die neue Serie. Nicht ausgewählte Übungen bleiben im laufenden Workout als Standard erhalten.</div>${others.map(x=>`<button class="exercise-card ${chosen.has(x.idx)?"selected":""}" data-live-keep="${x.idx}" style="width:100%;text-align:left"><strong>${esc(x.exercise.name)}</strong><small>${chosen.has(x.idx)?"Teil der neuen Serie":"Bleibt Standard"}</small></button>`).join("")}<button id="confirmLiveKeep" class="primary" style="width:100%;margin-top:10px">Auswahl bestätigen</button>`,null,{replace:true});document.querySelectorAll("[data-live-keep]").forEach(b=>b.onclick=()=>{const id=Number(b.dataset.liveKeep);if(chosen.has(id))chosen.delete(id);else if(chosen.size<keepNeeded)chosen.add(id);renderChoice()});$("confirmLiveKeep").onclick=()=>{if(chosen.size!==keepNeeded)return toast(`Bitte genau ${keepNeeded} auswählen.`);first._detachedAfterConversion=others.filter(x=>!chosen.has(x.idx)).map(x=>{const d=clone(x.exercise);delete d.liveSets;return d});startFlow(others.filter(x=>chosen.has(x.idx)))}};renderChoice();return}
  startFlow(others)
 }
 function configureLiveExercise(i){
  const e=activeWorkout.exercises[i];if(!e)return;const originalGroup=liveGroupIndexesFor(i),draft=clone(e);delete draft.liveSets;let methodScroll=0;
  const render=()=>{
-  $("sheetBody").innerHTML=`<div class="method-tabs" id="liveMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-live-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(draft.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="liveModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="liveModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="liveCfgSets" class="field">${Array.from({length:10},(_,n)=>`<option ${Number(draft.sets)===n+1?"selected":""}>${n+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="liveCfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"liveCfg"):methodRepConfigMarkup(draft,"liveCfg")}</div>${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="liveCfgVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="liveCfgPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${existingEditMethodMarkup(draft,originalGroup.length)}<button id="liveReplaceExercise" class="secondary" style="width:100%;margin-bottom:8px">⇄ Übung austauschen</button><button id="liveCfgSave" class="primary" style="width:100%">Übernehmen</button>`;
+  $("sheetBody").innerHTML=`<div class="method-tabs" id="liveMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${draft.setTechnique===k?"active":""}" data-live-method="${k}">${METHOD_LABEL[k]}</button>`).join("")}</div><div class="method-help">${esc(methodHelp(draft.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${draft.measureMode!=="time"?"active":""}" id="liveModeReps">Wiederholungen</button><button type="button" class="chip ${draft.measureMode==="time"?"active":""}" id="liveModeTime">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="liveCfgSets" class="field">${setOptionsMarkup(draft,draft.sets,"liveCfg")}</select></div><div class="form-field"><label>PAUSE</label><select id="liveCfgRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(draft.rest)===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"liveCfg"):methodRepConfigMarkup(draft,"liveCfg")}</div>${(findExercise(draft.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="liveCfgVariant" class="field"><option value="">Standard</option>${(findExercise(draft.name).variants||[]).map(v=>`<option ${draft.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}<div class="form-field"><label><input id="liveCfgPerSide" type="checkbox" ${draft.perSide?"checked":""}> Wiederholungen pro Seite</label></div>${existingEditMethodMarkup(draft,originalGroup.length)}<button id="liveReplaceExercise" class="secondary" style="width:100%;margin-bottom:8px">⇄ Übung austauschen</button><button id="liveCfgSave" class="primary" style="width:100%">Übernehmen</button>`;
   requestAnimationFrame(()=>{const t=$("liveMethodTabs");if(t)t.scrollLeft=methodScroll});
   $("liveCfgRest").onchange=()=>{draft.rest=Number($("liveCfgRest").value)};$("liveModeReps").onclick=()=>{draft.measureMode="reps";render()};$("liveModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,Number(draft.timeSeconds)||60);render()};
   document.querySelectorAll("[data-live-method]").forEach(b=>b.onclick=()=>{methodScroll=$("liveMethodTabs")?.scrollLeft||0;prepareDraftForTargetMethod(draft,b.dataset.liveMethod,originalGroup.length);render()});
-  document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});const liveCfgTimeWheel=$("liveCfgTimeWheel");if(liveCfgTimeWheel)liveCfgTimeWheel.onchange=()=>{draft.timeSeconds=Number(liveCfgTimeWheel.value);render()};
-  $("liveReplaceExercise").onclick=()=>openExercisePicker(name=>{const keep={sets:draft.sets||3,setTechnique:draft.setTechnique||"standard",measureMode:draft.measureMode,reps:draft.reps||defaultRepsForMethod(draft.setTechnique),timeSeconds:draft.timeSeconds,rest:draft.rest||90,methodData:clone(draft.methodData||{}),perSide:draft.perSide};const replacement=normPlanEx({...findExercise(name),...keep,variant:""});Object.assign(draft,replacement);render()},{exclude:new Set([draft.name]),title:"Übung austauschen",detailAdd:true,returnToSheet:true});
+  document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});const liveCfgTimeWheel=$("liveCfgTimeWheel");if(liveCfgTimeWheel){const sync=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,Number(liveCfgTimeWheel.value)||60)};liveCfgTimeWheel.oninput=sync;liveCfgTimeWheel.onchange=sync;}
+  $("liveReplaceExercise").onclick=()=>openExercisePicker(name=>{const keep={sets:draft.sets||3,setTechnique:draft.setTechnique||"standard",measureMode:draft.measureMode,reps:draft.reps||defaultRepsForMethod(draft.setTechnique),timeSeconds:draft.timeSeconds,rest:normalizedRest(draft.rest,90),methodData:clone(draft.methodData||{}),perSide:draft.perSide};const replacement=normPlanEx({...findExercise(name),...keep,variant:""});Object.assign(draft,replacement);render()},{exclude:groupUsedNames(activeWorkout.exercises,i),title:"Übung austauschen",detailAdd:true,returnToSheet:true});
   $("liveCfgSave").onclick=()=>{draft.sets=Number($("liveCfgSets").value);draft.rest=Number($("liveCfgRest").value);if($("liveCfgVariant"))draft.variant=$("liveCfgVariant").value;draft.perSide=!!$("liveCfgPerSide")?.checked;draft.methodData=draft.methodData||{};if($("cfgDrops"))draft.methodData.dropCount=Number($("cfgDrops").value)||2;if($("cfgDropPct"))draft.methodData.dropPercent=Number($("cfgDropPct").value)||20;if($("cfgGiantCount"))draft.methodData.giantCount=Number($("cfgGiantCount").value)||3;saveMethodRepConfig(draft,"liveCfg");const validation=validateExerciseDraft(draft);if(validation)return toast(validation);if(methodNeedsPartners(draft.setTechnique)){beginLivePartnerReplacement(originalGroup,draft,i);return}if(originalGroup.length>1){const preserved=originalGroup.map(idx=>{const x=clone(activeWorkout.exercises[idx]);delete x.liveSets;return x}),pos=originalGroup.indexOf(i);preserved[pos]=clone(draft);preserved.forEach(x=>{x.techniqueGroup=null;x.linkedExerciseNames=[];x.setTechnique="standard";x.methodData={};if(!x.reps||["20","30","20-30"].includes(String(x.reps)))x.reps="8-12"});commitAtomicLiveGroup(originalGroup,preserved);return}commitAtomicLiveGroup(originalGroup,[draft])}
  };
  openSheet(e.name+" bearbeiten","");render()
@@ -3258,7 +3546,7 @@ function addLiveExerciseAndConfigure(n){
  configureLiveDraft(draft)
 }
 function configureLiveDraft(draft){
- const render=()=>{openSheet(draft.name+" hinzufügen",`<div class="mode-switch"><button id="draftModeReps" class="chip ${draft.measureMode!=="time"?"active":""}">Wiederholungen</button><button id="draftModeTime" class="chip ${draft.measureMode==="time"?"active":""}">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="draftSets" class="field">${Array.from({length:10},(_,i)=>`<option ${draft.sets===i+1?"selected":""}>${i+1}</option>`).join("")}</select></div><div class="form-field"><label>PAUSE</label><select id="draftRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${draft.rest===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"draft"):repPresetMarkup(draft)}</div><button id="confirmLiveDraft" class="primary" style="width:100%">Übung hinzufügen</button>`,()=>{$("draftRest").onchange=()=>{draft.rest=Number($("draftRest").value)};$("draftModeReps").onclick=()=>{draft.measureMode="reps";render()};$("draftModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,draft.timeSeconds||60);render()};document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});const draftTimeWheel=$("draftTimeWheel");if(draftTimeWheel)draftTimeWheel.onchange=()=>{draft.timeSeconds=Number(draftTimeWheel.value);render()};$("confirmLiveDraft").onclick=()=>{draft.sets=Number($("draftSets").value);draft.rest=Number($("draftRest").value);draft.liveSets=Array.from({length:draft.sets},(_,i)=>initSet(draft,i));activeWorkout.exercises.push(draft);activeWorkout.activeExerciseIndex=activeWorkout.exercises.length-1;livePlanEdited=true;saveAll();closeSheet({all:true});renderLive();focusLiveExercise(activeWorkout.activeExerciseIndex,"smooth")}})};render()
+ const render=()=>{openSheet(draft.name+" hinzufügen",`<div class="mode-switch"><button id="draftModeReps" class="chip ${draft.measureMode!=="time"?"active":""}">Wiederholungen</button><button id="draftModeTime" class="chip ${draft.measureMode==="time"?"active":""}">Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="draftSets" class="field">${setOptionsMarkup(draft,draft.sets,"draft")}</select></div><div class="form-field"><label>PAUSE</label><select id="draftRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${draft.rest===v?"selected":""}>${v?formatTime(v):"Keine"}</option>`).join("")}</select></div></div><div class="form-field"><label>${draft.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${draft.measureMode==="time"?timePresetMarkup(draft,"draft"):repPresetMarkup(draft)}</div><button id="confirmLiveDraft" class="primary" style="width:100%">Übung hinzufügen</button>`,()=>{$("draftRest").onchange=()=>{draft.rest=Number($("draftRest").value)};$("draftModeReps").onclick=()=>{draft.measureMode="reps";render()};$("draftModeTime").onclick=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,draft.timeSeconds||60);render()};document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{draft.reps=b.dataset.repPreset;render()});const draftTimeWheel=$("draftTimeWheel");if(draftTimeWheel){const sync=()=>{draft.measureMode="time";draft.timeSeconds=Math.max(15,Number(draftTimeWheel.value)||60)};draftTimeWheel.oninput=sync;draftTimeWheel.onchange=sync;}$("confirmLiveDraft").onclick=()=>{draft.sets=Number($("draftSets").value);draft.rest=Number($("draftRest").value);draft.liveSets=Array.from({length:draft.sets},(_,i)=>initSet(draft,i));activeWorkout.exercises.push(draft);activeWorkout.activeExerciseIndex=activeWorkout.exercises.length-1;livePlanEdited=true;saveAll();closeSheet({all:true});renderLive();focusLiveExercise(activeWorkout.activeExerciseIndex,"smooth")}})};render()
 }
 
 $("liveAddExercise").onclick=()=>openExercisePicker(addLiveExerciseAndConfigure,{detailAdd:true});
@@ -3574,6 +3862,8 @@ function openSheet(t,b,bind=null,{replace=false}={}){if(!replace&&!$("sheetWrap"
 function closeSheet({all=false}={}){if(!all&&sheetStack.length){renderSheetState(sheetStack.pop());return}sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden")}
 function cancelTask(){planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden");exerciseDetailReturn=null}
 $("sheetBack").onclick=()=>{if(planAddFlow)planAddBack();else closeSheet({all:false})};$("sheetClose").onclick=()=>{if(planAddFlow)cancelPlanAddFlow();else cancelTask()};
+function normalizedRest(v,fallback=90){if(v===0||v==="0")return 0;const n=Number(v);return Number.isFinite(n)?Math.max(0,n):fallback}
+function restLabel(v){const n=normalizedRest(v,90);return n===0?"Keine":formatTime(n)}
 function formatTime(s){s=Math.max(0,Number(s)||0);return`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function parseTime(v){const x=String(v).trim();if(x.includes(":")){const[m,s]=x.split(":").map(Number);return(m||0)*60+(s||0)}return(Number(x)||0)*60}function formatDuration(ms){const s=Math.max(0,Math.floor(ms/1000)),m=Math.floor(s/60),r=s%60;return`${m}:${String(r).padStart(2,"0")}`}
 loadData();if(weekOffset!==0){const _dated=loadDatedWeeks();weekPlan=_dated[weekKeyForOffset()]||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]))}dailyReset();ensureDrinks();renderExerciseLibrary();renderPlans();renderTrainingHome();renderWeek();renderProfile();restoreUI();
 if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});</script>
@@ -3612,5 +3902,5 @@ if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catc
 
 
 
-<script src="./runtime-current.js?v=20260821m"></script>
+<script src="./runtime-current.js?v=20260823-partner2"></script>
 </body></html>
