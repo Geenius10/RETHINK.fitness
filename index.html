@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
-<meta name="theme-color" content="#070708"><link rel="manifest" href="manifest.webmanifest"><title>ReThink. Fitness</title>
+<meta name="theme-color" content="#070708"><link rel="manifest" href="./manifest.webmanifest?v=20260823rdot"><title>ReThink. Fitness</title>
 <style>
 :root{--bg:#070708;--surface:#111114;--surface2:#18181d;--line:#29292f;--text:#f8f8fa;--muted:#909098;--danger:#ff655f;--nav-h:76px;--side:16px;--max:520px;color-scheme:dark}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}body{min-height:100dvh}.hidden{display:none!important}
@@ -1509,11 +1509,12 @@ html[data-theme="light"] #startTrainingCard #choosePlanStart.training-main-play{
   display:none!important;
 }
 </style>
-<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png?v=20260823r2">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon-rdot-20260823.png">
 <style id="rethink-time-performance-layout">
 .time-head,.time-row{grid-template-columns:34px minmax(78px,1fr) 42px minmax(86px,1fr) 40px 22px!important;gap:6px!important}
 .time-row .remove-mini{grid-column:6!important}
-</style></head><body>
+</style><link rel="apple-touch-icon-precomposed" sizes="180x180" href="./apple-touch-icon-precomposed.png">
+</head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
 <main id="tab-plans" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Meine Pläne</h1></div><div class="plan-header-actions"><button id="plansEditBtn" class="secondary plan-edit-toggle">Bearbeiten</button><button id="newPlanBtn" class="icon-btn plus-btn">+</button></div></div><div class="chips" id="planSortChips"></div><div id="planList"></div></main>

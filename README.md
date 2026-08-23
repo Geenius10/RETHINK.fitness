@@ -692,3 +692,9 @@ Backup-Erstellung liest den persistenten Speicher nur noch aus und ruft vorher k
 - Im Workout geänderte Zeitwerte aktualisieren auch `timeSeconds` der Übung und gelten damit als speicherbare Planänderung.
 - Zeittraining zeigt nur Zeit, Timer, Leistung, Bewertung und Löschen; KG und S/W entfallen.
 - Jefferson Curl mit Ausführungsbeschreibung ergänzt.
+
+## iPhone Homescreen-Icon – R.
+- Neues eindeutiges iPhone-Icon `R.` mit neuem Dateinamen, damit iOS nicht weiter die alte Icon-Datei aus dem Cache verwendet.
+- Apple-Touch-Icon liegt zusätzlich im Hauptverzeichnis als `apple-touch-icon.png`.
+- Zusätzlich ist `apple-touch-icon-precomposed.png` vorhanden.
+- Manifest-Icons wurden ebenfalls aktualisiert.
