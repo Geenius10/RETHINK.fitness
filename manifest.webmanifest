@@ -2,25 +2,26 @@
   "name": "ReThink. Fitness",
   "short_name": "ReThink.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#d9d9de",
-  "theme_color": "#111114",
+  "background_color": "#221d2a",
+  "theme_color": "#221d2a",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "icons/icon-192.png?v=20260823-r-dumbbell-v4",
+      "src": "./icons/icon-192.png?v=20260823-icon-v5",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icons/icon-512.png?v=20260823-r-dumbbell-v4",
+      "src": "./icons/icon-512.png?v=20260823-icon-v5",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icons/icon-512.png?v=20260823-r-dumbbell-v4",
+      "src": "./icons/icon-maskable-512.png?v=20260823-icon-v5",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
