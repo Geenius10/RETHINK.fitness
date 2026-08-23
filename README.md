@@ -682,3 +682,13 @@ Backup-Erstellung liest den persistenten Speicher nur noch aus und ruft vorher k
 ## Homescreen & Trainingsstart
 - Großer Play-Button jetzt über „Training starten / Wähle einen Plan“.
 - Neues ReThink. Fitness Homescreen-Icon in 180, 192 und 512 px; Manifest und Apple-Touch-Icon aktualisiert.
+
+## Update 23.08.2026
+- Homescreen-Icon bewusst schlicht: `R.`.
+- Superset/Giant/Pre-Exhaust behalten die Auswahlreihenfolge A → B → C.
+- Partnerübungen übernehmen Satzanzahl, Pause, Messmodus und Zeit der Serie.
+- 1 Satz bleibt für Standard, Superset, Giant Set und Pre-Exhaust auswählbar; methodisch notwendige Mindestwerte bleiben nur bei Spezialmethoden bestehen.
+- Cardio sowie typische Halteübungen (u. a. Plank, Side Plank, Hollow Body Hold, Dead Hang, Deep Squat Hold, Wall Sit) starten standardmäßig im Zeitmodus.
+- Im Workout geänderte Zeitwerte aktualisieren auch `timeSeconds` der Übung und gelten damit als speicherbare Planänderung.
+- Zeittraining zeigt nur Zeit, Timer, Leistung, Bewertung und Löschen; KG und S/W entfallen.
+- Jefferson Curl mit Ausführungsbeschreibung ergänzt.
