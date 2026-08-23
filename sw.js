@@ -1,4 +1,4 @@
-const CACHE='rethink-fitness-20260824-partner-independent-controls';
+const CACHE='rethink-fitness-20260824-rep-edit-logic-audit';
 const ASSETS=[
  './', './index.html', './runtime-current.js?v=20260821m', './foods.js?v=20260821m', './manifest.webmanifest', './README.md', './AUDIT.md',
  './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'

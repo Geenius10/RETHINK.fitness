@@ -2528,7 +2528,6 @@ function configureReplacementDraft(i,sourceIndexes,draft){
  };
  render()
 }
-function detachExerciseGroup(i){const e=currentPlan.exercises[i];e.linkedExerciseNames=[];e.techniqueGroup=null;e.setTechnique="standard";if(e.reps==="20-30")e.reps="8-12";markEditorDirty();renderEditorExercises();toast("Verknüpfung gelöst – Übung ist jetzt Standard")}
 let planAddFlow=null;
 function cancelPlanAddFlow(){
  planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden")
@@ -2752,16 +2751,27 @@ function renderCompactPartnerConfig(){
   onBack:()=>{planAddFlow.reservedPartnerNames=Array.from(new Set([...(planAddFlow.reservedPartnerNames||[]),e.name]));if(Array.isArray(planAddFlow.pendingSeeds)&&e._draftOrder!=null)planAddFlow.pendingSeeds.unshift({exercise:clone(e),order:e._draftOrder});planAddFlow.current=null;renderPartnerExercisePicker()},
   onClose:cancelPlanAddFlow
  });
- $("partnerModeReps").onclick=()=>{e.measureMode="reps";renderCompactPartnerConfig()};$("partnerModeTime").onclick=()=>{e.measureMode="time";e.timeSeconds=Math.max(15,Number(e.timeSeconds)||60);renderCompactPartnerConfig()};
- document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset;renderCompactPartnerConfig()});
+ const capturePartnerGeneric=()=>{
+  if($("partnerSets"))e.sets=Math.max(1,Number($("partnerSets").value)||1);
+  e.rest=planAddFlow.group.rest;
+  if($("partnerTimeWheel")&&e.measureMode==="time")e.timeSeconds=Math.max(15,Number($("partnerTimeWheel").value)||60);
+  if($("partnerVariant"))e.variant=$("partnerVariant").value;
+  e.perSide=!!$("partnerPerSide")?.checked;
+  e.methodData=e.methodData||{};
+  if($("partnerDrops"))e.methodData.dropCount=Number($("partnerDrops").value)||2;
+  if($("partnerDropPct"))e.methodData.dropPercent=Number($("partnerDropPct").value)||20;
+  saveMethodRepConfig(e,"partner")
+ };
+ $("partnerModeReps").onclick=()=>{capturePartnerGeneric();e.measureMode="reps";renderCompactPartnerConfig()};
+ $("partnerModeTime").onclick=()=>{capturePartnerGeneric();e.measureMode="time";e.timeSeconds=Math.max(15,Number(e.timeSeconds)||60);renderCompactPartnerConfig()};
+ document.querySelectorAll("[data-rep-preset]").forEach(b=>b.onclick=()=>{
+  e.reps=b.dataset.repPreset;
+  document.querySelectorAll("[data-rep-preset]").forEach(x=>x.classList.toggle("active",x===b))
+ });
  const partnerTimeWheel=$("partnerTimeWheel");if(partnerTimeWheel){const sync=()=>{e.measureMode="time";e.timeSeconds=Math.max(15,Number(partnerTimeWheel.value)||60)};partnerTimeWheel.oninput=sync;partnerTimeWheel.onchange=sync;}
  $("partnerReplaceChoice").onclick=()=>openExercisePicker(name=>{const x=normPlanEx(findExercise(name));x.setTechnique=method;x.techniqueGroup=planAddFlow.group.id;x._draftOrder=e._draftOrder;x.sets=Math.max(1,Number(x.sets)||3);x.rest=planAddFlow.group.rest;x.measureMode=x.measureMode==="time"?"time":"reps";if(x.measureMode==="time")x.timeSeconds=Math.max(15,Number(x.timeSeconds)||60);else if(!x.reps)x.reps="8-12";planAddFlow.current=x;renderCompactPartnerConfig()},{exclude:currentPartnerReservedNames(),title:"Übung austauschen",detailAdd:true,returnToSheet:true});
  $("partnerConfirm").onclick=()=>{
-  if($("partnerSets"))e.sets=Math.max(1,Number($("partnerSets").value)||1);
-  e.rest=planAddFlow.group.rest;
-  if($("partnerTimeWheel")){e.measureMode="time";e.timeSeconds=Number($("partnerTimeWheel").value)||Number(e.timeSeconds)||60}
-  if($("partnerVariant"))e.variant=$("partnerVariant").value;e.perSide=!!$("partnerPerSide")?.checked;e.methodData=e.methodData||{};
-  if($("partnerDrops"))e.methodData.dropCount=Number($("partnerDrops").value)||2;if($("partnerDropPct"))e.methodData.dropPercent=Number($("partnerDropPct").value)||20;saveMethodRepConfig(e,"partner");
+  capturePartnerGeneric();
   const validation=validateExerciseDraft(e);if(validation)return toast(validation);
   const copy=clone(e);copy.setTechnique=method;copy.techniqueGroup=planAddFlow.group.id;copy.methodData=copy.methodData||{};if(method==="giant")copy.methodData.giantCount=planAddFlow.group.target;if(!Array.isArray(planAddFlow.editSourceIndexes)&&!Number.isFinite(Number(copy._draftOrder)))copy._draftOrder=planAddFlow.drafts.length;planAddFlow.drafts.push(copy);planAddFlow.current=null;advancePartnerDraftFlow()
  }

@@ -52,7 +52,9 @@
  window.configureExercise=function(i){baseEditFlow('plan',i)};
  window.replacePlanExercise=function(i){
   const old=currentPlan?.exercises?.[i];if(!old)return;
-  openExercisePicker(name=>startReplacement('plan',i,name),{exclude:new Set([old.name]),title:'Übung austauschen',detailAdd:true})
+  const g=groupContextFor(currentPlan.exercises,i);
+  const exclude=g?new Set(g.indexes.map(idx=>currentPlan.exercises[idx]?.name).filter(Boolean)):new Set([old.name]);
+  openExercisePicker(name=>startReplacement('plan',i,name),{exclude,title:'Übung austauschen',detailAdd:true})
  };
  window.configureLiveExercise=function(i){baseEditFlow('live',i)};
 
@@ -312,7 +314,10 @@
     renderPlanAddConfig()
   });
 
-  document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{e.reps=b.dataset.repPreset});
+  document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{
+    e.reps=b.dataset.repPreset;
+    document.querySelectorAll('[data-rep-preset]').forEach(x=>x.classList.toggle('active',x===b))
+  });
   const time=$('paTimeWheel');if(time){const sync=()=>{e.measureMode='time';e.timeSeconds=Math.max(15,Number(time.value)||60)};time.oninput=sync;time.onchange=sync}
   bindPyramidCascade(e,'pa',renderPlanAddConfig);
   if($('paGiantCount'))$('paGiantCount').onchange=()=>{e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3};
@@ -398,12 +403,6 @@
    }
  },true);
 
- /* Pause selection must survive every redraw of the unified add/edit flow. */
- const baseRenderPlanAddConfig=window.renderPlanAddConfig;
- window.renderPlanAddConfig=function(){
-   baseRenderPlanAddConfig();
-   const e=planAddFlow?.current,rest=$("paRest");if(e&&rest)rest.onchange=()=>{e.rest=Number(rest.value)}
- };
 
  /* Remove generic coaching recommendation from live cards.
     Only previous actually completed values may appear grey as placeholders. */
@@ -422,7 +421,7 @@
    if(x.e.measureMode==="time"){
      return`<div class="combined-member-block combined-time-member">
        <div class="combined-member-title"><span class="combined-index">${idx}</span><button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(x.e.name)}</button></div>
-       <div class="combined-time-controls"><input type="text" inputmode="numeric" autocomplete="off" data-time-field="1" data-input="${x.i}|${si}|time" value="${formatTime(s.time)}"><button class="time-play" data-time-play="${x.i}|${si}">▶</button><input type="text" inputmode="decimal" data-input="${x.i}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight||"")}"><input type="text" inputmode="decimal" data-input="${x.i}|${si}|level" placeholder="${esc(s._suggested?.level||"S/W")}" value="${esc(s.level||"")}"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button></div>
+       <div class="combined-time-controls"><input type="text" inputmode="numeric" autocomplete="off" data-time-field="1" data-input="${x.i}|${si}|time" value="${formatTime(s.time)}"><button class="time-play" data-time-play="${x.i}|${si}">▶</button><input type="text" inputmode="decimal" data-input="${x.i}|${si}|level" placeholder="Leistung" value="${esc(s.level||"")}"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button></div>
      </div>${ratingMarkup(x.i,si,s)}`
    }
    return`<div class="combined-value-head"><span></span><span></span><span>KG</span><span>WDH.</span><span></span></div>
@@ -3728,35 +3727,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  if($("liveTopStop"))$("liveTopStop").onclick=()=>window.finishAndSaveWorkout();
 })();
 
-/* ReThink. Fitness — canonical plan creation/edit synchronization */
-(function(){
- function normalizePlanGroupPrescriptionV31(list){
-   // Partner exercises intentionally keep their own prescription.
-   // Only group identity/linking is normalized elsewhere.
-   return list
- }
- const oldCommit=window.commitPlanAddFlow;
- if(typeof oldCommit==="function"){
-   window.commitPlanAddFlow=function(){
-     const r=oldCommit.apply(this,arguments);
-     try{
-       if(planAddFlow?.context==="plan"&&currentPlan?.exercises)normalizePlanGroupPrescriptionV31(currentPlan.exercises)
-     }catch{}
-     return r
-   }
- }
- window.rethinkNormalizePlanPrescriptionV31=normalizePlanGroupPrescriptionV31
-})();
 
-/* ReThink. Fitness — canonical set-count rules */
-(function(){
- window.rethinkSetOptionsForMethod=function(method){
-   if(method==="pyramid")return [3,4,5,6,7,8,9,10];
-   if(method==="backoff")return [2,3,4,5,6];
-   if(["cluster","restpause","dropset"].includes(method))return [1,2,3,4,5,6];
-   return [1,2,3,4,5,6,7,8,9,10]
- };
-})();
 
 /* ReThink. Fitness — stable set/time controls on iOS */
 (function(){
