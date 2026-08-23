@@ -1509,43 +1509,11 @@ html[data-theme="light"] #startTrainingCard #choosePlanStart.training-main-play{
   display:none!important;
 }
 </style>
-<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png?v=20260823r3">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png?v=20260823-r-dumbbell-v4">
 <style id="rethink-time-performance-layout">
 .time-head,.time-row{grid-template-columns:34px minmax(78px,1fr) 42px minmax(86px,1fr) 40px 22px!important;gap:6px!important}
 .time-row .remove-mini{grid-column:6!important}
 </style>
-<style id="rethink-preview-clean-final">
-.preview-live-shell{display:grid!important;gap:12px!important;width:100%!important}
-.preview-live-shell .method-card{width:100%!important;min-width:0!important;overflow:hidden!important;padding:14px!important}
-.preview-live-shell .connected-method-card{padding:14px!important}
-.preview-live-shell .preview-group-member{
-  padding:10px 0 0!important;margin:0!important;border-top:1px solid var(--line)!important;min-width:0!important
-}
-.preview-live-shell .preview-group-member:first-of-type{border-top:0!important;padding-top:6px!important}
-.preview-live-shell .exercise-title-link,
-.preview-live-shell .preview-group-member>strong{
-  display:block!important;width:100%!important;text-align:left!important;white-space:normal!important;overflow-wrap:anywhere!important
-}
-.preview-live-shell .prescription{margin:4px 0 8px!important;line-height:1.35!important}
-.preview-table{display:grid!important;gap:5px!important;width:100%!important;min-width:0!important;margin-top:7px!important}
-.preview-table-head,.preview-table-row{
-  display:grid!important;grid-template-columns:40px minmax(0,1fr) minmax(0,1fr)!important;gap:7px!important;align-items:center!important;width:100%!important
-}
-.preview-table-head{font-size:9.5px!important;color:var(--muted)!important;font-weight:850!important;padding:0 2px!important}
-.preview-table-row>strong{font-size:12px!important;text-align:center!important}
-.preview-table .preview-value{
-  height:38px!important;min-width:0!important;width:100%!important;border:1px solid var(--line)!important;
-  border-radius:10px!important;background:var(--surface2)!important;color:var(--muted)!important;
-  display:flex!important;align-items:center!important;justify-content:center!important;font-size:11px!important;font-weight:750!important;
-  padding:0 6px!important;box-sizing:border-box!important
-}
-/* Old live-row grids must never control preview geometry. */
-.preview-live-shell .set-head,.preview-live-shell .set-row,
-.preview-live-shell .advanced-head,.preview-live-shell .advanced-row,
-.preview-live-shell .time-head,.preview-live-shell .time-row,
-.preview-live-shell .group-round,.preview-live-shell .group-ex-row{max-width:100%!important}
-</style>
-
 <style id="rethink-preview-isolated-v2">
 .rt-preview-list{display:flex;flex-direction:column;gap:12px;width:100%;padding:0;margin:0}
 .rt-preview-card{display:block;width:100%;box-sizing:border-box;border:2px solid var(--method,#b7a4d8);border-radius:16px;background:var(--surface);padding:14px;overflow:hidden}
@@ -1846,7 +1814,7 @@ function validateDraftCollection(drafts,method,target){
  return""
 }
 function normEx(x){const e=clone(x||{});e.name=e.name||"Übung";e.category=e.category||"Körpergewicht";e.muscles=Array.isArray(e.muscles)&&e.muscles.length?e.muscles:[e.subcategory||"Ganzkörper"];e.tracking=e.tracking||"reps";if(Array.isArray(e.variants))e.variants=[...new Set(e.variants.map(v=>String(v||"").trim()).filter(v=>v&&v.toLowerCase()!=="standard"))];return e}
-function normPlanEx(e){const x=normEx(e),legacyAmrap=x.setTechnique==="amrap";x.variant=(String(x.variant||"").trim().toLowerCase()==="standard"?"":String(x.variant||"").trim());x.setTechnique=x.setTechnique==="normal"||legacyAmrap?"standard":(x.setTechnique||"standard");x.measureMode=x.measureMode||((String(x.category||"").toLowerCase()==="cardio"||(x.tracking||"").includes("time")||["plank","side plank","hollow body hold","dead hang","deep squat hold","wall sit"].includes(String(x.name||"").toLowerCase()))?"time":"reps");x.reps=legacyAmrap&&x.measureMode!=="time"?"AMRAP":(x.reps||x.targetRepRange||defaultRepsForMethod(x.setTechnique));x.sets=Math.max(1,Number(x.sets)||3);x.rest=Number.isFinite(Number(x.rest))?Number(x.rest):90;x.methodData=x.methodData||{};x.note=x.note||"";x.variant=String(x.variant||"").toLowerCase()==="standard"?"":(x.variant||"");x.perSide=!!x.perSide;x.linkedExerciseNames=Array.isArray(x.linkedExerciseNames)?x.linkedExerciseNames:[];return x}
+function normPlanEx(e){const x=normEx(e),legacyAmrap=x.setTechnique==="amrap";x.variant=(String(x.variant||"").trim().toLowerCase()==="standard"?"":String(x.variant||"").trim());x.setTechnique=x.setTechnique==="normal"||legacyAmrap?"standard":(x.setTechnique||"standard");x.measureMode=x.measureMode||((String(x.category||"").toLowerCase()==="cardio"||(x.tracking||"").includes("time")||["plank","side plank","hollow body hold","dead hang","deep squat hold","wall sit"].includes(String(x.name||"").toLowerCase()))?"time":"reps");x.reps=legacyAmrap&&x.measureMode!=="time"?"AMRAP":(x.reps||x.targetRepRange||defaultRepsForMethod(x.setTechnique));x.sets=Math.max(1,Number(x.sets)||3);x.rest=(x.rest===0||x.rest==="0")?0:((x.rest===null||x.rest===undefined||x.rest==="")?90:(Number.isFinite(Number(x.rest))?Math.max(0,Number(x.rest)):90));x.methodData=x.methodData||{};x.note=x.note||"";x.variant=String(x.variant||"").toLowerCase()==="standard"?"":(x.variant||"");x.perSide=!!x.perSide;x.linkedExerciseNames=Array.isArray(x.linkedExerciseNames)?x.linkedExerciseNames:[];return x}
 function normPlan(p){return{id:p.id||uid(),name:p.name||"Trainingsplan",createdAt:p.createdAt||Date.now(),updatedAt:p.updatedAt||Date.now(),lastUsedAt:Number(p.lastUsedAt)||0,exercises:(p.exercises||[]).map(normPlanEx)}}
 function allExercises(){const hidden=new Set((read(STORAGE.library,{hidden:[]}).hidden||[])),map=new Map(DEFAULT_EXERCISES.filter(x=>!hidden.has(x.name)).map(x=>[x.name.toLowerCase(),normEx(x)]));customExercises.forEach(x=>{const e=normEx(typeof x==="string"?{name:x,custom:true}:x);e.custom=true;map.set(e.name.toLowerCase(),e)});return[...map.values()].sort((a,b)=>a.name.localeCompare(b.name,"de"))}
 function findExercise(n){return allExercises().find(x=>x.name===n)||normEx({name:n})}
@@ -2747,7 +2715,7 @@ function renderCompactPartnerConfig(){
   title:`${METHOD_LABEL[method]} · ${esc(e.name)}`,
   scroll:0,
   body:`<div class="compact-partner-card"><strong>${esc(e.name)}</strong><div class="small">Eigene Einstellungen für diese Übung innerhalb des ${esc(METHOD_LABEL[method])}.</div></div>
-  <div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="partnerSets" class="field">${setOptionsMarkup(e,e.sets,"partner")}</select></div><div class="form-field"><label>PAUSE</label><select id="partnerRest" class="field">${REST_OPTIONS.map(x=>`<option value="${x}" ${normalizedRest(e.rest,90)===x?"selected":""}>${x===0?"Keine":formatTime(x)}</option>`).join("")}</select></div></div>
+  <div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="partnerSets" class="field">${setOptionsMarkup(e,e.sets,"partner")}</select></div><div class="form-field"><label>PAUSE</label><select id="partnerRest" class="field">${restOptionsMarkup(e.rest)}</select></div></div>
   <div class="mode-switch"><button type="button" class="chip ${e.measureMode!=="time"?"active":""}" id="partnerModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==="time"?"active":""}" id="partnerModeTime">Zeit</button></div>
   <div class="form-field"><label>${e.measureMode==="time"?"ZEIT":"WDH.-VORGABE"}</label>${e.measureMode==="time"?timePresetMarkup(e,"partner"):methodRepConfigMarkup(e,"partner")}</div>
   ${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="partnerVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).filter(v=>String(v).trim().toLowerCase()!=="standard").map(v=>`<option ${e.variant===v?"selected":""}>${esc(v)}</option>`).join("")}</select></div>`:""}
@@ -3128,9 +3096,10 @@ function renderPreviewSets(e){
  const rows=Array.from({length:sets},(_,i)=>i);
 
  if(e.measureMode==="time"){
+   const exactTime=Math.max(15,Number(e.timeSeconds)||60);
    return `<div class="preview-table preview-time-table">
      <div class="preview-table-head preview-time-head"><span>SATZ</span><span>ZEIT</span><span>LEISTUNG</span></div>
-     ${rows.map(i=>`<div class="preview-table-row preview-time-row"><strong>${i+1}</strong><span class="preview-value preview-time-value">${formatTime(e.timeSeconds||60)}</span><span class="preview-value preview-performance-value">Leistung</span></div>`).join("")}
+     ${rows.map(i=>`<div class="preview-table-row preview-time-row"><strong>${i+1}</strong><span class="preview-value preview-time-value">${formatTime(exactTime)}</span><span class="preview-value preview-performance-value">Leistung</span></div>`).join("")}
    </div>`
  }
 
@@ -3864,6 +3833,10 @@ function cancelTask(){planAddFlow=null;sheetStack=[];currentSheetState=null;$("s
 $("sheetBack").onclick=()=>{if(planAddFlow)planAddBack();else closeSheet({all:false})};$("sheetClose").onclick=()=>{if(planAddFlow)cancelPlanAddFlow();else cancelTask()};
 function normalizedRest(v,fallback=90){if(v===0||v==="0")return 0;const n=Number(v);return Number.isFinite(n)?Math.max(0,n):fallback}
 function restLabel(v){const n=normalizedRest(v,90);return n===0?"Keine":formatTime(n)}
+function restOptionsMarkup(selected){
+ const v=normalizedRest(selected,90);
+ return REST_OPTIONS.map(x=>`<option value="${x}" ${v===x?"selected":""}>${x===0?"Keine":formatTime(x)}</option>`).join("")
+}
 function formatTime(s){s=Math.max(0,Number(s)||0);return`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function parseTime(v){const x=String(v).trim();if(x.includes(":")){const[m,s]=x.split(":").map(Number);return(m||0)*60+(s||0)}return(Number(x)||0)*60}function formatDuration(ms){const s=Math.max(0,Math.floor(ms/1000)),m=Math.floor(s/60),r=s%60;return`${m}:${String(r).padStart(2,"0")}`}
 loadData();if(weekOffset!==0){const _dated=loadDatedWeeks();weekPlan=_dated[weekKeyForOffset()]||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]))}dailyReset();ensureDrinks();renderExerciseLibrary();renderPlans();renderTrainingHome();renderWeek();renderProfile();restoreUI();
 if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});</script>

@@ -786,3 +786,7 @@ Der scheinbar nicht klickbare Partnerkatalog hatte einen tatsächlichen Laufzeit
 - Die Leistungsbox ist breiter als die Zeitbox.
 - Alle Felder bleiben in einer einzigen Zeile.
 - Minus-/Löschen-/Aktionsbuttons sind in sämtlichen Vorschauen ausgeblendet.
+
+
+## Letzte Codebereinigung
+Siehe `CHANGES.md` für die vollständige Liste der Änderungen an Pause, Vorschau und entfernten Legacy-Overrides.

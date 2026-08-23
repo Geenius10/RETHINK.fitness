@@ -286,14 +286,7 @@
   return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?'active-live-exercise':''}" data-live-card="${first.i}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name"><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}"><strong>${String.fromCharCode(65+gi)}</strong> ${esc(x.e.name)}</button></div>`).join('')}</div><button class="icon-btn" data-live-config="${first.i}" aria-label="Serie bearbeiten">✎</button></div><div class="method-help">${esc(methodHelp(g.method))}</div>${rows}<button class="secondary" data-add-group-set="${esc(g.key)}" style="margin-top:8px">Satz hinzufügen</button></div>`
  };
 
- // Preview mirrors the same connected-card hierarchy and exercise names open the execution card.
- window.openPreview=function(p){
-  $('previewTitle').textContent=p.name||'Workout Vorschau';const pp={...clone(p),exercises:clone(p.exercises).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
-  const groups=previewVisualGroups(pp.exercises);
-  $('previewBody').innerHTML=`<div class="preview-live-shell">${groups.map(g=>{if(!groupMethod(g.method))return`<div class="method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map(e=>`<div class="preview-group-member"><div class="live-card-head"><div><button class="exercise-title-link" data-preview-detail="${esc(e.name)}">${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div></div>${renderPreviewSets(e)}</div>`).join('')}</div>`;
-   const rounds=Math.max(...g.items.map(e=>Number(e.sets)||0));return`<div class="method-card connected-method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="preview-connected-top">${g.items.map((e,j)=>`<button class="exercise-title-link" data-preview-detail="${esc(e.name)}"><strong>${String.fromCharCode(65+j)}</strong> ${esc(e.name)}</button>`).join('')}</div><div class="method-help" style="margin-top:8px">${esc(methodHelp(g.method))}</div>${Array.from({length:rounds},(_,si)=>`<div class="preview-combined-round"><div class="group-round-title">Satz ${si+1}</div>${g.items.map((e,j)=>`<div class="preview-combined-row"><span>${si+1}${String.fromCharCode(97+j)}</span><span class="preview-mini-name">${esc(e.name)}</span><span class="preview-value">${e.measureMode==='time'?formatTime(e.timeSeconds||60):'KG'}</span><span class="preview-value">${e.measureMode==='time'?'ZEIT':(amrapText(e.reps||'WDH.'))}</span></div>`).join('')}</div>`).join('')}</div>`}).join('')}</div>`;
-  openPage('previewPage');document.querySelectorAll('[data-preview-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.previewDetail))
- };
+
 
  function askRestart(p){pendingStartPlan=p;openSheet('Training erneut starten?',`<p class="muted" style="margin:0 0 16px">„${esc(p.name)}“ erneut starten?</p><button id="reallyRestartPlan" class="primary" style="width:100%">Training erneut starten</button>`);$('reallyRestartPlan').onclick=()=>{closeSheet({all:true});startWorkout(p)}}
  window.openSummary=function(w){baseOpenSummary(w);const p=plans.find(x=>String(x.id)===String(w.planId));if(!p)return;requestAnimationFrame(()=>{if($('summaryTopPlay'))$('summaryTopPlay').onclick=()=>askRestart(p);if($('summaryRestart'))$('summaryRestart').onclick=()=>askRestart(p)})};
@@ -1064,19 +1057,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  const baseStartRestV68=startRest;
  startRest=function(sec,restored=false){moveRestDockV68();return baseStartRestV68(sec,restored)};
 
- /* Preview uses the same workout card renderer, but remains read-only. */
- window.openPreview=function(p){
-   $('previewTitle').textContent=p.name||'Workout Vorschau';
-   const pp={...clone(p),activeExerciseIndex:-1,exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
-   const saved=activeWorkout;activeWorkout=pp;
-   let markup='';
-   try{markup=liveVisualGroups(pp.exercises).map(g=>g.group?renderLiveGroupCard(g):renderLiveSingleCard(g.members[0].e,g.members[0].i)).join('')}
-   finally{activeWorkout=saved}
-   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact">${markup}</div>`;
-   $('previewBody').querySelectorAll('input,textarea,select').forEach(x=>{x.readOnly=true;x.tabIndex=-1});
-   $('previewBody').querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.liveDetail));
-   openPage('previewPage')
- };
+
 
  function weekRunningV68(day){
    if(!activeWorkout?.weekDate)return false;
@@ -1293,19 +1274,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    return advanceBeforeV69()
  };
 
- /* Exact read-only preview using live renderers. */
- openPreview=function(p){
-   $('previewTitle').textContent=p.name||'Workout Vorschau';
-   const pp={...clone(p),activeExerciseIndex:-1,exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
-   const old=activeWorkout;activeWorkout=pp;
-   let markup='';
-   try{markup=liveVisualGroups(pp.exercises).map(g=>g.group?renderLiveGroupCard(g):renderLiveSingleCard(g.members[0].e,g.members[0].i)).join('')}
-   finally{activeWorkout=old}
-   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact">${markup}</div>`;
-   $('previewBody').querySelectorAll('input,textarea,select').forEach(x=>{x.readOnly=true;x.disabled=true;x.tabIndex=-1});
-   $('previewBody').querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.liveDetail));
-   openPage('previewPage')
- };
+
 
  /* Week running state + click back into running unit. */
  function v69WeekDate(day){return dateKeyLocal(weekDateAt(day))}
@@ -2167,7 +2136,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  function applyLiveUnitsV31(){document.querySelectorAll("#liveBody .set-head span,#liveBody .time-head span,#liveBody .advanced-head span,#liveBody .combined-value-head span").forEach(el=>{if(el.textContent.trim()==="KG")el.textContent=weightLabelV31()});document.querySelectorAll("#liveBody [data-input]").forEach(inp=>{const info=weightFieldInfoV31(inp);if(!info)return;const c=canonicalWeightForFieldV31(info),s=suggestedWeightForFieldV31(info);inp.value=String(c).trim()===""?"":String(weightDisplayV31(c));inp.placeholder=String(s).trim()===""?weightLabelV31():String(weightDisplayV31(s))})}
  const updateInputBeforeUnitsV31=updateInput;updateInput=function(inp){const info=weightFieldInfoV31(inp);if(!info||prefs.weightUnit==="kg")return updateInputBeforeUnitsV31(inp);const shown=inp.value,converted=weightStorageV31(shown);inp.value=converted===""?"":String(converted);const result=updateInputBeforeUnitsV31(inp);if(inp.isConnected)inp.value=shown;return result};
  const renderLiveBeforeUnitsV31=renderLive;renderLive=function(){const x=renderLiveBeforeUnitsV31();applyLiveUnitsV31();return x};
- function unitizePreviewV31(){document.querySelectorAll("#previewBody .preview-value,#previewBody .set-head span,#previewBody .time-head span,#previewBody .advanced-head span,#previewBody .combined-value-head span").forEach(el=>{if(el.textContent.trim()==="KG")el.textContent=weightLabelV31()})}
+ function unitizePreviewV31(){document.querySelectorAll("#previewBody .preview-rep-head span,#previewBody .preview-rep-row .preview-value").forEach(el=>{if(el.textContent.trim()==="KG")el.textContent=weightLabelV31()})}
  const openPreviewBeforeUnitsV31=openPreview;openPreview=function(p){const x=openPreviewBeforeUnitsV31(p);requestAnimationFrame(unitizePreviewV31);return x};
  function formatMeasurementValuesV31(m){return `${m.bodyfat?`<span>Körperfett ${m.bodyfat}%</span>`:""}${m.waist?`<span>Taille ${lengthDisplayV31(m.waist)} ${lengthLabelV31().toLowerCase()}</span>`:""}${m.chest?`<span>Brust ${lengthDisplayV31(m.chest)} ${lengthLabelV31().toLowerCase()}</span>`:""}${m.hip?`<span>Hüfte ${lengthDisplayV31(m.hip)} ${lengthLabelV31().toLowerCase()}</span>`:""}`}
  function patchProfileUnitsV31(){const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),cw=Number(latest?.weight||profile.weight||0);if($("profileSummary"))$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?`${lengthDisplayV31(profile.height)} ${lengthLabelV31().toLowerCase()}`:"",cw?`${weightDisplayV31(cw)} ${weightLabelV31().toLowerCase()}`:""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";if($("profileGoalSummary")){const base=profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele";$("profileGoalSummary").innerHTML=`<span>${base}</span>${profile.targetWeight?`<span class="target-weight-line-profile">Wunschgewicht ${weightDisplayV31(profile.targetWeight)} ${weightLabelV31().toLowerCase()}</span>`:""}`}document.querySelectorAll("[data-measurement-open]").forEach(btn=>{const i=Number(btn.dataset.measurementOpen),m=measurements[i];if(!m)return;const strong=btn.querySelector("strong");if(strong)strong.textContent=m.weight?`${weightDisplayV31(m.weight)} ${weightLabelV31().toLowerCase()}`:"Messung";const vals=btn.querySelector(".measurement-values");if(vals)vals.innerHTML=formatMeasurementValuesV31(m);btn.onclick=()=>openMeasurementRecord(i)})}
@@ -2177,7 +2146,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  openMeasurementData=function(){openSheet("Messungen",`${measurements.slice().reverse().map((m,ri)=>{const i=measurements.length-1-ri;return`<div class="card" data-settings-measure-open="${i}"><div class="space"><div><strong>${m.weight?weightDisplayV31(m.weight):"–"} ${weightLabelV31().toLowerCase()}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div></div><span>›</span></div></div>`}).join("")||'<div class="card small">Noch keine Messungen.</div>'}`);document.querySelectorAll("[data-settings-measure-open]").forEach(b=>b.onclick=()=>openMeasurementRecord(Number(b.dataset.settingsMeasureOpen)))};
  function openMeasurementEntryV31(){openSheet("Messung hinzufügen",`<div class="grid2"><div class="form-field"><label>GEWICHT ${weightLabelV31()}</label><input id="measureWeightUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>KÖRPERFETT IN %</label><input id="measureBodyfatUnits" class="field" inputmode="decimal"></div></div><div class="grid2"><div class="form-field"><label>TAILLE ${lengthLabelV31()}</label><input id="measureWaistUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>BRUST ${lengthLabelV31()}</label><input id="measureChestUnits" class="field" inputmode="decimal"></div></div><div class="form-field"><label>HÜFTE ${lengthLabelV31()}</label><input id="measureHipUnits" class="field" inputmode="decimal"></div><button id="measureSaveUnits" class="primary" style="width:100%">Speichern</button>`);$("measureSaveUnits").onclick=()=>{const weight=weightStorageV31($("measureWeightUnits").value);if(!weight||weight<20||weight>400){$("measureWeightUnits").focus();return alert("Bitte Gewicht eintragen.")}const md=profileDayOffset===0?Date.now():profileDate().setHours(12,0,0,0),m={date:md,weight,bodyfat:$("measureBodyfatUnits").value,waist:lengthStorageV31($("measureWaistUnits").value),chest:lengthStorageV31($("measureChestUnits").value),hip:lengthStorageV31($("measureHipUnits").value)};measurements.push(m);measurements.sort((a,b)=>Number(a.date)-Number(b.date));profile.weight=weight;saveAll();closeSheet({all:true});renderProfile()}}openMeasurementEntry=openMeasurementEntryV31;if($("addMeasurementBtn"))$("addMeasurementBtn").onclick=openMeasurementEntryV31;
  openProfileEditor=function(){openSheet("Profil bearbeiten",`<div class="profile-form-section"><h3>Persönliche Daten</h3><div class="grid2"><div class="form-field"><label>ALTER</label><input id="profileAgeEdit" class="field" inputmode="numeric" value="${esc(profile.age||"")}"></div><div class="form-field"><label>GRÖSSE ${lengthLabelV31()}</label><input id="profileHeightEdit" class="field" inputmode="decimal" value="${esc(profile.height?lengthDisplayV31(profile.height):"")}"></div></div><div class="form-field"><label>GESCHLECHT FÜR ENERGIEBERECHNUNG</label><select id="profileSexEdit" class="field"><option value="">Nicht gewählt</option><option value="female" ${profile.sex==="female"?"selected":""}>Weiblich</option><option value="male" ${profile.sex==="male"?"selected":""}>Männlich</option></select></div></div><div class="profile-form-section"><h3>Aktivität & Ziel</h3><div class="form-field"><label>AKTIVITÄT</label><select id="profileActivityEdit" class="field"><option value="1.2" ${String(profile.activity)==="1.2"?"selected":""}>Wenig aktiv</option><option value="1.375" ${String(profile.activity)==="1.375"?"selected":""}>Leicht aktiv</option><option value="1.55" ${!profile.activity||String(profile.activity)==="1.55"?"selected":""}>Moderat aktiv</option><option value="1.725" ${String(profile.activity)==="1.725"?"selected":""}>Sehr aktiv</option><option value="1.9" ${String(profile.activity)==="1.9"?"selected":""}>Extrem aktiv</option></select></div><div class="form-field"><label>ZIEL</label><select id="profileGoalEdit" class="field"><option value="cut" ${profile.goal==="cut"?"selected":""}>Gewicht reduzieren</option><option value="maintain" ${!profile.goal||profile.goal==="maintain"?"selected":""}>Gewicht halten</option><option value="gain" ${profile.goal==="gain"?"selected":""}>Muskelaufbau</option></select></div><div class="form-field"><label>WUNSCHGEWICHT ${weightLabelV31()}</label><input id="profileTargetWeightEdit" class="field" inputmode="decimal" value="${esc(profile.targetWeight?weightDisplayV31(profile.targetWeight):"")}"></div></div><button id="profileSaveEdit" class="primary" style="width:100%">Profil speichern</button>`);$("profileSaveEdit").onclick=()=>{const age=Number($("profileAgeEdit").value),height=lengthStorageV31($("profileHeightEdit").value),target=weightStorageV31($("profileTargetWeightEdit").value);if(age&&(age<14||age>100))return alert("Bitte ein realistisches Alter eingeben.");if(height&&(height<120||height>230))return alert("Bitte eine realistische Körpergröße eingeben.");if(target&&(target<30||target>300))return alert("Bitte ein realistisches Wunschgewicht eingeben.");profile.age=age||"";profile.height=height||"";profile.sex=$("profileSexEdit").value;profile.activity=$("profileActivityEdit").value;profile.goal=$("profileGoalEdit").value;profile.targetWeight=target||"";saveAll();closeSheet({all:true});renderProfile()}};
- const openSettingsBeforePrefsV31=openSettingsPage;openSettingsPage=function(){openSettingsBeforePrefsV31();requestAnimationFrame(()=>{const body=$("settingsBody");if(!body||$("unitSettingsV31"))return;const sec=document.createElement("div");sec.className="settings-section";sec.id="unitSettingsV31";sec.innerHTML=`<h3>Einheiten & Ansicht</h3><div class="settings-card"><div class="settings-row"><div><strong>Gewicht</strong><small>Training, Verlauf und Körpergewicht</small></div><select id="prefWeightUnit" class="field settings-unit-select"><option value="kg" ${prefs.weightUnit==="kg"?"selected":""}>kg</option><option value="lb" ${prefs.weightUnit==="lb"?"selected":""}>lb</option></select></div><div class="settings-row"><div><strong>Distanz</strong><small>Cardio-/Distanzangaben</small></div><select id="prefDistanceUnit" class="field settings-unit-select"><option value="km" ${prefs.distanceUnit==="km"?"selected":""}>km</option><option value="mi" ${prefs.distanceUnit==="mi"?"selected":""}>mi</option></select></div><div class="settings-row"><div><strong>Messungen</strong><small>Größe, Taille, Brust und Hüfte</small></div><select id="prefMeasurementUnit" class="field settings-unit-select"><option value="cm" ${prefs.measurementUnit==="cm"?"selected":""}>cm</option><option value="in" ${prefs.measurementUnit==="in"?"selected":""}>in</option></select></div><div class="settings-row"><div><strong>Wochenstart</strong><small>Reihenfolge und Datumsbereich</small></div><select id="prefWeekStart" class="field settings-unit-select"><option value="monday" ${prefs.weekStart==="monday"?"selected":""}>Montag</option><option value="sunday" ${prefs.weekStart==="sunday"?"selected":""}>Sonntag</option></select></div><div class="settings-row"><div><strong>Textgröße</strong><small>Darstellung der App-Schrift</small></div><select id="prefTextScale" class="field settings-unit-select"><option value="normal" ${prefs.textScale==="normal"?"selected":""}>Standard</option><option value="large" ${prefs.textScale==="large"?"selected":""}>Groß</option><option value="xlarge" ${prefs.textScale==="xlarge"?"selected":""}>Sehr groß</option></select></div></div>`;const training=[...body.querySelectorAll(".settings-section")].find(x=>x.querySelector("h3")?.textContent==="Training");if(training)body.insertBefore(sec,training);else body.appendChild(sec);$("prefWeightUnit").onchange=()=>{prefs.weightUnit=$("prefWeightUnit").value;savePrefsV31();if(activeWorkout)renderLive();renderProfile();unitizeSheetV31()};$("prefDistanceUnit").onchange=()=>{prefs.distanceUnit=$("prefDistanceUnit").value;savePrefsV31();unitizeSheetV31()};$("prefMeasurementUnit").onchange=()=>{prefs.measurementUnit=$("prefMeasurementUnit").value;savePrefsV31();renderProfile()};$("prefTextScale").onchange=()=>{prefs.textScale=$("prefTextScale").value;savePrefsV31();applyTextScaleV31()};$("prefWeekStart").onchange=()=>{const old=prefs.weekStart,next=$("prefWeekStart").value;saveCurrentWeekRefs();migrateWeekStorageV31(old,next);prefs.weekStart=next;savePrefsV31();loadWeekOffset(weekOffset);renderProfileProgress()}})};
+ const openSettingsBeforePrefsV31=openSettingsPage;openSettingsPage=function(){openSettingsBeforePrefsV31();requestAnimationFrame(()=>{const body=$("settingsBody");if(!body||$("unitSettingsV31"))return;const sec=document.createElement("div");sec.className="settings-section";sec.id="unitSettingsV31";sec.innerHTML=`<h3>Einheiten & Ansicht</h3><div class="settings-card"><div class="settings-row"><div><strong>Gewicht</strong><small>Training, Verlauf und Körpergewicht</small></div><select id="prefWeightUnit" class="field settings-unit-select"><option value="kg" ${prefs.weightUnit==="kg"?"selected":""}>kg</option><option value="lb" ${prefs.weightUnit==="lb"?"selected":""}>lb</option></select></div><div class="settings-row"><div><strong>Distanz</strong><small>Cardio-/Distanzangaben</small></div><select id="prefDistanceUnit" class="field settings-unit-select"><option value="km" ${prefs.distanceUnit==="km"?"selected":""}>km</option><option value="mi" ${prefs.distanceUnit==="mi"?"selected":""}>mi</option></select></div><div class="settings-row"><div><strong>Messungen</strong><small>Größe, Taille, Brust und Hüfte</small></div><select id="prefMeasurementUnit" class="field settings-unit-select"><option value="cm" ${prefs.measurementUnit==="cm"?"selected":""}>cm</option><option value="in" ${prefs.measurementUnit==="in"?"selected":""}>in</option></select></div><div class="settings-row"><div><strong>Wochenstart</strong><small>Reihenfolge und Datumsbereich</small></div><select id="prefWeekStart" class="field settings-unit-select"><option value="monday" ${prefs.weekStart==="monday"?"selected":""}>Montag</option><option value="sunday" ${prefs.weekStart==="sunday"?"selected":""}>Sonntag</option></select></div><div class="settings-row"><div><strong>Textgröße</strong><small>Darstellung der App-Schrift</small></div><select id="prefTextScale" class="field settings-unit-select"><option value="normal" ${prefs.textScale==="normal"?"selected":""}>Standard</option><option value="large" ${prefs.textScale==="large"?"selected":""}>Groß</option></select></div></div>`;const training=[...body.querySelectorAll(".settings-section")].find(x=>x.querySelector("h3")?.textContent==="Training");if(training)body.insertBefore(sec,training);else body.appendChild(sec);$("prefWeightUnit").onchange=()=>{prefs.weightUnit=$("prefWeightUnit").value;savePrefsV31();if(activeWorkout)renderLive();renderProfile();unitizeSheetV31()};$("prefDistanceUnit").onchange=()=>{prefs.distanceUnit=$("prefDistanceUnit").value;savePrefsV31();unitizeSheetV31()};$("prefMeasurementUnit").onchange=()=>{prefs.measurementUnit=$("prefMeasurementUnit").value;savePrefsV31();renderProfile()};$("prefTextScale").onchange=()=>{prefs.textScale=$("prefTextScale").value;savePrefsV31();applyTextScaleV31()};$("prefWeekStart").onchange=()=>{const old=prefs.weekStart,next=$("prefWeekStart").value;saveCurrentWeekRefs();migrateWeekStorageV31(old,next);prefs.weekStart=next;savePrefsV31();loadWeekOffset(weekOffset);renderProfileProgress()}})};
  window.rethinkPrefsV31={get:()=>({...prefs}),weightLabel:weightLabelV31,lengthLabel:lengthLabelV31,distanceLabel:distanceLabelV31,weightDisplay:weightDisplayV31,weightStorage:weightStorageV31,lengthDisplay:lengthDisplayV31,lengthStorage:lengthStorageV31,distanceDisplay:distanceDisplayV31,distanceStorage:distanceStorageV31,weekStartOf:weekStartOfV31,weekDayLabels:weekDayLabelsV31};
 })();
 /* Rethink_v3.1 — unit-aware measurement charts */
@@ -2409,7 +2378,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 
 /* Rethink_v3.1 — final global text scaling and zero-mutation field focus */
 (function(){
- const SCALE={normal:1,large:1.12,xlarge:1.24};
+ const SCALE={normal:1,large:1.10};
  let applyingFonts=false;
 
  function currentTextModeV31(){
@@ -2545,6 +2514,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  const PREF_KEY="rethink_preferences_v31";
  const p0={weightUnit:"kg",distanceUnit:"km",measurementUnit:"cm",weekStart:"monday",textScale:"normal",unitSystem:"metric",language:"de"};
  let sysPrefs={...p0,...read(PREF_KEY,{})};
+ if(sysPrefs.textScale==="xlarge")sysPrefs.textScale="large";
  // Backward-compatible inference from old individual selectors.
  if(!sysPrefs.unitSystem)sysPrefs.unitSystem=(sysPrefs.weightUnit==="lb"||sysPrefs.distanceUnit==="mi"||sysPrefs.measurementUnit==="in")?"imperial":"metric";
  if(!["de","en"].includes(sysPrefs.language))sysPrefs.language="de";
@@ -2799,7 +2769,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      sec.innerHTML=`<h3>Einheiten & Ansicht</h3><div class="settings-card">
        <div class="settings-row"><div><strong>Einheitensystem</strong><small>kg / km / cm / ml / g oder lb / mi / in / oz / oz-lb</small></div><select id="prefUnitSystem" class="field settings-system-select"><option value="metric" ${sysPrefs.unitSystem==="metric"?"selected":""}>Metrisch</option><option value="imperial" ${sysPrefs.unitSystem==="imperial"?"selected":""}>Imperial</option></select></div>
        <div class="settings-row"><div><strong>Wochenstart</strong></div><select id="prefWeekStartFinal" class="field settings-system-select"><option value="monday" ${sysPrefs.weekStart==="monday"?"selected":""}>Montag</option><option value="sunday" ${sysPrefs.weekStart==="sunday"?"selected":""}>Sonntag</option></select></div>
-       <div class="settings-row"><div><strong>Textgröße</strong></div><select id="prefTextScaleFinal" class="field settings-system-select"><option value="normal" ${sysPrefs.textScale==="normal"?"selected":""}>Standard</option><option value="large" ${sysPrefs.textScale==="large"?"selected":""}>Groß</option><option value="xlarge" ${sysPrefs.textScale==="xlarge"?"selected":""}>Sehr groß</option></select></div>
+       <div class="settings-row"><div><strong>Textgröße</strong></div><select id="prefTextScaleFinal" class="field settings-system-select"><option value="normal" ${sysPrefs.textScale==="normal"?"selected":""}>Standard</option><option value="large" ${sysPrefs.textScale==="large"?"selected":""}>Groß</option></select></div>
        <div class="settings-row"><div><strong>Sprache</strong></div><select id="prefLanguage" class="field settings-system-select"><option value="de" ${sysPrefs.language==="de"?"selected":""}>Deutsch</option><option value="en" ${sysPrefs.language==="en"?"selected":""}>Englisch</option></select></div>
      </div>`;
      const training=[...body.querySelectorAll(".settings-section")].find(x=>x.querySelector("h3")?.textContent==="Training"||x.querySelector("h3")?.textContent==="Training");
@@ -3801,4 +3771,201 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 /* ReThink. Fitness — group growth + exclusion invariant */
 (function(){
  window.rethinkGroupGrowthEnabled=true;
+})();
+
+/* ReThink. Fitness — canonical pause + preview invariants */
+(function(){
+ function syncZeroPause(){
+   const e=window.planAddFlow?.current;
+   ["paRest","partnerRest","growRest","repRest"].forEach(id=>{
+     const el=document.getElementById(id);
+     if(!el)return;
+     if(e && (e.rest===0||e.rest==="0"))el.value="0";
+   })
+ }
+ document.addEventListener("change",ev=>{
+   if(!["paRest","partnerRest","growRest","repRest"].includes(ev.target?.id))return;
+   const e=window.planAddFlow?.current;
+   if(e)e.rest=Number(ev.target.value);
+ },true);
+ document.addEventListener("click",ev=>{
+   if(["paModeReps","paModeTime"].includes(ev.target?.id))requestAnimationFrame(syncZeroPause)
+ },true);
+})();
+
+
+/* ReThink. Fitness — final complete DE→EN UI language authority */
+(function(){
+ const UI_EN={
+  "Pläne":"Plans","Übungen":"Exercises","Training":"Training","Woche":"Week","Profil":"Profile","Einstellungen":"Settings",
+  "Start":"Home","Heute":"Today","Gestern":"Yesterday","Morgen":"Tomorrow","Zurück":"Back","Weiter":"Continue","Fertig":"Done",
+  "Schließen":"Close","Abbrechen":"Cancel","Bestätigen":"Confirm","Übernehmen":"Apply","Speichern":"Save","Löschen":"Delete",
+  "Bearbeiten":"Edit","Hinzufügen":"Add","Entfernen":"Remove","Erstellen":"Create","Auswählen":"Select","Ändern":"Change",
+  "Öffnen":"Open","Suchen":"Search","Suche":"Search","Alle":"All","Keine":"None","Ja":"Yes","Nein":"No",
+  "Mehr":"More","Weniger":"Less","Name":"Name","Beschreibung":"Description","Notiz":"Note","Notizen":"Notes",
+  "Übung":"Exercise","Übung hinzufügen":"Add exercise","Übung bearbeiten":"Edit exercise","Übung austauschen":"Replace exercise",
+  "Übungsdetails":"Exercise details","Übungskatalog":"Exercise library","Eigene Übungen":"Custom exercises",
+  "Ausführung":"Instructions","Ausführungshinweise":"Instructions","Trainingsart":"Training type","Muskelgruppe":"Muscle group",
+  "Muskelgruppen":"Muscle groups","Gewichte":"Weights","Körpergewicht":"Bodyweight","Explosivität":"Explosive training",
+  "Geräte":"Machines","Cardio":"Cardio","Beweglichkeit":"Mobility","Kraft":"Strength","Ausdauer":"Endurance",
+  "Trainingsplan":"Workout plan","Trainingspläne":"Workout plans","Meine Pläne":"My plans","Plan":"Plan","Plan erstellen":"Create plan",
+  "Trainingsplan erstellen":"Create workout plan","Plan bearbeiten":"Edit plan","Plan speichern":"Save plan","Plan löschen":"Delete plan",
+  "Plan auswählen":"Choose plan","Trainingsplan auswählen":"Choose workout plan","Plan suchen":"Search plans","Planname":"Plan name",
+  "Vorschau":"Preview","Reihenfolge":"Order","Duplizieren":"Duplicate","Zuletzt genutzt":"Recently used","Hinzugefügt":"Added",
+  "Geändert":"Modified","Genutzt":"Used","Training starten":"Start workout","Workout starten":"Start workout",
+  "Training erneut starten":"Restart workout","Training fortsetzen":"Resume workout","Workout fortsetzen":"Resume workout",
+  "Training beenden":"Finish workout","Training verwerfen":"Discard workout","Workout läuft":"Workout in progress",
+  "TRAINING LÄUFT":"WORKOUT IN PROGRESS","Trainingsmethode":"Training method","Methode":"Method","Standard":"Standard",
+  "Normal":"Standard","Superset":"Superset","Giant Set":"Giant Set","Vorermüdung":"Pre-exhaust","Drop-Satz":"Drop Set",
+  "Drop Set":"Drop Set","Pyramide":"Pyramid","Back-off":"Back-off","Cluster":"Cluster","Rest-Pause":"Rest-Pause","AMRAP":"AMRAP",
+  "Satz":"Set","Sätze":"Sets","SATZ":"SET","SÄTZE":"SETS","Runde":"Round","Runden":"Rounds","Pause":"Rest","PAUSE":"REST",
+  "Keine Pause":"No rest","Pausenzeit":"Rest time","Pause beendet":"Rest finished","Pause überspringen":"Skip rest",
+  "Wiederholung":"Rep","Wiederholungen":"Reps","Wiederholungsziel":"Rep target","WDH.":"REPS","Wdh.":"reps",
+  "Zeit":"Time","ZEIT":"TIME","Leistung":"Performance","LEISTUNG":"PERFORMANCE","Gewicht":"Weight","GEWICHT":"WEIGHT",
+  "Distanz":"Distance","DISTANZ":"DISTANCE","pro Seite":"per side","Wiederholungen pro Seite":"Reps per side",
+  "Variante":"Variant","Gesamtziel":"Total target","Gewichtsreduktion":"Weight reduction","Satz hinzufügen":"Add set",
+  "Satz erledigt":"Set complete","Abgeschlossen":"Completed","Bewertung":"Rating","Perfekt":"Perfect","Limit":"Limit",
+  "Zu schwer":"Too heavy","Zu leicht":"Too easy","noch passend":"still appropriate","genau richtig":"just right",
+  "zu anstrengend":"too hard","Tipp nächstes Training":"Next workout tip","Erstes Training":"First workout",
+  "Woche":"Week","Wochen":"Weeks","Diese Woche":"This week","Aktuelle Woche":"Current week","Nächste Woche":"Next week",
+  "Vorherige Woche":"Previous week","Wochenplan":"Weekly plan","Trainingstage":"Training days","Montag":"Monday","Dienstag":"Tuesday",
+  "Mittwoch":"Wednesday","Donnerstag":"Thursday","Freitag":"Friday","Samstag":"Saturday","Sonntag":"Sunday",
+  "Mo":"Mon","Di":"Tue","Mi":"Wed","Do":"Thu","Fr":"Fri","Sa":"Sat","So":"Sun",
+  "Einmalig":"Once","Wiederholen":"Repeat","Für X Wochen":"For X weeks","Bis Datum":"Until date",
+  "ANZAHL WOCHEN":"NUMBER OF WEEKS","BIS EINSCHLIESSLICH":"THROUGH","Nur diese Woche":"This week only",
+  "Diese und folgende Wochen":"This and following weeks","Nur dieses Workout entfernen":"Remove this workout only",
+  "Wiederholung ab hier beenden":"End recurrence from here","Pause":"Rest","Freier Tag":"Rest day",
+  "Profil":"Profile","Messungen":"Measurements","Messung":"Measurement","Messung hinzufügen":"Add measurement",
+  "Heute messen?":"Measure today?","Körperfett":"Body fat","Taille":"Waist","Brust":"Chest","Hüfte":"Hips","Größe":"Height",
+  "Alter":"Age","Geschlecht":"Sex","Weiblich":"Female","Männlich":"Male","Nicht gewählt":"Not selected",
+  "Persönliche Daten":"Personal data","Aktivität & Ziel":"Activity & goal","Aktivität":"Activity","Ziel":"Goal",
+  "Wenig aktiv":"Low activity","Leicht aktiv":"Light activity","Moderat aktiv":"Moderately active","Sehr aktiv":"Very active",
+  "Extrem aktiv":"Extremely active","Gewicht reduzieren":"Lose weight","Gewicht halten":"Maintain weight","Muskelaufbau":"Build muscle",
+  "Wunschgewicht":"Target weight","Gewichtstrend":"Weight trend","Streak":"Streak","Fortschritt":"Progress",
+  "Hydrierung":"Hydration","Hydrierung heute":"Hydration today","Wasser":"Water","Wasser heute":"Water today",
+  "Wasser aus Nahrung":"Water from food","Menge":"Amount","MENGE":"AMOUNT","Ziel":"Goal","ZIEL":"GOAL",
+  "Getränk":"Drink","Getränke":"Drinks","Getränke heute":"Drinks today","Meine Getränke":"My drinks",
+  "Getränk erstellen":"Create drink","Getränk eintragen":"Log drink","Getränk hinzufügen":"Add drink",
+  "Ernährung":"Nutrition","Ernährung heute":"Nutrition today","Ernährungsziele":"Nutrition goals","Kalorien":"Calories",
+  "Protein":"Protein","Koffein":"Caffeine","Lebensmittel":"Food","Lebensmittel hinzufügen":"Add food",
+  "Lebensmittel erstellen":"Create food","Lebensmittel bearbeiten":"Edit food","Meine Lebensmittel":"My foods",
+  "Eigene Lebensmittel":"Custom foods","Mahlzeit":"Meal","Mahlzeiten":"Meals","Mahlzeit erstellen":"Create meal",
+  "Meine Mahlzeiten":"My meals","Lebensmittel und Mahlzeiten":"Foods and meals","Kategorie":"Category","Portion":"Serving",
+  "Portionen":"Servings","Gramm":"Grams","Persönlichen Wert berechnen":"Calculate personal target",
+  "Kalorienziel":"Calorie target","Proteinziel":"Protein target","Flüssigkeitsziel":"Hydration target",
+  "Lebensmittel, Mahlzeit oder Kategorie":"Food, meal or category","Lebensmittel oder Kategorie":"Food or category",
+  "Eintragen":"Log","+ Eintragen":"+ Log","Menge übernehmen":"Apply amount","Berechnen":"Calculate",
+  "Darstellung":"Appearance","Hell / Dunkel":"Light / Dark","Hell":"Light","Dunkel":"Dark","System":"System",
+  "Einheiten & Ansicht":"Units & display","Einheitensystem":"Unit system","Metrisch":"Metric","Imperial":"Imperial",
+  "Wochenstart":"Week starts on","Textgröße":"Text size","Groß":"Large","Sprache":"Language","Deutsch":"German","Englisch":"English",
+  "Daten & Backup":"Data & backup","Backup erstellen":"Create backup","Backup wiederherstellen":"Restore backup",
+  "Sichern":"Back up","Wiederherstellen":"Restore","Jährliche Datenbereinigung?":"Annual data cleanup?",
+  "Alte Verlaufsdaten löschen":"Delete old history data","Alte Verlaufsdaten gelöscht":"Old history data deleted",
+  "Dieses Jahr behalten":"Keep this year","Noch nicht eingerichtet":"Not set up yet","Noch keine Messung":"No measurement yet",
+  "Noch keine Messungen.":"No measurements yet.","Keine Ergebnisse":"No results","Keine Ergebnisse gefunden":"No results found",
+  "Planänderungen speichern?":"Save plan changes?","Bestehenden Plan überschreiben":"Overwrite existing plan",
+  "Als neuen Plan speichern":"Save as new plan","Änderungen verwerfen":"Discard changes",
+  "Änderungen speichern oder verwerfen?":"Save or discard changes?","Plan wirklich speichern?":"Save plan?",
+  "Ein Trainingsplan braucht mindestens eine Übung.":"A workout plan needs at least one exercise.",
+  "Bitte Planname eingeben.":"Please enter a plan name.","Bitte ein realistisches Alter eingeben.":"Please enter a realistic age.",
+  "Bitte ein realistisches Wunschgewicht eingeben.":"Please enter a realistic target weight.",
+  "Bitte Name und Nährwerte vollständig eintragen.":"Please enter the name and nutrition values.",
+  "Bitte Name und mindestens ein Lebensmittel hinzufügen.":"Please enter a name and add at least one food.",
+  "Für eine Mahlzeit bitte einzelne Zutaten wählen.":"For a meal, please select individual ingredients.",
+  "Bitte einzelne Zutaten wählen.":"Please select individual ingredients.","Lebensmittel gespeichert":"Food saved",
+  "Eigenes Lebensmittel wirklich löschen?":"Delete this custom food?","Mahlzeit wirklich löschen?":"Delete this meal?",
+  "Keine gültige ReThink-Backupdatei.":"This is not a valid ReThink backup file.",
+  "Backup wirklich wiederherstellen? Die aktuellen Daten dieser ReThink-Installation werden durch den Backup-Stand ersetzt.":"Restore this backup? The current data in this ReThink installation will be replaced with the backup data.",
+  "Perfekt · 1–3 Wdh. mit guter Form übrig":"Perfect · 1–3 reps left with good form",
+  "Limit · 0 Wdh. mit guter Form übrig":"Limit · 0 reps left with good form",
+  "Zu schwer · Form zu früh verloren":"Too heavy · form broke down too early",
+  "Zu leicht · problemlos noch 3+ Wdh.":"Too easy · 3+ reps still comfortably possible",
+  "Partnerübung vollständig konfigurieren":"Configure partner exercise",
+  "Eigene Einstellungen für die neue Übung.":"Individual settings for the new exercise.",
+  "Verknüpfung lösen":"Unlink","Übung hinzufügen":"Add exercise","Erstes protokolliertes Training – starte kontrolliert im vorgegebenen Bereich.":"First recorded workout — start conservatively within the prescribed range.",
+  "Erstes Training in dieser Methode – starte kontrolliert im vorgegebenen Wiederholungsbereich.":"First workout with this method — start conservatively within the prescribed rep range.",
+  "Jeden Satz einzeln ausführen, Werte eintragen, bewerten und danach pausieren.":"Perform each set individually, enter your results, rate it, then rest.",
+  "1 Stück":"1 piece","1 Brötchen":"1 roll","1 mittelgroße Kartoffel":"1 medium potato","1 mittelgroße Süßkartoffel":"1 medium sweet potato",
+  "z. B. Frühstück":"e.g. breakfast","z. B. Frühstück Bowl":"e.g. breakfast bowl"
+ };
+ const WORD_EN={
+  "bitte":"please","wählen":"choose","gewählt":"selected","hinzufügen":"add","entfernen":"remove","löschen":"delete",
+  "erstellen":"create","bearbeiten":"edit","speichern":"save","verwerfen":"discard","öffnen":"open","schließen":"close",
+  "Training":"workout","Trainings":"workout","Übung":"exercise","Übungen":"exercises","Satz":"set","Sätze":"sets",
+  "Wiederholung":"rep","Wiederholungen":"reps","Pause":"rest","Pausen":"rests","Zeit":"time","Leistung":"performance",
+  "Gewicht":"weight","Distanz":"distance","Woche":"week","Wochen":"weeks","Plan":"plan","Pläne":"plans",
+  "heute":"today","morgen":"tomorrow","gestern":"yesterday","aktuell":"current","aktuelle":"current","nächste":"next",
+  "vorherige":"previous","keine":"none","kein":"no","noch":"yet","bereits":"already","neu":"new","neue":"new",
+  "Name":"name","Wert":"value","Werte":"values","Ziel":"goal","Menge":"amount","Wasser":"water","Kalorien":"calories",
+  "Protein":"protein","Lebensmittel":"food","Mahlzeit":"meal","Getränk":"drink","Getränke":"drinks","Messung":"measurement",
+  "Messungen":"measurements","Einstellungen":"settings","Sprache":"language","Textgröße":"text size","Groß":"large",
+  "Deutsch":"German","Englisch":"English","Montag":"Monday","Sonntag":"Sunday","Zurück":"Back","Weiter":"Continue",
+  "Fertig":"Done","Abbrechen":"Cancel","Übernehmen":"Apply","Hinzufügen":"Add","Bearbeiten":"Edit","Löschen":"Delete",
+  "Speichern":"Save","Suchen":"Search","Suche":"Search","Alle":"All","Auswahl":"selection","auswählen":"select"
+ };
+ function lang(){return window.rethinkSystemV31?.prefs?.().language||"de"}
+ function protectedNode(el){
+   return !!el?.closest?.('[data-i18n-skip],.exercise-title-link,.combined-name,.combined-series-name,.plan-card strong,[data-plan-name],.exercise-card strong,[data-exercise-name],.user-note,.note-text')
+ }
+ function dynamicEN(s){
+   const rules=[
+    [/^(\d+)\s+Übungen$/,"$1 exercises"],[/^(\d+)\s+Sätze$/,"$1 sets"],[/^(\d+)\s+Wochen$/,"$1 weeks"],
+    [/^(\d+)\s+Übungen\s+·\s+(\d+)\s+Sätze$/,"$1 exercises · $2 sets"],
+    [/^Übung\s+(\d+)\/(\d+)$/,"Exercise $1/$2"],[/^Satz\s+(\d+)$/i,"Set $1"],[/^SATZ\s+(\d+)$/,"SET $1"],
+    [/^(\d+)×\s*([0-9–-]+)\s*Wdh\.$/,"$1× $2 reps"],[/^(\d+)×\s*AMRAP$/,"$1× AMRAP"],
+    [/^Pause\s+(.+)$/,"Rest $1"],[/^Ziel:\s*Gewicht reduzieren$/,"Goal: lose weight"],
+    [/^Ziel:\s*Muskelaufbau$/,"Goal: build muscle"],[/^Ziel:\s*Gewicht halten$/,"Goal: maintain weight"],
+    [/^Wunschgewicht\s+(.+)$/,"Target weight $1"],[/^(\d+)\s+Plan(e)?$/,"$1 plan$2"],
+    [/^(\d+)\s+Getränk(e)?$/,"$1 drink$2"],[/^(\d+)\s+Mahlzeit(en)?$/,"$1 meal$2"],
+    [/^Für\s+(.+)\s+bitte\s+(\d+)[–-](\d+)\s+Sätze wählen\.$/,"For $1, choose $2–$3 sets."],
+    [/^Giant Set auf (\d+) Übungen erweitert$/,"Giant Set expanded to $1 exercises"],
+    [/^(\d+)\.\s+Übung hinzufügen$/,"Add exercise $1"]
+   ];
+   for(const [rx,repl] of rules)if(rx.test(s))return s.replace(rx,repl);
+   return null
+ }
+ function translateString(s){
+   if(lang()!=="en"||!s)return s;
+   const lead=(s.match(/^\s*/)||[""])[0],tail=(s.match(/\s*$/)||[""])[0],core=s.trim();
+   if(!core)return s;
+   const exact=UI_EN[core]||dynamicEN(core);
+   if(exact)return lead+exact+tail;
+   // Last-resort word coverage for fixed UI fragments not yet represented as a full phrase.
+   let changed=false;
+   const out=core.replace(/[A-Za-zÄÖÜäöüß]+/g,w=>{
+     const v=WORD_EN[w];
+     if(v){changed=true;return v}
+     return w
+   });
+   return changed?lead+out+tail:s
+ }
+ function translateAll(root=document.body){
+   if(lang()!=="en")return;
+   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+   const nodes=[];let n;while((n=walker.nextNode()))nodes.push(n);
+   nodes.forEach(n=>{
+     const p=n.parentElement;
+     if(!p||protectedNode(p)||["SCRIPT","STYLE"].includes(p.tagName))return;
+     n.nodeValue=translateString(n.nodeValue)
+   });
+   root.querySelectorAll?.("[placeholder],[aria-label],[title]").forEach(el=>{
+     if(protectedNode(el))return;
+     ["placeholder","aria-label","title"].forEach(a=>{if(el.hasAttribute(a))el.setAttribute(a,translateString(el.getAttribute(a)))})
+   })
+ }
+ const mo=new MutationObserver(records=>{
+   if(lang()!=="en")return;
+   const roots=new Set();
+   records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)roots.add(n)}));
+   if(roots.size)requestAnimationFrame(()=>roots.forEach(translateAll))
+ });
+ mo.observe(document.body,{childList:true,subtree:true});
+ window.rethinkTranslateComplete=translateAll;
+ requestAnimationFrame(()=>translateAll(document.body));
+
+ // Translate transient browser messages generated after render.
+ const a=window.alert.bind(window),c=window.confirm.bind(window),p=window.prompt.bind(window);
+ window.alert=m=>a(translateString(String(m)));
+ window.confirm=m=>c(translateString(String(m)));
+ window.prompt=(m,d)=>p(translateString(String(m)),d);
 })();
