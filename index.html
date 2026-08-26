@@ -1584,6 +1584,12 @@ html[data-theme="light"] #startTrainingCard #choosePlanStart.training-main-play{
 <style id="rethink-fixed-group-rest">
 .readonly-field{display:flex;align-items:center;min-height:46px;box-sizing:border-box;opacity:.78;cursor:default}
 .readonly-field .small{margin-left:4px}
+</style><style id="rethink-week-summary-v1">
+.weekly-summary-card{margin:12px 0}
+.weekly-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.weekly-summary-grid>div{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}
+.weekly-summary-grid span{display:block;font-size:.78em;color:var(--muted);margin-bottom:4px}
+.weekly-summary-grid strong{font-size:1.08em}
 </style></head><body>
 <div id="app" class="app">
 <main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>

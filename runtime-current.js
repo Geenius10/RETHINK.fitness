@@ -842,12 +842,16 @@
    }
  }
  function streakV56(kind){
-   let d=profileDate(),count=0;
+   // Streaks are based only on completed calendar days.
+   // Today's entries never increase or reset the displayed streak.
+   let d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-1);
+   let count=0;
    for(let i=0;i<3660;i++){
      const x=dayDataV56(d);
      const ok=kind==="hydration"?x.hydrationDone:kind==="nutrition"?x.nutritionDone:(x.hydrationDone&&x.nutritionDone);
      if(!ok)break;
-     count++;d=new Date(d);d.setDate(d.getDate()-1)
+     count++;
+     d=new Date(d);d.setDate(d.getDate()-1)
    }
    return count
  }
@@ -4003,4 +4007,257 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  window.alert=m=>a(translateString(String(m)));
  window.confirm=m=>c(translateString(String(m)));
  window.prompt=(m,d)=>p(translateString(String(m)),d);
+})();
+
+
+/* ReThink. Fitness — completed-week summary */
+(function(){
+ const WEEK_SUMMARY_SEEN='rethink_week_summary_seen_v1';
+
+ function localDayKeyVWS(d){
+   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+ }
+ function startOfWeekVWS(date){
+   const d=new Date(date);d.setHours(12,0,0,0);
+   const prefStart=(window.rethinkSystemV31?.prefs?.().weekStart||'monday');
+   const dow=d.getDay();
+   const shift=prefStart==='sunday'?-dow:-(dow===0?6:dow-1);
+   d.setDate(d.getDate()+shift);return d
+ }
+ function previousCompleteWeekVWS(){
+   const current=startOfWeekVWS(new Date());
+   const start=new Date(current);start.setDate(start.getDate()-7);
+   const end=new Date(start);end.setDate(end.getDate()+7);
+   return {start,end,key:localDayKeyVWS(start)}
+ }
+ function dayGoalDataVWS(date){
+   const key=localDayKeyVWS(date);
+   const food=(nutrition.foodLog||[]).filter(x=>x.date===key);
+   const drinks=hydrationLog().filter(x=>dateKeyLocal(Number(x.at))===key);
+   const hydration=food.reduce((s,x)=>s+Number(x.water||0),0)+drinks.reduce((s,x)=>s+Number(x.size||0)*Number(x.hydration||0)/100,0);
+   const calories=food.reduce((s,x)=>s+Number(x.kcal||0),0)+drinks.reduce((s,x)=>s+Number(x.caloriesPer250||0)*Number(x.size||0)/250,0);
+   const waterGoal=hasGoalBasis()?hydrateGoal():Number(nutrition.waterGoal)||0;
+   const calorieGoal=Number(nutrition.calories)||0;
+   return {
+     hydrationDone:drinks.length>=3&&waterGoal>0&&hydration>=waterGoal,
+     nutritionDone:food.length>=3&&calorieGoal>0&&calories<=calorieGoal
+   }
+ }
+ function previousWeekSummaryVWS(){
+   const {start,end,key}=previousCompleteWeekVWS();
+   const days=Array.from({length:7},(_,i)=>{const d=new Date(start);d.setDate(d.getDate()+i);return d});
+   const goalData=days.map(dayGoalDataVWS);
+   const hydrationDays=goalData.filter(x=>x.hydrationDone).length;
+   const nutritionDays=goalData.filter(x=>x.nutritionDone).length;
+   const combinedDays=goalData.filter(x=>x.hydrationDone&&x.nutritionDone).length;
+
+   const trainingDays=new Set();
+   let workouts=0;
+   (history||[]).forEach(w=>{
+     const t=Number(w?.finishedAt||0);if(!t||t<start.getTime()||t>=end.getTime())return;
+     workouts++;
+     const d=new Date(t);trainingDays.add(localDayKeyVWS(d))
+   });
+
+   const ms=(measurements||[]).filter(m=>{
+     const t=Number(m?.date||0);return t>=start.getTime()&&t<end.getTime()&&Number(m.weight)>0
+   }).sort((a,b)=>Number(a.date)-Number(b.date));
+   const weightChange=ms.length>=2?Math.round((Number(ms[ms.length-1].weight)-Number(ms[0].weight))*10)/10:null;
+
+   return {key,start,end,trainingDays:trainingDays.size,workouts,hydrationDays,nutritionDays,combinedDays,weightChange}
+ }
+ function summaryMarkupVWS(s){
+   const de=(window.rethinkSystemV31?.prefs?.().language||'de')!=='en';
+   const fmt=d=>d.toLocaleDateString(de?'de-DE':'en-GB',{day:'2-digit',month:'2-digit'});
+   const weight=s.weightChange==null?'–':`${s.weightChange>0?'+':''}${s.weightChange} kg`;
+   if(de)return `<div class="card weekly-summary-card"><div class="section-head"><h2>Wochenzusammenfassung</h2></div>
+     <div class="small">${fmt(s.start)} – ${fmt(new Date(s.end.getTime()-86400000))}</div>
+     <div class="weekly-summary-grid">
+       <div><span>Trainingstage</span><strong>${s.trainingDays}/7</strong></div>
+       <div><span>Workouts</span><strong>${s.workouts}</strong></div>
+       <div><span>Hydrierungsziel</span><strong>${s.hydrationDays}/7</strong></div>
+       <div><span>Ernährungsziel</span><strong>${s.nutritionDays}/7</strong></div>
+       <div><span>Beide Ziele</span><strong>${s.combinedDays}/7</strong></div>
+       <div><span>Gewichtsveränderung</span><strong>${weight}</strong></div>
+     </div></div>`;
+   return `<div class="card weekly-summary-card"><div class="section-head"><h2>Weekly summary</h2></div>
+     <div class="small">${fmt(s.start)} – ${fmt(new Date(s.end.getTime()-86400000))}</div>
+     <div class="weekly-summary-grid">
+       <div><span>Training days</span><strong>${s.trainingDays}/7</strong></div>
+       <div><span>Workouts</span><strong>${s.workouts}</strong></div>
+       <div><span>Hydration goal</span><strong>${s.hydrationDays}/7</strong></div>
+       <div><span>Nutrition goal</span><strong>${s.nutritionDays}/7</strong></div>
+       <div><span>Both goals</span><strong>${s.combinedDays}/7</strong></div>
+       <div><span>Weight change</span><strong>${weight}</strong></div>
+     </div></div>`
+ }
+ function renderPreviousWeekSummaryVWS(){
+   const host=$('profileProgressOverview');if(!host)return;
+   const s=previousWeekSummaryVWS();
+   let box=$('previousWeekSummaryVWS');
+   if(!box){box=document.createElement('div');box.id='previousWeekSummaryVWS';host.parentNode?.insertBefore(box,host)}
+   box.innerHTML=summaryMarkupVWS(s);
+
+   const seen=localStorage.getItem(WEEK_SUMMARY_SEEN);
+   const profileVisible=!$('tab-profile')?.classList.contains('hidden')||currentTab==='profile';
+   if(seen!==s.key&&profileVisible){
+     localStorage.setItem(WEEK_SUMMARY_SEEN,s.key);
+     requestAnimationFrame(()=>box.scrollIntoView({behavior:'smooth',block:'start'}))
+   }
+ }
+ window.renderPreviousWeekSummaryVWS=renderPreviousWeekSummaryVWS;
+
+ const baseProfileVWS=window.renderProfile||renderProfile;
+ window.renderProfile=function(){
+   const out=baseProfileVWS();
+   renderPreviousWeekSummaryVWS();
+   return out
+ };
+ document.addEventListener('visibilitychange',()=>{
+   if(document.visibilityState==='visible'&&currentTab==='profile')setTimeout(renderPreviousWeekSummaryVWS,20)
+ });
+})();
+
+
+/* ReThink. Fitness — complete English coverage authority */
+(function(){
+ const EXACT={
+  "Wochenzusammenfassung":"Weekly summary","Trainingstage":"Training days","Hydrierungsziel":"Hydration goal",
+  "Ernährungsziel":"Nutrition goal","Beide Ziele":"Both goals","Gewichtsveränderung":"Weight change",
+  "Kalorien/Tag":"Calories/day","Kalorien / Tag":"Calories/day","Protein/Tag":"Protein/day","Protein / Tag":"Protein/day",
+  "Flüssigkeit/Tag":"Fluids/day","Flüssigkeit / Tag":"Fluids/day","Gewichte":"Weights","Sprünge":"Jumps",
+  "Explosivität":"Explosiveness","Geräte":"Machines","Körpergewicht":"Bodyweight","Mobilität":"Mobility",
+  "Arme/Hände":"Arms/Hands","Beine/Füße":"Legs/Feet","Gesäß/Hüfte":"Glutes/Hips","Rücken":"Back",
+  "Schulter":"Shoulders","Brust":"Chest","Ganzkörper":"Full body","Athletik":"Athletic training",
+  "Fleisch, Fisch & Protein":"Meat, fish & protein","Gemüse":"Vegetables","Hülsenfrüchte, Nüsse & Samen":"Legumes, nuts & seeds",
+  "Persönliche Werte und Ziele":"Personal values and goals","Persönlicher Wert":"Personal target",
+  "Gewicht regelmäßig einzutragen macht den Verlauf aussagekräftiger.":"Logging your weight regularly makes the trend more meaningful.",
+  "Dein Plan gibt die Richtung vor – du gibst ihm Leben.":"Your plan sets the direction — you bring it to life.",
+  "Dein Training beginnt hier.":"Your workout starts here.",
+  "Dein zukünftiges Ich profitiert von der Einheit heute.":"Your future self benefits from today's workout.",
+  "Deine Routine trägt dich auch an Tagen ohne Motivation.":"Your routine carries you even on days without motivation.",
+  "Der Plan ist die Struktur. Du bist die Konstanz.":"The plan provides the structure. You provide the consistency.",
+  "Der wichtigste Satz ist oft der, den du sauber ausführst.":"The most important set is often the one you perform with good form.",
+  "Die beste Woche ist die, die zu deinem Leben passt.":"The best week is the one that fits your life.",
+  "Du trainierst nicht nur Leistung, sondern Verlässlichkeit.":"You are training not only performance, but consistency.",
+  "Ein Schritt nach dem anderen ist immer noch vorwärts.":"One step at a time is still forward.",
+  "Ein guter Rhythmus schlägt einen perfekten Start.":"A good rhythm beats a perfect start.",
+  "Eine Einheit zählt auch dann, wenn sie nicht perfekt war.":"A workout still counts even when it was not perfect.",
+  "Eine starke Woche beginnt mit der nächsten guten Entscheidung.":"A strong week starts with the next good decision.",
+  "Fokus auf das, was du heute beeinflussen kannst.":"Focus on what you can influence today.",
+  "Fortschritt braucht Wiederholung, nicht Drama.":"Progress needs repetition, not drama.",
+  "Fortschritt ist selten spektakulär – aber konsequent sichtbar.":"Progress is rarely spectacular — but consistency makes it visible.",
+  "Fortschritt zeigt sich oft zuerst in besserer Kontrolle.":"Progress often shows up first as better control.",
+  "Jede geplante Einheit ist eine Entscheidung für dein nächstes Level.":"Every planned workout is a decision for your next level.",
+  "Kleine Schritte werden groß, wenn du sie oft genug gehst.":"Small steps become big when you take them often enough.",
+  "Konstanz schlägt Perfektion. Eine gute Woche entsteht aus den Einheiten, die du wirklich machst.":"Consistency beats perfection. A good week is built from the workouts you actually do.",
+  "Leistung entsteht aus vielen unspektakulären Wiederholungen.":"Performance is built from many unspectacular repetitions.",
+  "Mach die Einheit, die heute möglich ist.":"Do the workout that is possible today.",
+  "Mehr Kontrolle, mehr Qualität, mehr Fortschritt.":"More control, more quality, more progress.",
+  "Nicht jede Woche muss stärker sein – aber jede kann dich weiterbringen.":"Not every week has to be stronger — but every week can move you forward.",
+  "Empfehlung":"Recommendation","Empfehlungen":"Recommendations","Letzte Werte als Orientierung nutzen und nach Tagesform anpassen.":"Use your previous values as a guide and adjust for how you feel today.",
+  "Letztes Mal deutlich zu leicht: Gewicht moderat erhöhen.":"Last time was clearly too easy: increase the weight moderately.",
+  "Letztes Mal zu anstrengend: Last zunächst beibehalten oder leicht reduzieren.":"Last time was too demanding: keep the load the same or reduce it slightly.",
+  "Letztes Mal zu leicht: Widerstand moderat erhöhen.":"Last time was too easy: increase resistance moderately.",
+  "Letztes Mal zu schwer: Gewicht beibehalten oder leicht reduzieren.":"Last time was too heavy: keep the weight the same or reduce it slightly.",
+  "Genau passend: Last und Zielbereich zunächst beibehalten.":"Just right: keep the load and target range for now.",
+  "Im Zielbereich bleiben und nach Tagesform fein anpassen.":"Stay within the target range and fine-tune based on how you feel today.",
+  "Am Limit: Gewicht eher beibehalten und saubere Wiederholungen bestätigen.":"At your limit: keep the weight and confirm clean repetitions.",
+  "Erstes Training":"First workout","Erstes Training in dieser Methode – starte kontrolliert im vorgegebenen Wiederholungsbereich.":"First workout with this method — start conservatively within the prescribed rep range.",
+  "Erstes protokolliertes Training – starte kontrolliert im vorgegebenen Bereich.":"First recorded workout — start conservatively within the prescribed range.",
+  "A direkt gefolgt von B. Beide Übungen einzeln bewerten; Pause erst nach B.":"A immediately followed by B. Rate both exercises separately; rest only after B.",
+  "A → B → C (oder mehr) ohne Satzpause. Jede Übung einzeln bewerten; Pause erst nach der letzten Übung der Runde.":"A → B → C (or more) without rest between exercises. Rate each exercise separately; rest only after the last exercise of the round.",
+  "Vorermüdungsübung A direkt vor Hauptübung B. Beide einzeln bewerten; Pause erst nach B.":"Pre-exhaust exercise A immediately before main exercise B. Rate both separately; rest only after B.",
+  "Jeden Satz einzeln ausführen, Werte eintragen, bewerten und danach pausieren.":"Perform each set separately, enter your values, rate it, then rest.",
+  "Auf einen schweren Top-Satz folgen leichtere Back-off-Sätze mit höherer Wiederholungszahl.":"A heavy top set is followed by lighter back-off sets with more repetitions.",
+  "Gesamtwiederholungen in kurzen Teilblöcken sammeln. Sobald das Ziel erreicht ist, entfallen weitere Rest-Pause-Blöcke.":"Accumulate total repetitions in short blocks. Once the target is reached, no further rest-pause blocks are needed.",
+  "Gesamtwiederholungen in kurzen Clustern sammeln. Leere Folgefelder können aus der ersten Eingabe übernommen werden.":"Accumulate total repetitions in short clusters. Empty following fields can use the first entry.",
+  "Satzweise steigt oder sinkt die Last; die Wiederholungen verlaufen gegenläufig. Jeder Satz bleibt manuell anpassbar.":"Load increases or decreases from set to set while repetitions move in the opposite direction. Each set remains manually adjustable.",
+  "Hydrierungs-Streak":"Hydration streak","Ernährungs-Streak":"Nutrition streak","Wasser und Ernährung":"Hydration and nutrition",
+  "Gewichtstrend":"Weight trend","Wunschgewicht":"Target weight","bis Ziel":"to target","darüber":"above target",
+  "Trainingstage Woche":"Training days this week","Aktuelle Woche":"Current week","Diese Woche":"This week",
+  "Nächster Tag":"Next day","Vorheriger Tag":"Previous day","Kategorie":"Category","Kategorien":"Categories",
+  "Ausdauer":"Endurance","Beweglichkeit":"Mobility","Kraft":"Strength","Kalorien":"Calories","Protein":"Protein",
+  "Koffein":"Caffeine","Hydrierung":"Hydration","Ernährung":"Nutrition","Messungen":"Measurements","Fortschritt":"Progress",
+  "Menge":"Amount","Ziel":"Goal","Getränke":"Drinks","Getränke heute":"Drinks today","Lebensmittel heute":"Food today",
+  "Lebensmittel und Mahlzeiten":"Foods and meals","Meine Lebensmittel & Mahlzeiten":"My foods & meals",
+  "Keine abgeschlossenen Vergleichssätze vorhanden.":"No completed comparison sets available.",
+  "Keine abgeschlossenen Sätze":"No completed sets","Haken drücken und bewerten":"Tap the checkmark and rate",
+  "KG und WDH. eintragen":"Enter weight and reps","Intensität bewerten":"Rate intensity",
+  "Wähle eine Antwort. Erst danach wird diese Übung der Runde abgeschlossen.":"Choose a response. Only then will this exercise in the round be completed.",
+  "Form zu früh verloren":"Form broke down too early","Noch passend":"Still appropriate"
+ };
+
+ const WORD={
+  "Übersicht":"Overview","Übersichten":"Overviews","Zusammenfassung":"Summary","Wochenzusammenfassung":"Weekly summary",
+  "Woche":"Week","Wochen":"Weeks","Tag":"Day","Tage":"Days","heute":"today","Heute":"Today",
+  "gestern":"yesterday","morgen":"tomorrow","aktuell":"current","Aktuell":"Current","vorherig":"previous","nächste":"next",
+  "Kalorien":"Calories","Protein":"Protein","Koffein":"Caffeine","Hydrierung":"Hydration","Ernährung":"Nutrition",
+  "Gewicht":"Weight","Gewichte":"Weights","Sprünge":"Jumps","Explosivität":"Explosiveness","Mobilität":"Mobility",
+  "Geräte":"Machines","Körpergewicht":"Bodyweight","Ausdauer":"Endurance","Beweglichkeit":"Mobility","Kraft":"Strength",
+  "Kategorie":"Category","Kategorien":"Categories","Muskelgruppe":"Muscle group","Muskelgruppen":"Muscle groups",
+  "Arme":"Arms","Hände":"Hands","Beine":"Legs","Füße":"Feet","Gesäß":"Glutes","Hüfte":"Hips","Rücken":"Back",
+  "Schulter":"Shoulder","Schultern":"Shoulders","Brust":"Chest","Ganzkörper":"Full body","Athletik":"Athletic training",
+  "Übung":"Exercise","Übungen":"Exercises","Plan":"Plan","Pläne":"Plans","Training":"Workout","Trainings":"Workouts",
+  "Satz":"Set","Sätze":"Sets","Wiederholung":"Rep","Wiederholungen":"Reps","Pause":"Rest","Zeit":"Time",
+  "Leistung":"Performance","Menge":"Amount","Ziel":"Goal","Fortschritt":"Progress","Messung":"Measurement","Messungen":"Measurements",
+  "Empfehlung":"Recommendation","Empfehlungen":"Recommendations","Hinweis":"Note","Hinweise":"Notes",
+  "auswählen":"select","wählen":"choose","gewählt":"selected","hinzufügen":"add","löschen":"delete","bearbeiten":"edit",
+  "speichern":"save","ändern":"change","übernehmen":"apply","bestätigen":"confirm","abbrechen":"cancel","zurück":"back",
+  "weiter":"continue","öffnen":"open","schließen":"close","erstellen":"create","entfernen":"remove","eintragen":"log",
+  "berechnen":"calculate","Zielbereich":"target range","Werte":"values","Wert":"value","Persönlich":"Personal","Persönliche":"Personal",
+  "Getränk":"Drink","Getränke":"Drinks","Lebensmittel":"Food","Mahlzeit":"Meal","Mahlzeiten":"Meals","Wasser":"Water",
+  "keine":"none","Keine":"None","noch":"yet","bereits":"already","vollständig":"complete","eigene":"custom","Eigene":"Custom",
+  "Anzahl":"Number","Reihenfolge":"Order","Ausführung":"Instructions","Ausführungshinweise":"Instructions",
+  "Größe":"Height","Taille":"Waist","Körperfett":"Body fat","Männlich":"Male","Weiblich":"Female","Alter":"Age",
+  "Aktivität":"Activity","aktiv":"active","Ziel":"Goal","Wunschgewicht":"Target weight","Flüssigkeitsziel":"Hydration goal",
+  "Ernährungsziele":"Nutrition goals","Hydrierungsziel":"Hydration goal","Ernährungsziel":"Nutrition goal",
+  "pro":"per","Tag":"day","Streak":"Streak","Trainingstage":"Training days","Workouts":"Workouts"
+ };
+
+ function isEnglishV2(){return (window.rethinkSystemV31?.prefs?.().language||'de')==='en'}
+ function protectedV2(el){
+   return !!el?.closest?.('[data-i18n-skip],.exercise-title-link,.combined-name,.combined-series-name,[data-exercise-name],.exercise-card strong,[data-plan-name],.plan-card strong,#planName,.user-note,.note-text')
+ }
+ function trV2(text){
+   if(!isEnglishV2()||!text)return text;
+   const lead=(text.match(/^\s*/)||[''])[0],tail=(text.match(/\s*$/)||[''])[0],core=text.trim();
+   if(!core)return text;
+   if(EXACT[core])return lead+EXACT[core]+tail;
+
+   let s=core;
+   // Common compounds and UI units first.
+   const replacements=[
+     [/Kalorien\s*\/\s*Tag/gi,'Calories/day'],[/Protein\s*\/\s*Tag/gi,'Protein/day'],[/Flüssigkeit\s*\/\s*Tag/gi,'Fluids/day'],
+     [/Wdh\./gi,'reps'],[/WDH\./g,'REPS'],[/Körperfett/gi,'body fat'],[/Wunschgewicht/gi,'target weight'],
+     [/Trainingsplan/gi,'workout plan'],[/Trainingspläne/gi,'workout plans'],[/Wochenplan/gi,'weekly plan'],
+     [/Muskelgruppen/gi,'muscle groups'],[/Muskelgruppe/gi,'muscle group'],[/Lebensmittel/gi,'food'],
+     [/Ernährungsziele/gi,'nutrition goals'],[/Hydrierungsziel/gi,'hydration goal'],[/Ernährungsziel/gi,'nutrition goal']
+   ];
+   replacements.forEach(([rx,val])=>{s=s.replace(rx,val)});
+
+   s=s.replace(/[A-Za-zÄÖÜäöüß]+/g,w=>WORD[w]||w);
+   return lead+s+tail
+ }
+ function translateRootV2(root=document.body){
+   if(!isEnglishV2()||!root)return;
+   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];let n;
+   while((n=walker.nextNode()))nodes.push(n);
+   nodes.forEach(n=>{
+     const p=n.parentElement;if(!p||protectedV2(p)||['SCRIPT','STYLE'].includes(p.tagName))return;
+     n.nodeValue=trV2(n.nodeValue)
+   });
+   root.querySelectorAll?.('[placeholder],[aria-label],[title]').forEach(el=>{
+     if(protectedV2(el))return;
+     ['placeholder','aria-label','title'].forEach(a=>{if(el.hasAttribute(a))el.setAttribute(a,trV2(el.getAttribute(a)))})
+   })
+ }
+ const observerV2=new MutationObserver(records=>{
+   if(!isEnglishV2())return;
+   const roots=new Set();records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)roots.add(n)}));
+   if(roots.size)requestAnimationFrame(()=>roots.forEach(translateRootV2))
+ });
+ observerV2.observe(document.body,{childList:true,subtree:true});
+ window.rethinkTranslateCompleteV2=translateRootV2;
+ requestAnimationFrame(()=>translateRootV2(document.body))
 })();
