@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: rethink-fitness-push
+    runtime: node
+    plan: free
+    rootDir: render-push-backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ORIGIN
+        value: https://geenius10.github.io
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_SUBJECT
+        sync: false
+      - key: DATABASE_URL
+        sync: false
