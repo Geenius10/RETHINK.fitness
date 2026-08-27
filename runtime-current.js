@@ -233,7 +233,7 @@
  // One familiar add/edit mask for all exercise actions, now with method-aware set counts.
  window.renderPlanAddConfig=function(){
   if(!planAddFlow?.current)return;const e=planAddFlow.current;if(e.setTechnique==='pyramid')ensurePyramidData(e);if(e.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);
-  renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?'active':''}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join('')}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=='time'?'active':''}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==='time'?'active':''}" id="paModeTime" ${e.setTechnique==='pyramid'?'disabled':''}>Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e)}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?'selected':''}>${v?formatTime(v):'Keine'}</option>`).join('')}</select></div></div><div class="form-field"><label>${e.measureMode==='time'?'ZEIT':'WDH.-VORGABE'}</label>${e.measureMode==='time'?timePresetMarkup(e,'pa'):methodRepConfigMarkup(e,'pa')}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">Standard</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`:''}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?'checked':''}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
+  renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?'active':''}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join('')}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=='time'?'active':''}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==='time'?'active':''}" id="paModeTime" ${e.setTechnique==='pyramid'?'disabled':''}>Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e)}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?'selected':''}>${v?formatTime(v):'Keine'}</option>`).join('')}</select></div></div><div class="form-field"><label>${e.measureMode==='time'?'ZEIT':'WDH.-VORGABE'}</label>${e.measureMode==='time'?timePresetMarkup(e,'pa'):methodRepConfigMarkup(e,'pa')}</div>${(findExercise(e.name).variants||[]).length?`<div class="form-field"><label>VARIANTE</label><select id="paVariant" class="field"><option value="">—</option>${(findExercise(e.name).variants||[]).map(v=>`<option ${e.variant===v?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`:''}${(findExercise(e.name).equipment||[]).length>1?`<div class="form-field"><label>HILFSMITTEL / GERÄT</label><select id="paEquipment" class="field"><option value="">—</option>${(findExercise(e.name).equipment||[]).map(v=>`<option ${e.equipmentChoice===v?'selected':''}>${esc(v)}</option>`).join('')}</select></div>`:''}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?'checked':''}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
   requestAnimationFrame(()=>{const tabs=$('paMethodTabs');if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
   $('paModeReps').onclick=()=>{e.measureMode='reps';renderPlanAddConfig()};
   if($('paModeTime')&&!$('paModeTime').disabled)$('paModeTime').onclick=()=>{e.measureMode='time';e.timeSeconds=Math.min(180,Math.max(15,Number(e.timeSeconds)||60));renderPlanAddConfig()};
@@ -275,15 +275,15 @@
  window.renderLiveGroupCard=function(g){
   const first=g.members[0],active=g.members.some(x=>Number(activeWorkout.activeExerciseIndex||0)===x.i),rounds=Math.max(...g.members.map(x=>x.e.liveSets?.length||x.e.sets||0));let rows='';
   for(let si=0;si<rounds;si++){rows+=`<div class="combined-round"><div class="group-round-title"><span>Satz ${si+1}</span><button class="remove-mini" data-remove-live-set="${first.i}|${si}">−</button></div>`;g.members.forEach((x,gi)=>{rows+=combinedMemberControls(x,si,gi)});rows+='</div>'}
-  return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?'active-live-exercise':''}" data-live-card="${first.i}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name"><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}"><strong>${String.fromCharCode(65+gi)}</strong> ${esc(x.e.name)}</button></div>`).join('')}</div><button class="icon-btn" data-live-config="${first.i}" aria-label="Serie bearbeiten">✎</button></div><div class="method-help">${esc(methodHelp(g.method))}</div>${rows}<button class="secondary" data-add-group-set="${esc(g.key)}" style="margin-top:8px">Satz hinzufügen</button></div>`
+  return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?'active-live-exercise':''}" data-live-card="${first.i}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name"><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}"><strong>${String.fromCharCode(65+gi)}</strong> ${esc(exerciseDisplayName(x.e))}</button></div>`).join('')}</div><button class="icon-btn" data-live-config="${first.i}" aria-label="Serie bearbeiten">✎</button></div><div class="method-help">${esc(methodHelp(g.method))}</div>${rows}<button class="secondary" data-add-group-set="${esc(g.key)}" style="margin-top:8px">Satz hinzufügen</button></div>`
  };
 
  // Preview mirrors the same connected-card hierarchy and exercise names open the execution card.
  window.openPreview=function(p){
   $('previewTitle').textContent=p.name||'Workout Vorschau';const pp={...clone(p),exercises:clone(p.exercises).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
   const groups=previewVisualGroups(pp.exercises);
-  $('previewBody').innerHTML=`<div class="preview-live-shell">${groups.map(g=>{if(!groupMethod(g.method))return`<div class="method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map(e=>`<div class="preview-group-member"><div class="live-card-head"><div><button class="exercise-title-link" data-preview-detail="${esc(e.name)}">${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div></div>${renderPreviewSets(e)}</div>`).join('')}</div>`;
-   const rounds=Math.max(...g.items.map(e=>Number(e.sets)||0));return`<div class="method-card connected-method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="preview-connected-top">${g.items.map((e,j)=>`<button class="exercise-title-link" data-preview-detail="${esc(e.name)}"><strong>${String.fromCharCode(65+j)}</strong> ${esc(e.name)}</button>`).join('')}</div><div class="method-help" style="margin-top:8px">${esc(methodHelp(g.method))}</div>${Array.from({length:rounds},(_,si)=>`<div class="preview-combined-round"><div class="group-round-title">Satz ${si+1}</div>${g.items.map((e,j)=>`<div class="preview-combined-row"><span>${si+1}${String.fromCharCode(97+j)}</span><span class="preview-mini-name">${esc(e.name)}</span><span class="preview-value">${e.measureMode==='time'?formatTime(e.timeSeconds||60):'KG'}</span><span class="preview-value">${e.measureMode==='time'?'ZEIT':(amrapText(e.reps||'WDH.'))}</span></div>`).join('')}</div>`).join('')}</div>`}).join('')}</div>`;
+  $('previewBody').innerHTML=`<div class="preview-live-shell">${groups.map(g=>{if(!groupMethod(g.method))return`<div class="method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map(e=>`<div class="preview-group-member"><div class="live-card-head"><div><button class="exercise-title-link" data-preview-detail="${esc(e.name)}">${esc(exerciseDisplayName(e))}</button><div class="prescription">${esc(planPrescription(e))}</div></div></div>${renderPreviewSets(e)}</div>`).join('')}</div>`;
+   const rounds=Math.max(...g.items.map(e=>Number(e.sets)||0));return`<div class="method-card connected-method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="preview-connected-top">${g.items.map((e,j)=>`<button class="exercise-title-link" data-preview-detail="${esc(e.name)}"><strong>${String.fromCharCode(65+j)}</strong> ${esc(e.name)}</button>`).join('')}</div><div class="method-help" style="margin-top:8px">${esc(methodHelp(g.method))}</div>${Array.from({length:rounds},(_,si)=>`<div class="preview-combined-round"><div class="group-round-title">Satz ${si+1}</div>${g.items.map((e,j)=>`<div class="preview-combined-row"><span>${si+1}${String.fromCharCode(97+j)}</span><span class="preview-mini-name">${esc(exerciseDisplayName(e))}</span><span class="preview-value">${e.measureMode==='time'?formatTime(e.timeSeconds||60):'KG'}</span><span class="preview-value">${e.measureMode==='time'?'Leistung':(amrapText(e.reps||'WDH.'))}</span></div>`).join('')}</div>`).join('')}</div>`}).join('')}</div>`;
   openPage('previewPage');document.querySelectorAll('[data-preview-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.previewDetail))
  };
 
@@ -356,14 +356,14 @@
    const idx=`${si+1}${String.fromCharCode(97+gi)}`;
    if(x.e.measureMode==="time"){
      return`<div class="combined-member-block combined-time-member">
-       <div class="combined-member-title"><span class="combined-index">${idx}</span><button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(x.e.name)}</button></div>
-       <div class="combined-time-controls"><input type="text" inputmode="numeric" autocomplete="off" data-time-field="1" data-input="${x.i}|${si}|time" value="${formatTime(s.time)}"><button class="time-play" data-time-play="${x.i}|${si}">▶</button><input type="text" inputmode="decimal" data-input="${x.i}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight||"")}"><input type="text" inputmode="decimal" data-input="${x.i}|${si}|level" placeholder="${esc(s._suggested?.level||"S/W")}" value="${esc(s.level||"")}"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button></div>
+       <div class="combined-member-title"><span class="combined-index">${idx}</span><button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(exerciseDisplayName(x.e))}</button></div>
+       <div class="combined-time-controls"><input type="text" inputmode="numeric" autocomplete="off" data-time-field="1" data-input="${x.i}|${si}|time" value="${formatTime(s.time)}"><button class="time-play" data-time-play="${x.i}|${si}">▶</button><input type="text" inputmode="decimal" data-input="${x.i}|${si}|level" placeholder="Leistung" value="${esc(s.level||"")}"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button></div>
      </div>${ratingMarkup(x.i,si,s)}`
    }
    return`<div class="combined-value-head"><span></span><span></span><span>KG</span><span>WDH.</span><span></span></div>
    <div class="combined-member-row">
     <span class="combined-index">${idx}</span>
-    <button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(x.e.name)}</button>
+    <button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(exerciseDisplayName(x.e))}</button>
     <input type="text" inputmode="decimal" autocomplete="off" data-input="${x.i}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight||"")}">
     <input type="text" inputmode="numeric" autocomplete="off" data-input="${x.i}|${si}|reps" placeholder="${esc(s._suggested?.reps||"WDH.")}" value="${esc(s.reps||"")}">
     <button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button>
@@ -805,7 +805,7 @@
  /* Standby/background: persist the exact current position.
     True process/session restart: SESSION_MARKER is gone and restoreUI sends the user to Training. */
  document.addEventListener("visibilitychange",()=>{
-   if(document.visibilityState==="hidden")persistUI();
+   if(document.visibilityState==="hidden"){localStorage.setItem("rethink_background_at_v2",String(Date.now()));persistUI()}
    else if(document.visibilityState==="visible"){
      const s=read(UI_KEY,null);
      if(s&&sessionStorage.getItem(SESSION_MARKER)==="1"){
@@ -964,7 +964,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
     const complete=allExerciseSetsDoneV64(e),active=Number(activeWorkout.activeExerciseIndex||0)===i&&!complete;
     return`<div class="method-card live-exercise-card method-${e.setTechnique||"standard"} ${active?"active-live-exercise":""} ${complete?"live-method-complete":""}" data-live-card="${i}">
       <div class="method-name">${METHOD_LABEL[e.setTechnique||"standard"]}</div>
-      <div class="live-card-head"><div><button class="exercise-title-link" data-live-detail="${esc(e.name)}" data-live-index="${i}">${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div>
+      <div class="live-card-head"><div><button class="exercise-title-link" data-live-detail="${esc(e.name)}" data-live-index="${i}">${esc(exerciseDisplayName(e))}</button><div class="prescription">${esc(planPrescription(e))}</div></div>
       <div class="live-card-actions"><button class="icon-btn" data-live-config="${i}" aria-label="Übung bearbeiten">✎</button><button class="live-delete-ex" data-delete-live-ex="${i}" aria-label="Übung löschen">−</button></div></div>
       <div class="method-help">${esc(methodHelp(e.setTechnique))}</div>
       ${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}
@@ -984,7 +984,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
     }
     return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?"active-live-exercise":""} ${complete?"live-method-complete":""}" data-live-card="${first.i}">
       <div class="method-name">${METHOD_LABEL[g.method]}</div>
-      <div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name"><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}"><strong>${String.fromCharCode(65+gi)}</strong> ${esc(x.e.name)}</button></div>`).join("")}</div>
+      <div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name"><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}"><strong>${String.fromCharCode(65+gi)}</strong> ${esc(exerciseDisplayName(x.e))}</button></div>`).join("")}</div>
       <button class="icon-btn" data-live-config="${first.i}" aria-label="Serie bearbeiten">✎</button></div>
       <div class="method-help">${esc(methodHelp(g.method))}</div>${rows}
       <button class="secondary" data-add-group-set="${esc(g.key)}" style="margin-top:8px">Satz hinzufügen</button>
@@ -1877,13 +1877,13 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    const idx=`${si+1}${String.fromCharCode(97+gi)}`,dot=priorRatingDotV31(x.e,si);
    if(x.e.measureMode==="time"){
      return`<div class="combined-member-block combined-time-member">
-       <div class="combined-member-title"><span class="combined-index combined-index-with-history">${idx}${dot}</span><button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(x.e.name)}</button></div>
-       <div class="combined-time-controls"><input type="text" inputmode="numeric" autocomplete="off" data-time-field="1" data-input="${x.i}|${si}|time" value="${formatTime(s.time)}"><button class="time-play" data-time-play="${x.i}|${si}">▶</button><input type="text" inputmode="decimal" data-input="${x.i}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight||"")}"><input type="text" inputmode="decimal" data-input="${x.i}|${si}|level" placeholder="${esc(s._suggested?.level||"S/W")}" value="${esc(s.level||"")}"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button></div>
+       <div class="combined-member-title"><span class="combined-index combined-index-with-history">${idx}${dot}</span><button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(exerciseDisplayName(x.e))}</button></div>
+       <div class="combined-time-controls"><input type="text" inputmode="numeric" autocomplete="off" data-time-field="1" data-input="${x.i}|${si}|time" value="${formatTime(s.time)}"><button class="time-play" data-time-play="${x.i}|${si}">▶</button><input type="text" inputmode="decimal" data-input="${x.i}|${si}|level" placeholder="Leistung" value="${esc(s.level||"")}"><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button></div>
      </div>`
    }
    return`<div class="combined-member-row">
      <span class="combined-index combined-index-with-history">${idx}${dot}</span>
-     <button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(x.e.name)}</button>
+     <button class="combined-name exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(exerciseDisplayName(x.e))}</button>
      <input type="text" inputmode="decimal" autocomplete="off" data-input="${x.i}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight||"")}">
      <input type="text" inputmode="numeric" autocomplete="off" data-input="${x.i}|${si}|reps" placeholder="${esc(s._suggested?.reps||"WDH.")}" value="${esc(s.reps||"")}">
      <button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button>
@@ -1902,7 +1902,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    }
    return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?"active-live-exercise":""} ${complete?"live-card-complete live-method-complete":""}" data-live-card="${first.i}">
      <div class="live-card-topline"><div class="method-name">${METHOD_LABEL[g.method]}</div>${complete?'<div class="live-complete-badge"><span class="tick">✓</span>Abgeschlossen</div>':""}</div>
-     <div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name live-group-member-head"><strong>${String.fromCharCode(65+gi)}</strong><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(x.e.name)}</button><button class="live-group-member-delete" data-delete-live-ex="${x.i}" aria-label="${esc(x.e.name)} löschen">−</button></div>`).join("")}</div>
+     <div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name live-group-member-head"><strong>${String.fromCharCode(65+gi)}</strong><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(exerciseDisplayName(x.e))}</button><button class="live-group-member-delete" data-delete-live-ex="${x.i}" aria-label="${esc(x.e.name)} löschen">−</button></div>`).join("")}</div>
      <button class="icon-btn" data-live-config="${first.i}" aria-label="Serie bearbeiten">✎</button></div>
      <div class="method-help">${esc(methodHelp(g.method))}</div>
      ${rows}
@@ -1923,7 +1923,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    const setsMarkup=singleSetRowsWithHistoryV31(renderSets(e,i),e);
    return`<div class="method-card live-exercise-card method-${e.setTechnique||"standard"} ${active?"active-live-exercise":""} ${complete?"live-card-complete live-method-complete":""}" data-live-card="${i}">
      <div class="live-card-topline"><div class="method-name">${METHOD_LABEL[e.setTechnique||"standard"]}</div>${complete?'<div class="live-complete-badge"><span class="tick">✓</span>Abgeschlossen</div>':""}</div>
-     <div class="live-card-head"><div><button class="exercise-title-link" data-live-detail="${esc(e.name)}" data-live-index="${i}">${esc(e.name)}</button><div class="prescription">${esc(planPrescription(e))}</div></div><div class="live-card-actions"><button class="icon-btn" data-live-config="${i}" aria-label="Übung bearbeiten">✎</button><button class="live-delete-ex" data-delete-live-ex="${i}" aria-label="Übung löschen">−</button></div></div>
+     <div class="live-card-head"><div><button class="exercise-title-link" data-live-detail="${esc(e.name)}" data-live-index="${i}">${esc(exerciseDisplayName(e))}</button><div class="prescription">${esc(planPrescription(e))}</div></div><div class="live-card-actions"><button class="icon-btn" data-live-config="${i}" aria-label="Übung bearbeiten">✎</button><button class="live-delete-ex" data-delete-live-ex="${i}" aria-label="Übung löschen">−</button></div></div>
      <div class="method-help">${esc(methodHelp(e.setTechnique))}</div>${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}
      <div class="recommendation">${esc(recommendationFor(e))}</div><button class="note-line" data-live-note="${i}" style="border:0;background:transparent;padding:0">✎ ${esc(e.note||"Notiz")}</button>
      ${setsMarkup}<button class="secondary" data-add-set="${i}" style="margin-top:8px">Satz hinzufügen</button>
@@ -2595,31 +2595,9 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    }
  },true);
 
- // Distance is useful for timed/cardio work only.
- function supportsDistanceV31(e){
-   const cat=String(e?.category||"").toLowerCase(),tracking=String(findExercise?.(e?.name)?.tracking||e?.tracking||"").toLowerCase();
-   return cat.includes("cardio")||e?.measureMode==="time"||tracking.includes("time")
- }
- function addDistanceFieldsV31(){
-   if(!activeWorkout)return;
-   document.querySelectorAll("#liveBody [data-time-play]").forEach(play=>{
-     const [ei,si]=play.dataset.timePlay.split("|").map(Number),e=activeWorkout.exercises[ei],s=e?.liveSets?.[si];
-     if(!e||!s||!supportsDistanceV31(e))return;
-     const controls=play.closest(".time-controls,.combined-time-controls,.time-row")||play.parentElement;
-     if(!controls||controls.querySelector(`[data-input="${ei}|${si}|distance"]`))return;
-     const inp=document.createElement("input");
-     inp.type="text";inp.inputMode="decimal";inp.className="distance-live-field";
-     inp.dataset.input=`${ei}|${si}|distance`;
-     inp.placeholder=distanceUnit();
-     inp.value=String(s.distance??"").trim()===""?"":String(distanceDisplay(s.distance));
-     controls.insertBefore(inp,controls.querySelector(".set-check")||null);
-     inp.onfocus=()=>{inp.select();window.revealLiveWorkoutFieldV31?.(inp)};
-     inp.oninput=()=>{const shown=inp.value;s.distance=shown.trim()===""?"":distanceStore(shown);saveAll()};
-     inp.onblur=()=>{if(inp.value.trim()==="")s.distance="";saveAll()}
-   })
- }
- const renderLiveBeforeDistV31=renderLive;
- renderLive=function(){const r=renderLiveBeforeDistV31();addDistanceFieldsV31();applyTranslationsV31();return r};
+ // Time workouts intentionally use only Time + Play + Performance.
+ const renderLiveBeforeTimeCleanupV31=renderLive;
+ renderLive=function(){const r=renderLiveBeforeTimeCleanupV31();applyTranslationsV31();return r};
 
  // Profile height in imperial is shown as feet + inches; circumferences stay inches.
  const renderProfileBeforeSystemV31=renderProfile;
