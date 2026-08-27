@@ -9,6 +9,7 @@ const ORIGIN=process.env.APP_ORIGIN||'https://geenius10.github.io';
 const PUBLIC=process.env.VAPID_PUBLIC_KEY;
 const PRIVATE=process.env.VAPID_PRIVATE_KEY;
 const SUBJECT=process.env.VAPID_SUBJECT||'mailto:admin@example.com';
+const CRON_SECRET=process.env.CRON_SECRET||'';
 if(!PUBLIC||!PRIVATE) throw new Error('VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY are required');
 webpush.setVapidDetails(SUBJECT,PUBLIC,PRIVATE);
 app.use(cors({origin:(origin,cb)=>!origin||origin===ORIGIN?cb(null,true):cb(new Error('Origin not allowed'))}));
@@ -71,6 +72,11 @@ async function tick(){
   }
  }
 }
+app.post('/api/tick',async(req,res)=>{
+ if(!CRON_SECRET||req.get('x-cron-secret')!==CRON_SECRET)return res.status(401).json({ok:false});
+ try{await tick();res.json({ok:true})}catch(e){console.error(e);res.status(500).json({ok:false})}
+});
+
 await init();
 setInterval(()=>tick().catch(console.error),30000);
 app.listen(PORT,()=>console.log(`ReThink push listening on ${PORT}`));
