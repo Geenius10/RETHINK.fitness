@@ -1,7 +1,7 @@
-const CACHE='rethink-fitness-20260828-plans-empty1';
+const CACHE='rethink-fitness-20260828-icons2';
 const ASSETS=[
  './', './index.html', './runtime-current.js?v=20260827r1', './foods.js?v=20260821m', './manifest.webmanifest',
- './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'
+ './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./apple-touch-icon.png','./icon-192.png','./icon-512.png','./favicon-32.png','./favicon-64.png'
 ];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
