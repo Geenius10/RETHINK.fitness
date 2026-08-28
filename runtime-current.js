@@ -2938,22 +2938,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 })();
 
 
-/* v3.1 plans empty-state */
-(function(){
- const base=renderPlans;
- renderPlans=function(){
-   const out=base();
-   const list=$("planList");
-   if(list && plans.length===0){
-     list.innerHTML=`<div class="plan-welcome-card card"><div class="plan-welcome-mark">R.</div><h2>Dein Training beginnt hier.</h2><p>Erstelle deinen ersten Trainingsplan und stelle Übungen, Sätze und Trainingsmethoden passend zu deinem Training zusammen.</p><button id="planWelcomeCreate" class="primary plan-welcome-create">Trainingsplan erstellen</button></div>`;
-     $("planWelcomeCreate").onclick=()=>$("newPlanBtn").click();
-     try{window.rethinkSystemV31?.translate?.(list)}catch{}
-   }
-   return out
- }
-})();
-
-
 /* Rethink_v3.1 — vollständige UI-Übersetzung DE/EN
    Ausgenommen: Übungsnamen, Plannamen sowie freie Nutzertexte/Notizen. */
 (function(){

@@ -1,4 +1,4 @@
-const CACHE='rethink-fitness-20260827-release1';
+const CACHE='rethink-fitness-20260828-plans-empty1';
 const ASSETS=[
  './', './index.html', './runtime-current.js?v=20260827r1', './foods.js?v=20260821m', './manifest.webmanifest',
  './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'
