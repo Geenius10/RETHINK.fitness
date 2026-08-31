@@ -1,0 +1,1788 @@
+
+:root{--bg:#070708;--surface:#111114;--surface2:#18181d;--line:#29292f;--text:#f8f8fa;--muted:#909098;--danger:#ff655f;--nav-h:76px;--side:16px;--max:520px;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}body{min-height:100dvh}.hidden{display:none!important}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(100%,var(--max));margin:auto;min-height:100dvh}
+.tab-screen{min-height:100dvh;padding:calc(12px + env(safe-area-inset-top)) var(--side) calc(var(--nav-h) + 24px + env(safe-area-inset-bottom))}
+.tab-header,.space,.row{display:flex;align-items:center;gap:10px}.tab-header,.space{justify-content:space-between}.tab-header{align-items:flex-start;margin-bottom:14px}.row{justify-content:flex-start}.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:800}h1{font-size:30px;line-height:1.05;margin:2px 0 0}h2{font-size:18px;margin:0}.small{font-size:11px;color:var(--muted)}.muted{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}.card+.card{margin-top:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.primary,.secondary,.icon-btn{border-radius:13px;font-weight:850}.primary{border:0;background:#fff;color:#111;min-height:48px;padding:0 16px}.secondary{border:1px solid var(--line);background:var(--surface);color:#fff;min-height:46px;padding:0 14px}.icon-btn{width:42px;height:42px;min-width:42px;border:1px solid var(--line);background:var(--surface);color:#fff;display:grid;place-items:center;font-size:21px}.plus-btn{background:#fff;color:#111;border:0}.danger{color:var(--danger)!important}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{white-space:nowrap;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 11px;font-size:11px;font-weight:800}.chip.active{background:#fff;color:#111;border-color:#fff}
+.search{position:relative;margin:4px 0 10px}.search input{width:100%;height:46px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:#fff;padding:0 42px}.search:before{content:"⌕";position:absolute;left:14px;top:11px;color:var(--muted)}.search button{position:absolute;right:6px;top:6px;width:34px;height:34px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:20px}
+.exercise-card,.plan-card{width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);color:#fff;border-radius:15px;padding:13px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;margin-bottom:9px}.exercise-card strong,.plan-card strong{display:block;font-size:14px}.exercise-card small,.plan-card small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.chev{font-size:24px;color:var(--muted)}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:1000;width:min(100%,var(--max));height:calc(var(--nav-h) + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(7,7,8,.96);border-top:1px solid var(--line);backdrop-filter:blur(18px)}.nav button{border:0;background:transparent;color:var(--muted);font-size:9px;font-weight:800;display:grid;place-items:center;gap:2px}.nav button span{font-size:20px}.nav button.active{color:#fff}
+.page{position:fixed;inset:0;z-index:1500;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;width:min(100%,var(--max));left:50%;right:auto;transform:translateX(-50%);padding:0 var(--side) calc(24px + env(safe-area-inset-bottom))}
+.page-top{position:sticky;top:0;z-index:20;min-height:58px;margin:0 calc(-1*var(--side)) 12px;padding:calc(7px + env(safe-area-inset-top)) var(--side) 7px;background:var(--bg);border-bottom:1px solid rgba(255,255,255,.05);display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:center}.page-top h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}.page-actions{display:flex;align-items:center;gap:7px}
+.sheet-wrap{position:fixed;inset:0;z-index:2000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.48)}.sheet{width:min(calc(100% - 12px),var(--max));max-height:calc(100dvh - 10px - env(safe-area-inset-top));background:var(--bg);border:1px solid var(--line);border-radius:22px 22px 0 0;overflow:hidden;display:flex;flex-direction:column}.sheet-handle{width:38px;height:4px;border-radius:9px;background:#555;margin:7px auto 2px;flex:0 0 auto}.sheet-top{flex:0 0 auto;min-height:52px;padding:6px 14px;display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;border-bottom:1px solid var(--line)}.sheet-top h2{text-align:center}.sheet-body{padding:12px 14px calc(16px + env(safe-area-inset-bottom));overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch}
+.media-box{aspect-ratio:1/1;width:100%;border:1px solid var(--line);border-radius:20px;background:var(--surface);display:grid;place-items:center;margin-bottom:16px}.media-box span{font-size:54px;font-weight:200}.detail-section{padding:12px 0;border-bottom:1px solid var(--line)}.detail-section label,.form-field label{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;display:block;margin-bottom:5px}.detail-copy{line-height:1.5;font-size:13px}
+.form-field{margin-bottom:12px}.field{width:100%;height:48px;border-radius:13px;border:1px solid var(--line);background:var(--surface);color:#fff;padding:0 12px}textarea.field{height:82px;padding:10px 12px;resize:vertical}
+.method-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px}.method-card{--method:#f3efff;border:2px solid var(--method);background:var(--surface);border-radius:17px;padding:12px;margin-bottom:14px}.method-standard{--method:#f6f2ff}.method-superset{--method:#aeb4f6}.method-giant{--method:#f3c79d}.method-preexhaust{--method:#efacd1}.method-dropset{--method:#eeaaa5}.method-restpause{--method:#9fd8e8}.method-cluster{--method:#a8d7ad}.method-pyramid{--method:#cfb1e9}.method-backoff{--method:#ead79e}.method-name{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--method);font-weight:900;margin-bottom:6px}.exercise-title-link{border:0;background:transparent;color:#fff;padding:0;text-align:left;font-size:16px;font-weight:900}.prescription,.note-line{font-size:10px;color:var(--muted);margin:4px 0 8px}
+.set-title{font-size:10px;color:var(--muted);font-weight:800;border-bottom:1px solid var(--line);padding:7px 0}.set-head,.set-row{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 40px 22px;gap:6px;align-items:center}.set-head{font-size:8px;color:var(--muted);font-weight:900;text-align:center;padding:5px 0}.set-row{padding:4px 0}.set-row input,.advanced-row input,.time-row input{width:100%;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:#fff;text-align:center;min-width:0}.set-check{width:38px;height:38px;border:1px solid var(--line);border-radius:11px;background:transparent;color:var(--muted)}.set-check.done{background:#fff;color:#111}.remove-mini{width:22px;border:0;background:transparent;color:var(--muted);font-size:22px}
+.advanced-head,.advanced-row{display:grid;grid-template-columns:32px minmax(70px,1fr) 72px 72px 22px;gap:6px;align-items:center}.advanced-head,.time-head{font-size:8px;color:var(--muted);font-weight:900;text-align:center;padding:5px 0}.advanced-row{padding:4px 0}.time-head,.time-row{display:grid;grid-template-columns:28px minmax(78px,1fr) 46px minmax(90px,1fr) 40px 24px;gap:5px;align-items:center}
+.rating{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.rating button{min-height:34px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--muted);font-size:9px}.rating .red.active{background:#ffb7b3;color:#111}.rating .yellow.active{background:#fff0a6;color:#111}.rating .green.active{background:#c9ffce;color:#111}
+.bottom-actions{display:grid;grid-template-columns:minmax(0,1fr) 50px;gap:8px;margin-top:16px}.finish{width:100%;min-height:52px;margin:9px 0 90px}.week-list{display:grid;gap:8px}.week-row{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:stretch}.week-day{display:grid;place-items:center;color:var(--muted);font-size:11px;font-weight:900}.week-card{min-height:74px;border:1px solid var(--line);background:var(--surface);border-radius:15px;padding:10px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}.week-card strong{display:block}.week-card small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.week-actions{display:flex;gap:5px}.week-plus{width:36px;height:36px;border:0;border-radius:10px;background:#fff;color:#111;font-size:24px;display:grid;place-items:center;padding:0}.week-menu{width:30px;border:0;background:transparent;color:#fff;font-size:23px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.stat{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:10px;text-align:center}.stat strong{display:block;font-size:17px}.stat span{font-size:8px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:9999;background:#fff;color:#111;border-radius:999px;padding:9px 14px;font-size:11px;font-weight:900}.restbar{background:#fff;color:#111;border-radius:15px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;}.restbar button{border:0;background:#e8e8e8;border-radius:9px;min-height:34px;padding:0 10px;color:#111}.summary-empty{border-top:1px solid var(--line);padding:9px 0;color:#fff;font-size:13px}
+
+
+
+.editor-add-row{display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:8px;margin-top:8px}.editor-add-row .secondary{width:100%}
+.editor-ex-meta{display:flex;gap:7px;align-items:center;margin:7px 0}.meta-pill{border:1px solid var(--line);background:var(--surface2);border-radius:9px;padding:5px 8px;font-size:10px;font-weight:850;color:#fff}
+.edit-mini{min-height:34px!important;height:34px!important;padding:0 10px!important;font-size:10px!important}
+.text-action{border:0;background:transparent;padding:4px;font-size:10px;font-weight:850;color:var(--muted)}
+.history-actions{display:flex;gap:5px;align-items:center}.history-actions .icon-btn{width:36px;height:36px;min-width:36px;font-size:16px}
+.plan-picker-tools{position:sticky;top:0;z-index:5;background:var(--bg);padding:0 0 8px;margin-top:-8px}
+.workout-note{border:0;background:transparent;color:var(--muted);padding:0;margin:0 0 10px;font-size:10px;text-align:left}
+.method-help{font-size:9px;line-height:1.35;color:var(--muted);margin:-1px 0 8px}
+.set-head,.advanced-head,.time-head{text-transform:uppercase}
+.set-head span:first-child,.advanced-head span:first-child,.time-head span:first-child{text-align:left}
+.set-head span:nth-child(n+2),.advanced-head span:nth-child(n+3),.time-head span:nth-child(n+2){text-align:center}
+.rating-row{display:grid;grid-template-columns:34px 1fr;gap:6px;align-items:center;margin:2px 0 7px}.rating-label{font-size:7px;color:var(--muted);font-weight:900;text-align:left}.rating{margin:0}.rating button:disabled{opacity:.28}
+.live-card-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}.live-delete-ex{width:28px;height:28px;min-width:28px;border:0;background:transparent;color:var(--muted);font-size:20px}
+.time-head,.time-row{grid-template-columns:28px minmax(68px,1fr) 30px 50px 54px 38px 18px!important}.time-play{width:30px;height:38px;border:1px solid var(--line);border-radius:10px;background:transparent;color:#fff;padding:0;font-size:12px}.time-row .remove-mini{grid-column:7}
+.advanced-head,.advanced-row{grid-template-columns:32px minmax(58px,1fr) minmax(58px,68px) minmax(58px,68px) 38px 18px!important}.advanced-row .remove-mini{grid-column:6}
+.set-head,.set-row{grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 38px 18px!important}
+.set-row,.advanced-row,.time-row{max-width:100%;overflow:hidden}.set-row input,.advanced-row input,.time-row input{max-width:100%;min-width:0}
+#preStartPage{display:flex;flex-direction:column}#preStartPage.hidden{display:none!important}#preStartBody{flex:1 1 auto;min-height:0;padding-bottom:82px}#confirmStartBtn{position:fixed!important;left:50%;transform:translateX(-50%);bottom:calc(8px + env(safe-area-inset-bottom));width:calc(min(100%,var(--max)) - 32px)!important;z-index:30;margin:0!important}
+.top-tap-zone{cursor:pointer}
+.week-pause-wrap{display:flex;align-items:center;gap:8px}.stretch-icon{width:24px;height:24px;color:var(--muted);flex:0 0 auto}
+.week-select-card.selected{border-color:#fff}.week-selection-footer{position:sticky;bottom:0;background:var(--bg);padding-top:10px}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.goal-line{font-size:9px;color:var(--muted);margin-top:4px}.profile-hydration{margin-top:10px}.progress-track{height:5px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-top:12px}.progress-fill{height:100%;background:#fff;width:0}.section-head{margin:18px 0 8px}.drink-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.drink-actions{display:flex;gap:5px}.drink-actions button{width:36px;height:36px;min-width:36px}.measurement-values{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}.measurement-values span{font-size:9px;color:var(--muted)}
+.keyboard-safe input,.keyboard-safe textarea,.keyboard-safe select{font-size:16px!important}
+
+
+
+.field,.search input,.set-row input,.advanced-row input,.time-row input{font-size:16px!important}
+.rep-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.rep-preset{border:1px solid var(--line);background:var(--surface);color:#fff;border-radius:11px;min-height:40px;font-size:11px;font-weight:850}.rep-preset.active{background:#fff;color:#111;border-color:#fff}
+.method-link-box{border:1px solid var(--line);background:var(--surface2);border-radius:13px;padding:10px;margin:9px 0}.linked-ex-row{display:grid;grid-template-columns:28px minmax(0,1fr) 30px;gap:7px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}.linked-ex-row:last-child{border-bottom:0}.link-code{font-size:10px;color:var(--muted);font-weight:900}.link-remove{border:0;background:transparent;color:var(--muted);font-size:20px}.method-config-note{font-size:9px;color:var(--muted);line-height:1.4;margin:7px 0 10px}
+.rating-question{font-size:16px;font-weight:850;margin:2px 0 12px}.rating-question-sub{font-size:10px;color:var(--muted);margin:-5px 0 12px}.rating-question-grid{display:grid;gap:8px}.rating-choice{min-height:52px;border:0;border-radius:13px;font-weight:900}.rating-choice.red{background:#ffb7b3;color:#1d0807}.rating-choice.yellow{background:#fff0a6;color:#211b00}.rating-choice.green{background:#c9ffce;color:#061b08}.rating-choice.blue{background:#bfeaff;color:#06151d}
+.set-check.rating-red{background:#ffb7b3!important;color:#1d0807!important;border-color:#ffb7b3!important}.set-check.rating-yellow{background:#fff0a6!important;color:#211b00!important;border-color:#fff0a6!important}.set-check.rating-green{background:#c9ffce!important;color:#061b08!important;border-color:#c9ffce!important}.set-check.rating-blue{background:#bfeaff!important;color:#06151d!important;border-color:#bfeaff!important}.set-check:disabled{opacity:.38}.set-check.ready:not(.done){border-color:#fff;color:#fff;opacity:1}
+.plan-used-mark{font-size:8px;color:var(--muted);margin-top:3px}
+
+
+.profile-identity-card{margin-bottom:10px}.compact-profile-edit{min-height:34px;padding:0 11px;font-size:10px}.nutrition-target-card{margin-bottom:8px}.profile-form-section{padding:10px 0;border-bottom:1px solid var(--line)}.profile-form-section:last-child{border-bottom:0}.profile-form-section h3{font-size:12px;margin:0 0 8px}
+
+
+.week-nav{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;gap:8px;align-items:center;margin:2px 0 12px}.week-range{text-align:center}.week-range strong{display:block;font-size:14px}.week-range span{display:block;margin-top:2px}.week-card-date{font-size:9px;color:var(--muted);margin-bottom:2px}
+.drink-log-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.drink-log-actions{display:flex;gap:5px}.drink-log-actions .icon-btn{width:34px;height:34px;min-width:34px;font-size:16px}
+.settings-section{margin-bottom:16px}.settings-section h3{font-size:12px;margin:0 0 8px}.settings-card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:12px}.settings-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}.settings-row:last-child{border-bottom:0}.settings-row strong{font-size:13px}.settings-row small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.plan-card{position:relative;overflow:hidden;touch-action:pan-y;transition:transform .18s ease}.plan-card.swipe-open{transform:translateX(-74px)}.plan-swipe-delete{position:absolute;right:-74px;top:0;width:74px;height:100%;border:0;background:#4a1111;color:#fff;font-size:10px;font-weight:900}.plan-card.swipe-open .plan-swipe-delete{right:0}
+.preview-live-shell .method-card{margin-bottom:14px}.preview-live-shell input{pointer-events:none;opacity:.85}.preview-live-shell .set-check,.preview-live-shell .remove-mini,.preview-live-shell .time-play{pointer-events:none;opacity:.55}
+
+
+
+.editor-action-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.editor-action-row .secondary{min-height:34px;padding:0 10px;font-size:10px}
+.group-round{border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:9px;margin:7px 0;background:rgba(255,255,255,.018)}
+.group-round-title{font-size:9px;font-weight:900;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
+.group-ex-row{display:grid;grid-template-columns:minmax(82px,1fr) minmax(54px,66px) minmax(54px,66px);gap:6px;align-items:center;padding:6px 0;border-top:1px solid rgba(255,255,255,.05)}
+.group-ex-row:first-of-type{border-top:0}.group-ex-name{font-size:10px;font-weight:850;line-height:1.15}.group-ex-row input{width:100%;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:#fff;text-align:center;min-width:0}
+.group-round-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px}
+.variant-line{font-size:12.5px;color:var(--text);margin-top:5px;font-weight:850;line-height:1.25}
+.recommendation{margin-top:7px;padding:7px 9px;border:1px solid rgba(255,255,255,.07);border-radius:10px;background:rgba(255,255,255,.02);font-size:9px;color:var(--muted)}
+.summary-set{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;border-top:1px solid var(--line);padding:7px 0;align-items:start}.summary-set strong{font-size:10px}.summary-set div{font-size:10px;color:var(--muted)}
+.summary-segments{display:flex;flex-wrap:wrap;gap:5px}.summary-chip{border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:9px;color:#ddd}
+.restbar.rest-restored{outline:1px solid rgba(255,255,255,.18)}
+
+
+
+/* Slightly larger typography without changing the overall density */
+.small{font-size:12px!important;line-height:1.35}.goal-line,.method-help,.variant-line,.recommendation,.note-line{font-size:10.5px!important;line-height:1.4}.prescription{font-size:11px!important}.method-name{font-size:10.5px!important}.set-head,.advanced-head,.time-head{font-size:9px!important}.rating-label{font-size:8.5px!important}.exercise-card small,.plan-card small{font-size:11px!important}
+.field,.set-row input,.advanced-row input,.time-row input,.group-ex-row input{font-size:16px!important;-webkit-user-select:text!important;user-select:text!important;pointer-events:auto!important;touch-action:manipulation!important}
+
+/* Bottom navigation */
+.nav{height:calc(82px + env(safe-area-inset-bottom))!important;padding-top:7px!important}.nav button{font-size:11px!important;gap:4px!important}.nav-icon{width:27px;height:27px;display:grid;place-items:center}.nav-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.nav button[data-tab="training"] .nav-icon svg path{fill:currentColor;stroke:none}
+.profile-settings-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+
+/* Active workout card */
+.active-workout-card{width:100%;border:1.5px solid rgba(114,238,147,.8)!important;background:linear-gradient(145deg,rgba(74,171,100,.18),rgba(18,39,24,.42))!important;border-radius:18px!important;padding:16px!important;margin-bottom:12px;box-shadow:0 0 0 1px rgba(107,239,143,.08) inset}
+.active-workout-card .active-kicker{font-size:10px;color:#9af1b1;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.active-workout-card .active-name{font-size:19px;font-weight:900;margin-top:4px}
+.active-workout-card .active-meta{font-size:11px;color:#c9d9cc;margin-top:5px}
+.active-workout-card .active-time{font-variant-numeric:tabular-nums;font-size:19px;font-weight:900;color:#caffd5}
+.active-workout-card .active-current{font-size:11px;color:#a9c8b0;margin-top:8px}
+
+/* Profile hydration accordion */
+.drink-details{margin-top:12px;border-top:1px solid var(--line);padding-top:3px}.drink-details summary{list-style:none;cursor:pointer;min-height:46px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:850}.drink-details summary::-webkit-details-marker{display:none}.drink-summary-chevron{font-size:18px;color:var(--muted);transition:transform .18s ease}.drink-details[open] .drink-summary-chevron{transform:rotate(180deg)}.drink-details-actions{margin:2px 0 10px}.drink-details #drinkList{padding-bottom:2px}
+
+/* Disabled plan action should look disabled */
+button:disabled{opacity:.38!important;cursor:default!important}
+
+
+
+.drink-card{position:relative;overflow:hidden;border-left:4px solid var(--line)!important}
+.drink-card.hydration-high{border-left-color:#57d98b!important;background:linear-gradient(90deg,rgba(87,217,139,.10),var(--card) 24%)!important}
+.drink-card.hydration-good{border-left-color:#68b7ff!important;background:linear-gradient(90deg,rgba(104,183,255,.10),var(--card) 24%)!important}
+.drink-card.hydration-mid{border-left-color:#e8c65a!important;background:linear-gradient(90deg,rgba(232,198,90,.09),var(--card) 24%)!important}
+.drink-card.hydration-low{border-left-color:#e47c7c!important;background:linear-gradient(90deg,rgba(228,124,124,.09),var(--card) 24%)!important}
+.drink-main{display:flex;align-items:center;gap:10px;min-width:0}.drink-icon{width:30px;height:30px;border-radius:10px;background:rgba(255,255,255,.06);display:grid;place-items:center;font-size:17px;flex:0 0 auto}
+input,textarea,select{-webkit-user-select:text!important;user-select:text!important;touch-action:manipulation!important}
+
+
+
+/* Overall typography: one gentle step larger, keeping the current hierarchy. */
+body{font-size:16px}
+.small{font-size:13px!important}
+.goal-line,.method-help,.variant-line,.recommendation,.note-line{font-size:11.5px!important}
+.prescription{font-size:12px!important}
+.method-name{font-size:11.5px!important}
+.exercise-card small,.plan-card small{font-size:12px!important}
+.detail-section label,.form-field label{font-size:10px!important}
+.detail-copy{font-size:14px!important}
+.set-title{font-size:11px!important}
+.set-head,.advanced-head,.time-head{font-size:10px!important}
+.rating-label{font-size:9.5px!important}
+.chip{font-size:12px!important}
+.nav button{font-size:12px!important}
+.exercise-title-link{font-size:17px!important}
+.plan-card strong,.exercise-card strong{font-size:15px}
+
+/* A long press on a plan is an app gesture, never native text selection/copy. */
+.plan-card,[data-plan],.plan-card *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+.plan-card{touch-action:pan-y}
+
+/* Search clear X exists visually only once there is text. */
+.search input:placeholder-shown + button{opacity:0!important;pointer-events:none!important}
+.search input:not(:placeholder-shown) + button{opacity:1!important;pointer-events:auto!important}
+.search button{transition:opacity .12s ease}
+
+
+
+.picker-quick-card{display:flex;align-items:stretch;padding:0;overflow:hidden}
+.picker-info{flex:1;min-width:0;border:0;background:transparent;color:inherit;text-align:left;padding:13px 14px;display:flex;align-items:center}
+.picker-info div{min-width:0}
+.picker-info strong,.picker-info small{display:block}
+.picker-quick-add{width:54px;min-width:54px;margin:8px;border:0;border-radius:13px;background:#050505;color:#fff;font-size:28px;font-weight:800;line-height:1}
+
+
+
+#preStartPage{padding-bottom:calc(92px + env(safe-area-inset-bottom))!important}
+#confirmStartBtn{position:fixed!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:calc(min(100vw,var(--max)) - 32px)!important;z-index:100!important;margin:0!important}
+.live-title-stack{text-align:center;min-width:0}.live-title-stack h2{margin:0}.live-title-stack .small{margin-top:2px}
+.active-resume-area{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:0}
+.active-workout-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.active-workout-actions button{min-height:40px}
+.set-row input::placeholder,.advanced-row input::placeholder,.group-ex-row input::placeholder,.time-row input::placeholder{color:#777!important;opacity:1}
+
+
+
+/* Native iOS inputs must stay directly editable */
+#livePage input,#livePage textarea{pointer-events:auto!important;-webkit-user-select:text!important;user-select:text!important;touch-action:auto!important}
+
+/* Small white action button at the top, large white action remains at the bottom */
+.top-workout-action{width:42px!important;height:42px!important;min-width:42px!important;font-size:16px!important}
+#finishWorkoutBtn{background:#fff!important;color:#111!important}
+.live-exercise-card{scroll-margin-top:calc(72px + env(safe-area-inset-top))}
+
+/* Week play uses the same white action language as add */
+.week-play{font-size:16px!important}
+
+
+
+.hydration-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;font-size:10.5px;color:var(--muted)}
+.today-drinks-section{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.mini-section-title{font-size:11px;font-weight:900;margin-bottom:8px}
+.empty-drink-note{padding:7px 0 3px}
+.create-drink-btn{min-height:36px!important;padding:0 12px!important;white-space:nowrap}
+.drink-card,.drink-log-row,.quick-drink-choice{border-left:4px solid var(--line)!important}
+.drink-kind-water{border-left-color:#9fd8f0!important;background:linear-gradient(90deg,rgba(159,216,240,.12),var(--surface) 28%)!important}
+.drink-kind-coffee{border-left-color:#cbb69b!important;background:linear-gradient(90deg,rgba(203,182,155,.12),var(--surface) 28%)!important}
+.drink-kind-tea{border-left-color:#afd3a2!important;background:linear-gradient(90deg,rgba(175,211,162,.11),var(--surface) 28%)!important}
+.drink-kind-beer{border-left-color:#e4cc88!important;background:linear-gradient(90deg,rgba(228,204,136,.11),var(--surface) 28%)!important}
+.drink-kind-soda{border-left-color:#ddb3df!important;background:linear-gradient(90deg,rgba(221,179,223,.11),var(--surface) 28%)!important}
+.drink-kind-juice{border-left-color:#f0bd86!important;background:linear-gradient(90deg,rgba(240,189,134,.11),var(--surface) 28%)!important}
+.drink-kind-cocktail{border-left-color:#ef9fa6!important;background:linear-gradient(90deg,rgba(239,159,166,.11),var(--surface) 28%)!important}
+.drink-kind-wine{border-left-color:#c79dac!important;background:linear-gradient(90deg,rgba(199,157,172,.11),var(--surface) 28%)!important}
+.drink-kind-energy{border-left-color:#ead65f!important;background:linear-gradient(90deg,rgba(234,214,95,.10),var(--surface) 28%)!important}
+.drink-kind-smoothie{border-left-color:#e6a6bd!important;background:linear-gradient(90deg,rgba(230,166,189,.11),var(--surface) 28%)!important}
+.drink-kind-milk{border-left-color:#d8d5ee!important;background:linear-gradient(90deg,rgba(216,213,238,.10),var(--surface) 28%)!important}
+.drink-kind-custom{border-left-color:#bababa!important}
+.quick-drink-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.quick-drink-choice{min-height:54px;border:1px solid var(--line);border-radius:12px;color:#fff;text-align:left;padding:8px;display:flex;gap:8px;align-items:center}
+.quick-drink-choice.active{outline:2px solid #fff;outline-offset:1px}
+.quick-drink-meta{margin-top:5px}
+
+
+
+#livePage input[data-input]{
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-user-select:text!important;
+  user-select:text!important;
+  font-size:16px!important;
+}
+
+
+
+#planEditorPage{padding-bottom:calc(112px + env(safe-area-inset-bottom))!important}
+#editorPlanStats{margin:4px 0 12px}
+.editor-stat-grid{margin-top:0}
+.editor-start-training{
+ position:static!important;
+ width:100%!important;
+ margin-top:10px!important;
+ box-shadow:none!important
+}
+
+
+
+.connected-method-card{padding:0;overflow:hidden}
+.connected-method-card>.method-name,.connected-method-card>.method-help{margin-left:12px;margin-right:12px}
+.connected-method-card>.method-name{margin-top:12px}
+.editor-group-exercise,.preview-group-member{padding:12px;border-top:1px solid var(--line)}
+.group-letter{color:var(--method);font-weight:950}
+.week-card-main{min-width:0;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:0;font:inherit}
+.week-completed{border-color:#7fcf9b;background:rgba(91,178,119,.12);box-shadow:inset 0 0 0 1px rgba(127,207,155,.22)}
+.week-completed .week-card-date,.week-completed small{color:#9bd8ad}
+
+
+
+/* Plan editor: start button belongs in normal flow directly below Preview. */
+#planEditorPage .editor-start-training{position:static!important;bottom:auto!important;z-index:auto!important;box-shadow:none!important}
+/* Only Kaffee and Espresso become dark brown; all other drink colors stay unchanged. */
+.drink-id-coffee,.drink-id-espresso{border-left-color:#65452f!important;background:linear-gradient(90deg,rgba(101,69,47,.22),var(--surface) 28%)!important}
+
+
+
+.live-card-actions{display:flex;gap:6px;align-items:center}
+.live-card-actions .icon-btn{width:34px;height:34px;min-width:34px}
+
+
+
+.plan-header-actions{display:flex;gap:8px;align-items:center}
+.plan-edit-toggle{min-height:38px!important;padding:0 11px!important}
+#planList.quick-edit{overflow:hidden}
+.plan-card.plan-quick-edit{position:relative;padding-right:54px!important;transition:padding .2s ease}
+.plan-card.plan-quick-edit>div:first-child{min-width:0;overflow:hidden}.plan-card.plan-quick-edit strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plan-card.plan-quick-edit .chev{display:none}
+.plan-quick-delete{display:flex!important;position:absolute;right:10px;top:50%;transform:translateY(-50%);align-items:center;justify-content:center;width:34px;height:34px;border:0;border-radius:50%;background:#d95454;color:#fff;font-size:23px;line-height:1;z-index:4}
+.week-scheduled{background:rgba(239,234,249,.12)!important;border-color:#eee8f8!important;box-shadow:inset 0 0 0 1px rgba(245,241,252,.10)}
+.week-scheduled .week-card-date,.week-scheduled small{color:#e9e3f2}
+.week-completed{border-color:#7fcf9b!important;background:rgba(91,178,119,.12)!important}
+
+
+
+.sheet .sheet-head,.sheet-head{margin-bottom:6px!important;padding-bottom:4px!important}
+.plan-picker-tools{position:sticky;top:0;z-index:5;background:var(--bg);padding:0 0 6px!important;margin:0!important}
+.plan-picker-tools .search{margin-top:0!important;margin-bottom:6px!important}
+.plan-picker-tools+.plan-picker-tools{margin-top:0!important}
+.week-scheduled{background:#eee9f8!important;border-color:#f3effb!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)!important}
+.week-scheduled,.week-scheduled strong,.week-scheduled .week-card-date,.week-scheduled small,.week-scheduled button{color:#17151b!important}
+.week-completed{border-color:#7fcf9b!important;background:rgba(91,178,119,.12)!important}
+
+
+
+.history-orphan{background:#171717!important;border-color:#3a3a3a!important;color:#777!important;opacity:.72}
+.history-orphan strong,.history-orphan small{color:#777!important}
+.history-orphan{cursor:default!important}
+.history-connected-card{padding:0!important;overflow:hidden}
+.history-connected-card>.method-name,.history-connected-card>.method-help{margin-left:12px;margin-right:12px}
+.history-connected-card>.method-name{margin-top:12px}
+.history-summary-exercise{padding:12px;border-top:1px solid var(--line)}
+.history-summary-exercise:first-of-type{border-top:0}
+.history-group-label{font-size:10px;font-weight:950;color:var(--method);margin-bottom:3px;text-transform:uppercase}
+.history-missing-plan-note{color:var(--muted);text-align:center}
+.connected-method-card .editor-group-exercise+.editor-group-exercise,
+.connected-method-card .preview-group-member+.preview-group-member{margin-top:0!important}
+
+/* Scheduled week: quiet cool blue-gray, same visual language as completed green. */
+.week-scheduled{
+ background:rgba(112,145,177,.13)!important;
+ border-color:#8da9c4!important;
+ box-shadow:inset 0 0 0 1px rgba(141,169,196,.18)!important
+}
+.week-scheduled,.week-scheduled strong,.week-scheduled .week-card-date{color:#e9f0f6!important}
+.week-scheduled small{color:#b8c8d7!important}
+.week-completed{border-color:#7fcf9b!important;background:rgba(91,178,119,.12)!important}
+
+
+
+/* rating colors are universal */
+.set-check.rating-red{background:#b84d55!important;border-color:#d86a72!important;color:#fff!important}
+.set-check.rating-yellow{background:#b99a43!important;border-color:#d7ba64!important;color:#fff!important}
+.set-check.rating-green{background:#4f9d68!important;border-color:#74be8a!important;color:#fff!important}
+.set-check.rating-blue{background:#6aa9c7!important;border-color:#8fc7df!important;color:#fff!important}
+.group-ex-rated{grid-template-columns:minmax(82px,1fr) minmax(52px,64px) minmax(52px,64px) 36px!important}
+.group-rating-row{margin-left:0!important;margin-bottom:6px!important}
+
+/* Training start card more prominent */
+#startTrainingCard{padding:18px!important;min-height:104px!important;border-radius:18px!important}
+#startTrainingCard strong{font-size:19px!important}#startTrainingCard .small{margin-top:5px!important}
+#startTrainingCard .plus-btn{width:48px!important;height:48px!important;min-width:48px!important;font-size:18px!important}
+
+/* Scheduled week mirrors completed visual strength, in cool indigo instead of pink/blue outline only */
+.week-scheduled{border-color:#9d98c7!important;background:rgba(117,108,166,.22)!important;box-shadow:inset 0 0 0 1px rgba(190,184,225,.18)!important}
+.week-scheduled,.week-scheduled strong,.week-scheduled .week-card-date{color:#f4f1ff!important}.week-scheduled small{color:#d6d0eb!important}
+.week-completed{border-color:#7fcf9b!important;background:rgba(91,178,119,.18)!important;box-shadow:inset 0 0 0 1px rgba(127,207,155,.22)!important}
+
+/* Profile charts and measurement delete */
+.measurement-charts{margin-top:12px}.profile-chart{padding:12px;margin-top:8px}.profile-chart svg{width:100%;height:76px;color:#c9c4e7;display:block;margin-top:6px}.chart-range{display:flex;justify-content:space-between;color:var(--muted);font-size:10px}.measurement-card{display:grid!important;grid-template-columns:minmax(0,1fr) 36px;gap:8px;align-items:center}.measurement-main{border:0;background:transparent;color:inherit;text-align:left;padding:0;min-width:0}.measurement-delete{width:34px!important;height:34px!important;min-width:34px!important}.nutrition-mini-counter{font-size:10.5px;color:var(--muted);margin-top:3px}
+
+/* Swipe action closes cleanly */
+.plan-card{transition:transform .18s ease}.plan-card:not(.swipe-open) .plan-swipe-delete{pointer-events:none}.plan-card.swipe-open .plan-swipe-delete{pointer-events:auto}
+
+
+
+#startTrainingCard{padding:20px 18px!important;min-height:96px!important;border-radius:20px!important}
+#startTrainingCard strong{font-size:19px!important}
+#startTrainingCard .small{font-size:13px!important;margin-top:4px}
+#startTrainingCard .plus-btn{width:48px!important;height:48px!important;min-width:48px!important;font-size:20px!important}
+
+/* Planned week cards use the same strong visual system as completed cards. */
+.week-scheduled{
+ border:2px solid #91adc8!important;
+ background:rgba(92,126,158,.24)!important;
+ box-shadow:inset 0 0 0 1px rgba(183,210,234,.16)!important
+}
+.week-scheduled strong{color:#d8e9f7!important}
+.week-scheduled .week-card-date,.week-scheduled small{color:#b8d2e7!important}
+.week-completed{border-width:2px!important}
+.summary-incomplete{margin-top:6px;color:#8f8f8f!important}
+
+/* Rating colors are identical and visible in every live method. */
+.set-check.rating-red{background:#b84d55!important;border-color:#e07a82!important;color:#fff!important}
+.set-check.rating-yellow{background:#b99a43!important;border-color:#e0c66d!important;color:#fff!important}
+.set-check.rating-green{background:#4f9d68!important;border-color:#79c993!important;color:#fff!important}
+.set-check.rating-blue{background:#6aa9c7!important;border-color:#9bd5ed!important;color:#fff!important}
+
+
+
+.week-motivation{margin-bottom:12px;padding:16px 17px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
+.week-motivation .small{font-size:9px!important;letter-spacing:.08em;font-weight:900;margin-bottom:5px}
+.week-motivation strong{font-size:15px;line-height:1.35}
+.drink-manage-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.profile-progress-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.progress-stat{padding:12px!important;min-width:0}
+.progress-stat strong{font-size:19px;display:block;margin-top:3px}
+.progress-stat .goal-line{font-size:9px!important}
+.chart-dates{font-size:9px!important;line-height:1.3}.chart-dates span:last-child{text-align:right}.chart-dates b{color:#eee;font-weight:800}
+@media(max-width:390px){.profile-progress-grid{grid-template-columns:1fr 1fr}.profile-progress-grid .progress-stat:last-child{grid-column:1/-1}}
+
+
+
+.preview-live-shell{user-select:none;-webkit-user-select:none}
+.preview-live-shell button,.preview-live-shell input,.preview-live-shell textarea,.preview-live-shell select{pointer-events:none!important}
+.preview-static-row .preview-value{
+ height:40px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);
+ color:#a8a8a8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:750;min-width:0
+}
+.preview-live-shell .preview-static-row{pointer-events:none!important}
+
+
+
+.subtle-reorder-btn{width:34px!important;height:34px!important;min-width:34px!important;background:transparent!important;border:1px solid rgba(255,255,255,.10)!important;color:var(--muted)!important;font-size:16px!important}
+.subtle-reorder-btn.active{color:#fff!important;border-color:rgba(255,255,255,.28)!important;background:rgba(255,255,255,.04)!important}
+.daily-nutrition-entry{padding:14px!important}
+
+
+
+.target-weight-line{stroke:rgba(255,255,255,.45);stroke-width:1.3;stroke-dasharray:5 4}
+.target-weight-label{fill:#cfcfcf;font-size:8px;font-weight:800}
+
+
+
+.food-add-btn{padding:8px 10px!important;font-size:10px!important}
+.nutrition-counter{margin-top:13px}.nutrition-counter>div:first-child{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.nutrition-counter span{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.nutrition-counter strong{font-size:12px}.mini-progress{height:6px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:5px}
+.mini-progress i{display:block;height:100%;width:0;border-radius:inherit;background:#e7b86a}.protein-counter .mini-progress i{background:#9cb8d8}
+.today-food-list{display:grid;gap:7px;margin-top:13px}.food-log-row,.food-result,.food-selected{border:1px solid var(--line);border-radius:13px;padding:10px 11px;background:var(--surface2)}
+.food-log-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.food-log-row small,.food-result small{display:block;margin-top:2px;color:var(--muted)}
+.food-result{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;color:inherit;margin-bottom:6px}.food-result>span{font-size:10px;color:var(--muted);white-space:nowrap}
+.food-fruit{border-left:3px solid #b7d6a3;background:rgba(183,214,163,.06)}.food-veg{border-left:3px solid #8fc7b5;background:rgba(143,199,181,.06)}
+.food-carb{border-left:3px solid #e1c58b;background:rgba(225,197,139,.06)}.food-dairy{border-left:3px solid #d7cfb8;background:rgba(215,207,184,.06)}
+.food-protein{border-left:3px solid #9cb8d8;background:rgba(156,184,216,.06)}.food-legume{border-left:3px solid #c0a9d8;background:rgba(192,169,216,.06)}
+.food-other{border-left:3px solid #d7a9ad;background:rgba(215,169,173,.06)}
+.food-search{position:relative}.food-search .field{padding-left:34px;padding-right:34px}.search-loupe{position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:2;color:var(--muted);font-size:18px}
+.food-source-note{margin:6px 2px 10px}.empty-food-note{padding:8px 1px}
+
+
+
+.profile-day-nav{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;margin:-2px 0 12px;padding:3px 2px}.profile-day-nav>div{text-align:center}.profile-day-nav strong{display:block;font-size:14px}.profile-day-nav small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+
+
+
+.food-search-empty{padding:28px 12px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}
+.pyramid-config{display:grid;gap:6px}.pyramid-config-row{display:grid;grid-template-columns:54px 1fr 46px;gap:8px;align-items:center}.pyramid-config-row>span{font-size:10px;color:var(--muted);font-weight:800}.pyramid-config-row>span:last-child{text-align:right}
+
+
+
+.rating-choice{display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;padding:9px 12px!important}.rating-choice strong{font-size:12px}.rating-choice small{display:block;font-size:9px;line-height:1.25;margin-top:2px;opacity:.72;font-weight:650}
+.live-exercise-card{transition:box-shadow .2s,transform .2s,border-color .2s}.live-exercise-card.active-live-exercise{box-shadow:0 0 0 2px rgba(255,255,255,.65),0 0 24px rgba(207,177,233,.24);transform:scale(1.008);border-color:#fff!important}
+#restBar{box-shadow:0 10px 35px rgba(0,0,0,.45)}#livePage{padding-bottom:150px!important}
+#startTrainingCard{min-height:112px;padding:20px!important;display:flex;align-items:center}#startTrainingCard>.space{width:100%}#startTrainingCard strong{font-size:19px}
+.plan-card.hold-armed{transform:scale(.985);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);filter:brightness(1.12)}.plan-card.hold-ready{transform:scale(.97);box-shadow:inset 0 0 0 2px #fff,0 0 20px rgba(255,255,255,.15)}
+.mode-switch{display:flex;gap:6px;margin:8px 0 12px}.save-choice-stack{display:grid;gap:8px}.summary-plan-card .plus-btn{flex:0 0 auto}
+
+
+
+.restpause-progress{padding:7px 2px 2px;text-align:right;font-weight:800}
+.time-presets{display:flex;flex-wrap:wrap;gap:6px}
+
+
+
+#restBar{
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ min-height:72px!important;
+ padding:14px 16px!important;
+ border-radius:18px!important;
+ box-shadow:0 14px 40px rgba(0,0,0,.42)!important
+}
+#restBar #restTime{font-size:25px!important;font-weight:900!important}
+#livePage{padding-bottom:190px!important}
+.compact-partner-note{padding:10px 0 12px;font-size:13px;opacity:.78}
+.compact-partner-list{max-height:50vh;overflow:auto}
+.compact-partner-card{padding:12px;border-radius:14px;background:rgba(255,255,255,.06);margin-bottom:12px}
+.compact-check{display:block;margin:10px 0 14px}
+.connected-live-card{overflow:hidden}
+.combined-series-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.combined-series-name{font-size:15px;margin:3px 0}.combined-series-name strong{display:inline-block;width:22px}
+.combined-round{border-top:1px solid rgba(255,255,255,.12);padding:10px 0 4px}
+.combined-member-row{display:grid;grid-template-columns:34px minmax(82px,1fr) 62px 62px 42px;gap:6px;align-items:center;margin:7px 0}
+.combined-index{font-weight:900}.combined-name{text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.combined-member-row input{min-width:0;width:100%}
+
+
+
+.food-result,.food-selected,.compact-log-row{box-sizing:border-box;max-width:100%;min-width:0}
+.food-result{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(90px,42%);gap:10px;align-items:center}
+.food-result-copy,.compact-log-copy,.drink-main,.drink-main>div{min-width:0}
+.food-result-copy strong,.food-result-copy small,.compact-log-copy strong,.compact-log-copy small{display:block;max-width:100%;overflow-wrap:anywhere;white-space:normal}
+.food-result-values{min-width:0!important;white-space:normal!important;text-align:right;overflow-wrap:anywhere;line-height:1.25}
+.food-selected{overflow:hidden}.food-selected strong,.food-selected .small{overflow-wrap:anywhere;white-space:normal}
+.daily-track-card{min-height:188px!important;border-radius:18px!important;padding:15px!important;display:flex;flex-direction:column;gap:11px;background:var(--surface)!important}
+.hydration-today-card{border-color:rgba(132,180,205,.42)!important;background:rgba(132,180,205,.055)!important}
+.nutrition-today-card{border-color:rgba(205,175,116,.38)!important;background:rgba(205,175,116,.045)!important}
+.daily-track-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 46px;gap:10px;align-items:start}
+.daily-main-stat,.daily-bar-stat{min-width:0}
+.daily-main-stat span,.daily-bar-stat span,.daily-substats span{display:block;font-size:9px;font-weight:850;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.daily-main-stat strong{font-size:19px;white-space:nowrap}
+.daily-white-plus{width:44px;height:44px;border:0;border-radius:12px;background:#fff;color:#101010;font-size:25px;display:flex;align-items:center;justify-content:center;justify-self:end}
+.compact-main-progress{margin:0!important;height:7px!important}
+.daily-substats{display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+.daily-substats>div{padding:9px 10px}.daily-substats>div+div{border-left:1px solid rgba(255,255,255,.08)}.daily-substats strong{font-size:13px}
+.nutrition-track-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 46px}
+.daily-bar-stat>div:first-child{display:flex;flex-direction:column;min-width:0}
+.daily-bar-stat strong{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.daily-bar-stat .mini-progress{height:6px;margin-top:7px}
+.daily-log-details{margin-top:auto;border-top:1px solid rgba(255,255,255,.07);padding-top:7px}
+.daily-log-details>summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:10px;color:var(--muted);list-style:none}
+.daily-log-details>summary::-webkit-details-marker{display:none}.compact-daily-list{display:grid;gap:5px;margin-top:8px}
+.compact-log-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 8px!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025)!important}
+.compact-log-row strong{font-size:11px}.compact-log-row small{font-size:9px!important;line-height:1.25;color:var(--muted)}
+.compact-delete{width:27px;height:27px;min-width:27px;border:0;border-radius:50%;background:rgba(190,75,75,.14);color:#d98a8a;font-size:17px}
+.goal-calculation-card{margin-top:10px!important;padding:14px!important}
+.goal-white-button{width:100%;margin-top:11px;min-height:44px;border:0;border-radius:12px;background:#fff;color:#111;font-weight:850;font-size:13px}
+
+
+
+#measurementCharts{margin-bottom:10px}
+.measurement-chart-stack{display:grid;gap:8px}
+.always-chart{margin:0!important}
+.empty-chart-line{height:70px;border-bottom:1px solid rgba(255,255,255,.09);position:relative}
+.empty-chart-line:after{content:"";position:absolute;left:8px;right:8px;bottom:18px;border-top:1px dashed rgba(255,255,255,.12)}
+.measurement-suggestion{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;padding:12px 14px!important;margin:0 0 8px!important;border-style:dashed!important}
+.measurement-suggestion strong{font-size:13px}.measurement-suggestion>span{font-size:23px;color:#fff}
+.training-week-stat .week-calendar-label{font-size:10px;color:var(--muted);font-weight:850;margin:3px 0 2px}
+.food-search .search-loupe{font-family:system-ui,-apple-system,sans-serif;pointer-events:none}
+.food-search input[type="search"]::-webkit-search-cancel-button{display:none}
+
+
+
+.time-row input[data-time-field],.combined-time-controls input[data-time-field]{font-weight:850;letter-spacing:.02em}
+.time-play{min-width:42px!important;height:42px!important}
+.combined-member-block{padding:6px 0}.combined-member-title{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.combined-time-controls{display:grid;grid-template-columns:minmax(74px,1fr) 44px minmax(96px,1fr) 42px;gap:6px;align-items:center}
+.combined-time-controls input{width:100%;min-width:0;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:#fff;text-align:center}
+.group-round-title{display:flex;align-items:center;justify-content:space-between}
+
+
+
+:root{--v48-accent:#b7a4d8;--v48-coral:#d56b72}
+html[data-theme="dark"]{color-scheme:dark}
+html[data-theme="light"]{
+ --bg:#dfe1e7!important;
+ --surface:#ececf1!important;
+ --surface2:#d6d7df!important;
+ --line:rgba(38,38,48,.13)!important;
+ --text:#25242a!important;
+ --muted:#6f6d76!important;
+ --danger:#b8414d!important;
+ color-scheme:light;
+}
+html[data-theme="light"],html[data-theme="light"] body{background:#dfe1e7!important;color:var(--text)!important}
+html[data-theme="light"] body{
+ background:
+   radial-gradient(700px 480px at 5% -5%,rgba(177,157,211,.24),transparent 58%),
+   radial-gradient(600px 420px at 100% 3%,rgba(124,168,183,.16),transparent 56%),
+   linear-gradient(180deg,#e4e4ea 0%,#dcdfe5 58%,#d9dce2 100%)!important;
+}
+html[data-theme="light"] .page{background:linear-gradient(180deg,#e4e4ea,#dbdde3)!important}
+html[data-theme="light"] .page-top{background:rgba(228,228,234,.94)!important;border-bottom-color:rgba(38,38,48,.10)!important}
+html[data-theme="light"] .sheet{background:linear-gradient(180deg,#eeeeF3,#dddee5)!important;border-color:rgba(38,38,48,.12)!important}
+html[data-theme="light"] .nav{background:rgba(229,229,235,.95)!important;border-color:rgba(38,38,48,.11)!important;box-shadow:0 12px 34px rgba(42,40,52,.12)!important}
+html[data-theme="light"] .nav button{color:#74717b!important}
+html[data-theme="light"] .nav button.active{color:#25242a!important;background:#cbc5d8!important}
+html[data-theme="light"] .card,html[data-theme="light"] .exercise-card,html[data-theme="light"] .plan-card,
+html[data-theme="light"] .week-card,html[data-theme="light"] .settings-card,html[data-theme="light"] .stat,
+html[data-theme="light"] .daily-track-card,html[data-theme="light"] .nutrition-target-card,
+html[data-theme="light"] .method-card,html[data-theme="light"] .group-round,html[data-theme="light"] .recommendation,
+html[data-theme="light"] .measurement-card,html[data-theme="light"] .drink-card{
+ background:#ececf1!important;border-color:rgba(38,38,48,.11)!important;color:#25242a!important;
+ box-shadow:0 8px 22px rgba(42,40,52,.07)!important;
+}
+html[data-theme="light"] .secondary,html[data-theme="light"] .icon-btn{background:#e7e7ed!important;color:#29282e!important;border-color:rgba(38,38,48,.12)!important}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn{background:#c5bdd4!important;color:#26222d!important}
+html[data-theme="light"] .search input,html[data-theme="light"] .field,html[data-theme="light"] select.field,
+html[data-theme="light"] textarea.field,html[data-theme="light"] .set-row input,html[data-theme="light"] .advanced-row input,
+html[data-theme="light"] .time-row input,html[data-theme="light"] .group-ex-row input,
+html[data-theme="light"] .combined-member-row input{
+ background:#f0f0f4!important;color:#25242a!important;border-color:rgba(38,38,48,.13)!important
+}
+html[data-theme="light"] .chip,html[data-theme="light"] .rep-preset{background:#e8e8ed!important;color:#625f69!important;border-color:rgba(38,38,48,.11)!important}
+html[data-theme="light"] .chip.active,html[data-theme="light"] .rep-preset.active{background:#c7bfd6!important;color:#27222e!important;border-color:#c7bfd6!important}
+html[data-theme="light"] .small,html[data-theme="light"] .prescription,html[data-theme="light"] .method-help,
+html[data-theme="light"] .goal-line,html[data-theme="light"] .variant-line{color:#6f6d76!important}
+
+/* "Heute messen?" remains a standard card; only the prompt text is red. */
+#measurementSuggestionBtn{background:var(--surface)!important;border:1px solid var(--line)!important;box-shadow:none!important}
+#measurementSuggestionBtn strong{color:#e35d66!important}
+html[data-theme="light"] #measurementSuggestionBtn strong{color:#b43c49!important}
+
+/* One input language for all rep/weight work sets. */
+.set-row input,.advanced-row input,.group-ex-row input,.combined-member-row input,
+.combined-time-controls input,.time-row input{
+ height:44px!important;border:1px solid var(--line)!important;border-radius:11px!important;
+ background:var(--surface2)!important;color:var(--text)!important;text-align:center!important;
+ font-size:16px!important;font-variant-numeric:tabular-nums!important;min-width:0!important;
+}
+.set-row input::placeholder,.advanced-row input::placeholder,.group-ex-row input::placeholder,
+.combined-member-row input::placeholder,.combined-time-controls input::placeholder,.time-row input::placeholder{
+ color:var(--muted)!important;opacity:.62!important
+}
+.combined-value-head,.combined-time-head{
+ display:grid;grid-template-columns:34px minmax(90px,1fr) minmax(58px,68px) minmax(58px,68px) 38px;
+ gap:6px;align-items:end;margin:7px 0 -1px;font-size:9px;font-weight:900;color:var(--muted);
+ text-transform:uppercase;text-align:center
+}
+.combined-value-head span:nth-child(2){text-align:left}
+.combined-member-row{grid-template-columns:34px minmax(90px,1fr) minmax(58px,68px) minmax(58px,68px) 38px!important;gap:6px!important}
+.workout-field-head{font-size:9px;color:var(--muted);font-weight:900;text-transform:uppercase}
+.theme-choice-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.theme-choice{height:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--text);font-size:11px;font-weight:850}
+.theme-choice.active{background:#b7a4d8!important;color:#17141c!important;border-color:#b7a4d8!important}
+.week-calendar-label{font-size:11px;color:var(--muted);margin:3px 0}
+
+
+
+.sheet-handle{cursor:grab;touch-action:none!important;width:56px!important;height:5px!important;margin:9px auto 5px!important;background:color-mix(in srgb,var(--muted) 70%,transparent)!important}
+.sheet-handle:active{cursor:grabbing}
+.sheet{will-change:transform;transition:transform .22s cubic-bezier(.2,.75,.25,1)}
+.sheet-wrap{transition:background-color .18s ease}
+.sheet.sheet-dragging{transition:none!important}
+
+
+
+.target-weight-line-profile{display:block;margin-top:4px}
+.measurement-chevron{font-size:25px;font-weight:500;line-height:1;color:var(--muted)}
+.week-scheduled{
+ background:rgba(232,145,62,.18)!important;
+ border-color:#e58d3d!important;
+ box-shadow:inset 0 0 0 1px rgba(229,141,61,.16)!important;
+}
+.week-scheduled,.week-scheduled strong,.week-scheduled .week-card-date,.week-scheduled small,.week-scheduled button{color:#f0ad6e!important}
+html[data-theme="light"] .week-scheduled{
+ background:rgba(215,130,49,.22)!important;border-color:#cf7e32!important;
+}
+html[data-theme="light"] .week-scheduled,html[data-theme="light"] .week-scheduled strong,
+html[data-theme="light"] .week-scheduled .week-card-date,html[data-theme="light"] .week-scheduled small,
+html[data-theme="light"] .week-scheduled button{color:#704018!important}
+.week-completed{border-color:#68c68a!important;background:rgba(70,166,101,.17)!important}
+.set-row>span:first-child,.time-row>span:first-child,.advanced-row>span:first-child,
+.combined-index,.group-round-title,.preview-static-row>span:first-child{font-weight:900!important}
+.advanced-row{grid-template-columns:32px minmax(58px,1fr) minmax(58px,68px) minmax(58px,68px) 38px 22px!important}
+.advanced-row .set-check{grid-column:5!important}
+.advanced-row .remove-mini{grid-column:6!important}
+.drop-final-row{align-items:center!important}
+.drop-final-row .set-check,.drop-final-row .remove-mini{display:block!important}
+.rating-row{min-width:0}
+#paTypeChips,#paMuscleChips{scroll-behavior:auto}
+
+
+
+/* Protein drinks now use the same icon + color-card language as all other drinks. */
+.drink-kind-protein{
+ border-left-color:#9f8ce1!important;
+ background:linear-gradient(90deg,rgba(159,140,225,.18),var(--surface) 30%)!important
+}
+.drink-id-protein-caffeine{
+ border-left-color:#c58ce1!important;
+ background:linear-gradient(90deg,rgba(197,140,225,.19),var(--surface) 30%)!important
+}
+/* Friendlier, slightly more colorful clean branch without changing structure. */
+.profile-identity-card{border-color:rgba(190,157,225,.28)!important;background:linear-gradient(135deg,rgba(180,145,214,.08),var(--surface) 55%)!important}
+.hydration-today-card{border-color:rgba(116,190,222,.42)!important;background:linear-gradient(135deg,rgba(95,181,218,.10),var(--surface) 48%)!important}
+.nutrition-today-card{min-height:240px!important;border-color:rgba(224,171,100,.40)!important;background:linear-gradient(135deg,rgba(224,153,83,.095),var(--surface) 50%)!important}
+.progress-fill{background:linear-gradient(90deg,#87c6e3,#b49bdf)!important}
+.protein-progress i{background:linear-gradient(90deg,#d697bf,#b99fe6)!important}
+.daily-white-plus,.plus-btn{box-shadow:0 5px 16px rgba(159,140,225,.16)}
+.food-manage-details{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding-top:8px}
+.food-manage-details>summary{display:flex;justify-content:space-between;align-items:center;list-style:none;cursor:pointer;font-size:11px;font-weight:850;color:var(--text)}
+.food-manage-details>summary::-webkit-details-marker{display:none}
+.food-manage-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}
+.food-manage-actions .secondary{min-height:40px;font-size:10px}
+.food-manage-section{margin-top:10px}.food-manage-label{margin-bottom:6px;font-weight:900}
+.my-food-card,.meal-card{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);margin-bottom:6px}
+.my-food-card strong,.meal-card strong{display:block;font-size:12px}.my-food-card small,.meal-card small{display:block;font-size:9px;color:var(--muted);margin-top:3px}
+.food-card-actions{display:flex;gap:5px}.food-card-actions button{width:33px;height:33px;min-width:33px}
+.food-result{border-left:4px solid rgba(224,171,100,.55)!important;background:linear-gradient(90deg,rgba(224,171,100,.06),var(--surface) 25%)!important}
+.food-serving{display:block;margin-top:3px;font-size:9px;color:#d7b07a!important}
+.food-quick-portions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0 12px}
+.food-quick-portions button{min-height:38px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font-size:10px;font-weight:800}
+.meal-builder-total{padding:11px;border-radius:12px;background:rgba(224,171,100,.08);border:1px solid rgba(224,171,100,.22);margin:10px 0}
+.meal-builder-item{display:grid;grid-template-columns:minmax(0,1fr) 70px 30px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.meal-builder-item:last-child{border-bottom:0}.meal-builder-item input{height:38px}
+html[data-theme="light"] .nutrition-today-card{background:linear-gradient(135deg,rgba(203,139,73,.13),#dbdce4 52%)!important}
+html[data-theme="light"] .hydration-today-card{background:linear-gradient(135deg,rgba(80,157,189,.12),#dbdce4 52%)!important}
+html[data-theme="light"] .drink-kind-protein{background:linear-gradient(90deg,rgba(136,113,194,.17),#dbdce4 30%)!important}
+html[data-theme="light"] .drink-id-protein-caffeine{background:linear-gradient(90deg,rgba(174,104,190,.17),#dbdce4 30%)!important}
+
+/* Keyboard-safe layout for pages and bottom sheets. */
+:root{--keyboard-inset:0px}
+.sheet-wrap{padding-bottom:0!important}
+.sheet{max-height:calc(100dvh - 10px - env(safe-area-inset-top))!important}
+.page.keyboard-open{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
+.sheet.keyboard-open .sheet-body{padding-bottom:calc(16px + env(safe-area-inset-bottom))!important}
+
+
+
+/* Small friendly accents across the whole app; structure/spacing stay unchanged. */
+.kicker{color:#c2a8e7!important}
+.primary{background:#c9b8e3!important;color:#201a27!important;border-color:#c9b8e3!important}
+.plus-btn{background:#c9b8e3!important;color:#201a27!important}
+.secondary:not(.danger){border-color:rgba(190,164,225,.30)!important}
+#tab-exercises .tab-header{border-bottom-color:rgba(174,153,222,.10)}
+#tab-plans .tab-header{border-bottom-color:rgba(112,181,205,.10)}
+#tab-training .tab-header{border-bottom-color:rgba(224,171,100,.10)}
+#tab-profile .section-head h2{letter-spacing:-.01em}
+.nav button.active{color:#d5c2ee!important}
+html[data-theme="light"] .kicker{color:#766096!important}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn{background:#b8a5cf!important;color:#28202e!important}
+html[data-theme="light"] .nav button.active{color:#66517f!important}
+
+
+
+/* Completed sets get a quiet green wash without changing the rating color itself. */
+.set-row:has(.set-check.done),.time-row:has(.set-check.done),.advanced-row.drop-final-row:has(.set-check.done),
+.combined-member-row:has(.set-check.done),.group-ex-row:has(.set-check.done){
+ background:rgba(92,184,119,.08)!important;border-radius:10px
+}
+html[data-theme="light"] .set-row:has(.set-check.done),html[data-theme="light"] .time-row:has(.set-check.done),
+html[data-theme="light"] .advanced-row.drop-final-row:has(.set-check.done),html[data-theme="light"] .combined-member-row:has(.set-check.done),
+html[data-theme="light"] .group-ex-row:has(.set-check.done){background:rgba(67,153,91,.11)!important}
+.last-rating-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px;background:#777}
+.last-rating-dot.rating-green{background:#79d38c}.last-rating-dot.rating-yellow{background:#e7cb5f}.last-rating-dot.rating-red{background:#e47777}.last-rating-dot.rating-blue{background:#78cbe9}
+.partner-unified-card{border:1px solid var(--line);border-radius:15px;padding:12px;background:var(--surface);margin-bottom:10px}
+.partner-step-kicker{font-size:9px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.weight-goal-reached{color:#75ce8d!important}
+
+
+
+.set-row,.time-row,.advanced-row,.combined-member-row{position:relative}
+.last-rating-dot{position:absolute!important;left:1px;top:50%;transform:translateY(-50%);z-index:2;margin:0!important}
+
+
+
+.streak-section-head{display:flex!important;align-items:center;justify-content:space-between;gap:10px}
+.section-head-actions{display:flex;align-items:center;gap:8px}
+.streak-flame{display:flex;align-items:center;gap:4px;min-width:42px;justify-content:flex-end;font-size:15px;color:var(--muted)}
+.streak-flame strong{font-size:12px;color:var(--text);font-variant-numeric:tabular-nums}
+.streak-flame.active{color:#f29a45}
+.streak-flame.active strong{color:#f4b16a}
+html[data-theme="light"] .streak-flame.active{color:#c96f29}
+html[data-theme="light"] .streak-flame.active strong{color:#9b4d18}
+
+
+
+.profile-progress-grid .progress-stat .progress-sub-label{
+  display:block;margin-top:7px;font-size:9px;font-weight:800;color:var(--muted);text-transform:none
+}
+.profile-progress-grid .progress-stat .progress-sub-value{
+  display:block;margin-top:2px;font-size:10px;font-weight:800;color:var(--text)
+}
+
+
+
+/* v47: targeted polish only — familiar cards/masks stay intact. */
+.connected-live-card .combined-series-head{margin-bottom:8px}
+.connected-live-card .combined-series-name{margin:4px 0}
+.connected-live-card .combined-series-name .exercise-title-link{font-size:16px!important;font-weight:900!important;line-height:1.25}
+.connected-live-card .combined-member-row .combined-name,
+.connected-live-card .combined-member-title .combined-name{font-size:10px!important;font-weight:700!important;color:var(--muted)!important;line-height:1.2}
+.pyramid-config-head{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0 0 10px}
+.pyramid-config-row{display:grid;grid-template-columns:54px minmax(80px,1fr) 48px;gap:8px;align-items:center;margin:6px 0}
+.pyramid-config-row>span:last-child{text-align:right;color:var(--muted);font-size:10px}
+.mode-switch button:disabled{opacity:.32;cursor:not-allowed}
+.preview-connected-top{padding:12px;border-bottom:1px solid var(--line)}
+.preview-connected-top .exercise-title-link{display:block;margin:4px 0;font-size:16px!important}
+.preview-combined-round{padding:9px 12px;border-top:1px solid var(--line)}
+.preview-combined-row{display:grid;grid-template-columns:30px minmax(0,1fr) 58px 58px;gap:6px;align-items:center;padding:4px 0}
+.preview-combined-row .preview-mini-name{font-size:9px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+
+
+.sheet-wrap{padding-bottom:0!important}.sheet{bottom:0!important;transform:none}.sheet.keyboard-open{transform:none!important}.page.keyboard-open{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
+
+
+
+/* Partner picker now uses the same visual language as exercise 1. */
+.partner-catalog-note{margin:2px 0 10px;color:var(--muted);font-size:10px}
+.partner-catalog-detail .exercise-media-placeholder{margin-bottom:12px}
+
+/* Active exercise: method colour only while unfinished. */
+.live-exercise-card.active-live-exercise:not(.live-method-complete){
+  background:color-mix(in srgb,var(--method) 22%,var(--surface))!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--method) 48%,transparent),0 12px 32px rgba(0,0,0,.15)!important;
+}
+.live-exercise-card.active-live-exercise:not(.live-method-complete) .exercise-title-link{
+  color:color-mix(in srgb,var(--method) 72%,white)!important
+}
+.live-exercise-card.live-method-complete{background:var(--surface)!important}
+
+/* Completed set/round gets the training-method colour, not generic green.
+   Rating check itself keeps green/yellow/red/blue rating semantics. */
+.method-card .set-row:has(.set-check.done),
+.method-card .time-row:has(.set-check.done),
+.method-card .advanced-row:has(.set-check.done),
+.method-card .combined-member-row:has(.set-check.done),
+.method-card .group-ex-row:has(.set-check.done),
+.method-card .group-round:has(.set-check.done){
+  background:color-mix(in srgb,var(--method) 38%,transparent)!important;
+  border-color:color-mix(in srgb,var(--method) 62%,transparent)!important;
+}
+html[data-theme="light"] .method-card .set-row:has(.set-check.done),
+html[data-theme="light"] .method-card .time-row:has(.set-check.done),
+html[data-theme="light"] .method-card .advanced-row:has(.set-check.done),
+html[data-theme="light"] .method-card .combined-member-row:has(.set-check.done),
+html[data-theme="light"] .method-card .group-ex-row:has(.set-check.done),
+html[data-theme="light"] .method-card .group-round:has(.set-check.done){
+  background:color-mix(in srgb,var(--method) 46%,#d7d8df)!important;
+}
+
+/* Pause timer sits at the actual lower screen edge. */
+#restBar{
+  
+  
+  
+  
+  
+  
+  
+}
+#livePage{padding-bottom:120px!important}
+
+
+
+.method-card{
+  border:2px solid var(--method)!important;
+}
+.method-card.connected-live-card,
+.method-card.connected-method-card{
+  border:2px solid var(--method)!important;
+}
+.method-card .method-name{
+  color:var(--method)!important;
+}
+
+
+
+html[data-theme="light"]{--bg:#cfd1d8!important;--surface:#dbdce3!important;--surface2:#c8cad2!important;--line:rgba(39,37,47,.15)!important;--text:#28262e!important;--muted:#68656f!important;--danger:#a73e49!important;color-scheme:light}
+html[data-theme="light"],html[data-theme="light"] body{background:#cfd1d8!important;color:var(--text)!important}
+html[data-theme="light"] body{background:radial-gradient(760px 500px at 0% -6%,rgba(164,143,194,.20),transparent 58%),radial-gradient(650px 440px at 100% 0%,rgba(104,150,164,.14),transparent 58%),linear-gradient(180deg,#d7d7df,#ced1d8 58%,#c9cdd4)!important}
+html[data-theme="light"] .page{background:linear-gradient(180deg,#d5d6dd,#cdd0d7)!important;color:var(--text)!important}
+html[data-theme="light"] .page-top{background:rgba(211,212,220,.96)!important;color:var(--text)!important;border-bottom-color:rgba(39,37,47,.11)!important}
+html[data-theme="light"] .sheet{background:linear-gradient(180deg,#dfe0e6,#c9cbd3)!important;color:var(--text)!important;border-color:rgba(39,37,47,.13)!important}
+html[data-theme="light"] .nav{background:rgba(216,217,224,.96)!important;border-color:rgba(39,37,47,.11)!important;box-shadow:0 12px 32px rgba(42,40,52,.13)!important}
+html[data-theme="light"] .card,html[data-theme="light"] .exercise-card,html[data-theme="light"] .plan-card,html[data-theme="light"] .week-card,html[data-theme="light"] .settings-card,html[data-theme="light"] .stat,html[data-theme="light"] .daily-track-card,html[data-theme="light"] .nutrition-target-card,html[data-theme="light"] .method-card,html[data-theme="light"] .group-round,html[data-theme="light"] .recommendation,html[data-theme="light"] .measurement-card,html[data-theme="light"] .drink-card,html[data-theme="light"] .partner-unified-card{background:#dbdce3!important;color:var(--text)!important;border-color:rgba(39,37,47,.12)!important;box-shadow:0 7px 19px rgba(43,40,51,.065)!important}
+html[data-theme="light"] .exercise-title-link,html[data-theme="light"] .combined-name,html[data-theme="light"] .preview-mini-name,html[data-theme="light"] .summary-empty,html[data-theme="light"] .meta-pill,html[data-theme="light"] .week-menu,html[data-theme="light"] .settings-row strong,html[data-theme="light"] .settings-row small{color:var(--text)!important}
+html[data-theme="light"] .small,html[data-theme="light"] .goal-line,html[data-theme="light"] .method-help,html[data-theme="light"] .variant-line,html[data-theme="light"] .prescription,html[data-theme="light"] .note-line{color:var(--muted)!important;opacity:1!important}
+html[data-theme="light"] .secondary,html[data-theme="light"] .icon-btn,html[data-theme="light"] .text-action,html[data-theme="light"] .remove-mini{background:#d0d1d8!important;color:#2e2b34!important;border-color:rgba(39,37,47,.13)!important}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn,html[data-theme="light"] .daily-white-plus{background:#b7a7cc!important;color:#251f2c!important;border-color:#b7a7cc!important}
+html[data-theme="light"] input,html[data-theme="light"] textarea,html[data-theme="light"] select,html[data-theme="light"] .field,html[data-theme="light"] .set-row input,html[data-theme="light"] .advanced-row input,html[data-theme="light"] .time-row input,html[data-theme="light"] .combined-member-row input,html[data-theme="light"] .group-ex-row input{background:#cfd1d8!important;color:#28262e!important;border-color:rgba(39,37,47,.14)!important}
+html[data-theme="light"] input::placeholder,html[data-theme="light"] textarea::placeholder{color:#77737e!important;opacity:.72!important}
+html[data-theme="light"] .chip,html[data-theme="light"] .rep-preset{background:#d1d2d9!important;color:#5f5b66!important;border-color:rgba(39,37,47,.11)!important}
+html[data-theme="light"] .chip.active,html[data-theme="light"] .rep-preset.active{background:#b5a5ca!important;color:#27212d!important;border-color:#b5a5ca!important}
+html[data-theme="light"] .method-card{border-color:var(--method)!important}
+html[data-theme="light"] .method-card .method-name{color:color-mix(in srgb,var(--method) 72%,#3a3340)!important}
+html[data-theme="light"] .live-exercise-card.active-live-exercise:not(.live-method-complete){background:color-mix(in srgb,var(--method) 31%,#d8d9df)!important}
+html[data-theme="light"] .live-exercise-card.active-live-exercise:not(.live-method-complete) .exercise-title-link{color:#2b2730!important}
+#restBar{position:fixed!important;top:auto!important;left:0!important;right:0!important;bottom:0!important;z-index:10000!important;margin:0!important;min-height:70px!important;border-radius:18px 18px 0 0!important;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;box-shadow:0 -10px 30px rgba(0,0,0,.30)!important}
+#restBar #restTime{font-size:25px!important;font-weight:900!important}
+#livePage{padding-bottom:150px!important}
+
+
+
+.week-scheduled{
+  background:color-mix(in srgb,#b7a4d8 22%,var(--surface))!important;
+  border-color:#b7a4d8!important;
+  box-shadow:inset 0 0 0 1px rgba(183,164,216,.18)!important;
+}
+.week-scheduled,
+.week-scheduled strong,
+.week-scheduled .week-card-date,
+.week-scheduled small,
+.week-scheduled button{
+  color:var(--text)!important;
+}
+html[data-theme="light"] .week-scheduled{
+  background:color-mix(in srgb,#b7a4d8 30%,#dbdce3)!important;
+  border-color:#9e89bf!important;
+}
+html[data-theme="light"] .week-scheduled,
+html[data-theme="light"] .week-scheduled strong,
+html[data-theme="light"] .week-scheduled .week-card-date,
+html[data-theme="light"] .week-scheduled small,
+html[data-theme="light"] .week-scheduled button{
+  color:#302b37!important;
+}
+.week-completed{
+  border-color:#68c68a!important;
+  background:rgba(70,166,101,.17)!important;
+}
+
+
+
+/* Calm, coherent light mode */
+html[data-theme="light"]{
+ --bg:#d7d7dc!important;--surface:#e0dfe3!important;--surface2:#ceced4!important;
+ --text:#302e34!important;--muted:#716e77!important;--line:rgba(48,45,54,.13)!important;
+}
+html[data-theme="light"] body{background:linear-gradient(180deg,#d9d9de,#d2d3d8)!important;color:#302e34!important}
+html[data-theme="light"] .page{background:#d6d6db!important}
+html[data-theme="light"] .card,html[data-theme="light"] .method-card,html[data-theme="light"] .week-card,
+html[data-theme="light"] .exercise-card,html[data-theme="light"] .plan-card,html[data-theme="light"] .settings-card,
+html[data-theme="light"] .sheet,html[data-theme="light"] .daily-track-card,html[data-theme="light"] .nutrition-target-card{
+ background:#dfdee3!important;color:#302e34!important;box-shadow:0 6px 18px rgba(45,42,50,.055)!important
+}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn{background:#a99bbd!important;color:#28232d!important;border-color:#a99bbd!important}
+html[data-theme="light"] .secondary,html[data-theme="light"] .icon-btn{background:#cdccd2!important;color:#35323a!important;border-color:rgba(48,45,54,.12)!important}
+html[data-theme="light"] .small,html[data-theme="light"] small,html[data-theme="light"] .goal-line,
+html[data-theme="light"] .prescription,html[data-theme="light"] .method-help,html[data-theme="light"] .variant-line,
+html[data-theme="light"] .note-line{color:#716e77!important}
+html[data-theme="light"] .exercise-title-link,html[data-theme="light"] .combined-name,html[data-theme="light"] .week-menu{color:#302e34!important}
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea,html[data-theme="light"] .field{
+ background:#d0d0d6!important;color:#302e34!important;border-color:rgba(48,45,54,.14)!important
+}
+html[data-theme="light"] input::placeholder{color:#77747c!important}
+html[data-theme="light"] .chip{background:#d0cfd5!important;color:#625e68!important}
+html[data-theme="light"] .chip.active{background:#aea0c0!important;color:#2c2632!important}
+/* Only the active exercise/card is method-coloured; completed rows return neutral. */
+.method-card .set-row:has(.set-check.done),.method-card .time-row:has(.set-check.done),
+.method-card .advanced-row:has(.set-check.done),.method-card .combined-member-row:has(.set-check.done),
+.method-card .group-ex-row:has(.set-check.done),.method-card .group-round:has(.set-check.done){
+ background:transparent!important;border-color:transparent!important
+}
+.live-exercise-card.active-live-exercise:not(.live-method-complete){
+ background:color-mix(in srgb,var(--method) 24%,var(--surface))!important
+}
+.live-exercise-card.live-method-complete{background:var(--surface)!important}
+/* Delete controls stay inside method cards. */
+.live-exercise-card{overflow:hidden!important}
+.live-card-actions{display:flex;align-items:center;gap:5px;flex:0 0 auto;max-width:82px;padding-right:1px}
+.live-delete-ex{width:34px!important;height:34px!important;min-width:34px!important;margin:0!important;box-sizing:border-box!important}
+.connected-live-card .combined-series-head{padding-right:1px}
+/* Pause timer is a body-level fixed dock. */
+#restBar{position:fixed!important;left:0!important;right:0!important;bottom:0!important;width:100vw!important;max-width:none!important;
+ border-radius:18px 18px 0 0!important;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;z-index:2147483000!important;margin:0!important}
+#livePage{padding-bottom:150px!important}
+/* Week */
+.week-scheduled{background:color-mix(in srgb,#b7a4d8 24%,var(--surface))!important;border-color:#b7a4d8!important}
+.week-running{background:color-mix(in srgb,#b7a4d8 38%,var(--surface))!important;border-color:#9b86ba!important;box-shadow:inset 0 0 0 1px rgba(183,164,216,.3)!important}
+.week-running-label{font-size:10px;font-weight:900;color:#c8b5e5;margin-top:4px}
+.week-play{background:#5f526e!important;color:#fff!important;border:1px solid rgba(255,255,255,.28)!important}
+html[data-theme="light"] .week-play{background:#665675!important;color:#fff!important}
+.week-order-badge{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#b7a4d8;color:#251f2c;font-weight:900;font-size:11px}
+/* Stable food search / quantity entry */
+.food-search-sticky{position:sticky;top:-1px;z-index:8;background:var(--surface);padding:2px 0 8px}
+.food-results-scroll{min-height:220px}
+.food-quick-portions.v68{grid-template-columns:repeat(4,1fr)!important}
+.food-quick-portions.v68 button{min-width:0}
+.preview-exact .live-card-actions,.preview-exact [data-add-set],.preview-exact [data-add-group-set],
+.preview-exact .remove-mini,.preview-exact .set-check,.preview-exact .time-play{display:none!important}
+.preview-exact input{pointer-events:none!important}
+
+
+
+/* Calm light mode: one muted grey/lilac language, dark typography. */
+html[data-theme="light"]{
+ --bg:#d9d9de!important;
+ --surface:#e1e0e4!important;
+ --surface2:#d0cfd5!important;
+ --line:rgba(48,45,54,.12)!important;
+ --text:#343139!important;
+ --muted:#74717a!important;
+ --danger:#a34a53!important;
+}
+html[data-theme="light"],html[data-theme="light"] body{background:#d9d9de!important;color:#343139!important}
+html[data-theme="light"] body{background:linear-gradient(180deg,#dcdbdf,#d5d5da)!important}
+html[data-theme="light"] .page,html[data-theme="light"] .tab-screen{background:#d9d9de!important;color:#343139!important}
+html[data-theme="light"] .page-top,html[data-theme="light"] .nav{background:#d5d4d9!important;color:#343139!important}
+html[data-theme="light"] .card,html[data-theme="light"] .exercise-card,html[data-theme="light"] .plan-card,
+html[data-theme="light"] .week-card,html[data-theme="light"] .settings-card,html[data-theme="light"] .method-card,
+html[data-theme="light"] .sheet,html[data-theme="light"] .daily-track-card,html[data-theme="light"] .nutrition-target-card,
+html[data-theme="light"] .drink-card,html[data-theme="light"] .group-round{
+ background:#e1e0e4!important;color:#343139!important;border-color:rgba(48,45,54,.11)!important;
+ box-shadow:0 5px 16px rgba(45,42,50,.045)!important
+}
+html[data-theme="light"] .primary,html[data-theme="light"] .plus-btn{
+ background:#a99db8!important;color:#2c2731!important;border-color:#a99db8!important
+}
+html[data-theme="light"] .secondary,html[data-theme="light"] .icon-btn,html[data-theme="light"] .text-action{
+ background:#d1d0d5!important;color:#39363e!important;border-color:rgba(48,45,54,.11)!important
+}
+html[data-theme="light"] .small,html[data-theme="light"] small,html[data-theme="light"] .goal-line,
+html[data-theme="light"] .prescription,html[data-theme="light"] .method-help,html[data-theme="light"] .variant-line,
+html[data-theme="light"] .note-line{color:#74717a!important}
+html[data-theme="light"] .exercise-title-link,html[data-theme="light"] .combined-name,
+html[data-theme="light"] .week-menu,html[data-theme="light"] strong,html[data-theme="light"] h1,html[data-theme="light"] h2{
+ color:#343139!important
+}
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea,html[data-theme="light"] .field{
+ background:#d2d1d6!important;color:#343139!important;border-color:rgba(48,45,54,.12)!important
+}
+html[data-theme="light"] input::placeholder,html[data-theme="light"] textarea::placeholder{color:#817e86!important}
+html[data-theme="light"] .chip{background:#d2d1d6!important;color:#67636d!important;border-color:rgba(48,45,54,.09)!important}
+html[data-theme="light"] .chip.active{background:#b3a7c0!important;color:#302a35!important;border-color:#b3a7c0!important}
+/* Keep status colours only where they have meaning. */
+html[data-theme="light"] .week-completed{background:rgba(91,166,111,.15)!important;border-color:#75b985!important}
+html[data-theme="light"] .week-completed strong,html[data-theme="light"] .week-completed small{color:#3e4b41!important}
+
+/* Only current exercise / current connected card is method-coloured. */
+.method-card .set-row:has(.set-check.done),.method-card .time-row:has(.set-check.done),
+.method-card .advanced-row:has(.set-check.done),.method-card .combined-member-row:has(.set-check.done),
+.method-card .group-ex-row:has(.set-check.done),.method-card .group-round:has(.set-check.done){
+ background:transparent!important;border-color:transparent!important
+}
+.live-exercise-card{background:var(--surface)!important}
+.live-exercise-card.active-live-exercise:not(.live-method-complete){
+ background:color-mix(in srgb,var(--method) 22%,var(--surface))!important
+}
+.live-exercise-card.live-method-complete{background:var(--surface)!important}
+/* Delete/Edit never leave method-card bounds. */
+.live-exercise-card{overflow:hidden!important;box-sizing:border-box!important}
+.live-card-head,.combined-series-head{min-width:0!important}
+.live-card-actions{display:flex!important;align-items:center!important;gap:5px!important;flex:0 0 auto!important;max-width:78px!important;padding-right:2px!important}
+.live-card-actions>*{box-sizing:border-box!important;flex:0 0 34px!important;width:34px!important;min-width:34px!important;height:34px!important;margin:0!important}
+.live-delete-ex{position:static!important;right:auto!important;transform:none!important}
+
+/* Pause dock: actual bottom edge, centered to app width on iPad. */
+#restBar{
+ position:fixed!important;top:auto!important;bottom:0!important;left:50%!important;right:auto!important;
+ transform:translateX(-50%)!important;width:min(100%,var(--max))!important;max-width:var(--max)!important;
+ margin:0!important;z-index:2147483000!important;border-radius:18px 18px 0 0!important;
+ padding:12px 14px calc(12px + env(safe-area-inset-bottom))!important;
+ box-shadow:0 -8px 26px rgba(0,0,0,.25)!important
+}
+#livePage{padding-bottom:150px!important}
+
+/* Week */
+.week-scheduled{background:color-mix(in srgb,#b7a4d8 24%,var(--surface))!important;border-color:#b7a4d8!important}
+.week-running{background:color-mix(in srgb,#b7a4d8 34%,var(--surface))!important;border-color:#9c88b7!important}
+.week-running-label{font-size:10px;font-weight:900;color:#b9a6d2;margin-top:4px}
+.week-play{background:#51475d!important;color:#fff!important;border:1px solid rgba(255,255,255,.22)!important}
+html[data-theme="light"] .week-play{background:#5d5367!important;color:#fff!important}
+.week-order-badge{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#b7a4d8;color:#28222e;font-size:11px;font-weight:900}
+
+/* Food search is stable; only results scroll/reduce. */
+.food-search-sticky{position:sticky!important;top:-1px!important;z-index:20!important;background:var(--surface)!important;padding:2px 0 9px!important}
+#v69FoodRows{min-height:240px}
+.food-quick-portions.v69{grid-template-columns:repeat(4,1fr)!important}
+
+/* Preview same cards, but no interaction. */
+.preview-exact .live-card-actions,.preview-exact [data-add-set],.preview-exact [data-add-group-set],
+.preview-exact .remove-mini,.preview-exact .set-check,.preview-exact .time-play{display:none!important}
+.preview-exact input,.preview-exact button{pointer-events:none}
+.preview-exact [data-live-detail]{pointer-events:auto!important}
+
+
+
+.week-repeat-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:900;color:var(--muted);margin-left:5px}
+.repeat-config{display:grid;gap:10px;margin:12px 0;padding:11px;border:1px solid var(--line);border-radius:13px;background:var(--surface2)}
+.repeat-config .grid2{gap:8px}
+.repeat-choice-line{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.repeat-rule-note{font-size:9px;line-height:1.35;color:var(--muted)}
+
+
+
+:root{
+  --v31-lilac:#b7a4d8;
+  --v31-lilac-soft:#cbbde2;
+  --v31-running-bg:#c7b5df;
+  --v31-running-border:#a58fc4;
+  --v31-running-text:#17131c;
+}
+/* Important action buttons in LIGHT MODE speak one visual language. */
+html[data-theme="light"] .primary,
+html[data-theme="light"] .plus-btn,
+html[data-theme="light"] .picker-quick-add,
+html[data-theme="light"] .daily-white-plus,
+html[data-theme="light"] .week-plus:not(.week-play),
+html[data-theme="light"] .food-add-btn,
+html[data-theme="light"] .meal-add-btn{
+  background:var(--v31-lilac)!important;
+  border-color:var(--v31-lilac)!important;
+  color:#241f2a!important;
+}
+/* Active workout card on Training tab: lilac in BOTH themes, black copy. */
+.active-workout-card{
+  background:var(--v31-running-bg)!important;
+  border-color:var(--v31-running-border)!important;
+  box-shadow:0 0 0 1px rgba(77,58,102,.09) inset!important;
+}
+.active-workout-card .active-resume-area,
+.active-workout-card .active-kicker,
+.active-workout-card .active-name,
+.active-workout-card .active-meta,
+.active-workout-card .active-time,
+.active-workout-card .active-current{
+  color:var(--v31-running-text)!important;
+}
+/* Week running card: same lilac in BOTH themes and black typography.
+   Its action buttons intentionally keep their existing darker button tone. */
+.week-running{
+  background:var(--v31-running-bg)!important;
+  border-color:var(--v31-running-border)!important;
+  box-shadow:inset 0 0 0 1px rgba(77,58,102,.10)!important;
+}
+.week-running .week-card-main,
+.week-running .week-card-date,
+.week-running strong,
+.week-running small,
+.week-running .week-running-label{
+  color:var(--v31-running-text)!important;
+}
+/* Keep week-running action buttons at their existing action colour. */
+.week-running .week-play{
+  background:#51475d!important;
+  border-color:rgba(255,255,255,.22)!important;
+  color:#fff!important;
+}
+html[data-theme="light"] .week-running .week-play{
+  background:#5d5367!important;
+  color:#fff!important;
+}
+
+
+
+/* DARK MODE: Settings is an important action and therefore lilac. */
+html[data-theme="dark"] #settingsBtn{
+  background:#b7a4d8!important;
+  border-color:#b7a4d8!important;
+  color:#241f2a!important;
+}
+/* Measurements is a neutral utility action, not a lilac primary action. */
+html[data-theme="dark"] #addMeasurementBtn{
+  background:#fff!important;
+  border-color:#fff!important;
+  color:#111!important;
+}
+html[data-theme="light"] #addMeasurementBtn{
+  background:var(--surface2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+
+
+
+html[data-theme="dark"] #settingsBtn,
+:root:not([data-theme="light"]) #settingsBtn{
+  background:var(--surface)!important;
+  border:1px solid var(--line)!important;
+  color:#fff!important;
+}
+#addMeasurementBtn{
+  background:#fff!important;
+  border-color:#fff!important;
+  color:#111!important;
+}
+html[data-theme="light"] #addMeasurementBtn{
+  background:var(--surface2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+.sheet-top{padding-bottom:3px!important}
+.sheet-body{padding-top:6px!important}
+.sheet-body>.search:first-child,
+.sheet-body>.plan-picker-tools:first-child,
+.sheet-body>.food-search-sticky:first-child{
+  margin-top:0!important;
+}
+.plan-picker-tools{padding-top:0!important;margin-top:0!important}
+.plan-picker-tools .search,
+.food-search-sticky .search{
+  margin-top:0!important;
+  margin-bottom:6px!important;
+}
+.repeat-config{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.repeat-config .repeat-choice-line{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  align-items:stretch!important;
+  gap:6px!important;
+}
+.repeat-config .field,
+.repeat-config input,
+.repeat-config select{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+.repeat-config input[type="date"]{
+  -webkit-appearance:none;
+  appearance:none;
+  display:block!important;
+}
+.repeat-config .form-field{min-width:0!important;margin-bottom:7px!important}
+.sheet-body input:focus,
+.sheet-body textarea:focus,
+.sheet-body select:focus{
+  scroll-margin-bottom:22px;
+  scroll-margin-top:12px;
+}
+
+
+
+/* Settings button SHOULD be lilac in dark mode. */
+html[data-theme="dark"] #settingsBtn,
+:root:not([data-theme="light"]) #settingsBtn{
+  background:#b7a4d8!important;
+  border-color:#b7a4d8!important;
+  color:#211b29!important;
+}
+/* Measurement stays neutral, not lilac. */
+#addMeasurementBtn{
+  background:#fff!important;
+  border-color:#fff!important;
+  color:#111!important;
+}
+html[data-theme="light"] #addMeasurementBtn{
+  background:var(--surface2)!important;
+  border:1px solid var(--line)!important;
+  color:var(--text)!important;
+}
+/* Less dead space between sheet title and its first search/control. */
+.sheet-top{
+  min-height:44px!important;
+  padding:2px 14px!important;
+}
+.sheet-body{padding-top:3px!important}
+.sheet-body>.plan-picker-tools:first-child,
+.sheet-body>.food-search-sticky:first-child,
+.sheet-body>.search:first-child{margin-top:0!important;padding-top:0!important}
+.plan-picker-tools .search,
+.food-search-sticky .search,
+.sheet-body>.search:first-child{
+  margin-top:0!important;
+  margin-bottom:5px!important;
+}
+/* Repeat area cannot overflow on narrow iPhones. */
+.repeat-config,.repeat-config *{box-sizing:border-box}
+.repeat-config{width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important}
+.repeat-config .repeat-choice-line{display:block!important}
+.repeat-config select,.repeat-config input,.repeat-config .field{
+  display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+}
+.repeat-config input[type="date"]{-webkit-appearance:auto!important;appearance:auto!important}
+
+
+
+.sheet-top{min-height:42px!important;padding:0 14px!important}
+.sheet-body{padding-top:1px!important}
+.sheet-body>.plan-picker-tools:first-child,
+.sheet-body>.food-search-sticky:first-child,
+.sheet-body>.search:first-child{margin-top:0!important;padding-top:0!important}
+.plan-picker-tools .search,
+.food-search-sticky .search,
+.sheet-body>.search:first-child{margin-top:0!important;margin-bottom:4px!important}
+
+
+
+.live-card-topline{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px
+}
+.live-card-topline .method-name{margin:0!important}
+.live-complete-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 8px;border-radius:9px;
+  background:#83c995;color:#102617;
+  border:1px solid rgba(20,90,42,.18);
+  font-size:9px;font-weight:900;white-space:nowrap;
+}
+.live-complete-badge .tick{font-size:12px;line-height:1}
+.live-group-member-head{
+  display:grid;grid-template-columns:24px minmax(0,1fr) 34px 28px;gap:6px;align-items:center
+}
+.live-group-member-delete{
+  width:30px;height:30px;min-width:30px;border:0;border-radius:9px;
+  background:transparent;color:var(--muted);font-size:19px
+}
+.previous-rating-dot{
+  width:7px;height:7px;border-radius:50%;display:inline-block;flex:0 0 7px;margin-right:3px;
+  border:1px solid rgba(255,255,255,.25)
+}
+.previous-rating-dot.rating-green{background:#76d184}
+.previous-rating-dot.rating-yellow{background:#e9cb55}
+.previous-rating-dot.rating-red{background:#e27670}
+.previous-rating-dot.rating-blue{background:#79cce8}
+.set-index-with-history,.combined-index-with-history{display:flex;align-items:center;gap:3px;font-weight:900}
+.live-exercise-card.live-card-complete{
+  background:var(--surface)!important
+}
+.live-exercise-card:not(.live-card-complete).active-live-exercise{
+  background:color-mix(in srgb,var(--method) 24%,var(--surface))!important
+}
+html[data-theme="light"] .live-complete-badge{
+  background:#99cfa5;color:#18301e
+}
+/* Any focused workout entry field gets extra breathing room above the keyboard. */
+#livePage input:focus,#livePage textarea:focus,#livePage select:focus{
+  scroll-margin-top:84px!important;scroll-margin-bottom:100px!important
+}
+/* Hydration amount is intentionally above the drink list after a selection. */
+.final-drink-entry-top{
+  position:sticky;top:-1px;z-index:12;background:var(--bg);
+  padding:2px 0 10px;margin-bottom:5px
+}
+.final-drink-selected{
+  display:flex;align-items:center;gap:8px;margin-bottom:7px;
+  padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface)
+}
+
+
+
+.set-index-with-history,.combined-index-with-history{display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:4px!important;white-space:nowrap!important}
+.set-index-with-history .previous-rating-dot,.combined-index-with-history .previous-rating-dot{margin:0 0 0 2px!important;position:static!important;transform:none!important}
+.settings-unit-select{width:132px;max-width:46vw}.settings-unit-note{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.3}
+.unit-context-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:9px;font-weight:900;color:var(--muted);margin:0 0 8px}
+html[data-text-scale="large"] h1{font-size:33px!important}html[data-text-scale="large"] h2{font-size:20px!important}html[data-text-scale="large"] .small,html[data-text-scale="large"] small{font-size:12px!important}html[data-text-scale="large"] .exercise-card strong,html[data-text-scale="large"] .plan-card strong{font-size:15px!important}html[data-text-scale="large"] .chip,html[data-text-scale="large"] button{font-size:12px}html[data-text-scale="large"] input,html[data-text-scale="large"] select,html[data-text-scale="large"] textarea{font-size:17px!important}
+html[data-text-scale="xlarge"] h1{font-size:36px!important}html[data-text-scale="xlarge"] h2{font-size:22px!important}html[data-text-scale="xlarge"] .small,html[data-text-scale="xlarge"] small{font-size:13px!important}html[data-text-scale="xlarge"] .exercise-card strong,html[data-text-scale="xlarge"] .plan-card strong{font-size:16px!important}html[data-text-scale="xlarge"] .chip,html[data-text-scale="xlarge"] button{font-size:13px}html[data-text-scale="xlarge"] input,html[data-text-scale="xlarge"] select,html[data-text-scale="xlarge"] textarea{font-size:18px!important}
+
+
+
+.live-recommendation{
+  margin:8px 0 6px;padding:8px 10px;border-radius:11px;
+  border:1px solid var(--line);background:color-mix(in srgb,var(--surface2) 82%,transparent);
+  font-size:10px;line-height:1.35;color:var(--muted)
+}
+.live-recommendation strong{color:var(--text);font-size:10px}
+
+
+
+
+
+:root{--ui-text-adjust:100%}
+html[data-text-scale="normal"]{--ui-text-adjust:100%}
+html[data-text-scale="large"]{--ui-text-adjust:115%}
+html[data-text-scale="xlarge"]{--ui-text-adjust:130%}
+html,body{
+  -webkit-text-size-adjust:var(--ui-text-adjust)!important;
+  text-size-adjust:var(--ui-text-adjust)!important;
+}
+/* iOS does not always scale form controls with text-size-adjust, so these follow explicitly. */
+html[data-text-scale="large"] :is(button,input,select,textarea){font-size:115%!important}
+html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!important}
+.settings-system-select{width:142px;max-width:48vw}
+.distance-live-field{min-width:0!important}
+
+
+
+.drink-amount-inline{position:relative;display:flex;align-items:center;width:100%}
+.drink-amount-inline .field{width:100%;padding-right:104px!important}
+.drink-amount-submit{
+  position:absolute;right:5px;top:50%;transform:translateY(-50%);
+  height:34px;min-width:92px;padding:0 10px;border:0;border-radius:9px;
+  background:var(--accent,#b7a4d8);color:#18131d;font-size:11px;font-weight:900
+}
+
+
+
+.plan-welcome-card{margin-top:18px;text-align:center;padding:30px 22px 24px}
+.plan-welcome-mark{width:52px;height:52px;margin:0 auto 15px;border-radius:16px;display:grid;place-items:center;background:var(--accent,#b7a4d8);color:#17131c;font-size:23px;font-weight:950}
+.plan-welcome-card h2{margin:0 0 8px;font-size:22px}.plan-welcome-card p{max-width:390px;margin:0 auto 20px;line-height:1.5;color:var(--muted)}
+.plan-welcome-create{width:100%;min-height:48px;background:var(--accent,#b7a4d8)!important;color:#17131c!important;font-weight:900}
+.nutrition-today-card .daily-bar-stat span{font-size:14px!important;font-weight:800}.nutrition-today-card .daily-bar-stat strong{font-size:19px!important;line-height:1.2}
+.nutrition-today-card .mini-progress{height:10px!important;margin-top:7px}
+#drinksDetails>summary>span:first-child,#myFoodsDetails>summary>span:first-child{font-size:16px!important;font-weight:850}
+#myFoodsDetails .food-manage-label{font-size:13px!important;font-weight:850;letter-spacing:.02em}
+html[data-text-scale="large"] .nutrition-today-card .daily-bar-stat strong{font-size:22px!important}
+html[data-text-scale="xlarge"] .nutrition-today-card .daily-bar-stat strong{font-size:25px!important}
+
+
+
+/* Ernährung: labels exactly like Menge/Ziel in Hydrierung. */
+.nutrition-today-card .daily-bar-stat span{
+  font-size:9px!important;
+  font-weight:850!important;
+  letter-spacing:.05em!important;
+  text-transform:uppercase!important;
+  color:var(--muted)!important;
+  margin-bottom:3px!important
+}
+/* Values stay prominent, bars exactly hydration thickness. */
+.nutrition-today-card .daily-bar-stat strong{font-size:19px!important;line-height:1.2!important}
+.nutrition-today-card .mini-progress{height:7px!important;margin-top:7px!important}
+
+/* Slightly smaller management summaries. */
+#drinksDetails>summary>span:first-child,
+#myFoodsDetails>summary>span:first-child{
+  font-size:14px!important;
+  font-weight:800!important
+}
+#myFoodsDetails .food-manage-label{font-size:11px!important;font-weight:800!important}
+
+/* New collapsible goals card. */
+.nutrition-goals-home{margin-top:10px!important;padding:0!important;overflow:hidden}
+.nutrition-goals-summary{
+  list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;
+  align-items:center;padding:14px;cursor:pointer
+}
+.nutrition-goals-summary::-webkit-details-marker{display:none}
+.nutrition-goals-summary>span{font-size:16px;font-weight:900}
+.nutrition-goals-summary:after{content:"⌄";font-size:18px;color:var(--muted);grid-column:1/2;grid-row:1;justify-self:end;margin-right:0}
+.nutrition-goals-summary .nutrition-goal-calc-summary{
+  grid-column:1/-1;grid-row:2;margin:3px 0 0!important;width:100%
+}
+.nutrition-goals-home[open] .nutrition-goals-summary:after{transform:rotate(180deg)}
+.nutrition-goals-content{padding:0 14px 14px;border-top:1px solid var(--line)}
+.nutrition-goal-description{margin:12px 0}
+.nutrition-goal-fields{display:grid;grid-template-columns:1fr;gap:0}
+.nutrition-goals-content .form-field{margin-bottom:10px}
+.nutrition-goals-content #goalSaveHome{width:100%;min-height:44px}
+.nutrition-goals-content #calculateGoalsExpanded{margin-top:8px}
+
+
+
+.nutrition-goals-summary{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 24px!important;
+  align-items:center!important;
+  column-gap:8px!important;
+  text-align:left!important
+}
+.nutrition-goals-summary>span{
+  grid-column:1!important;grid-row:1!important;
+  justify-self:start!important;text-align:left!important;width:auto!important
+}
+.nutrition-goals-summary:after{
+  grid-column:2!important;grid-row:1!important;
+  justify-self:end!important;margin:0!important;text-align:right!important
+}
+.nutrition-goals-summary .nutrition-goal-calc-summary{
+  grid-column:1/-1!important;grid-row:2!important
+}
+
+
+
+.search:has(#v69FoodSearch){position:sticky;top:0;z-index:8;background:var(--surface);padding:2px 0 6px}
+.time-wheel-select{width:100%;height:48px;font-size:16px}
+
+
+
+:root{--rethink-vv-top:0px;--rethink-vv-height:100dvh}
+
+/* When the iOS keyboard is visible, sheets are physically constrained to the
+   visual viewport rather than the larger layout viewport behind the keyboard. */
+html.rethink-keyboard-visible .sheet-wrap{
+  top:var(--rethink-vv-top)!important;
+  bottom:auto!important;
+  height:var(--rethink-vv-height)!important;
+  max-height:var(--rethink-vv-height)!important;
+  align-items:flex-end!important
+}
+html.rethink-keyboard-visible .sheet{
+  max-height:calc(var(--rethink-vv-height) - 6px)!important;
+  height:auto!important;
+  margin-bottom:0!important
+}
+html.rethink-keyboard-visible .sheet-body{
+  min-height:0!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain
+}
+
+/* Full-page editors/search screens also use only the actually visible area. */
+html.rethink-keyboard-visible .page:not(.hidden){
+  top:var(--rethink-vv-top)!important;
+  bottom:auto!important;
+  height:var(--rethink-vv-height)!important;
+  max-height:var(--rethink-vv-height)!important;
+  overflow-y:auto!important
+}
+
+/* Give focused controls a little breathing room above the keyboard. */
+html.rethink-keyboard-visible input:focus,
+html.rethink-keyboard-visible textarea:focus{
+  scroll-margin-top:72px!important;
+  scroll-margin-bottom:28px!important
+}
+
+
+
+#liveBody .recommendation{display:none!important}
+#startTrainingCard{
+ display:flex!important;flex-direction:column!important;align-items:center!important;
+ text-align:center!important;gap:18px!important;padding:22px 18px 24px!important
+}
+#startTrainingCard .training-start-copy{width:100%}
+#startTrainingCard .training-start-copy strong{font-size:19px!important}
+#startTrainingCard .training-start-copy .small{margin-top:5px!important}
+.training-main-play{
+ width:88px!important;height:88px!important;min-width:88px!important;border-radius:50%!important;
+ border:0!important;display:grid!important;place-items:center!important;
+ background:var(--accent,#c9b8e3)!important;color:#1d1821!important;
+ font-size:34px!important;font-weight:900!important;padding-left:6px!important;
+ box-shadow:0 8px 28px rgba(0,0,0,.20)!important
+}
+html[data-theme="light"] .training-main-play{background:#b8a5cf!important;color:#28202e!important}
+
+:root{--rethink-vv-top:0px;--rethink-vv-height:100dvh}
+html.rethink-keyboard-visible .sheet-wrap{
+ top:var(--rethink-vv-top)!important;bottom:auto!important;
+ height:var(--rethink-vv-height)!important;max-height:var(--rethink-vv-height)!important;
+ align-items:flex-end!important
+}
+html.rethink-keyboard-visible .sheet{
+ max-height:calc(var(--rethink-vv-height) - 6px)!important;height:auto!important;margin-bottom:0!important
+}
+html.rethink-keyboard-visible .sheet-body{min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain}
+html.rethink-keyboard-visible .page:not(.hidden){
+ top:var(--rethink-vv-top)!important;bottom:auto!important;height:var(--rethink-vv-height)!important;
+ max-height:var(--rethink-vv-height)!important;overflow-y:auto!important
+}
+
+
+
+.training-main-play{
+  width:112px!important;
+  height:96px!important;
+  min-width:112px!important;
+  border-radius:24px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  display:grid!important;
+  place-items:center!important;
+  background:var(--accent,#c9b8e3)!important;
+  color:#1d1821!important;
+  font-size:40px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  padding:0 0 0 7px!important;
+  box-shadow:0 8px 26px rgba(0,0,0,.18)!important;
+}
+html[data-theme="light"] .training-main-play{
+  background:#b8a5cf!important;
+  color:#28202e!important;
+  border-color:rgba(54,43,65,.10)!important;
+}
+
+
+.detail-value-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.detail-value-chip{display:inline-flex;align-items:center;min-height:30px;padding:5px 9px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);font-size:12px;font-weight:750}
+
+
+.form-field.option-peer{display:block;width:100%;min-width:0;margin:0 0 12px}
+.form-field.option-peer label{display:block;margin:0 0 6px}
+.form-field.option-peer select.field{display:block;width:100%;min-width:0;height:46px;box-sizing:border-box}
+.grid2>.form-field.option-peer{grid-column:1/-1}
+
+
+
+#prefTextScale,#prefTextScaleFinal,#prefLanguage,
+.settings-row:has(#prefTextScale),.settings-row:has(#prefTextScaleFinal),.settings-row:has(#prefLanguage){display:none!important}
+
+
+
+
+
+/* Lean v4: compact exercise cards + established detail layout */
+.exercise-card-compact{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%;text-align:left;padding:16px 18px!important;gap:12px}
+.exercise-card-copy{min-width:0;display:flex;flex-direction:column;gap:6px}
+.exercise-card-copy strong{font-size:16px;line-height:1.2}
+.exercise-card-copy small{display:block;color:var(--muted);font-size:12px;line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+.exercise-card-chevron{font-size:28px;line-height:1;color:var(--muted);flex:0 0 auto}
+.detail-section{padding:14px 0;border-bottom:1px solid var(--line)}
+.detail-section>label,.detail-section>.small{display:block;font-size:10px;font-weight:900;letter-spacing:.12em;color:var(--muted);margin-bottom:9px}
+.detail-section>strong{font-size:17px;line-height:1.35}
+.detail-chip-row{display:flex;flex-wrap:wrap;gap:8px}
+.detail-chip{display:inline-flex;align-items:center;min-height:34px;padding:7px 11px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);font-size:12px;font-weight:800}
+.detail-copy{padding:18px 0 6px}
+.detail-copy h2{margin:0 0 14px;font-size:22px}
+.detail-copy p{margin:0;line-height:1.55;font-size:15px;white-space:normal}
+
+.training-start-card-v5{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:10px!important}
+.training-start-card-v5 .training-start-copy{order:2}
+.training-start-card-v5 .training-main-play{order:1}
+.live-option-line{margin-top:4px}
+.combined-series-name .live-option-line{margin-left:22px;font-size:10px}
+
+.pyramid-recommendation{color:var(--muted)!important;background:var(--surface2)!important;border:1px solid var(--line)!important;border-radius:8px;padding:6px 8px;font-weight:700}
+[data-input$="|weight"]::placeholder,.pyramid-config-row input::placeholder{color:var(--muted)!important;opacity:.78!important}
+
+/* Lean v7: calculated/recommended advanced-method values are suggestions, not entered data */
+.advanced-row input::placeholder,.set-row input::placeholder{color:var(--muted)!important;opacity:.72!important}
+
+/* Lean v8: linked exercise names (1a/1b/1c) match the readable method-row typography. */
+.group-ex-row .group-ex-name{
+  font-size:14px!important;
+  line-height:1.25!important;
+  font-weight:700!important;
+  min-width:0;
+}
+
+/* Lean v9: native dropdowns must not move/zoom the surrounding screen on iPhone/iPad. */
+select.field,select{
+ font-size:16px!important;
+ scroll-margin:0!important;
+ scroll-behavior:auto!important;
+ touch-action:manipulation!important;
+}
+html,body,.page,.sheet{scroll-behavior:auto!important}
+
+#startTrainingCard.hidden{display:none!important}
+body:has(#activeBanner .active-workout-card) #startTrainingCard{display:none!important}
+
+.preview-group-member .live-option-line,.combined-name-wrap .live-option-line,.combined-member-title .live-option-line{
+ font-size:10px!important;margin-top:3px!important;color:var(--muted)!important
+}
+
+/* Lean v10 — unified live-method presentation */
+.combined-member-block{padding:9px 0 10px!important;border-top:1px solid color-mix(in srgb,var(--line) 80%,transparent)}
+.combined-member-block:first-of-type{border-top:0}
+.combined-member-title{display:grid!important;grid-template-columns:38px minmax(0,1fr)!important;gap:7px!important;align-items:start!important;margin:0 0 6px!important}
+.combined-member-namebox{min-width:0}
+.connected-live-card .combined-name{display:block!important;width:100%!important;text-align:left!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;font-size:14px!important;line-height:1.22!important;font-weight:850!important;color:var(--text)!important}
+.connected-field-head{color:var(--muted)!important;font-size:10px!important;line-height:1!important;font-weight:900!important;text-transform:uppercase!important;text-align:center!important;margin:2px 0 4px 45px!important}
+.connected-reps-field-head{display:grid!important;grid-template-columns:minmax(64px,1fr) minmax(64px,1fr) 42px!important;gap:6px!important}
+.combined-reps-controls{display:grid!important;grid-template-columns:minmax(64px,1fr) minmax(64px,1fr) 42px!important;gap:6px!important;align-items:center!important;margin-left:45px!important}
+.connected-time-field-head{display:grid!important;grid-template-columns:minmax(74px,1fr) 44px minmax(96px,1fr) 42px!important;gap:6px!important}
+.combined-time-controls{display:grid!important;grid-template-columns:minmax(74px,1fr) 44px minmax(96px,1fr) 42px!important;gap:6px!important;align-items:center!important;margin-left:45px!important}
+.combined-reps-controls input,.combined-time-controls input{width:100%!important;min-width:0!important;height:44px!important;border:1px solid var(--line)!important;border-radius:11px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:center!important;font-size:16px!important}
+.live-option-line{display:flex!important;flex-wrap:wrap!important;gap:7px 14px!important;align-items:flex-start!important;margin-top:7px!important;color:var(--text)!important}
+.live-option-item{display:inline-flex!important;flex-direction:column!important;gap:2px!important;min-width:0}
+.live-option-label{font-size:8px!important;line-height:1!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.08em!important;color:var(--muted)!important}
+.live-variant-value{font-size:14px!important;line-height:1.2!important;font-weight:900!important;color:color-mix(in srgb,var(--method) 72%,white)!important}
+.live-equipment-value{font-size:13px!important;line-height:1.2!important;font-weight:850!important;color:var(--text)!important}
+.combined-series-name .live-option-line{margin-left:22px!important}.preview-group-member .live-option-line{margin-left:0!important}
+.live-exercise-card{background:var(--surface)!important}.live-exercise-card.active-live-exercise:not(.live-method-complete){background:color-mix(in srgb,var(--method) 24%,var(--surface))!important}.live-exercise-card.live-method-complete{background:var(--surface)!important;box-shadow:none!important}
+
+/* Lean v12: each member of Superset / Pre-Exhaust / Giant Set is independently editable. */
+.live-group-member-head{
+ display:grid!important;
+ grid-template-columns:22px minmax(0,1fr) 30px 26px!important;
+ gap:5px!important;align-items:center!important
+}
+.live-group-member-edit{
+ width:28px!important;height:28px!important;min-width:28px!important;
+ padding:0!important;font-size:13px!important
+}
+
+.distance-live-field,[data-input$="|distance"]{display:none!important}
+
+#prefTextScale,#prefTextScaleFinal,#prefLanguage,
+.settings-row:has(#prefTextScale),.settings-row:has(#prefTextScaleFinal),.settings-row:has(#prefLanguage){display:none!important}
+
+/* Lean v13 consistency pass: Plans, Training, Profile, Settings.
+   Week and Exercises intentionally untouched. */
+#tab-plans,#tab-training,#tab-profile{padding-left:16px!important;padding-right:16px!important}
+#tab-plans .tab-header,#tab-training .tab-header,#tab-profile .tab-header{margin-bottom:14px!important}
+
+#tab-plans .plan-card,
+#tab-training .card,#tab-training .history-card,
+#tab-profile>.card,#tab-profile .daily-track-card,#tab-profile .nutrition-goals-home,
+.settings-card{
+ border:1px solid var(--line)!important;border-radius:16px!important;
+ background:var(--surface)!important;box-shadow:none!important
+}
+#tab-plans .plan-card{min-height:70px!important;padding:14px 16px!important}
+#tab-plans .plan-card strong{font-size:15px!important;line-height:1.2!important}
+#tab-plans .plan-card small{display:block!important;margin-top:5px!important;color:var(--muted)!important}
+
+#tab-training h2,#tab-profile h2{font-size:17px!important;line-height:1.2!important}
+#tab-profile .profile-day-nav{margin-bottom:12px!important}
+#tab-profile .profile-identity-card{margin-bottom:18px!important}
+
+.settings-section>h3{
+ font-size:11px!important;letter-spacing:.08em!important;text-transform:uppercase!important;
+ color:var(--muted)!important;margin:20px 2px 8px!important
+}
+.settings-row{min-height:62px!important;padding:12px 14px!important;align-items:center!important}
+.settings-row+.settings-row{border-top:1px solid var(--line)!important}
+
+.live-group-member-head{
+ display:grid!important;grid-template-columns:22px minmax(0,1fr) 30px 26px!important;
+ gap:5px!important;align-items:center!important
+}
+.live-group-member-edit{width:28px!important;height:28px!important;min-width:28px!important;padding:0!important;font-size:13px!important}
+.live-group-member-delete{width:26px!important;height:28px!important;padding:0!important}
+
+.live-exercise-card{background:var(--surface)!important}
+.live-exercise-card.active-live-exercise:not(.live-method-complete){
+ background:color-mix(in srgb,var(--method) 24%,var(--surface))!important
+}
+.live-exercise-card.live-method-complete{background:var(--surface)!important;box-shadow:none!important}
+
+.live-option-label{font-size:8px!important;font-weight:900!important;letter-spacing:.08em!important}
+.live-variant-value{font-size:15px!important;font-weight:900!important;line-height:1.2!important}
+.live-equipment-value{font-size:13px!important;font-weight:800!important;line-height:1.2!important}
+
+/* Lean v17 — visible partner-method layout */
+.combined-series-head{display:grid!important;gap:8px!important}
+.live-group-member-head{display:grid!important;grid-template-columns:22px minmax(0,1fr) 32px 24px!important;gap:6px!important;align-items:center!important}
+.live-group-member-copy{min-width:0!important}
+.live-group-member-copy .exercise-title-link{width:100%!important;text-align:left!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.connected-prescription{margin-top:2px!important;font-size:9px!important;color:var(--muted)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.live-group-member-edit{width:32px!important;height:32px!important;min-width:32px!important;padding:0!important}
+.live-group-member-delete{width:24px!important;height:32px!important;min-width:24px!important;padding:0!important}
+.combined-member-row{display:grid!important;grid-template-columns:38px minmax(72px,1fr) minmax(72px,1fr) 38px!important;gap:6px!important;align-items:end!important;margin:8px 0!important}
+.combined-time-row{grid-template-columns:38px 70px 32px minmax(82px,1fr) 38px!important}
+.combined-index{height:38px!important;display:flex!important;align-items:center!important;font-size:15px!important;font-weight:900!important}
+.combined-field{display:grid!important;grid-template-rows:10px 38px!important;gap:2px!important;min-width:0!important}
+.combined-field>span{font-size:7px!important;line-height:10px!important;color:var(--muted)!important;font-weight:900!important;text-align:center!important}
+.combined-field input{width:100%!important;min-width:0!important;height:38px!important;padding:0 5px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:center!important;font-size:14px!important}
+.combined-time-row .time-play{width:32px!important;height:38px!important;min-width:32px!important;padding:0!important}
+.combined-member-row .set-check{width:38px!important;height:38px!important;min-width:38px!important;padding:0!important}
+.cluster-set-block{margin-top:8px!important}
+.cluster-head,.cluster-row{display:grid!important;grid-template-columns:44px minmax(72px,1fr) minmax(72px,1fr)!important;gap:7px!important;align-items:center!important}
+.cluster-head{font-size:8px!important;color:var(--muted)!important;font-weight:900!important;text-align:center!important;padding:4px 0!important}
+.cluster-head span:first-child{text-align:left!important}
+.cluster-row{padding:4px 0!important}
+.cluster-row>span{font-size:15px!important;font-weight:900!important}
+.cluster-row input{width:100%!important;min-width:0!important;height:40px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:center!important}
+.cluster-set-foot{display:flex!important;justify-content:space-between!important;align-items:center!important;margin-top:7px!important}
+#liveBody input::placeholder{color:var(--muted)!important;opacity:.72!important}
+
+/* Lean v19 — Cluster / Rest-Pause use standard-like field width.
+   Haken and minus occupy the last CURRENTLY VISIBLE mini-row. */
+.advanced-compact-set{margin-top:8px!important}
+.advanced-compact-head,.advanced-compact-row{
+ display:grid!important;
+ grid-template-columns:36px minmax(0,1fr) minmax(0,1fr) 38px 22px!important;
+ gap:6px!important;align-items:center!important
+}
+.advanced-compact-head{
+ font-size:8px!important;color:var(--muted)!important;font-weight:900!important;
+ text-align:center!important;padding:5px 0!important
+}
+.advanced-compact-head>span:first-child{text-align:left!important}
+.advanced-compact-row{padding:4px 0!important}
+.advanced-compact-row>span:first-child{font-size:15px!important;font-weight:900!important;min-width:0!important}
+.advanced-compact-index{display:flex!important;flex-direction:column!important;line-height:1.05!important}
+.advanced-compact-index small{font-size:7px!important;color:var(--muted)!important;margin-top:2px!important}
+.advanced-compact-row input{
+ width:100%!important;min-width:0!important;height:42px!important;
+ border:1px solid var(--line)!important;border-radius:11px!important;
+ background:var(--surface2)!important;color:var(--text)!important;
+ text-align:center!important;font-size:16px!important
+}
+.advanced-compact-row .set-check{width:38px!important;height:38px!important;min-width:38px!important;padding:0!important}
+.advanced-compact-row .remove-mini{width:22px!important;height:38px!important;min-width:22px!important;padding:0!important}
+.restpause-set-block .restpause-progress{padding:4px 0 0!important;text-align:right!important;font-size:9px!important}
+
+/* Variant and per-side are execution instructions. */
+.live-exercise-card .variant-line,.preview-live-shell .variant-line{
+ font-size:13px!important;font-weight:900!important;line-height:1.25!important;
+ color:var(--text)!important;margin-top:6px!important
+}
+.connected-note-line{
+ display:block!important;margin:4px 0 0!important;padding:0!important;
+ font-size:10.5px!important;line-height:1.25!important;color:var(--muted)!important;text-align:left!important
+}
+
+/* Focused fields must never be hidden by the software keyboard. */
+.page,.sheet-body,.tab-screen{scroll-padding-bottom:calc(110px + var(--rethink-keyboard-inset,0px))!important}
+input:focus,textarea:focus,select:focus{scroll-margin-top:82px!important;scroll-margin-bottom:100px!important}
+
+
+
+/* Lean v24 — unified exercise header */
+.live-group-member-head{display:grid!important;grid-template-columns:minmax(0,1fr) 32px 24px!important;gap:6px!important;align-items:start!important}
+.live-group-member-copy{min-width:0!important}
+.live-group-title-row,.live-single-title-row{display:block!important;min-width:0!important}
+.live-group-title-row .exercise-title-link{display:inline-flex!important;align-items:baseline!important;gap:7px!important;width:auto!important;max-width:100%!important;margin:0!important;padding:0!important;font-size:16px!important;line-height:1.2!important;font-weight:900!important;white-space:normal!important}
+.live-group-title-row .group-letter{display:inline!important;flex:0 0 auto!important;margin:0 6px 0 0!important;padding:0!important;color:var(--method)!important;font:inherit!important;font-weight:950!important;text-transform:uppercase!important}
+.live-group-title-row .group-title-name{display:inline!important;min-width:0!important}
+.live-single-title-row .exercise-title-link,.live-single-title-row>strong{font-size:16px!important;line-height:1.2!important;font-weight:900!important}
+.exercise-title-variant{display:block!important;color:var(--muted)!important;font-size:11px!important;line-height:1.35!important;font-weight:700!important;margin:4px 0 2px!important}
+.live-exercise-card .prescription,.live-exercise-card .connected-prescription,.preview-group-member .prescription{font-size:11px!important;line-height:1.35!important;font-weight:400!important;color:var(--muted)!important;margin:2px 0 8px!important}
+.live-exercise-card>.variant-line,.live-card-head~.variant-line{display:none!important}
+.rated-time-value{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important}
+.rated-time-value::placeholder{color:#fff!important;opacity:1!important}
+.page,.sheet-body,.tab-screen{scroll-padding-bottom:140px!important}
+input:focus,textarea:focus,select:focus{scroll-margin-top:78px!important;scroll-margin-bottom:90px!important}
+
+/* Lean v25 — history/preview consistency */
+.history-connected-card .history-summary-exercise{padding-left:24px!important;padding-right:24px!important}
+.history-exercise-title{display:block!important;margin:0 0 5px!important}
+.history-exercise-title strong{font-size:16px!important;line-height:1.2!important;font-weight:900!important;color:var(--text)!important}
+.summary-time-set>div{color:#fff!important}
+html[data-theme="light"] .summary-time-set>div{color:var(--text)!important}
+
+/* Lean v26 — compact method-aware Trainingstipp */
+.live-recommendation>strong:first-child{display:block;margin:0 0 4px!important}
+.live-recommendation .training-tip-text{display:block;margin:0!important;padding:0!important;font-size:10.5px!important;line-height:1.3!important;color:var(--muted)!important}
+.group-training-tip{display:block!important}
+.training-tip-row{display:flex!important;align-items:baseline!important;gap:4px!important;padding:2px 0!important}
+.training-tip-row strong{flex:0 0 auto!important;font-size:10.5px!important;line-height:1.25!important}
+.training-tip-row span{flex:1 1 auto!important;min-width:0!important;font-size:10.5px!important;line-height:1.25!important;color:var(--muted)!important}
+
+/* v29: compact visual intra-set pause marker */
+.intraset-rest-divider{display:flex;align-items:center;gap:8px;margin:3px 0 4px;padding-left:34px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.04em}.intraset-rest-divider span{height:1px;background:var(--line);flex:1}.intraset-rest-divider b{white-space:nowrap;font:inherit;color:inherit}
+
+/* ReThink v30 — compact, consistent method layout and mixed partner rows */
+.live-exercise-card>.method-name{margin-bottom:4px!important}
+.live-exercise-card>.method-help{margin:0 0 12px!important;line-height:1.38!important}
+.connected-live-card>.method-help{margin-left:0!important;margin-right:0!important}
+.combined-label-hidden{visibility:hidden!important}
+.combined-member-row .combined-field>span{font-size:8px!important;line-height:1!important;font-weight:900!important;letter-spacing:.06em!important}
+.connected-method-card .editor-group-exercise{padding-left:14px!important;padding-right:14px!important}
+.connected-method-card>.editor-action-row{padding-left:14px!important;padding-right:14px!important}
+.editor-ex-meta{align-items:center!important}
+.intraset-meta-pill{white-space:nowrap!important}
+/* Time rows remain compact; time entry uses the dedicated keypad below. */
+.combined-time-row{grid-template-columns:38px 70px 32px minmax(82px,1fr) 38px!important}
+.time-row{grid-template-columns:28px minmax(68px,1fr) 30px minmax(80px,1fr) 40px 22px!important}
+.preview-live-shell .combined-time-row{grid-template-columns:38px 70px 32px minmax(82px,1fr) 38px!important}
+.preview-live-shell .time-row{grid-template-columns:28px minmax(68px,1fr) 30px minmax(80px,1fr) 40px 22px!important}
+
+
+/* ReThink v31 — final fixes from device testing */
+/* All modal sheets stay compact and consistent; visual viewport caps them above the keyboard. */
+:root{--rethink-vvh:100dvh}
+.sheet{max-height:min(75dvh,calc(var(--rethink-vvh) - 8px))!important}
+.food-search-sticky{position:sticky!important;top:0!important;z-index:8!important;background:var(--bg)!important;padding-bottom:8px!important}
+.food-search-no-result{display:grid!important;gap:2px!important}
+/* Trainingstipp sits after exercise content. */
+.live-recommendation{margin-top:10px!important}
+/* Partner letters in history carry the method color; no separator dot. */
+.history-group-letter{color:var(--method)!important;font-weight:950!important}
+/* Keep every grouped method equally inset in plan editing. */
+.connected-method-card>.editor-group-exercise{margin-left:14px!important;margin-right:14px!important;padding-left:0!important;padding-right:0!important}
+.connected-method-card>.editor-action-row{margin-left:14px!important;margin-right:14px!important;padding-left:0!important;padding-right:0!important}
+/* Custom compact time keypad with explicit colon. */
+.time-keypad-v31{position:fixed;left:50%;bottom:calc(8px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5000;width:min(330px,calc(100vw - 20px));padding:10px;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.time-keypad-v31.hidden{display:none!important}.time-keypad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.time-keypad-grid button,.time-keypad-done{height:44px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);font-size:18px;font-weight:850}.time-keypad-done{width:100%;margin-top:7px;font-size:13px;background:var(--accent);color:#17141c}.time-keypad-input{caret-color:transparent!important}
+
+
+/* ReThink v34 — partner method alignment and method-colored exercise letters. */
+.connected-method-card>.editor-group-exercise,.connected-method-card>.preview-group-member{margin-left:26px!important;margin-right:14px!important;padding-left:0!important;padding-right:0!important}
+.connected-method-card .group-letter,.preview-group-member .group-letter{color:var(--method)!important;font-weight:950!important}
+/* Historical rating dot belongs beside the numeric block index, never below the RP label. */
+.advanced-compact-index.set-index-with-history{display:grid!important;grid-template-columns:auto auto!important;grid-template-rows:auto auto!important;justify-content:start!important;align-items:center!important;column-gap:5px!important}
+.advanced-compact-index.set-index-with-history>small{grid-column:1 / span 2!important;grid-row:2!important}
+.advanced-compact-index.set-index-with-history>.previous-rating-dot{grid-column:2!important;grid-row:1!important;margin:0!important}
