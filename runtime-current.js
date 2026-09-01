@@ -160,14 +160,14 @@
 
  // Practical per-exercise / per-series working-set ranges. These are UI guardrails, not training prescriptions.
  const SET_OPTIONS=Array.from({length:10},(_,i)=>i+1);
- const DEFAULT_SETS={standard:3,superset:3,giant:3,preexhaust:3,dropset:3,restpause:3,cluster:3,pyramid:3,backoff:3};
+ const DEFAULT_SETS={standard:3,superset:3,giant:3,preexhaust:3,dropset:3,restpause:1,cluster:1,pyramid:5,backoff:4};
  function optionsForMethod(){return SET_OPTIONS}
  function nearestSetCount(m,value){const n=Number(value);return Number.isInteger(n)&&n>=1&&n<=10?n:(DEFAULT_SETS[m]||3)}
  function setOptionsMarkup(e){e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);return SET_OPTIONS.map(n=>`<option value="${n}" ${Number(e.sets)===n?'selected':''}>${n}</option>`).join('')}
  window.methodSetOptions=optionsForMethod;
 
  // Pyramid: load up, load down, or up then down.
- function pyramidDirection(e){const d=e.methodData?.pyramidDirection;return ['loadUp','loadDown','peak'].includes(d)?d:'loadUp'}
+ function pyramidDirection(e){const d=e.methodData?.pyramidDirection;return ['loadUp','loadDown','peak'].includes(d)?d:'peak'}
  function pyramidRepStep(prev){const p=Math.max(1,Math.min(30,Number(prev)||1));if(p>=18)return 5;if(p>=12)return 4;if(p>=8)return 3;return 2}
  function nextPyramidRep(prev,travel){const p=Math.max(1,Math.min(30,Number(prev)||1)),step=pyramidRepStep(p);return travel==='up'?Math.min(30,p+step):Math.max(1,p-step)}
  function buildOneWayReps(first,sets,travel){const out=[Math.max(1,Math.min(30,Number(first)||(travel==='up'?6:20)))];while(out.length<sets)out.push(nextPyramidRep(out[out.length-1],travel));return out}
@@ -179,8 +179,8 @@
  window.prepareDraftForTargetMethod=function(e,method,oldGroupCount=1){
   const prev=e.setTechnique||'standard';basePrepare(e,method,oldGroupCount);
   e.sets=nearestSetCount(method,prev===method?e.sets:(DEFAULT_SETS[method]||e.sets));
-  if(method==='pyramid'){e.measureMode='reps';e.methodData=e.methodData||{};e.methodData.pyramidDirection='loadUp';e.methodData.reps=buildPyramidReps(12,e.sets,'loadUp');e.methodData.weightPct=window.pyramidPctForSets(e.sets,'loadUp')}
-  if(method==='cluster'){e.methodData={blocks:4,clusterReps:2,intraRest:20};e.reps='8'}
+  if(method==='pyramid'){e.measureMode='reps';e.methodData=e.methodData||{};e.methodData.pyramidDirection='peak';e.sets=5;e.methodData.reps=buildPyramidReps(12,e.sets,'peak');e.methodData.weightPct=window.pyramidPctForSets(e.sets,'peak')}
+  if(method==='cluster'){e.methodData={blocks:5,clusterReps:2,intraRest:20};e.reps='10'}
   if(method==='restpause'){e.methodData={maxBlocks:6,intraRest:20};e.reps='20'}
   if(method==='dropset'){e.methodData={dropCount:2,dropPercent:20,intraRest:0}}
   if(method==='backoff'){e.methodData={topReps:5,backoffReps:8,backoffPercent:15}}
@@ -1212,17 +1212,12 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    return advanceBeforeV69()
  };
 
- /* Exact read-only preview using live renderers. */
+ /* Exact read-only preview: use the dedicated preview renderer, not the live five-column controls. */
  openPreview=function(p){
    $('previewTitle').textContent=p.name||'Workout Vorschau';
-   const pp={...clone(p),activeExerciseIndex:-1,exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
-   const old=activeWorkout;activeWorkout=pp;
-   let markup='';
-   try{markup=liveVisualGroups(pp.exercises).map(g=>g.group?renderLiveGroupCard(g):renderLiveSingleCard(g.members[0].e,g.members[0].i)).join('')}
-   finally{activeWorkout=old}
-   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact">${markup}</div>`;
-   $('previewBody').querySelectorAll('input,textarea,select').forEach(x=>{x.readOnly=true;x.disabled=true;x.tabIndex=-1});
-   $('previewBody').querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.liveDetail));
+   const pp={...clone(p),exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:Number(x.sets)||defaultSetsForExerciseMethod(x,x.setTechnique||'standard')},(_,i)=>initSet(x,i));return x})};
+   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact preview-static-v38">${previewVisualGroups(pp.exercises).map(previewMethodCard).join('')}</div>`;
+   $('previewBody').querySelectorAll('[data-preview-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.previewDetail));
    openPage('previewPage')
  };
 
@@ -1915,7 +1910,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  function formatMeasurementValuesV31(m){return `${m.bodyfat?`<span>Körperfett ${m.bodyfat}%</span>`:""}${m.waist?`<span>Taille ${lengthDisplayV31(m.waist)} ${lengthLabelV31().toLowerCase()}</span>`:""}${m.chest?`<span>Brust ${lengthDisplayV31(m.chest)} ${lengthLabelV31().toLowerCase()}</span>`:""}${m.hip?`<span>Hüfte ${lengthDisplayV31(m.hip)} ${lengthLabelV31().toLowerCase()}</span>`:""}`}
  function patchProfileUnitsV31(){const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),cw=Number(latest?.weight||profile.weight||0);if($("profileSummary"))$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?`${lengthDisplayV31(profile.height)} ${lengthLabelV31().toLowerCase()}`:"",cw?`${weightDisplayV31(cw)} ${weightLabelV31().toLowerCase()}`:""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";if($("profileGoalSummary")){const base=profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele";$("profileGoalSummary").innerHTML=`<span>${base}</span>${profile.targetWeight?`<span class="target-weight-line-profile">Wunschgewicht ${weightDisplayV31(profile.targetWeight)} ${weightLabelV31().toLowerCase()}</span>`:""}`}document.querySelectorAll("[data-measurement-open]").forEach(btn=>{const i=Number(btn.dataset.measurementOpen),m=measurements[i];if(!m)return;const strong=btn.querySelector("strong");if(strong)strong.textContent=m.weight?`${weightDisplayV31(m.weight)} ${weightLabelV31().toLowerCase()}`:"Messung";const vals=btn.querySelector(".measurement-values");if(vals)vals.innerHTML=formatMeasurementValuesV31(m);btn.onclick=()=>openMeasurementRecord(i)})}
  const renderProfileBeforeUnitsV31=renderProfile;renderProfile=function(){const x=renderProfileBeforeUnitsV31();patchProfileUnitsV31();requestAnimationFrame(()=>{patchProfileUnitsV31();renderProfileProgress()});return x};
- const renderProfileProgressBeforeUnitsV31=renderProfileProgress;renderProfileProgress=function(){const x=renderProfileProgressBeforeUnitsV31(),wt=weightTrend(),card=$("profileProgressOverview")?.querySelector(".profile-progress-grid .progress-stat:first-child");if(card&&wt){const strong=card.querySelector("strong"),goal=card.querySelector(".goal-line"),delta=prefs.weightUnit==="lb"?roundV31(wt.delta*2.2046226218,1):wt.delta;if(strong)strong.textContent=wt.hasTrend?`${delta>0?"+":""}${delta} ${weightLabelV31().toLowerCase()}`:`${weightDisplayV31(wt.current)} ${weightLabelV31().toLowerCase()}`;if(goal&&wt.target)goal.textContent=`Wunschgewicht ${weightDisplayV31(wt.target)} ${weightLabelV31().toLowerCase()} · ${weightDisplayV31(Math.abs(wt.distance))} ${weightLabelV31().toLowerCase()} ${wt.distance<0?"darüber":"bis Ziel"}`}return x};
+ const renderProfileProgressBeforeUnitsV31=renderProfileProgress;renderProfileProgress=function(){const x=renderProfileProgressBeforeUnitsV31(),wt=weightTrend(),card=$("profileProgressOverview")?.querySelector(".profile-progress-grid .progress-stat:first-child");if(card&&wt){const strong=card.querySelector("strong"),sub=card.querySelector(".progress-sub-value");if(strong)strong.textContent=wt.current!=null?`${weightDisplayV31(wt.current)} ${weightLabelV31().toLowerCase()}`:"–";if(sub)sub.textContent=wt.target!=null?`${weightDisplayV31(Math.abs(wt.distance))} ${weightLabelV31().toLowerCase()} ${wt.distance<0?"darüber":"bis Ziel"}`:"–"}return x};
  openMeasurementRecord=function(i){const m=measurements[i];if(!m)return;openSheet("Messung",`<div class="card"><strong>${m.weight?`${weightDisplayV31(m.weight)} ${weightLabelV31().toLowerCase()}`:"–"}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div><div class="measurement-values" style="margin-top:12px">${formatMeasurementValuesV31(m)}</div></div><button id="deleteMeasurementRecord" class="secondary danger" style="width:100%;margin-top:12px">Messung löschen</button>`);$("deleteMeasurementRecord").onclick=()=>{if(confirm("Diese Messung wirklich löschen?")){measurements.splice(i,1);saveAll();closeSheet({all:true});renderProfile();toast("Messung gelöscht")}}};
  openMeasurementData=function(){openSheet("Messungen",`${measurements.slice().reverse().map((m,ri)=>{const i=measurements.length-1-ri;return`<div class="card" data-settings-measure-open="${i}"><div class="space"><div><strong>${m.weight?weightDisplayV31(m.weight):"–"} ${weightLabelV31().toLowerCase()}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div></div><span>›</span></div></div>`}).join("")||'<div class="card small">Noch keine Messungen.</div>'}`);document.querySelectorAll("[data-settings-measure-open]").forEach(b=>b.onclick=()=>openMeasurementRecord(Number(b.dataset.settingsMeasureOpen)))};
  function openMeasurementEntryV31(){openSheet("Messung hinzufügen",`<div class="grid2"><div class="form-field"><label>GEWICHT ${weightLabelV31()}</label><input id="measureWeightUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>KÖRPERFETT IN %</label><input id="measureBodyfatUnits" class="field" inputmode="decimal"></div></div><div class="grid2"><div class="form-field"><label>TAILLE ${lengthLabelV31()}</label><input id="measureWaistUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>BRUST ${lengthLabelV31()}</label><input id="measureChestUnits" class="field" inputmode="decimal"></div></div><div class="grid2"><div class="form-field"><label>HÜFTE ${lengthLabelV31()}</label><input id="measureHipUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>AKTIVITÄT</label><select id="measureActivityUnits" class="field"><option value="1.2" ${String(profile.activity)==="1.2"?"selected":""}>Wenig aktiv</option><option value="1.375" ${String(profile.activity)==="1.375"?"selected":""}>Leicht aktiv</option><option value="1.55" ${!profile.activity||String(profile.activity)==="1.55"?"selected":""}>Moderat aktiv</option><option value="1.725" ${String(profile.activity)==="1.725"?"selected":""}>Sehr aktiv</option><option value="1.9" ${String(profile.activity)==="1.9"?"selected":""}>Extrem aktiv</option></select></div></div><button id="measureSaveUnits" class="primary" style="width:100%">Speichern</button>`);$("measureSaveUnits").onclick=()=>{const weight=weightStorageV31($("measureWeightUnits").value);if(!weight||weight<20||weight>400){$("measureWeightUnits").focus();return alert("Bitte Gewicht eintragen.")}const md=profileDayOffset===0?Date.now():profileDate().setHours(12,0,0,0),m={date:md,weight,bodyfat:$("measureBodyfatUnits").value,waist:lengthStorageV31($("measureWaistUnits").value),chest:lengthStorageV31($("measureChestUnits").value),hip:lengthStorageV31($("measureHipUnits").value),activity:$("measureActivityUnits").value};measurements.push(m);measurements.sort((a,b)=>Number(a.date)-Number(b.date));profile.weight=weight;profile.activity=$("measureActivityUnits").value;saveAll();closeSheet({all:true});renderProfile()}}openMeasurementEntry=openMeasurementEntryV31;if($("addMeasurementBtn"))$("addMeasurementBtn").onclick=openMeasurementEntryV31;
@@ -2839,6 +2834,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    return [...new Set([
      STORAGE.plans,                         // Trainingspläne
      STORAGE.custom,                        // selbst hinzugefügte Übungen
+     STORAGE.library,                       // persönliche Katalogausblendungen/-einstellungen
      STORAGE.history,                       // abgeschlossene Trainings / Verlauf
      STORAGE.active,                        // laufendes Workout, falls vorhanden
      STORAGE.measurements,                  // Gewicht und sämtliche Körpermaße
@@ -2884,70 +2880,64 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    try{return JSON.stringify(v)}catch{return undefined}
  }
  function normalizeBackupV19(x){
-   if(typeof x==="string"){try{x=JSON.parse(x)}catch{}}
-   if(!x||typeof x!=="object")throw new Error("Keine gültige ReThink. Fitness Backupdatei.");
-   if(x.backup&&typeof x.backup==="object"&&Object.keys(x).length<=4)x={...x.backup,...x};
-   if(x.payload&&typeof x.payload==="object"&&Object.keys(x).length<=4)x={...x.payload,...x};
-
    const allowed=personalBackupKeysV31(),out={};
+   const parseMaybe=v=>{if(typeof v!=="string")return v;const t=v.trim();if(!t||(!t.startsWith("{")&&!t.startsWith("[")))return v;try{return JSON.parse(t)}catch{return v}};
    const put=(key,val)=>{
      if(!key||!allowed.includes(key))return;
      const s=backupValueStringV19(val);
      if(typeof s==="string")out[key]=s
    };
-   const absorbStorage=obj=>{
-     if(!obj||typeof obj!=="object"||Array.isArray(obj))return;
-     allowed.forEach(k=>{if(Object.prototype.hasOwnProperty.call(obj,k))put(k,obj[k])})
-   };
-
-   // Current and older full-storage backups.
-   absorbStorage(x.localStorage);
-   absorbStorage(x.storage);
-   absorbStorage(x.data);
-   absorbStorage(x);
-
-   // Older logical-object backups used field names instead of localStorage keys.
-   const logicalSources=[x,x.data,x.backup,x.payload].filter(v=>v&&typeof v==="object");
    const logicalMap={
-     plans:STORAGE.plans,
-     trainingPlans:STORAGE.plans,
-     customExercises:STORAGE.custom,
-     custom:STORAGE.custom,
-     history:STORAGE.history,
-     workoutHistory:STORAGE.history,
-     activeWorkout:STORAGE.active,
-     active:STORAGE.active,
-     measurements:STORAGE.measurements,
-     nutrition:STORAGE.nutrition,
-     profile:STORAGE.profile,
-     weekPlan:WEEK_KEY,
-     week:WEEK_KEY,
-     datedWeeks:WEEK_DATED_KEY,
-     weekDated:WEEK_DATED_KEY,
-     hydrationLog:HYDRATION_LOG_KEY,
-     hydration:HYDRATION_LOG_KEY
+     plans:STORAGE.plans,trainingPlans:STORAGE.plans,savedPlans:STORAGE.plans,workoutPlans:STORAGE.plans,
+     customExercises:STORAGE.custom,custom:STORAGE.custom,exercisesCustom:STORAGE.custom,
+     exerciseLibrary:STORAGE.library,library:STORAGE.library,catalogState:STORAGE.library,
+     history:STORAGE.history,workoutHistory:STORAGE.history,workouts:STORAGE.history,completedWorkouts:STORAGE.history,
+     activeWorkout:STORAGE.active,active:STORAGE.active,currentWorkout:STORAGE.active,
+     measurements:STORAGE.measurements,bodyMeasurements:STORAGE.measurements,metrics:STORAGE.measurements,
+     nutrition:STORAGE.nutrition,food:STORAGE.nutrition,foods:STORAGE.nutrition,
+     profile:STORAGE.profile,userProfile:STORAGE.profile,
+     weekPlan:WEEK_KEY,week:WEEK_KEY,weeklyPlan:WEEK_KEY,
+     datedWeeks:WEEK_DATED_KEY,weekDated:WEEK_DATED_KEY,datedWeekPlans:WEEK_DATED_KEY,
+     hydrationLog:HYDRATION_LOG_KEY,hydration:HYDRATION_LOG_KEY,waterLog:HYDRATION_LOG_KEY
    };
-   logicalSources.forEach(src=>Object.entries(logicalMap).forEach(([oldKey,newKey])=>{
-     if(Object.prototype.hasOwnProperty.call(src,oldKey))put(newKey,src[oldKey])
-   }));
-
-   // Old backups sometimes nested app data under a generic "state" object.
-   if(x.state&&typeof x.state==="object"){
-     absorbStorage(x.state);
-     Object.entries(logicalMap).forEach(([oldKey,newKey])=>{
-       if(Object.prototype.hasOwnProperty.call(x.state,oldKey))put(newKey,x.state[oldKey])
-     })
-   }
-
-   if(!Object.keys(out).length)
-     throw new Error("Die Backupdatei wurde erkannt, enthält aber keine kompatiblen ReThink. Fitness Daten.");
+   const absorbObject=obj=>{
+     obj=parseMaybe(obj);
+     if(!obj||typeof obj!=="object")return;
+     if(Array.isArray(obj)){
+       // Historical exports sometimes stored localStorage as [[key,value], ...]
+       // or [{key,value}, ...].
+       obj.forEach(item=>{
+         if(Array.isArray(item)&&item.length>=2)put(String(item[0]),item[1]);
+         else if(item&&typeof item==="object"&&"key" in item&&"value" in item)put(String(item.key),item.value)
+       });
+       return
+     }
+     allowed.forEach(k=>{if(Object.prototype.hasOwnProperty.call(obj,k))put(k,obj[k])});
+     Object.entries(logicalMap).forEach(([oldKey,newKey])=>{if(Object.prototype.hasOwnProperty.call(obj,oldKey))put(newKey,obj[oldKey])})
+   };
+   const seen=new Set();
+   const walk=(node,depth=0)=>{
+     node=parseMaybe(node);
+     if(!node||typeof node!=="object"||depth>6||seen.has(node))return;
+     seen.add(node);absorbObject(node);
+     if(Array.isArray(node)){node.forEach(v=>walk(v,depth+1));return}
+     // Known wrappers plus generic recursion make restores tolerant of every older app wrapper used so far.
+     ["localStorage","storage","data","backup","payload","state","appState","store","snapshot","values","entries"].forEach(k=>{
+       if(Object.prototype.hasOwnProperty.call(node,k))walk(node[k],depth+1)
+     });
+     Object.values(node).forEach(v=>{if(v&&typeof parseMaybe(v)==="object")walk(v,depth+1)})
+   };
+   x=parseMaybe(x);
+   if(!x||typeof x!=="object")throw new Error("Keine gültige ReThink. Fitness Backupdatei.");
+   walk(x);
+   if(!Object.keys(out).length)throw new Error("Die Backupdatei enthält keine wiederherstellbaren ReThink. Fitness Daten.");
    return out
  }
  async function restore(file){
    const raw=JSON.parse(await file.text());
    const normalized=normalizeBackupV19(raw);
 
-   if(!confirm("Backup wirklich wiederherstellen? Unterstützt werden auch ältere ReThink. Fitness Backups. Persönliche Daten werden auf den Backup-Stand gesetzt; App-Code und integrierter Übungskatalog bleiben aktuell."))return;
+   if(!confirm("Backup wiederherstellen?\n\nWiederhergestellt werden – soweit im Backup enthalten – Trainingspläne, eigene Übungen, Trainingsverlauf, laufendes Workout, Körpermessungen, Ernährung und Lebensmittel, Profil, Hydrierung sowie Wochenpläne.\n\nDie aktuellen persönlichen Daten werden durch den Stand des Backups ersetzt. App-Code und integrierter Übungskatalog bleiben aktuell."))return;
 
    const allowed=personalBackupKeysV31();
    allowed.forEach(k=>localStorage.removeItem(k));

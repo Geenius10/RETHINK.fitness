@@ -1,4 +1,4 @@
-const CACHE='rethink-fitness-20260831-lean-v34';
+const CACHE='rethink-fitness-v39';
 const ASSETS=[
  './', './index.html','./app.css','./app-core.js','./runtime-current.js','./foods.js','./manifest.webmanifest',
  './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png'
