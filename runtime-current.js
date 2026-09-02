@@ -1216,7 +1216,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  openPreview=function(p){
    $('previewTitle').textContent=p.name||'Workout Vorschau';
    const pp={...clone(p),exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:Number(x.sets)||defaultSetsForExerciseMethod(x,x.setTechnique||'standard')},(_,i)=>initSet(x,i));return x})};
-   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact preview-static-v38">${previewVisualGroups(pp.exercises).map(previewMethodCard).join('')}</div>`;
+   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact preview-static-v43">${previewVisualGroups(pp.exercises).map(previewMethodCard).join('')}</div>`;
    $('previewBody').querySelectorAll('[data-preview-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.previewDetail));
    openPage('previewPage')
  };
@@ -1655,11 +1655,10 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    const s=x.e.liveSets?.[si];if(!s)return"";
    const idx=`${si+1}${String.fromCharCode(65+gi)}`,dot=priorRatingDotV31(x.e,si),lab=txt=>`<span class="${showLabels?"":"combined-label-hidden"}">${txt}</span>`;
    if(x.e.measureMode==="time"){
-     return`<div class="combined-member-row combined-time-row">
+     return`<div class="combined-member-row unified-combined-time-row">
        <span class="combined-index combined-index-with-history">${idx}${dot}</span>
-       <label class="combined-field">${lab("ZEIT")}<input type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="${s.completed?"rated-time-value":""}" data-time-field="1" data-input="${x.i}|${si}|time" placeholder="${liveTimeBoxPlaceholder(s)}" value="${liveTimeBoxValue(s)}"></label>
-       <button class="time-play" data-time-play="${x.i}|${si}">▶</button>
-       <label class="combined-field">${lab("LEISTUNG")}<input type="text" autocomplete="off" data-input="${x.i}|${si}|level" placeholder="Leistung" value="${esc(s.level||"")}"></label>
+       <label class="combined-field unified-time-field">${lab("ZEIT")}<span class="time-input-shell unified-time-shell"><input type="text" inputmode="none" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="${s.completed?"rated-time-value":""}" data-time-field="1" data-input="${x.i}|${si}|time" placeholder="${liveTimeBoxPlaceholder(s)}" value="${liveTimeBoxValue(s)}"><button type="button" class="time-play time-play-inside" data-time-play="${x.i}|${si}" aria-label="Timer starten">▶</button></span></label>
+       <label class="combined-field">${lab("LEISTUNG")}<input class="unified-performance-input" type="text" autocomplete="off" data-input="${x.i}|${si}|level" placeholder="Leistung" value="${esc(s.level||"")}"></label>
        <button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button>
      </div>`
    }
@@ -1911,8 +1910,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  function patchProfileUnitsV31(){const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),cw=Number(latest?.weight||profile.weight||0);if($("profileSummary"))$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?`${lengthDisplayV31(profile.height)} ${lengthLabelV31().toLowerCase()}`:"",cw?`${weightDisplayV31(cw)} ${weightLabelV31().toLowerCase()}`:""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";if($("profileGoalSummary")){const base=profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele";$("profileGoalSummary").innerHTML=`<span>${base}</span>${profile.targetWeight?`<span class="target-weight-line-profile">Wunschgewicht ${weightDisplayV31(profile.targetWeight)} ${weightLabelV31().toLowerCase()}</span>`:""}`}document.querySelectorAll("[data-measurement-open]").forEach(btn=>{const i=Number(btn.dataset.measurementOpen),m=measurements[i];if(!m)return;const strong=btn.querySelector("strong");if(strong)strong.textContent=m.weight?`${weightDisplayV31(m.weight)} ${weightLabelV31().toLowerCase()}`:"Messung";const vals=btn.querySelector(".measurement-values");if(vals)vals.innerHTML=formatMeasurementValuesV31(m);btn.onclick=()=>openMeasurementRecord(i)})}
  const renderProfileBeforeUnitsV31=renderProfile;renderProfile=function(){const x=renderProfileBeforeUnitsV31();patchProfileUnitsV31();requestAnimationFrame(()=>{patchProfileUnitsV31();renderProfileProgress()});return x};
  const renderProfileProgressBeforeUnitsV31=renderProfileProgress;renderProfileProgress=function(){const x=renderProfileProgressBeforeUnitsV31(),wt=weightTrend(),card=$("profileProgressOverview")?.querySelector(".profile-progress-grid .progress-stat:first-child");if(card&&wt){const strong=card.querySelector("strong"),sub=card.querySelector(".progress-sub-value");if(strong)strong.textContent=wt.current!=null?`${weightDisplayV31(wt.current)} ${weightLabelV31().toLowerCase()}`:"–";if(sub)sub.textContent=wt.target!=null?`${weightDisplayV31(Math.abs(wt.distance))} ${weightLabelV31().toLowerCase()} ${wt.distance<0?"darüber":"bis Ziel"}`:"–"}return x};
- openMeasurementRecord=function(i){const m=measurements[i];if(!m)return;openSheet("Messung",`<div class="card"><strong>${m.weight?`${weightDisplayV31(m.weight)} ${weightLabelV31().toLowerCase()}`:"–"}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div><div class="measurement-values" style="margin-top:12px">${formatMeasurementValuesV31(m)}</div></div><button id="deleteMeasurementRecord" class="secondary danger" style="width:100%;margin-top:12px">Messung löschen</button>`);$("deleteMeasurementRecord").onclick=()=>{if(confirm("Diese Messung wirklich löschen?")){measurements.splice(i,1);saveAll();closeSheet({all:true});renderProfile();toast("Messung gelöscht")}}};
- openMeasurementData=function(){openSheet("Messungen",`${measurements.slice().reverse().map((m,ri)=>{const i=measurements.length-1-ri;return`<div class="card" data-settings-measure-open="${i}"><div class="space"><div><strong>${m.weight?weightDisplayV31(m.weight):"–"} ${weightLabelV31().toLowerCase()}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div></div><span>›</span></div></div>`}).join("")||'<div class="card small">Noch keine Messungen.</div>'}`);document.querySelectorAll("[data-settings-measure-open]").forEach(b=>b.onclick=()=>openMeasurementRecord(Number(b.dataset.settingsMeasureOpen)))};
+ openMeasurementRecord=function(i){const m=measurements[i];if(!m)return;openSheet("Messung",`<div class="card"><strong>${m.weight?`${weightDisplayV31(m.weight)} ${weightLabelV31().toLowerCase()} · ${activityLabel(m.activity||profile.activity||1.55)}`:"–"}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div><div class="measurement-values" style="margin-top:12px">${formatMeasurementValuesV31(m)}</div></div><button id="deleteMeasurementRecord" class="secondary danger" style="width:100%;margin-top:12px">Messung löschen</button>`);$("deleteMeasurementRecord").onclick=()=>{if(confirm("Diese Messung wirklich löschen?")){measurements.splice(i,1);saveAll();closeSheet({all:true});renderProfile();toast("Messung gelöscht")}}};
+ openMeasurementData=function(){openSheet("Messungen",`${measurements.slice().reverse().map((m,ri)=>{const i=measurements.length-1-ri;return`<div class="card" data-settings-measure-open="${i}"><div class="space"><div><strong>${m.weight?weightDisplayV31(m.weight):"–"} ${weightLabelV31().toLowerCase()} · ${activityLabel(m.activity||profile.activity||1.55)}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div></div><span>›</span></div></div>`}).join("")||'<div class="card small">Noch keine Messungen.</div>'}`);document.querySelectorAll("[data-settings-measure-open]").forEach(b=>b.onclick=()=>openMeasurementRecord(Number(b.dataset.settingsMeasureOpen)))};
  function openMeasurementEntryV31(){openSheet("Messung hinzufügen",`<div class="grid2"><div class="form-field"><label>GEWICHT ${weightLabelV31()}</label><input id="measureWeightUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>KÖRPERFETT IN %</label><input id="measureBodyfatUnits" class="field" inputmode="decimal"></div></div><div class="grid2"><div class="form-field"><label>TAILLE ${lengthLabelV31()}</label><input id="measureWaistUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>BRUST ${lengthLabelV31()}</label><input id="measureChestUnits" class="field" inputmode="decimal"></div></div><div class="grid2"><div class="form-field"><label>HÜFTE ${lengthLabelV31()}</label><input id="measureHipUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>AKTIVITÄT</label><select id="measureActivityUnits" class="field"><option value="1.2" ${String(profile.activity)==="1.2"?"selected":""}>Wenig aktiv</option><option value="1.375" ${String(profile.activity)==="1.375"?"selected":""}>Leicht aktiv</option><option value="1.55" ${!profile.activity||String(profile.activity)==="1.55"?"selected":""}>Moderat aktiv</option><option value="1.725" ${String(profile.activity)==="1.725"?"selected":""}>Sehr aktiv</option><option value="1.9" ${String(profile.activity)==="1.9"?"selected":""}>Extrem aktiv</option></select></div></div><button id="measureSaveUnits" class="primary" style="width:100%">Speichern</button>`);$("measureSaveUnits").onclick=()=>{const weight=weightStorageV31($("measureWeightUnits").value);if(!weight||weight<20||weight>400){$("measureWeightUnits").focus();return alert("Bitte Gewicht eintragen.")}const md=profileDayOffset===0?Date.now():profileDate().setHours(12,0,0,0),m={date:md,weight,bodyfat:$("measureBodyfatUnits").value,waist:lengthStorageV31($("measureWaistUnits").value),chest:lengthStorageV31($("measureChestUnits").value),hip:lengthStorageV31($("measureHipUnits").value),activity:$("measureActivityUnits").value};measurements.push(m);measurements.sort((a,b)=>Number(a.date)-Number(b.date));profile.weight=weight;profile.activity=$("measureActivityUnits").value;saveAll();closeSheet({all:true});renderProfile()}}openMeasurementEntry=openMeasurementEntryV31;if($("addMeasurementBtn"))$("addMeasurementBtn").onclick=openMeasurementEntryV31;
  openProfileEditor=function(){openSheet("Profil bearbeiten",`<div class="profile-form-section"><h3>Persönliche Daten</h3><div class="grid2"><div class="form-field"><label>ALTER</label><input id="profileAgeEdit" class="field" inputmode="numeric" value="${esc(profile.age||"")}"></div><div class="form-field"><label>GRÖSSE ${lengthLabelV31()}</label><input id="profileHeightEdit" class="field" inputmode="decimal" value="${esc(profile.height?lengthDisplayV31(profile.height):"")}"></div></div><div class="form-field"><label>GESCHLECHT FÜR ENERGIEBERECHNUNG</label><select id="profileSexEdit" class="field"><option value="">Nicht gewählt</option><option value="female" ${profile.sex==="female"?"selected":""}>Weiblich</option><option value="male" ${profile.sex==="male"?"selected":""}>Männlich</option></select></div></div><div class="profile-form-section"><h3>Ziel</h3><div class="form-field"><label>ZIEL</label><select id="profileGoalEdit" class="field"><option value="cut" ${profile.goal==="cut"?"selected":""}>Gewicht reduzieren</option><option value="maintain" ${!profile.goal||profile.goal==="maintain"?"selected":""}>Gewicht halten</option><option value="gain" ${profile.goal==="gain"?"selected":""}>Muskelaufbau</option></select></div><div class="form-field"><label>WUNSCHGEWICHT ${weightLabelV31()}</label><input id="profileTargetWeightEdit" class="field" inputmode="decimal" value="${esc(profile.targetWeight?weightDisplayV31(profile.targetWeight):"")}"></div></div><button id="profileSaveEdit" class="primary" style="width:100%">Profil speichern</button>`);$("profileSaveEdit").onclick=()=>{const age=Number($("profileAgeEdit").value),height=lengthStorageV31($("profileHeightEdit").value),target=weightStorageV31($("profileTargetWeightEdit").value);if(age&&(age<14||age>100))return alert("Bitte ein realistisches Alter eingeben.");if(height&&(height<120||height>230))return alert("Bitte eine realistische Körpergröße eingeben.");if(target&&(target<30||target>300))return alert("Bitte ein realistisches Wunschgewicht eingeben.");profile.age=age||"";profile.height=height||"";profile.sex=$("profileSexEdit").value;profile.goal=$("profileGoalEdit").value;profile.targetWeight=target||"";saveAll();closeSheet({all:true});renderProfile()}};
  const openSettingsBeforePrefsV31=openSettingsPage;openSettingsPage=function(){openSettingsBeforePrefsV31();requestAnimationFrame(()=>{const body=$("settingsBody");if(!body||$("unitSettingsV31"))return;const sec=document.createElement("div");sec.className="settings-section";sec.id="unitSettingsV31";sec.innerHTML=`<h3>Einheiten & Ansicht</h3><div class="settings-card"><div class="settings-row"><div><strong>Gewicht</strong><small>Training, Verlauf und Körpergewicht</small></div><select id="prefWeightUnit" class="field settings-unit-select"><option value="kg" ${prefs.weightUnit==="kg"?"selected":""}>kg</option><option value="lb" ${prefs.weightUnit==="lb"?"selected":""}>lb</option></select></div><div class="settings-row"><div><strong>Distanz</strong><small>Cardio-/Distanzangaben</small></div><select id="prefDistanceUnit" class="field settings-unit-select"><option value="km" ${prefs.distanceUnit==="km"?"selected":""}>km</option><option value="mi" ${prefs.distanceUnit==="mi"?"selected":""}>mi</option></select></div><div class="settings-row"><div><strong>Messungen</strong><small>Größe, Taille, Brust und Hüfte</small></div><select id="prefMeasurementUnit" class="field settings-unit-select"><option value="cm" ${prefs.measurementUnit==="cm"?"selected":""}>cm</option><option value="in" ${prefs.measurementUnit==="in"?"selected":""}>in</option></select></div><div class="settings-row"><div><strong>Wochenstart</strong><small>Reihenfolge und Datumsbereich</small></div><select id="prefWeekStart" class="field settings-unit-select"><option value="monday" ${prefs.weekStart==="monday"?"selected":""}>Montag</option><option value="sunday" ${prefs.weekStart==="sunday"?"selected":""}>Sonntag</option></select></div><div class="settings-row"><div><strong>Textgröße</strong><small>Darstellung der App-Schrift</small></div><select id="prefTextScale" class="field settings-unit-select"><option value="normal" ${prefs.textScale==="normal"?"selected":""}>Standard</option><option value="large" ${prefs.textScale==="large"?"selected":""}>Groß</option><option value="xlarge" ${prefs.textScale==="xlarge"?"selected":""}>Sehr groß</option></select></div></div>`;const training=[...body.querySelectorAll(".settings-section")].find(x=>x.querySelector("h3")?.textContent==="Training");if(training)body.insertBefore(sec,training);else body.appendChild(sec);$("prefWeightUnit").onchange=()=>{prefs.weightUnit=$("prefWeightUnit").value;savePrefsV31();if(activeWorkout)renderLive();renderProfile();unitizeSheetV31()};$("prefDistanceUnit").onchange=()=>{prefs.distanceUnit=$("prefDistanceUnit").value;savePrefsV31();unitizeSheetV31()};$("prefMeasurementUnit").onchange=()=>{prefs.measurementUnit=$("prefMeasurementUnit").value;savePrefsV31();renderProfile()};$("prefTextScale").onchange=()=>{prefs.textScale=$("prefTextScale").value;savePrefsV31();applyTextScaleV31()};$("prefWeekStart").onchange=()=>{const old=prefs.weekStart,next=$("prefWeekStart").value;saveCurrentWeekRefs();migrateWeekStorageV31(old,next);prefs.weekStart=next;savePrefsV31();loadWeekOffset(weekOffset);renderProfileProgress()}})};
@@ -2214,7 +2213,27 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    });return k
  }
  function openTimeKeypadV31(inp){timeKeypadTargetV31=inp;ensureTimeKeypadV31().classList.remove('hidden');window.rethinkKeepFieldVisibleV24?.(inp)}
- document.addEventListener('pointerdown',e=>{const k=document.getElementById('rethinkTimeKeypadV31');if(!k||k.classList.contains('hidden'))return;if(e.target.closest('#rethinkTimeKeypadV31')||e.target.closest('[data-time-field]'))return;k.classList.add('hidden');timeKeypadTargetV31=null},true);
+ function interceptTimeFieldV43(e){
+   const play=e.target?.closest?.('#liveBody [data-time-play]');
+   if(play)return false;
+   const direct=e.target?.closest?.('#liveBody [data-time-field]');
+   const shell=e.target?.closest?.('#liveBody .time-input-shell');
+   const timeField=direct||shell?.querySelector?.('[data-time-field]');
+   if(!timeField)return false;
+   e.preventDefault();e.stopPropagation();
+   openTimeKeypadV31(timeField);
+   window.rethinkKeepFieldVisibleV24?.(timeField);
+   return true
+ }
+ document.addEventListener('pointerdown',e=>{
+   if(interceptTimeFieldV43(e))return;
+   const k=document.getElementById('rethinkTimeKeypadV31');
+   if(!k||k.classList.contains('hidden'))return;
+   if(e.target.closest('#rethinkTimeKeypadV31'))return;
+   k.classList.add('hidden');timeKeypadTargetV31=null
+ },true);
+ document.addEventListener('touchstart',e=>{interceptTimeFieldV43(e)},true);
+ document.addEventListener('click',e=>{interceptTimeFieldV43(e)},true);
 
  // Do NOT let tapping or typing into KG/WDH/time fields change the highlighted training card.
  function rebindInputsWithoutHighlightV31(){
@@ -2451,7 +2470,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
        const wasChanged=changedV31(inp);
        if(wasChanged)updateInput(inp);
        endV31(inp);
-       if(isTime){document.getElementById("rethinkTimeKeypadV31")?.classList.add("hidden");timeKeypadTargetV31=null}
+       if(isTime){/* v43: keypad remains open until Done or explicit outside tap */}
        // Do not re-render merely because focus moved between WDH/KG/time fields.
        if(wasChanged)saveAll()
      }
@@ -3560,3 +3579,146 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 
 /* ReThink v31 — keep sheets within the visible viewport, including iOS keyboard. */
 (function(){const vv=window.visualViewport;function sync(){document.documentElement.style.setProperty('--rethink-vvh',`${Math.round(vv?.height||window.innerHeight)}px`)}sync();vv?.addEventListener('resize',sync);vv?.addEventListener('scroll',sync);window.addEventListener('resize',sync)})();
+
+/* ReThink v44 — preview is the real training renderer, read-only. */
+(function(){
+  function previewWorkoutFromPlanV44(p){
+    const exercises=clone(p.exercises||[]).map(e=>{
+      const x=normPlanEx(e);
+      const count=Number(x.sets)||defaultSetsForExerciseMethod(x,x.setTechnique||"standard");
+      x.liveSets=Array.from({length:count},(_,i)=>initSet(x,i));
+      return x
+    });
+    return {id:"preview",name:p.name||"Workout Vorschau",startedAt:Date.now(),activeExerciseIndex:-999,exercises}
+  }
+  openPreview=function(p){
+    $("previewTitle").textContent=p.name||"Workout Vorschau";
+    const realWorkout=activeWorkout;
+    const fake=previewWorkoutFromPlanV44(p);
+    try{
+      activeWorkout=fake;
+      const markup=liveVisualGroups(fake.exercises).map(g=>g.group
+        ?renderLiveGroupCard(g)
+        :renderLiveSingleCard(g.members[0].e,g.members[0].i)
+      ).join("");
+      $("previewBody").innerHTML=`<div class="preview-live-shell preview-live-mirror-v44">${markup}</div>`;
+    }finally{
+      activeWorkout=realWorkout
+    }
+    const previewBody=$("previewBody");
+    previewBody.querySelectorAll("input,button,textarea,select,a").forEach(el=>{
+      el.tabIndex=-1;
+      el.setAttribute("aria-disabled","true");
+    });
+    previewBody.setAttribute("inert","");
+    openPage("previewPage")
+  };
+})();
+
+/* ReThink v49 — profile timeline: selected day is a complete read-only historical state */
+(function(){
+ const STATE_KEY='rethink_profile_state_history_v49';
+ const activityLabel=v=>{
+   const n=Number(v);if(n<=1.21)return'wenig aktiv';if(n<=1.38)return'leicht aktiv';if(n<=1.56)return'moderat aktiv';if(n<=1.73)return'sehr aktiv';return'extrem aktiv'
+ };
+ const dayEnd=()=>{const d=profileDate();d.setHours(23,59,59,999);return d.getTime()};
+ const dayStart=()=>{const d=profileDate();d.setHours(0,0,0,0);return d.getTime()};
+ const selectedKey=()=>profileDateKey();
+ const isPast=()=>profileDayOffset<0;
+ function loadStates(){const x=read(STATE_KEY,[]);return Array.isArray(x)?x:[]}
+ function stateSignature(){return JSON.stringify({
+   age:profile.age||'',height:profile.height||'',sex:profile.sex||'',goal:profile.goal||'',targetWeight:profile.targetWeight||'',activity:profile.activity||'',
+   calories:nutrition.calories||'',protein:nutrition.protein||'',waterGoal:nutrition.waterGoal||'',waterGoalMode:nutrition.waterGoalMode||''
+ })}
+ function recordState(){
+   if(profileDayOffset!==0)return;
+   const list=loadStates(),sig=stateSignature(),last=list.at(-1);
+   if(last?.sig===sig)return;
+   list.push({at:Date.now(),sig,state:JSON.parse(sig)});
+   write(STATE_KEY,list.slice(-500))
+ }
+ function historicalSettings(cutoff){
+   const list=loadStates().filter(x=>Number(x.at)<=cutoff);
+   if(list.length)return list.at(-1).state||{};
+   return {age:profile.age||'',height:profile.height||'',sex:profile.sex||'',goal:profile.goal||'',targetWeight:profile.targetWeight||'',activity:profile.activity||'',calories:nutrition.calories||'',protein:nutrition.protein||'',waterGoal:nutrition.waterGoal||'',waterGoalMode:nutrition.waterGoalMode||''}
+ }
+ function measurementAt(cutoff){return measurements.filter(m=>Number(m.date||0)<=cutoff).slice().sort((a,b)=>Number(a.date)-Number(b.date)).at(-1)||null}
+ function measurementRows(cutoff,key='weight'){return measurements.filter(m=>Number(m.date||0)<=cutoff&&Number(m[key])>0).slice().sort((a,b)=>Number(a.date)-Number(b.date))}
+ function historicalActivity(cutoff,settings){
+   const m=measurementAt(cutoff);if(m?.activity)return m.activity;
+   const states=loadStates().slice().sort((a,b)=>Number(a.at)-Number(b.at));
+   const before=states.filter(x=>Number(x.at)<=Number(cutoff)&&x.state?.activity).at(-1);
+   const earliest=states.find(x=>x.state?.activity);
+   return before?.state?.activity||settings.activity||earliest?.state?.activity||profile.activity||1.55
+ }
+ function historicalWeight(cutoff){const m=measurementRows(cutoff,'weight').at(-1);return Number(m?.weight||0)}
+ function weekInfoAtSelected(){
+   const d=profileDate(),wd=d.getDay()||7,start=new Date(d);start.setDate(d.getDate()-wd+1);start.setHours(0,0,0,0);const end=new Date(start);end.setDate(end.getDate()+7);
+   const th=new Date(start);th.setDate(th.getDate()+3);const ys=new Date(th.getFullYear(),0,1),week=Math.ceil((((th-ys)/86400000)+ys.getDay()+1)/7);return{start,end,week}
+ }
+ function workoutDaysForSelectedWeek(){const {start,end}=weekInfoAtSelected();return new Set((history||[]).filter(w=>{const t=Number(w.finishedAt||w.startedAt||0);return t>=start.getTime()&&t<end.getTime()&&t<=dayEnd()}).map(w=>dateKeyLocal(Number(w.finishedAt||w.startedAt)))).size}
+ function dayData(date,settings){
+   const key=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+   const foods=(nutrition.foodLog||[]).filter(x=>x.date===key),drinks=hydrationLog().filter(x=>dateKeyLocal(Number(x.at))===key);
+   const hydration=foods.reduce((s,x)=>s+Number(x.water||0),0)+drinks.reduce((s,x)=>s+Number(x.size||0)*Number(x.hydration||0)/100,0);
+   const calories=foods.reduce((s,x)=>s+Number(x.kcal||0),0)+drinks.reduce((s,x)=>s+Number(x.caloriesPer250||0)*Number(x.size||0)/250,0);
+   const waterGoal=Number(settings.waterGoal||nutrition.waterGoal||0),calorieGoal=Number(settings.calories||nutrition.calories||0);
+   return{hydrationDone:drinks.length>=3&&waterGoal>0&&hydration>=waterGoal,nutritionDone:foods.length>=3&&calorieGoal>0&&calories<=calorieGoal}
+ }
+ function streakAt(kind){
+   let d=profileDate();d.setHours(12,0,0,0);if(profileDayOffset===0)d.setDate(d.getDate()-1);
+   let count=0;
+   for(let i=0;i<3660;i++){
+     const settings=historicalSettings(new Date(d).setHours(23,59,59,999)),x=dayData(d,settings),ok=kind==='hydration'?x.hydrationDone:kind==='nutrition'?x.nutritionDone:(x.hydrationDone&&x.nutritionDone);
+     if(!ok)break;count++;d=new Date(d);d.setDate(d.getDate()-1)
+   }return count
+ }
+ function renderHistoricalCharts(cutoff){
+   const el=$('measurementCharts');if(!el)return;
+   const rows=measurementRows(cutoff,'weight');
+   if(!rows.length){el.innerHTML='<div class="measurement-chart-stack"><div class="profile-chart card always-chart"><div class="space"><strong>Gewicht</strong><span class="small">Noch keine Messung</span></div><div class="empty-chart-line"></div></div></div>';return}
+   const vals=rows.map(x=>Number(x.weight)),min=Math.min(...vals),max=Math.max(...vals),span=Math.max(.001,max-min),w=280,h=94,pad=10,bottom=h-24,ph=h-40;
+   const y=v=>bottom-((v-min)/span)*ph,pts=vals.map((v,i)=>`${pad+(rows.length===1?0:(i/(rows.length-1))*(w-pad*2))},${y(v)}`).join(' '),last=rows.at(-1);
+   const graphic=rows.length===1?`<circle cx="${pad}" cy="${y(vals[0])}" r="3.5" fill="currentColor"/>`:`<polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+   el.innerHTML=`<div class="measurement-chart-stack"><div class="profile-chart card always-chart"><div class="space"><strong>Gewicht</strong><span class="small">${vals.at(-1)} kg</span></div><svg viewBox="0 0 ${w} ${h}">${graphic}</svg><div class="chart-range chart-dates"><span>Zu Beginn<br><b>${vals[0]} kg</b></span><span>${new Date(last.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})}<br><b>${vals.at(-1)} kg</b></span></div></div></div>`
+ }
+ function renderHistoricalProgress(){
+   const el=$('profileProgressOverview');if(!el)return;const cutoff=dayEnd(),settings=historicalSettings(cutoff),rows=measurementRows(cutoff,'weight'),cur=rows.length?Number(rows.at(-1).weight):null,target=Number(settings.targetWeight||profile.targetWeight||0)||null,distance=cur!=null&&target!=null?Math.round(Math.abs(target-cur)*10)/10:null,wk=weekInfoAtSelected(),train=workoutDaysForSelectedWeek(),streak=streakAt('combined');
+   el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid"><div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${cur!=null?`${cur} kg`:'–'}</strong><span class="progress-sub-value">${distance!=null?`${distance} kg bis Ziel`:'–'}</span></div><div class="card progress-stat"><div class="small">Streak</div><strong>${streak}</strong><span class="progress-sub-value">Wasser und Ernährung</span></div><div class="card progress-stat training-week-stat"><div class="small">Trainingstage</div><span class="progress-sub-label">KW ${wk.week}</span><strong>${train}/7</strong></div></div>`
+ }
+ function annotateMeasurements(cutoff){
+   let changed=false;
+   (measurements||[]).forEach(m=>{if(!m.activity){m.activity=String(historicalActivity(Number(m.date||cutoff),historicalSettings(Number(m.date||cutoff))));changed=true}});
+   if(changed)try{saveAll()}catch{}
+   document.querySelectorAll('[data-measurement-open]').forEach(btn=>{
+     const idx=Number(btn.dataset.measurementOpen),m=measurements[idx];if(!m)return;const strong=btn.querySelector('strong');if(strong&&m.weight){const a=activityLabel(m.activity||historicalActivity(Number(m.date||cutoff),historicalSettings(Number(m.date||cutoff))));strong.textContent=`${weightDisplayV31?weightDisplayV31(m.weight):m.weight} ${typeof weightLabelV31==='function'?weightLabelV31().toLowerCase():'kg'} · ${a}`}
+   })
+ }
+ function lockPastProfile(){
+   const root=$('tab-profile');if(!root)return;root.classList.toggle('profile-history-readonly',isPast());
+   const next=$('profileNextDay');if(next)next.disabled=profileDayOffset>=0;
+   if(!isPast())return;
+   root.querySelectorAll('button,input,select,textarea,details').forEach(el=>{if(el.id==='profilePrevDay'||el.id==='profileNextDay')return;el.setAttribute('disabled','disabled');el.setAttribute('aria-disabled','true')});
+   root.querySelectorAll('[data-edit-food-entry],[data-edit-drink-entry],[data-measurement-open]').forEach(el=>{el.style.pointerEvents='none'})
+ }
+ function patchHistoricalState(){
+   recordState();const cutoff=dayEnd(),settings=historicalSettings(cutoff),m=measurementAt(cutoff),weight=historicalWeight(cutoff),activity=historicalActivity(cutoff,settings);
+   if($('profileSummary'))$('profileSummary').textContent=[settings.age?settings.age+' J.':'',settings.height?settings.height+' cm':'',weight?`${typeof weightDisplayV31==='function'?weightDisplayV31(weight):weight} ${typeof weightLabelV31==='function'?weightLabelV31().toLowerCase():'kg'} · ${activityLabel(activity)}`:''].filter(Boolean).join(' · ')||'Noch nicht eingerichtet';
+   const goal=settings.goal||profile.goal,target=settings.targetWeight||profile.targetWeight;
+   if($('profileGoalSummary'))$('profileGoalSummary').innerHTML=`<span>${goal==='cut'?'Ziel: Gewicht reduzieren':goal==='gain'?'Ziel: Muskelaufbau':goal==='maintain'?'Ziel: Gewicht halten':'Persönliche Werte und Ziele'}</span>${target?`<span class="target-weight-line-profile">Wunschgewicht ${esc(target)} ${typeof weightLabelV31==='function'?weightLabelV31().toLowerCase():'kg'}</span>`:''}`;
+   if($('nutritionCalTarget'))$('nutritionCalTarget').textContent=settings.calories?`${settings.calories} kcal`:'–';
+   if($('nutritionHydrationTarget'))$('nutritionHydrationTarget').textContent=settings.waterGoal?`${settings.waterGoal} ml`:'–';
+   const hb=$('hydrationStreakBadge'),nb=$('nutritionStreakBadge'),hs=streakAt('hydration'),ns=streakAt('nutrition');if(hb){hb.querySelector('strong').textContent=hs;hb.classList.toggle('active',hs>0)}if(nb){nb.querySelector('strong').textContent=ns;nb.classList.toggle('active',ns>0)}
+   const heads=document.querySelectorAll('#tab-profile .section-head h2');heads.forEach(h=>{if(h.textContent.startsWith('Hydrierung'))h.textContent=isPast()?'Hydrierung':'Hydrierung heute';if(h.textContent.startsWith('Ernährung'))h.textContent=isPast()?'Ernährung':'Ernährung heute'});
+   renderHistoricalCharts(cutoff);renderHistoricalProgress();annotateMeasurements(cutoff);lockPastProfile()
+ }
+ // Do not allow browsing into the future; past days are snapshots, not editors.
+ changeProfileDay=function(delta){profileDayOffset=Math.min(0,profileDayOffset+delta);localStorage.setItem(PROFILE_DAY_OFFSET_KEY,String(profileDayOffset));renderProfile();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}))};
+ const prior=window.renderProfile||renderProfile;
+ window.renderProfile=renderProfile=function(){const r=prior();patchHistoricalState();return r};
+ // Any caller that redraws only progress must still respect the selected profile date.
+ window.renderProfileProgress=renderProfileProgress=function(){renderHistoricalProgress()};
+ const saveBefore=saveAll;
+ saveAll=function(){const r=saveBefore();try{recordState()}catch{}return r};
+ try{recordState();renderProfile()}catch(e){console.error('v49 profile timeline',e)}
+})();
