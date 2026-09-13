@@ -2991,3 +2991,39 @@ body>#restBar:not(.hidden){display:grid!important}
 
 /* Rest dock stays visible above live content whenever a rest is active. */
 body>#restBar:not(.hidden){display:grid!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
+
+/* RETHINK QA vFinal — single late authority for workout/preview geometry and entry sheets. */
+:root{--rt-box-bg:var(--surface2);--rt-box-border:var(--line);--rt-box-font:500 16px/1 system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;--rt-box-h:48px}
+/* One visual language for every workout method. */
+#liveBody :is(.set-row,.time-row,.combined-member-row,.unified-combined-time-row,.cluster-row,.advanced-row) :is(input,.unified-time-shell),
+#previewBody .preview-live-mirror-v44 :is(.set-row,.time-row,.combined-member-row,.unified-combined-time-row,.cluster-row,.advanced-row) :is(input,.unified-time-shell){
+  height:var(--rt-box-h)!important;min-height:var(--rt-box-h)!important;max-height:var(--rt-box-h)!important;
+  box-sizing:border-box!important;border-radius:12px!important;border-color:var(--rt-box-border)!important;background:var(--rt-box-bg)!important;
+  font:var(--rt-box-font)!important;color:var(--text)!important
+}
+#liveBody :is(.set-row,.time-row,.combined-member-row,.unified-combined-time-row,.cluster-row,.advanced-row) input::placeholder,
+#previewBody .preview-live-mirror-v44 :is(.set-row,.time-row,.combined-member-row,.unified-combined-time-row,.cluster-row,.advanced-row) input::placeholder{
+  font:var(--rt-box-font)!important;color:var(--muted)!important;opacity:1!important
+}
+/* Preview is display-only: all values, including time, sit dead centre and never show a caret. */
+#previewBody .preview-live-mirror-v44 input,
+#previewBody .preview-live-mirror-v44 input::placeholder{
+  text-align:center!important;text-align-last:center!important;font:var(--rt-box-font)!important
+}
+#previewBody .preview-live-mirror-v44 input{caret-color:transparent!important;padding-left:8px!important;padding-right:8px!important}
+#previewBody .preview-live-mirror-v44 .unified-time-shell>input{padding-left:8px!important;padding-right:8px!important}
+#previewBody .preview-live-mirror-v44 .time-play-inside{display:none!important}
+/* Keep partner method columns on exactly one shared grid. */
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) :is(.combined-member-row,.unified-combined-time-row),
+#previewBody .preview-live-mirror-v44 :is(.method-superset,.method-giant,.method-preexhaust) :is(.combined-member-row,.unified-combined-time-row){
+  grid-template-columns:40px minmax(0,1fr) minmax(0,1fr) 48px!important;column-gap:7px!important;width:100%!important;box-sizing:border-box!important
+}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-field,
+#previewBody .preview-live-mirror-v44 :is(.method-superset,.method-giant,.method-preexhaust) .combined-field{min-width:0!important;width:100%!important}
+/* Hydration/nutrition/profile entry sheets are anchored and sized, not allowed to drift behind iOS keyboards. */
+.sheet-wrap.rethink-entry-sheet{align-items:flex-start!important;padding-top:max(10px,20dvh)!important;box-sizing:border-box!important}
+.sheet-wrap.rethink-entry-sheet .sheet{height:min(75dvh,calc(var(--rethink-vvh,100dvh) - 12px))!important;max-height:min(75dvh,calc(var(--rethink-vvh,100dvh) - 12px))!important;margin:0!important}
+.sheet-wrap.rethink-entry-sheet .sheet-body{min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain!important;scroll-padding-top:12px!important;scroll-padding-bottom:120px!important}
+html.rethink-keyboard-visible .sheet-wrap.rethink-entry-sheet{padding-top:4px!important;height:var(--rethink-vv-height)!important;max-height:var(--rethink-vv-height)!important}
+html.rethink-keyboard-visible .sheet-wrap.rethink-entry-sheet .sheet{height:calc(var(--rethink-vv-height) - 8px)!important;max-height:calc(var(--rethink-vv-height) - 8px)!important}
+html.rethink-keyboard-visible .sheet-wrap.rethink-entry-sheet .sheet-body{padding-bottom:120px!important}

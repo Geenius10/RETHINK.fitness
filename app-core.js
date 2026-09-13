@@ -963,7 +963,7 @@ function configureReplacementDraft(i,sourceIndexes,draft){
 }
 let planAddFlow=null;
 function cancelPlanAddFlow(){
- planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden")
+ planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.remove("rethink-entry-sheet");$("sheetWrap").classList.add("hidden")
 }
 function planAddTypes(all){return ["Alle",...orderedExerciseTypes(all)]}
 function planAddMuscles(all){return orderedMuscles(all)}
@@ -1251,7 +1251,7 @@ function commitPlanAddFlow(){
    collection.splice(insertAt,0,...drafts,...detached)
  }else collection.push(...drafts);
  if(liveContext){markLiveStructureEdited();saveAll();renderLive()}else{markEditorDirty();renderEditorExercises();persistUI()}
- planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden");
+ planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.remove("rethink-entry-sheet");$("sheetWrap").classList.add("hidden");
  toast(edited?(drafts.length>1?"Serie übernommen":"Änderung übernommen"):(drafts.length>1?`${drafts.length} Übungen hinzugefügt`:"Übung hinzugefügt"))
 }
 function planAddBack(){
@@ -1404,7 +1404,7 @@ function commitAtomicPlanGroup(sourceIndexes,drafts,focusIndex=null){
   result.forEach(e=>{e.techniqueGroup=gid;e.setTechnique=method;e.linkedExerciseNames=result.filter(x=>x!==e).map(x=>x.name)})
  }else result.forEach(e=>{e.techniqueGroup=null;e.linkedExerciseNames=[]});
  [...indexes].sort((a,b)=>b-a).forEach(i=>currentPlan.exercises.splice(i,1));currentPlan.exercises.splice(insertAt,0,...result);
- markEditorDirty();planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden");renderEditorExercises();persistUI();toast(result.length>1?"Serie übernommen":"Änderung übernommen")
+ markEditorDirty();planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.remove("rethink-entry-sheet");$("sheetWrap").classList.add("hidden");renderEditorExercises();persistUI();toast(result.length>1?"Serie übernommen":"Änderung übernommen")
 }
 function beginExistingPartnerReplacement(sourceIndexes,firstDraft,editIndex=sourceIndexes[0]){
  const method=firstDraft.setTechnique,target=method==="giant"?(Number(firstDraft.methodData?.giantCount)||3):2,gid=`tg_${uid()}`;
@@ -2711,11 +2711,11 @@ document.addEventListener("click",e=>{
 })
 document.addEventListener("click",e=>{if(e.target.closest("button,input,select,textarea,a"))return;if(e.clientY>85)return;const p=document.querySelector(".page:not(.hidden)");if(p)p.scrollTo({top:0,behavior:"smooth"});else window.scrollTo({top:0,behavior:"smooth"})});
 let currentSheetState=null;
-function renderSheetState(state){currentSheetState=state;$("sheetTitle").textContent=state.title;$("sheetBody").innerHTML=state.body;$("sheetWrap").classList.remove("hidden");if(typeof state.bind==="function")state.bind();requestAnimationFrame(()=>{$("sheetBody").scrollTop=state.scroll||0})}
+function renderSheetState(state){currentSheetState=state;$("sheetTitle").textContent=state.title;$("sheetBody").innerHTML=state.body;const _sw=$("sheetWrap");_sw.classList.remove("hidden");const _entry=/(food|meal|drink|water|hydr|nutrition|measure|profile|gram|amount|menge|kcal|protein)/i.test(String(state.title||"")+" "+String(state.body||""));_sw.classList.toggle("rethink-entry-sheet",_entry);if(typeof state.bind==="function")state.bind();requestAnimationFrame(()=>{$("sheetBody").scrollTop=state.scroll||0;const _f=$("sheetBody").querySelector("input:focus,textarea:focus,select:focus");if(_f)window.rethinkKeepFieldVisibleV24?.(_f)})}
 function openSheet(t,b,bind=null,{replace=false}={}){if(!replace&&!$("sheetWrap").classList.contains("hidden")&&currentSheetState)sheetStack.push({...currentSheetState,scroll:$("sheetBody").scrollTop||0});renderSheetState({title:t,body:b,scroll:0,bind})}
-function closeSheet({all=false}={}){if(!all&&sheetStack.length){renderSheetState(sheetStack.pop());return}sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden")}
-function cancelTask(){planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.add("hidden");exerciseDetailReturn=null}
+function closeSheet({all=false}={}){if(!all&&sheetStack.length){renderSheetState(sheetStack.pop());return}sheetStack=[];currentSheetState=null;$("sheetWrap").classList.remove("rethink-entry-sheet");$("sheetWrap").classList.add("hidden")}
+function cancelTask(){planAddFlow=null;sheetStack=[];currentSheetState=null;$("sheetWrap").classList.remove("rethink-entry-sheet");$("sheetWrap").classList.add("hidden");exerciseDetailReturn=null}
 $("sheetBack").onclick=()=>{if(planAddFlow)planAddBack();else closeSheet({all:false})};$("sheetClose").onclick=()=>{if(planAddFlow)cancelPlanAddFlow();else cancelTask()};
 function formatTime(s){s=Math.max(0,Number(s)||0);return`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}function parseTime(v){const x=String(v).trim();if(x.includes(":")){const[m,s]=x.split(":").map(Number);return(m||0)*60+(s||0)}return(Number(x)||0)*60}function formatDuration(ms){const s=Math.max(0,Math.floor(ms/1000)),m=Math.floor(s/60),r=s%60;return`${m}:${String(r).padStart(2,"0")}`}
 loadData();if(weekOffset!==0){const _dated=loadDatedWeeks();weekPlan=_dated[weekKeyForOffset()]||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]))}dailyReset();ensureDrinks();restoreUI();try{renderExerciseLibrary()}catch(e){console.error("exercise init",e)}try{renderPlans()}catch(e){console.error("plans init",e)}try{renderWeek()}catch(e){console.error("week init",e)}try{renderProfile()}catch(e){console.error("profile init",e)}
-if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});
+if(location.protocol!=="file:"&&"serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});
