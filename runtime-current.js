@@ -1,4 +1,12 @@
 "use strict";
+/* Single render authorities. Feature blocks register pre/post hooks instead of replacing render functions. */
+const __rt=window.__rt={
+ live:{core:null,pre:[],post:[]},
+ profile:{pre:[],post:[]},
+ week:{core:null,pre:[],post:[]},
+ profileProgress:{core:null,pre:[],post:[]}
+};
+
 /* ReThink current runtime — consolidated from audited legacy patches. */
 
 /* Unified exercise add/edit/replace flow */
@@ -78,6 +86,8 @@
   if(methodNeedsPartners(method)){
    if(!planAddFlow.group){const target=method==='giant'?(e.methodData.giantCount||3):2;planAddFlow.group={id:`tg_${uid()}`,method,target};e.techniqueGroup=planAddFlow.group.id}
    else e.techniqueGroup=planAddFlow.group.id;
+   if(!Number.isFinite(Number(e._draftOrder)))e._draftOrder=planAddFlow.drafts.length;
+   e.groupPosition=Number(e._draftOrder);
    planAddFlow.drafts.push(e);
    if(planAddFlow.drafts.length<planAddFlow.group.target){planAddFlow.current=null;renderPartnerExercisePicker();return}
    const master=planAddFlow.drafts[0],gid=planAddFlow.group.id;
@@ -91,7 +101,8 @@
   if(!planAddFlow?.drafts?.length)return;
   let drafts=planAddFlow.drafts.map(clone);
   const detached=drafts.flatMap(d=>Array.isArray(d._detachedAfterConversion)?d._detachedAfterConversion.map(clone):[]);
-  if(drafts.some(d=>Number.isFinite(Number(d._draftOrder))))drafts.sort((a,b)=>(Number.isFinite(Number(a._draftOrder))?Number(a._draftOrder):999)-(Number.isFinite(Number(b._draftOrder))?Number(b._draftOrder):999));
+  if(drafts.some(d=>Number.isFinite(Number(d.groupPosition))||Number.isFinite(Number(d._draftOrder))))drafts.sort((a,b)=>{const ap=Number.isFinite(Number(a.groupPosition))?Number(a.groupPosition):(Number.isFinite(Number(a._draftOrder))?Number(a._draftOrder):999),bp=Number.isFinite(Number(b.groupPosition))?Number(b.groupPosition):(Number.isFinite(Number(b._draftOrder))?Number(b._draftOrder):999);return ap-bp});
+  if(drafts.length>1&&methodNeedsPartners(drafts[0]?.setTechnique||planAddFlow.group?.method))drafts.forEach((d,i)=>d.groupPosition=i);
   drafts.forEach(d=>{delete d._draftOrder;delete d._detachedAfterConversion});
   detached.forEach(d=>{d.techniqueGroup=null;d.linkedExerciseNames=[];d.setTechnique='standard';d.methodData={};if(!d.reps||['20','30','20-30'].includes(String(d.reps)))d.reps='8-12';delete d.liveSets});
   const memberGroup=planAddFlow.memberGroup;
@@ -117,7 +128,7 @@
    normalizeGroupCollection(collection,memberGroup.id,source);
    if(liveContext)collection.filter(x=>x.techniqueGroup===memberGroup.id).forEach(x=>x.liveSets=rebuildLiveSetsForExercise(x,x.liveSets||[]))
   }
-  if(liveContext){livePlanEdited=true;saveAll();renderLive()}else{markEditorDirty();renderEditorExercises();persistUI()}
+  if(liveContext){markLiveStructureEdited();saveAll();renderLive()}else{markEditorDirty();renderEditorExercises();persistUI()}
   const wasEdit=edited;planAddFlow=null;sheetStack=[];currentSheetState=null;$('sheetWrap').classList.add('hidden');
   toast(wasEdit?'Änderung übernommen':(drafts.length>1?`${drafts.length} Übungen hinzugefügt`:'Übung hinzugefügt'))
  };
@@ -180,7 +191,7 @@
   const prev=e.setTechnique||'standard';basePrepare(e,method,oldGroupCount);
   e.sets=nearestSetCount(method,prev===method?e.sets:(DEFAULT_SETS[method]||e.sets));
   if(method==='pyramid'){e.measureMode='reps';e.methodData=e.methodData||{};e.methodData.pyramidDirection='peak';e.sets=5;e.methodData.reps=buildPyramidReps(12,e.sets,'peak');e.methodData.weightPct=window.pyramidPctForSets(e.sets,'peak')}
-  if(method==='cluster'){e.methodData={blocks:5,clusterReps:2,intraRest:20};e.reps='10'}
+  if(method==='cluster'){e.methodData={blocks:4,clusterReps:2,intraRest:20};e.reps='10'}
   if(method==='restpause'){e.methodData={maxBlocks:6,intraRest:20};e.reps='20'}
   if(method==='dropset'){e.methodData={dropCount:2,dropPercent:20,intraRest:0}}
   if(method==='backoff'){e.methodData={topReps:5,backoffReps:8,backoffPercent:15}}
@@ -220,70 +231,22 @@
  }
 
  function capturePlanAddStateV6(){
-  const e=planAddFlow?.current;if(!e)return;if($('paSets'))e.sets=Number($('paSets').value)||e.sets;if($('paRest'))e.rest=Number($('paRest').value);captureExerciseOptionFields(e,'pa');e.perSide=!!$('paPerSide')?.checked;if(e.setTechnique==='pyramid')saveMethodRepConfig(e,'pa')
+  const e=planAddFlow?.current;if(!e)return;if($('paSets'))e.sets=Number($('paSets').value)||e.sets;if($('paRest'))e.rest=Number($('paRest').value);captureExerciseOptionFields(e,'pa');if($('paPerSide'))e.perSide=!!$('paPerSide').checked;if(e.setTechnique==='pyramid')saveMethodRepConfig(e,'pa')
  }
  // One familiar add/edit mask for all exercise actions, now with method-aware set counts.
- window.renderPlanAddConfig=function(){
-  if(!planAddFlow?.current)return;const e=planAddFlow.current;if(e.setTechnique==='pyramid')ensurePyramidData(e);if(e.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;e.sets=nearestSetCount(e.setTechnique||'standard',e.sets);
-  renderSheetState({title:e.name,scroll:0,body:`<div class="method-tabs" id="paMethodTabs">${METHOD_KEYS.map(k=>`<button class="chip ${e.setTechnique===k?'active':''}" data-pa-method="${k}">${METHOD_LABEL[k]}</button>`).join('')}</div><div class="method-help">${esc(methodHelp(e.setTechnique))}</div><div class="mode-switch"><button type="button" class="chip ${e.measureMode!=='time'?'active':''}" id="paModeReps">Wiederholungen</button><button type="button" class="chip ${e.measureMode==='time'?'active':''}" id="paModeTime" ${e.setTechnique==='pyramid'?'disabled':''}>Zeit</button></div><div class="grid2"><div class="form-field"><label>SÄTZE</label><select id="paSets" class="field">${setOptionsMarkup(e)}</select></div><div class="form-field"><label>PAUSE</label><select id="paRest" class="field">${[0,30,45,60,90,120,150,180,240,300].map(v=>`<option value="${v}" ${Number(e.rest)===v?'selected':''}>${v?formatTime(v):'Keine'}</option>`).join('')}</select></div></div><div class="form-field"><label>${e.measureMode==='time'?'ZEIT':'WDH.-VORGABE'}</label>${e.measureMode==='time'?timePresetMarkup(e,'pa'):methodRepConfigMarkup(e,'pa')}</div>${exerciseOptionFieldsMarkup(e,"pa")}<div class="form-field"><label><input id="paPerSide" type="checkbox" ${e.perSide?'checked':''}> Wiederholungen pro Seite</label></div>${planAddMethodExtra(e)}<button id="paConfirm" class="primary" style="width:100%">Übernehmen</button>`});
-  requestAnimationFrame(()=>{const tabs=$('paMethodTabs');if(tabs)tabs.scrollLeft=planAddFlow.methodScroll||0});
-  $('paModeReps').onclick=()=>{capturePlanAddStateV6();e.measureMode='reps';renderPlanAddConfig()};
-  if($('paModeTime')&&!$('paModeTime').disabled)$('paModeTime').onclick=()=>{capturePlanAddStateV6();e.measureMode='time';e.timeSeconds=Math.min(timeMaxForExercise(e),Math.max(15,Number(e.timeSeconds)||60));renderPlanAddConfig()};
-  document.querySelectorAll('[data-pa-method]').forEach(b=>b.onclick=()=>{capturePlanAddStateV6();const tabs=$('paMethodTabs');planAddFlow.methodScroll=tabs?.scrollLeft||0;if(planAddFlow.memberGroup)planAddFlow.memberMethodExplicit=true;prepareDraftForTargetMethod(e,b.dataset.paMethod,1);renderPlanAddConfig()});
-  $('paSets').onchange=()=>{capturePlanAddStateV6();const next=Number($('paSets').value);if(e.setTechnique==='pyramid')resizePyramidForSetCount(e,next);else e.sets=next;renderPlanAddConfig()};
-  document.querySelectorAll('[data-rep-preset]').forEach(b=>b.onclick=()=>{
-    const variant=$('paVariant')?.value??e.variant??'',equipment=$('paEquipment')?.value??e.equipmentChoice??'';
-    capturePlanAddStateV6();
-    e.variant=variant;e.equipmentChoice=equipment;
-    if($('paVariant'))e._variantExplicit=true;
-    if($('paEquipment'))e._equipmentExplicit=true;
-    e.reps=b.dataset.repPreset;renderPlanAddConfig()
-  });
-  document.querySelectorAll('[data-time-preset]').forEach(b=>b.onclick=()=>{capturePlanAddStateV6();e.timeSeconds=Number(b.dataset.timePreset);renderPlanAddConfig()});
-  bindPyramidCascade(e,'pa',renderPlanAddConfig);
-  if($('paGiantCount'))$('paGiantCount').onchange=()=>{
-    e.methodData=e.methodData||{};e.methodData.giantCount=Number($('paGiantCount').value)||3;
-    if(planAddFlow.group&&planAddFlow.group.method==='giant')planAddFlow.group.target=e.methodData.giantCount
-  };
-  $('paConfirm').onclick=()=>{
-    e.methodData=e.methodData||{};
-    if($('paGiantCount')){e.methodData.giantCount=Number($('paGiantCount').value)||3;if(planAddFlow.group&&planAddFlow.group.method==='giant')planAddFlow.group.target=e.methodData.giantCount}
-    if($('paClusterBlocks'))e.methodData.blocks=Number($('paClusterBlocks').value)||4;
-    if($('paIntraRest'))e.methodData.intraRest=Number($('paIntraRest').value)||20;
-    confirmPlanAddDraft()
-  }
- };
+ 
 
  // Partner exercises keep their own reps/time/AMRAP; pyramid is never offered as time even inside a connected series.
- const baseCompact=window.renderCompactPartnerConfig;
- window.renderCompactPartnerConfig=function(){
-  const e=planAddFlow?.current;if(e?.measureMode==='time'&&!Number(e.timeSeconds))e.timeSeconds=60;
-  baseCompact();
-  if(!e)return;
-  if(e.setTechnique==='pyramid'){e.measureMode='reps';const btn=$('partnerModeTime');if(btn){btn.disabled=true;btn.classList.remove('active')}}
-  bindPyramidCascade(e,'partner',renderCompactPartnerConfig)
- };
+ // Partner configuration is final in app-core; no second wrapper or duplicate event binding.
 
  // Core renderSets and planPrescription are authoritative.
 
  // Superset / Giant Set: large exercise links at the top; small repeated names beside 1a/1b/1c.
- window.renderLiveGroupCard=function(g){
-  const first=g.members[0],active=g.members.some(x=>Number(activeWorkout.activeExerciseIndex||0)===x.i),rounds=Math.max(...g.members.map(x=>x.e.liveSets?.length||x.e.sets||0));let rows='';
-  for(let si=0;si<rounds;si++){rows+=`<div class="combined-round"><div class="group-round-title"><span>Satz ${si+1}</span><button class="remove-mini" data-remove-live-set="${first.i}|${si}">−</button></div>`;g.members.forEach((x,gi)=>{rows+=combinedMemberControls(x,si,gi)});rows+='</div>'}
-  return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?'active-live-exercise':''}" data-live-card="${first.i}" data-live-members="${g.members.map(x=>x.i).join(",")}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="combined-series-head"><div>${g.members.map((x,gi)=>`<div class="combined-series-name"><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}"><strong>${String.fromCharCode(65+gi)}</strong> ${esc(x.e.name)}</button></div>`).join('')}</div></div><div class="method-help">${esc(methodHelp(g.method))}</div>${rows}<button class="secondary" data-add-group-set="${esc(g.key)}" style="margin-top:8px">Satz hinzufügen</button></div>`
- };
 
  // Preview mirrors the same connected-card hierarchy and exercise names open the execution card.
- window.openPreview=function(p){
-  $('previewTitle').textContent=p.name||'Workout Vorschau';const pp={...clone(p),exercises:clone(p.exercises).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
-  const groups=previewVisualGroups(pp.exercises);
-  $('previewBody').innerHTML=`<div class="preview-live-shell">${groups.map(g=>{if(!groupMethod(g.method))return`<div class="method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${g.items.map(e=>`<div class="preview-group-member"><div class="live-card-head"><div><button class="exercise-title-link" data-preview-detail="${esc(e.name)}">${esc(exerciseDisplayName(e))}</button><div class="prescription">${esc(planPrescription(e))}</div></div></div>${renderPreviewSets(e)}</div>`).join('')}</div>`;
-   const rounds=Math.max(...g.items.map(e=>Number(e.sets)||0));return`<div class="method-card connected-method-card method-${g.method}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="preview-connected-top">${g.items.map((e,j)=>`<button class="exercise-title-link" data-preview-detail="${esc(e.name)}"><strong>${String.fromCharCode(65+j)}</strong> ${esc(e.name)}</button>`).join('')}</div><div class="method-help" style="margin-top:8px">${esc(methodHelp(g.method))}</div>${Array.from({length:rounds},(_,si)=>`<div class="preview-combined-round"><div class="group-round-title">Satz ${si+1}</div>${g.items.map((e,j)=>`<div class="preview-combined-row"><span>${si+1}${String.fromCharCode(65+j)}</span><span class="preview-mini-name">${esc(e.name)}</span><span class="preview-value">${e.measureMode==='time'?formatTime(e.timeSeconds||60):'KG'}</span><span class="preview-value">${e.measureMode==='time'?'Leistung':(amrapText(e.reps||'WDH.'))}</span></div>`).join('')}</div>`).join('')}</div>`}).join('')}</div>`;
-  openPage('previewPage');document.querySelectorAll('[data-preview-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.previewDetail))
- };
 
  function askRestart(p){pendingStartPlan=p;openSheet('Training erneut starten?',`<p class="muted" style="margin:0 0 16px">„${esc(p.name)}“ erneut starten?</p><button id="reallyRestartPlan" class="primary" style="width:100%">Training erneut starten</button>`);$('reallyRestartPlan').onclick=()=>{closeSheet({all:true});startWorkout(p)}}
- window.openSummary=function(w){baseOpenSummary(w);const p=plans.find(x=>String(x.id)===String(w.planId));if(!p)return;requestAnimationFrame(()=>{if($('summaryTopPlay'))$('summaryTopPlay').onclick=()=>askRestart(p);if($('summaryRestart'))$('summaryRestart').onclick=()=>askRestart(p)})};
+ window.openSummary=function(w){baseOpenSummary(w)};
 
  // Legacy time exercises that visually default to 1:00 now actually carry 60 s as their selected value.
  const oldNormPlanEx=window.normPlanEx;window.normPlanEx=function(e){const x=oldNormPlanEx(e);if(x.measureMode==='time'&&!Number(x.timeSeconds))x.timeSeconds=60;if(x.setTechnique==='pyramid')x.measureMode='reps';return x};
@@ -295,13 +258,6 @@
 /* Exercise detail navigation from live workout */
 (function(){
  const baseRenderLive=window.renderLive;
- window.renderLive=function(){
-  baseRenderLive();
-  document.querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>{
-   const i=Number((b.dataset.liveIndex ?? b.closest('[data-live-card]')?.dataset.liveCard)||0);
-   setActiveExercise(i);exerciseDetailReturn=null;openExerciseDetail(b.dataset.liveDetail)
-  })
- };
  if(activeWorkout&&!$('livePage')?.classList.contains('hidden'))renderLive();
 })();
 
@@ -329,28 +285,11 @@
  },true);
 
  /* Pause selection must survive every redraw of the unified add/edit flow. */
- const baseRenderPlanAddConfig=window.renderPlanAddConfig;
- window.renderPlanAddConfig=function(){
-   baseRenderPlanAddConfig();
-   const e=planAddFlow?.current,rest=$("paRest");if(e&&rest)rest.onchange=()=>{e.rest=Number(rest.value)}
- };
-
- /* Remove generic coaching recommendation from live cards.
+/* Remove generic coaching recommendation from live cards.
     Only previous actually completed values may appear grey as placeholders. */
  const baseRenderLiveSingleCard=window.renderLiveSingleCard;
- window.renderLiveSingleCard=function(e,i){
-   let out=baseRenderLiveSingleCard(e,i);
-   out=out.replace(/<div class="recommendation">[\s\S]*?<\/div>/,"");
-   return out
- };
 
- /* Connected methods: same input styling and explicit KG / WDH labels.
-    Plan target reps are never used as an input placeholder. */
- window.combinedMemberControls=function(x,si,gi){
-   const s=x.e.liveSets?.[si];if(!s)return"";const idx=`${si+1}${String.fromCharCode(65+gi)}`;
-   if(x.e.measureMode==="time")return`<div class="combined-member-row combined-time-row"><span class="combined-index">${idx}</span><label class="combined-field"><span>ZEIT</span><input type="text" inputmode="text" autocorrect="off" autocapitalize="off" spellcheck="false" class="${s.completed?"rated-time-value":""}" data-time-field="1" data-input="${x.i}|${si}|time" placeholder="${liveTimeBoxPlaceholder(s)}" value="${liveTimeBoxValue(s)}"></label><button class="time-play" data-time-play="${x.i}|${si}">▶</button><label class="combined-field"><span>LEISTUNG</span><input type="text" data-input="${x.i}|${si}|level" placeholder="Leistung" value="${esc(s.level||"")}"></label><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button></div>`;
-   return`<div class="combined-member-row"><span class="combined-index">${idx}</span><label class="combined-field"><span>KG</span><input type="text" data-input="${x.i}|${si}|weight" placeholder="${esc(s._suggested?.weight||"KG")}" value="${esc(s.weight||"")}"></label><label class="combined-field"><span>WDH.</span><input type="text" data-input="${x.i}|${si}|reps" placeholder="${esc(liveRepBoxSuggestion(x.e,s))}" value="${esc(s.reps||"")}"></label><button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button></div>`
- };
+ /* Connected-method controls are owned by app-core.js; no runtime replacement. */
 
  /* A grey prior value becomes real only when the user rates/completes the set;
     typing overwrites it because actual value remains empty until input. Existing promoteSuggested() keeps this rule. */
@@ -409,22 +348,7 @@
  window.closeSheet=function(opts){resetSheet();return baseCloseSheet(opts||{})}
 })();
 
-/* Drop-set live row layout */
-(function(){
- const previousRenderSets=window.renderSets;
- window.renderSets=function(e,ei){
-   if(e?.setTechnique!=="dropset")return previousRenderSets(e,ei);
-   return (e.liveSets||[]).map((s,si)=>{
-     const segs=s.segments||[];
-     return `<div class="advanced-head"><span>SATZ ${si+1}</span><span></span><span>KG</span><span>WDH.</span><span></span><span></span></div>`+
-       segs.map((g,gi)=>{
-         const last=gi===segs.length-1;
-         return `<div class="advanced-row ${last?"drop-final-row":""}"><span>${gi+1}</span><span class="small">${esc(g.label)}</span><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|sw|${gi}" placeholder="${esc(g._suggested?.weight||"KG")}" value="${esc(g.weight)}"><input type="text" inputmode="decimal" autocomplete="off" autocorrect="off" data-input="${ei}|${si}|sr|${gi}" placeholder="${esc(g._suggested?.reps||"WDH.")}" value="${esc(g.reps)}">${last?`<button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(e,s)?"ready":""}" data-check="${ei}|${si}">✓</button><button class="remove-mini" data-remove-live-set="${ei}|${si}">−</button>`:`<span></span><span></span>`}</div>`
-       }).join("")+ratingMarkup(ei,si,s)
-   }).join("")
- };
- if(activeWorkout&&!$("livePage")?.classList.contains("hidden"))renderLive();
-})();
+/* Live set rendering is owned by app-core.js; no runtime replacement. */
 
 /* Food search, custom foods, meals */
 (function(){
@@ -516,43 +440,6 @@
    return{kcal:Math.round(Number(f.kcal||0)*factor),protein:Math.round(Number(f.protein||0)*factor*10)/10,water:Math.round(Number(f.water||0)*factor)}
  }
 
- window.openFoodSearch=function(initialQuery="",options={}){
-   ensureNutritionV52();
-   let q=String(initialQuery||"").trim().toLowerCase();
-   const rows=()=>foodRowsV52(q);
-   const markup=()=>{
-     const r=rows();
-     if(!r.length)return q?'<div class="small empty-food-note">Kein passendes Lebensmittel gefunden.</div>':'<div class="food-search-empty"><strong>Lebensmittel suchen</strong><div class="small">Häufig verwendete Lebensmittel erscheinen hier automatisch weiter oben.</div></div>';
-     return r.map(f=>{
-       const s=foodServingV52(f),used=usageCountV52(f.name);
-       return`<button class="food-result ${foodTone(f.category)}" data-food-v52="${esc(foodKeyV52(f))}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category||"Eigenes Lebensmittel")}${used?` · ${used}× verwendet`:""}</small><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><span class="food-result-values">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser<br><small>je 100 g</small></span></button>`
-     }).join("")
-   };
-   const body=()=>`<div class="search food-search"><span class="search-loupe" aria-hidden="true">⌕</span><input id="foodSearchInput" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel oder Kategorie" value="${esc(q)}"><button id="foodSearchClear" class="${q?"":"hidden"}">×</button></div><div class="small food-source-note">${allFoodsV52().length} Lebensmittel · Suche priorisiert Wort- und Kategoriebeginn</div><div id="foodSearchRows">${markup()}</div>`;
-   const selectFood=f=>{
-     if(options.selectOnly&&typeof options.onSelect==="function"){options.onSelect(f);return}
-     const serving=foodServingV52(f);
-     currentSheetState={title:"Lebensmittel hinzufügen",body:body(),scroll:$("sheetBody").scrollTop||0,bind};
-     openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser je 100 g</div><span class="food-serving">${esc(serving.label)} ≈ ${serving.grams} g</span></div><div class="food-quick-portions"><button data-food-portion="${Math.max(1,Math.round(serving.grams/2))}">½ Portion</button><button data-food-portion="${serving.grams}">${esc(serving.label)}</button><button data-food-portion="${Math.round(serving.grams*2)}">2 Portionen</button></div><div class="form-field"><label>MENGE G</label><input id="foodGramInput" class="field" inputmode="decimal" value="${serving.grams}"></div><div id="foodAmountPreview" class="small"></div><button id="foodAddConfirm" class="primary" style="width:100%;margin-top:10px">Hinzufügen</button>`,()=>{
-       const grams=$("foodGramInput"),preview=$("foodAmountPreview");
-       const update=()=>{const n=nutrientsForV52(f,Number(String(grams.value).replace(",",".")));preview.textContent=`${n.kcal} kcal · ${n.protein} g Protein · ${n.water} g Wasser`};
-       grams.oninput=update;grams.onfocus=()=>grams.select();grams.onclick=()=>grams.select();
-       document.querySelectorAll("[data-food-portion]").forEach(b=>b.onclick=()=>{grams.value=b.dataset.foodPortion;update()});
-       update();
-       $("foodAddConfirm").onclick=()=>{addFoodEntry(f,Number(String(grams.value).replace(",",".")));closeSheet({all:true})}
-     })
-   };
-   const bindRows=()=>document.querySelectorAll("[data-food-v52]").forEach(b=>b.onclick=()=>{const f=resolveFoodKeyV52(b.dataset.foodV52);if(f)selectFood(f)});
-   const bind=()=>{
-     const input=$("foodSearchInput");
-     const refresh=()=>{$("foodSearchRows").innerHTML=markup();$("foodSearchClear").classList.toggle("hidden",!q);bindRows();currentSheetState={title:options.title||"Lebensmittel hinzufügen",body:body(),scroll:$("sheetBody").scrollTop||0,bind}};
-     input.oninput=()=>{q=input.value.trim().toLowerCase();refresh()};
-     $("foodSearchClear").onclick=()=>{q="";input.value="";refresh();input.focus();input.setSelectionRange(0,0)};
-     bindRows();
-     requestAnimationFrame(()=>{input.focus();if(!q)input.setSelectionRange(0,0)})
-   };
-   openSheet(options.title||"Lebensmittel hinzufügen",body(),bind)
- };
 
  function openCustomFoodV52(existing=null){
    const f=existing||{id:uid(),name:"",category:"Eigene Lebensmittel",kcal:"",protein:"",water:"",servingGrams:100,servingLabel:"1 Portion"};
@@ -606,15 +493,13 @@
    document.querySelectorAll("[data-meal-del]").forEach(b=>b.onclick=()=>{if(confirm("Mahlzeit wirklich löschen?")){nutrition.meals=nutrition.meals.filter(x=>String(x.id)!==String(b.dataset.mealDel));saveAll();renderProfile()}})
  }
 
- const baseRenderProfileV52=window.renderProfile;
- window.renderProfile=function(){
-   baseRenderProfileV52();
-   ensureNutritionV52();
+ __rt.profile.post.push(function(__result,...__args){
+ensureNutritionV52();
    renderMyFoodsV52();
    if($("addFoodTodayBtn"))$("addFoodTodayBtn").onclick=()=>openFoodSearch("");
    if($("newCustomFoodBtn"))$("newCustomFoodBtn").onclick=()=>openCustomFoodV52();
    if($("newMealBtn"))$("newMealBtn").onclick=()=>openMealBuilderV52()
- };
+});
 
 
 
@@ -637,60 +522,12 @@
  window.addEventListener("pagehide",persistUI);
 
 
- /* ---------- plan-save choice after changed workout: structural compare, reliable overwrite/new ---------- */
- function structureOnlyV53(exercises){return clone(exercises||[]).map(x=>{const y=clone(x);delete y.liveSets;delete y._lastRatings;return y})}
- function workoutStructureChangedV53(){
-   if(!activeWorkout)return false;
-   return livePlanEdited||JSON.stringify(structureOnlyV53(activeWorkout.exercises))!==JSON.stringify(structureOnlyV53(activeWorkout.structureBaseline||[]))
- }
- finishAndSaveWorkout=function(){
-   if(!activeWorkout)return;
-   const changed=workoutStructureChangedV53();
-   if(changed&&!activeWorkout.isWeekCombined){
-     const sourceId=activeWorkout.sourcePlanId||activeWorkout.planId,existing=plans.find(p=>String(p.id)===String(sourceId));
-     openSheet("Planänderungen speichern?",`<p class="small" style="margin:0 0 14px">Das Workout wird gespeichert. Was soll mit der veränderten Planstruktur passieren?</p><div class="save-choice-stack">${existing?`<button id="finishOverwritePlan" class="primary">Originalplan überschreiben</button>`:""}<button id="finishWithPlanSave" class="secondary">Als neuen Plan speichern</button><button id="finishWithoutPlanSave" class="secondary danger">Planänderungen nicht speichern</button></div>`);
-     if($("finishOverwritePlan"))$("finishOverwritePlan").onclick=()=>finalizeWorkout({saveChangedPlan:"overwrite"});
-     $("finishWithPlanSave").onclick=()=>finalizeWorkout({saveChangedPlan:"new"});
-     $("finishWithoutPlanSave").onclick=()=>finalizeWorkout({saveChangedPlan:false});
-     return
-   }
-   finalizeWorkout({saveChangedPlan:false})
- };
- finalizeWorkout=function({saveChangedPlan=false}={}){
-   if(!activeWorkout)return;
-   activeWorkout.finishedAt=Date.now();
-   const structural=structureOnlyV53(activeWorkout.exercises),sourceId=activeWorkout.sourcePlanId||activeWorkout.planId;
-   if(activeWorkout.isWeekCombined){
-     const requested=activeWorkout.name||"Wochenplan",finalName=plans.some(p=>planBaseName(p.name)===planBaseName(requested))?nextPlanVersionName(requested):requested;
-     const np={id:uid(),name:finalName,createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),fromWeek:true,sourcePlanIds:clone(activeWorkout.weekSourceIds||[]),exercises:structural};
-     plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name;activeWorkout.savedWeekPlanId=np.id
-   }else if(saveChangedPlan){
-     const src=plans.find(p=>String(p.id)===String(sourceId));
-     if(saveChangedPlan==="overwrite"&&src){
-       src.exercises=structural;src.updatedAt=Date.now();src.lastUsedAt=Date.now();activeWorkout.planId=src.id;activeWorkout.planName=src.name
-     }else{
-       const base=activeWorkout.planName||activeWorkout.name||"Training",np={id:uid(),name:nextPlanVersionName(base),createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),sourcePlanId:sourceId,exercises:structural};
-       plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name
-     }
-   }
-   activeWorkout.sourcePlanId=sourceId;history.push(clone(activeWorkout));const done=clone(activeWorkout);
-   activeWorkout=null;livePlanEdited=false;restEnd=0;persistRestEnd();timeSetTimers.forEach(clearInterval);timeSetTimers.clear();saveAll();renderPlans();
-   closeSheet({all:true});document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));pageStack=[];$("bottomNav").classList.remove("hidden");showTab("training",{reset:false});openSummary(done)
- };
+ /* Workout finish/save flow is authoritative in app-core.js. */
 
- /* Previous rating dots are handled only once by addPreviousDotsToSinglesV31(). */
+/* Previous rating dots are handled only once by addPreviousDotsToSinglesV31(). */
 
  /* ---------- partner masks: same card language as primary config ---------- */
- const oldPartnerConfigV53=window.renderCompactPartnerConfig||renderCompactPartnerConfig;
- window.renderCompactPartnerConfig=function(){
-   oldPartnerConfigV53();
-   const e=planAddFlow?.current;if(!e)return;
-   const body=$("sheetBody"),card=body?.querySelector(".compact-partner-card");
-   if(card){card.classList.add("partner-unified-card");card.insertAdjacentHTML("afterbegin",`<div class="partner-step-kicker">Partnerübung vollständig konfigurieren</div>`)}
- };
-
-
- /* ---------- direct amount editing ---------- */
+/* ---------- direct amount editing ---------- */
  function editFoodEntryV53(id){
    const x=(nutrition.foodLog||[]).find(v=>String(v.id)===String(id));if(!x)return;
    const per100={kcal:Number(x.grams)?Number(x.kcal)*100/Number(x.grams):0,protein:Number(x.grams)?Number(x.protein)*100/Number(x.grams):0,water:Number(x.grams)?Number(x.water)*100/Number(x.grams):0};
@@ -705,13 +542,12 @@
    const inp=$("editDrinkAmountV53");requestAnimationFrame(()=>{inp.focus();inp.select()});
    $("saveDrinkAmountV53").onclick=()=>{x.size=Math.max(1,Number(String(inp.value).replace(",","."))||1);saveHydrationLog(log);recalcFoodTotals();saveAll();closeSheet({all:true});renderProfile()}
  }
- const oldRenderProfileV53=window.renderProfile||renderProfile;
- window.renderProfile=function(){
-   oldRenderProfileV53();renderProfileProgress();
+ __rt.profile.post.push(function(__result,...__args){
+renderProfileProgress();
    document.querySelectorAll("[data-edit-food-entry]").forEach(row=>row.onclick=e=>{if(e.target.closest("[data-food-del]"))return;editFoodEntryV53(row.dataset.editFoodEntry)});
    document.querySelectorAll("[data-edit-drink-entry]").forEach(row=>row.onclick=e=>{if(e.target.closest("[data-hydration-del]"))return;editDrinkEntryV53(row.dataset.editDrinkEntry)});
    document.querySelectorAll("[data-direct-drink]").forEach(card=>card.onclick=e=>{if(e.target.closest(".drink-actions"))return;const id=card.dataset.directDrink,d=nutrition.drinks.find(x=>String(x.id)===String(id));if(!d)return;openSheet(d.name,`<div class="form-field"><label>MENGE ML</label><input id="directDrinkAmountV53" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div><button id="directDrinkAddV53" class="primary" style="width:100%">Eintragen</button>`);const inp=$("directDrinkAmountV53");requestAnimationFrame(()=>{inp.focus();inp.select()});$("directDrinkAddV53").onclick=()=>{addDrinkEntry(d,inp.value);closeSheet({all:true})}})
- };
+});
 
  
 })();
@@ -748,15 +584,13 @@
  window.hydrationStreakV56=()=>streakV56("hydration");
  window.nutritionStreakV56=()=>streakV56("nutrition");
 
- const priorProfileV56=window.renderProfile||renderProfile;
- window.renderProfile=function(){
-   priorProfileV56();
-   const hs=hydrationStreakV56(),ns=nutritionStreakV56();
+ __rt.profile.post.push(function(__result,...__args){
+const hs=hydrationStreakV56(),ns=nutritionStreakV56();
    const hb=$("hydrationStreakBadge"),nb=$("nutritionStreakBadge");
    if(hb){hb.querySelector("strong").textContent=hs;hb.classList.toggle("active",hs>0)}
    if(nb){nb.querySelector("strong").textContent=ns;nb.classList.toggle("active",ns>0)}
    if(typeof renderProfileProgress==="function")renderProfileProgress()
- };
+});
 
 
  /* Standby/background: persist the exact current position.
@@ -835,7 +669,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
         <div class="detail-section"><div class="small">ÜBUNG</div><strong>${esc(e.name)}</strong></div>
         <div class="detail-section"><div class="small">TRAININGSART</div><strong>${esc(e.category)}</strong></div>
         <div class="detail-section"><div class="small">MUSKELGRUPPEN</div><div>${esc((e.muscles||[]).join(" · "))}</div></div>
-        <div class="detail-section"><div class="small">AUSFÜHRUNG</div><div class="detail-copy">${esc(guide)}</div></div>
+        ${e.custom?"":`<div class="detail-section"><div class="small">AUSFÜHRUNG</div><div class="detail-copy">${esc(guide)}</div></div>`}
         <button id="v64PartnerFromDetail" class="primary" style="width:100%;margin-top:12px">+ Diese Übung wählen</button>
       </div>`,
       onBack:()=>renderPartnerExercisePicker(),
@@ -844,56 +678,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
     $("v64PartnerFromDetail").onclick=()=>startCompactPartnerConfig(name)
   }
 
-  window.renderPartnerExercisePicker=function(){
-    const f=planAddFlow;if(!f?.group)return renderPlanAddPicker();
-    const all=allExercises(),rows=planAddFiltered(),types=planAddTypes(all),muscles=planAddMuscles(all);
-    f.step="partnerPicker";
-    const pos=f.drafts.length+1,target=f.group.target,method=METHOD_LABEL[f.group.method]||f.group.method;
-    renderSheetState({
-      title:`${method} · Übung ${pos}/${target}`,
-      scroll:Number(f.partnerPickerScroll)||0,
-      body:`<div class="partner-catalog-note">Wähle die nächste Übung wie im normalen Übungskatalog. Tippe auf den Namen, um die Ausführung vorher zu prüfen.</div>
-        <div class="search"><input id="v64PartnerSearch" class="field" placeholder="Übung suchen" value="${esc(f.q||"")}"><button id="v64PartnerClear">×</button></div>
-        <div class="chips" id="v64PartnerTypeChips">${types.map(x=>`<button class="chip ${f.type===x?"active":""}" data-v64-partner-type="${esc(x)}">${esc(x)}</button>`).join("")}</div>
-        <div class="chips" id="v64PartnerMuscleChips">${muscles.map(x=>`<button class="chip ${(x==="Alle"&&!f.muscles.size)||f.muscles.has(x)?"active":""}" data-v64-partner-muscle="${esc(x)}">${esc(x)}</button>`).join("")}</div>
-        <div class="small" id="v64PartnerCount" style="margin:2px 0 8px">${rows.length} Übungen</div>
-        <div id="v64PartnerRows">${partnerCatalogRowsV64(rows)}</div>`,
-      onBack:()=>{
-        if(f.drafts.length){const prev=f.drafts.pop();f.current=prev;f.step="config";renderPlanAddConfig()}
-        else renderPlanAddPicker()
-      },
-      onClose:cancelPlanAddFlow
-    });
-    const search=$("v64PartnerSearch");
-    const remember=()=>{
-      f.partnerPickerScroll=$("sheetBody")?.scrollTop||0;
-      f.partnerTypeScroll=$("v64PartnerTypeChips")?.scrollLeft||0;
-      f.partnerMuscleScroll=$("v64PartnerMuscleChips")?.scrollLeft||0
-    };
-    const refresh=()=>{
-      const r=planAddFiltered();
-      $("v64PartnerCount").textContent=`${r.length} Übungen`;
-      $("v64PartnerRows").innerHTML=partnerCatalogRowsV64(r);
-      bindPartnerCatalogRowsV64()
-    };
-    search.oninput=()=>{f.q=search.value.toLowerCase();exercisePickerState.q=f.q;refresh()};
-    $("v64PartnerClear").onclick=()=>{f.q="";search.value="";exercisePickerState.q="";refresh();search.focus()};
-    document.querySelectorAll("[data-v64-partner-type]").forEach(b=>b.onclick=()=>{
-      remember();f.type=(f.type===b.dataset.v64PartnerType&&f.type!=="Alle")?"Alle":b.dataset.v64PartnerType;
-      exercisePickerState.type=f.type;renderPartnerExercisePicker()
-    });
-    document.querySelectorAll("[data-v64-partner-muscle]").forEach(b=>b.onclick=()=>{
-      remember();const m=b.dataset.v64PartnerMuscle;
-      if(m==="Alle")f.muscles.clear();else f.muscles.has(m)?f.muscles.delete(m):f.muscles.add(m);
-      exercisePickerState.muscles=[...f.muscles];renderPartnerExercisePicker()
-    });
-    bindPartnerCatalogRowsV64();
-    requestAnimationFrame(()=>{
-      if($("v64PartnerTypeChips"))$("v64PartnerTypeChips").scrollLeft=Number(f.partnerTypeScroll)||0;
-      if($("v64PartnerMuscleChips"))$("v64PartnerMuscleChips").scrollLeft=Number(f.partnerMuscleScroll)||0;
-      $("sheetBody").scrollTop=Number(f.partnerPickerScroll)||0
-    })
-  };
+  
 
   /* Back from partner detail always returns to the same filtered catalog position. */
   const previousPlanAddBackV64=window.planAddBack||planAddBack;
@@ -905,46 +690,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
   function allExerciseSetsDoneV64(e){
     return !!e&&(e.liveSets||[]).length>0&&(e.liveSets||[]).every(s=>s.completed)
   }
-  window.renderLiveSingleCard=function(e,i){
-    const complete=allExerciseSetsDoneV64(e),active=Number(activeWorkout.activeExerciseIndex||0)===i&&!complete;
-    return`<div class="method-card live-exercise-card method-${e.setTechnique||"standard"} ${active?"active-live-exercise":""} ${complete?"live-method-complete":""}" data-live-card="${i}">
-      <div class="method-name">${METHOD_LABEL[e.setTechnique||"standard"]}</div>
-      <div class="live-card-head"><div><button class="exercise-title-link" data-live-detail="${esc(e.name)}" data-live-index="${i}">${esc(exerciseDisplayName(e))}</button><div class="prescription">${esc(planPrescription(e))}</div></div>
-      <div class="live-card-actions"><button class="icon-btn" data-live-config="${i}" aria-label="Übung bearbeiten">✎</button><button class="live-delete-ex" data-delete-live-ex="${i}" aria-label="Übung löschen">−</button></div></div>
-      <div class="method-help">${esc(methodHelp(e.setTechnique))}</div>
-      ${e.variant||e.perSide?`<div class="variant-line">${e.variant?esc(e.variant):""}${e.variant&&e.perSide?" · ":""}${e.perSide?"WDH. pro Seite":""}</div>`:""}
-      <button class="note-line" data-live-note="${i}" style="border:0;background:transparent;padding:0">✎ ${esc(e.note||"Notiz")}</button>
-      ${renderSets(e,i)}
-      <button class="secondary" data-add-set="${i}" style="margin-top:8px">Satz hinzufügen</button>
-    </div>`
-  };
-
-  window.renderLiveGroupCard=function(g){
-    const first=g.members[0],complete=g.members.every(x=>allExerciseSetsDoneV64(x.e));
-    const active=g.members.some(x=>Number(activeWorkout.activeExerciseIndex||0)===x.i)&&!complete;
-    const rounds=Math.max(...g.members.map(x=>x.e.liveSets?.length||x.e.sets||0));let rows="";
-    for(let si=0;si<rounds;si++){rows+=`<div class="combined-round"><div class="group-round-title"><span>Satz ${si+1}</span><button class="remove-mini" data-remove-live-set="${first.i}|${si}">−</button></div>`;g.members.forEach((x,gi)=>rows+=combinedMemberControls(x,si,gi));rows+=`</div>`}
-    const head=g.members.map((x,gi)=>`<div class="live-group-member-head"><div class="live-group-member-copy"><div class="partner-title-row"><strong class="group-letter">${String.fromCharCode(65+gi)}</strong><button class="exercise-title-link" data-live-detail="${esc(x.e.name)}" data-live-index="${x.i}">${esc(exerciseDisplayName(x.e))}</button></div><div class="prescription connected-prescription">${esc(planPrescription(x.e))}</div><button class="note-line connected-note-line" data-live-note="${x.i}" style="border:0;background:transparent;padding:0">✎ ${esc(x.e.note||"Notiz")}</button></div><button class="icon-btn live-group-member-edit" data-live-config="${x.i}">✎</button><button class="live-group-member-delete" data-delete-live-ex="${x.i}">−</button></div>`).join("");
-    return`<div class="method-card live-exercise-card connected-live-card method-${g.method} ${active?"active-live-exercise":""} ${complete?"live-method-complete":""}" data-live-card="${first.i}" data-live-members="${g.members.map(x=>x.i).join(",")}"><div class="method-name">${METHOD_LABEL[g.method]}</div><div class="combined-series-head">${head}</div><div class="method-help">${esc(methodHelp(g.method))}</div>${rows}<button class="secondary" data-add-group-set="${esc(g.key)}" style="margin-top:8px">Satz hinzufügen</button></div>`
-  };
+  /* Live card rendering is owned by app-core.js. Legacy v64 renderer overrides removed. */
   const renderLiveV64BeforeActions=renderLive;
-  renderLive=function(){
-    const out=renderLiveV64BeforeActions();
-    document.querySelectorAll("[data-live-config]").forEach(b=>b.onclick=()=>{setActiveExercise(Number(b.dataset.liveConfig));configureLiveExercise(Number(b.dataset.liveConfig))});
-    document.querySelectorAll("[data-delete-live-ex]").forEach(b=>b.onclick=()=>{
-      const i=Number(b.dataset.deleteLiveEx),e=activeWorkout?.exercises?.[i];if(!e)return;
-      if(confirm(`„${e.name}“ aus dem Training löschen?`)){
-        const gid=e.techniqueGroup,method=e.setTechnique;activeWorkout.exercises.splice(i,1);
-        if(groupMethod(method)&&gid){
-          const left=activeWorkout.exercises.filter(x=>x.techniqueGroup===gid);
-          if(method==="giant"&&left.length===2)left.forEach(x=>{x.setTechnique="superset";x.techniqueGroup=gid;x.methodData={};x.linkedExerciseNames=left.filter(y=>y!==x).map(y=>y.name);x.liveSets=rebuildLiveSetsForExercise(x,x.liveSets||[])});
-          else if(left.length<(method==="giant"?3:2))left.forEach(x=>{x.setTechnique="standard";x.techniqueGroup=null;x.linkedExerciseNames=[];x.methodData={};x.liveSets=rebuildLiveSetsForExercise(x,x.liveSets||[])})
-        }
-        activeWorkout.activeExerciseIndex=Math.min(i,Math.max(0,activeWorkout.exercises.length-1));livePlanEdited=true;saveAll();renderLive()
-      }
-    });
-    return out
-  };
 
 
   /* Exact compact profile cards: no premise/explanation text. */
@@ -963,17 +710,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
     });
     return days.size
   }
-  window.renderProfileProgress=function(){
-    const el=$("profileProgressOverview");if(!el)return;
-    const wt=weightTrend(),current=wt?.current!=null?Number(wt.current):null,target=wt?.target!=null?Number(wt.target):null;
-    const distance=(current!=null&&target!=null)?Math.max(0,Math.round(Math.abs(target-current)*10)/10):null;
-    const wk=currentWeekV64(),train=weekDaysV64(),streak=typeof goalStreakV50==="function"?(Number(goalStreakV50())||0):0;
-    el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid">
-      <div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${current!=null?`${current} kg`:"–"}</strong><span class="progress-sub-value">${distance!=null?`${distance} kg bis Ziel`:"–"}</span></div>
-      <div class="card progress-stat"><div class="small">Streak</div><strong>${streak}</strong><span class="progress-sub-value">Wasser und Ernährung</span></div>
-      <div class="card progress-stat training-week-stat"><div class="small">Trainingstage</div><span class="progress-sub-label">KW ${wk.week}</span><strong>${train}/7</strong></div>
-    </div>`
-  };
 
   try{renderProfileProgress();if(activeWorkout&&!$("livePage")?.classList.contains("hidden"))renderLive()}catch(e){console.error("v64 init",e)}
 })();
@@ -981,8 +717,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 
 /* v68 final integration */
 (function(){
- const ANNUAL_CLEANUP_KEY='rethink_annual_cleanup_enabled_v1',ANNUAL_CLEANUP_YEAR='rethink_annual_cleanup_prompt_year_v1';
-
  function moveRestDockV68(){
    const bar=$('restBar');if(bar&&bar.parentElement!==document.body)document.body.appendChild(bar)
  }
@@ -991,102 +725,17 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  startRest=function(sec,restored=false){moveRestDockV68();return baseStartRestV68(sec,restored)};
 
  /* Preview uses the same workout card renderer, but remains read-only. */
- window.openPreview=function(p){
-   $('previewTitle').textContent=p.name||'Workout Vorschau';
-   const pp={...clone(p),activeExerciseIndex:-1,exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:x.sets||3},(_,i)=>initSet(x,i));return x})};
-   const saved=activeWorkout;activeWorkout=pp;
-   let markup='';
-   try{markup=liveVisualGroups(pp.exercises).map(g=>g.group?renderLiveGroupCard(g):renderLiveSingleCard(g.members[0].e,g.members[0].i)).join('')}
-   finally{activeWorkout=saved}
-   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact">${markup}</div>`;
-   $('previewBody').querySelectorAll('input,textarea,select').forEach(x=>{x.readOnly=true;x.tabIndex=-1});
-   $('previewBody').querySelectorAll('[data-live-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.liveDetail));
-   openPage('previewPage')
- };
 
  function weekRunningV68(day){
    if(!activeWorkout?.weekDate)return false;
    return String(activeWorkout.weekDate)===String(dateKeyLocal(weekDateAt(day)))
  }
- renderWeek=function(){
-   $('weekMotivation').innerHTML=`<div class="small">DIESE WOCHE</div><strong>${esc(weekMotivationText())}</strong>`;
-   const days=['Mo','Di','Mi','Do','Fr','Sa','So'],from=weekDateAt(0),to=weekDateAt(6);
-   $('weekRangeLabel').textContent=`${fmtShortDate(from)} – ${fmtShortDate(to)}`;
-   $('weekOffsetLabel').textContent=weekOffset===0?'Diese Woche':weekOffset<0?`${Math.abs(weekOffset)} Woche${Math.abs(weekOffset)===1?'':'n'} zurück`:`${weekOffset} Woche${weekOffset===1?'':'n'} voraus`;
-   $('weekPrevBtn').disabled=weekOffset<=-8;$('weekNextBtn').disabled=weekOffset>=8;
-   let changed=false;weekPlan=weekPlan.map((ids,i)=>{const valid=validWeekPlans(i).map(p=>p.id);if(JSON.stringify(valid)!==JSON.stringify(Array.isArray(ids)?ids:[]))changed=true;return valid});if(changed)saveAll();
-   $('weekList').innerHTML=days.map((d,i)=>{
-     const ps=validWeekPlans(i),ex=ps.reduce((n,p)=>n+p.exercises.length,0),sets=ps.reduce((n,p)=>n+countPlanSets(p),0),date=weekDateAt(i),done=ps.length&&weekCompletion(i),running=ps.length&&weekRunningV68(i);
-     const names=ps.map(p=>p.name).join(' + ');
-     return`<div class="week-row"><div class="week-day">${d}</div><div class="week-card ${done?'week-completed':(running?'week-running':(ps.length?'week-scheduled':''))}">
-       <button class="week-card-main" ${ps.length?`data-v68-week-main="${i}"`:''}><div class="week-card-date">${date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</div>
-       ${ps.length?`<strong>${esc(names)}</strong><small>${ps.length} Plan${ps.length===1?'':'e'} · ${ex} Übungen · ${sets} Sätze${done?' · Abgeschlossen':''}</small>${running?'<div class="week-running-label">WORKOUT LÄUFT</div>':''}`:`<div class="week-pause-wrap">${stretchSvg()}<div><strong>Pause</strong><small>Freier Tag</small></div></div>`}</button>
-       <div class="week-actions">${ps.length?`${done?'':(running?`<button class="week-plus week-play" data-v68-week-resume="${i}" aria-label="Workout öffnen">▶</button>`:`<button class="week-plus week-play" data-v68-week-start="${i}" aria-label="Training starten">▶</button>`)}<button class="week-menu" data-wm="${i}">⋮</button>`:`<button class="week-plus" data-wa="${i}" aria-label="Plan hinzufügen">+</button>`}</div></div></div>`
-   }).join('');
-   document.querySelectorAll('[data-wa]').forEach(b=>b.onclick=()=>openWeekPicker(Number(b.dataset.wa)));
-   document.querySelectorAll('[data-v68-week-main]').forEach(b=>b.onclick=()=>{const day=Number(b.dataset.v68WeekMain);if(weekRunningV68(day))openLive(false);else openWeekPreview(day)});
-   document.querySelectorAll('[data-v68-week-start]').forEach(b=>b.onclick=e=>{e.stopPropagation();const fresh=combinedWeekPlan(Number(b.dataset.v68WeekStart));if(fresh)confirmAndStartPlan(fresh)});
-   document.querySelectorAll('[data-v68-week-resume]').forEach(b=>b.onclick=e=>{e.stopPropagation();openLive(false)});
-   document.querySelectorAll('[data-wm]').forEach(b=>b.onclick=e=>{e.stopPropagation();weekMenu(Number(b.dataset.wm))})
- };
 
  /* Week picker: selected order is workout order and is always numbered. */
- window.openWeekPicker=function(day){
-   let selected=validWeekPlans(day).map(p=>p.id),q='';
-   const render=()=>{
-     const rows=sortedPlansForPicker(q);
-     $('sheetBody').innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div><div class="chips">${[['name','A–Z'],['created','Hinzugefügt'],['updated','Geändert'],['used','Genutzt']].map(([k,l])=>`<button class="chip ${planSort.key===k?'active':''}" data-week-sort="${k}">${l}${planSort.key===k?(planSort.dir>0?' ↑':' ↓'):''}</button>`).join('')}</div></div>
-       ${rows.map(p=>{const order=selected.indexOf(p.id)+1;return`<button class="plan-card week-select-card ${order?'selected':''}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${order?`<span class="week-order-badge">${order}</span>`:'›'}</span></button>`}).join('')}
-       <div class="week-selection-footer"><div class="small" style="margin-bottom:8px">${selected.length?`Reihenfolge: ${selected.map((id,i)=>`${i+1}. ${esc(plans.find(p=>p.id===id)?.name||'Plan')}`).join(' · ')}`:'Kein Plan gewählt'}</div><button id="weekApply" class="primary" style="width:100%">Übernehmen</button></div>`;
-     $('weekSearch').oninput=()=>{q=$('weekSearch').value;render()};
-     $('weekSearchClear').onclick=()=>{q='';render()};
-     document.querySelectorAll('[data-week-sort]').forEach(b=>b.onclick=()=>{if(planSort.key===b.dataset.weekSort)planSort.dir*=-1;else{planSort.key=b.dataset.weekSort;planSort.dir=1}render()});
-     document.querySelectorAll('[data-wpick]').forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick),i=selected.indexOf(id);if(i>=0)selected.splice(i,1);else selected.push(id);render()});
-     $('weekApply').onclick=()=>{const had=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(had&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();renderProfileProgress?.()}
-   };
-   openSheet('Trainingsplan auswählen','');render()
- };
 
- /* Unified weekly plan-save question, identical order to normal workout. */
- function cleanPlanExerciseV68(x){const y=clone(x);delete y.liveSets;delete y._lastRatings;delete y._weekSourcePlanId;delete y._weekSourceOrder;delete y._weekSourceExerciseOrder;return y}
- function structureV68(ex){return clone(ex||[]).map(cleanPlanExerciseV68)}
- function changedV68(){return !!activeWorkout&&(livePlanEdited||JSON.stringify(structureV68(activeWorkout.exercises))!==JSON.stringify(structureV68(activeWorkout.structureBaseline||[])))}
- finishAndSaveWorkout=function(){
-   if(!activeWorkout)return;
-   if(changedV68()){
-     const hasOriginal=activeWorkout.isWeekCombined?(activeWorkout.weekSourceIds||[]).some(id=>plans.some(p=>String(p.id)===String(id))):plans.some(p=>String(p.id)===String(activeWorkout.sourcePlanId||activeWorkout.planId));
-     openSheet('Planänderungen speichern?',`<p class="small" style="margin:0 0 14px">Das Workout wird gespeichert. Was soll mit der veränderten Planstruktur passieren?</p><div class="save-choice-stack">${hasOriginal?'<button id="finishOverwritePlan" class="primary">Originalplan überschreiben</button>':''}<button id="finishWithPlanSave" class="secondary">Als neuen Plan speichern</button><button id="finishWithoutPlanSave" class="secondary danger">Planänderungen nicht speichern</button></div>`);
-     if($('finishOverwritePlan'))$('finishOverwritePlan').onclick=()=>finalizeWorkout({saveChangedPlan:'overwrite'});
-     $('finishWithPlanSave').onclick=()=>finalizeWorkout({saveChangedPlan:'new'});
-     $('finishWithoutPlanSave').onclick=()=>finalizeWorkout({saveChangedPlan:false});
-     return
-   }
-   finalizeWorkout({saveChangedPlan:false})
- };
- finalizeWorkout=function({saveChangedPlan=false}={}){
-   if(!activeWorkout)return;
-   activeWorkout.finishedAt=Date.now();
-   const current=clone(activeWorkout.exercises||[]),structural=current.map(cleanPlanExerciseV68),sourceId=activeWorkout.sourcePlanId||activeWorkout.planId;
-   if(saveChangedPlan==='overwrite'){
-     if(activeWorkout.isWeekCombined){
-       const sourceIds=(activeWorkout.weekSourceIds||[]).map(String);
-       const grouped=new Map(sourceIds.map(id=>[id,[]]));
-       current.forEach(e=>{let id=String(e._weekSourcePlanId||sourceIds[0]||'');if(!grouped.has(id))id=sourceIds[0];if(id&&grouped.has(id))grouped.get(id).push(cleanPlanExerciseV68(e))});
-       grouped.forEach((ex,id)=>{const p=plans.find(x=>String(x.id)===id);if(p){p.exercises=ex;p.updatedAt=Date.now();p.lastUsedAt=Date.now()}})
-     }else{
-       const p=plans.find(x=>String(x.id)===String(sourceId));if(p){p.exercises=structural;p.updatedAt=Date.now();p.lastUsedAt=Date.now();activeWorkout.planId=p.id;activeWorkout.planName=p.name}
-     }
-   }else if(saveChangedPlan==='new'){
-     const base=activeWorkout.isWeekCombined?(activeWorkout.name||'Wochenplan'):(activeWorkout.planName||activeWorkout.name||'Training');
-     const np={id:uid(),name:nextPlanVersionName(base),createdAt:Date.now(),updatedAt:Date.now(),lastUsedAt:Date.now(),sourcePlanId:sourceId,sourcePlanIds:clone(activeWorkout.weekSourceIds||[]),exercises:structural};
-     plans.push(np);activeWorkout.planId=np.id;activeWorkout.planName=np.name
-   }
-   activeWorkout.sourcePlanId=sourceId;history.push(clone(activeWorkout));const done=clone(activeWorkout);
-   activeWorkout=null;livePlanEdited=false;restEnd=0;persistRestEnd();timeSetTimers.forEach(clearInterval);timeSetTimers.clear();tabScroll.training=0;if(tabUiState.training)tabUiState.training.scroll=0;saveAll();renderPlans();renderWeek();renderTrainingHome();renderProfile();
-   closeSheet({all:true});document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));pageStack=[];$('bottomNav').classList.remove('hidden');showTab('training',{reset:true});renderTrainingHome();requestAnimationFrame(()=>{renderTrainingHome();openSummary(done)})
- };
+ /* Workout finish/save flow is authoritative in app-core.js, including week-combined plans. */
 
- /* Food / meal search */
+/* Food / meal search */
  function ensureVisibleV68(input){window.rethinkKeepFieldVisibleV24?.(input)}
  function mealTotalsProxyV68(m){return window.__mealTotalsV52?window.__mealTotalsV52(m.items||[]):{grams:0,kcal:0,protein:0,water:0}}
  function openMealLogV68(meal){
@@ -1097,91 +746,22 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    inp.oninput=upd;upd();inp.focus();inp.select();ensureVisibleV68(inp);
    $('v68MealAdd').onclick=()=>{const f=Math.max(.01,Number(String(inp.value).replace(',','.'))||1);nutrition.foodLog=Array.isArray(nutrition.foodLog)?nutrition.foodLog:[];nutrition.foodLog.push({id:uid(),date:profileDateKey(),name:meal.name,category:'Mahlzeit',grams:Math.round(t.grams*f),kcal:Math.round(t.kcal*f),protein:Math.round(t.protein*f*10)/10,water:Math.round(t.water*f),mealId:meal.id,portions:f});recalcFoodTotals();saveAll();closeSheet({all:true});renderProfile()}
  }
- window.openFoodSearch=function(initialQuery='',options={}){
-   let q=String(initialQuery||'').trim().toLowerCase();
-   const foodList=()=>window.__allFoodsV52?window.__allFoodsV52():[];
-   const score=(f,q)=>{const n=String(f.name||'').toLowerCase(),c=String(f.category||'').toLowerCase();if(!q)return 0;if(n===q)return 100;if(n.startsWith(q))return 90;if(n.split(/[\s\\-_/()]+/).some(w=>w.startsWith(q)))return 80;if(c.startsWith(q))return 75;if(c.includes(q))return 40;if(n.includes(q))return 45;return-1};
-   const rows=()=>{
-     const foods=foodList().map(f=>({type:'food',item:f,score:score(f,q),used:(nutrition.foodLog||[]).filter(x=>String(x.name).toLowerCase()===String(f.name).toLowerCase()).length}));
-     const meals=(nutrition.meals||[]).map(m=>({type:'meal',item:m,score:score({name:m.name,category:'Mahlzeit'},q),used:(nutrition.foodLog||[]).filter(x=>String(x.mealId)===String(m.id)).length}));
-     return [...foods,...meals].filter(x=>q?x.score>=0:x.used>0).sort((a,b)=>b.score-a.score||b.used-a.used||String(a.item.name).localeCompare(String(b.item.name),'de')).slice(0,100)
-   };
-   const markup=()=>rows().map((x,i)=>{
-     if(x.type==='meal'){const t=mealTotalsProxyV68(x.item);return`<button class="food-result" data-v68-meal-result="${x.item.id}"><div class="food-result-copy"><strong>${esc(x.item.name)}</strong><small>Mahlzeit${x.used?` · ${x.used}× verwendet`:''}</small></div><span class="food-result-values">${Math.round(t.kcal)} kcal · ${Math.round(t.protein*10)/10} g Protein · ${Math.round(t.water)} g Wasser</span></button>`}
-     const f=x.item,s=window.__foodServingV52(f);return`<button class="food-result ${foodTone(f.category)}" data-v68-food-result="${esc(String(f._customId?`custom:${f._customId}`:`builtin:${f.name}`))}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category||'Eigenes Lebensmittel')}${x.used?` · ${x.used}× verwendet`:''}</small><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><span class="food-result-values">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser<br><small>je 100 g</small></span></button>`
-   }).join('')||(q?'<div class="small empty-food-note">Kein passender Treffer.</div>':'<div class="food-search-empty"><strong>Lebensmittel oder Mahlzeit suchen</strong></div>');
-   const body=()=>`<div class="food-search-sticky"><div class="search food-search"><span class="search-loupe">⌕</span><input id="v68FoodSearch" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel, Mahlzeit oder Kategorie" value="${esc(q)}"><button id="v68FoodClear" class="${q?'':'hidden'}">×</button></div></div><div id="v68FoodRows" class="food-results-scroll">${markup()}</div>`;
-   const bindRows=()=>{
-     document.querySelectorAll('[data-v68-meal-result]').forEach(b=>b.onclick=()=>{const m=(nutrition.meals||[]).find(x=>String(x.id)===String(b.dataset.v68MealResult));if(options.selectOnly){toast('Für eine Mahlzeit bitte einzelne Zutaten wählen.');return}if(m)openMealLogV68(m)});
-     document.querySelectorAll('[data-v68-food-result]').forEach(b=>b.onclick=()=>{
-       const key=b.dataset.v68FoodResult,all=foodList(),f=key.startsWith('custom:')?all.find(x=>String(x._customId)===key.slice(7)):all.find(x=>String(x.name)===key.slice(8));if(!f)return;
-       if(options.selectOnly&&typeof options.onSelect==='function'){options.onSelect(f);return}
-       const s=window.__foodServingV52(f);
-       openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser je 100 g</div><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><div class="food-quick-portions v68"><button data-v68-food-factor=".125">⅛</button><button data-v68-food-factor=".25">¼</button><button data-v68-food-factor=".5">½</button><button data-v68-food-factor="1">1</button></div><div class="form-field"><label>GRAMM</label><input id="v68FoodGrams" class="field" inputmode="decimal" value="${s.grams}"></div><div id="v68FoodPreview" class="small"></div><button id="v68FoodAdd" class="primary" style="width:100%;margin-top:10px">Hinzufügen</button>`);
-       const inp=$('v68FoodGrams'),prev=$('v68FoodPreview'),upd=()=>{const n=window.__nutrientsForV52(f,Number(String(inp.value).replace(',','.')));prev.textContent=`${n.kcal} kcal · ${n.protein} g Protein · ${n.water} g Wasser`};
-       document.querySelectorAll('[data-v68-food-factor]').forEach(btn=>btn.onclick=()=>{inp.value=Math.max(1,Math.round(s.grams*Number(btn.dataset.v68FoodFactor)));upd();inp.focus();inp.select();ensureVisibleV68(inp)});
-       inp.oninput=upd;upd();inp.focus();inp.select();ensureVisibleV68(inp);
-       $('v68FoodAdd').onclick=()=>{addFoodEntry(f,Number(String(inp.value).replace(',','.')));closeSheet({all:true})}
-     })
-   };
-   const bind=()=>{
-     const input=$('v68FoodSearch');input.oninput=()=>{q=input.value.trim().toLowerCase();$('v68FoodRows').innerHTML=markup();$('v68FoodClear').classList.toggle('hidden',!q);bindRows()};
-     $('v68FoodClear').onclick=()=>{q='';input.value='';$('v68FoodRows').innerHTML=markup();bindRows();input.focus()};
-     bindRows();input.focus()
-   };
-   openSheet(options.title||'Lebensmittel hinzufügen',body(),bind)
- };
 
  /* Drink choice focuses amount synchronously, which is required by iOS. */
- openQuickDrinkEntry=function(){
-   ensureDrinks();let selectedId=nutrition.drinks[0]?.id||null;
-   const render=(focus=false)=>{
-     const d=nutrition.drinks.find(x=>String(x.id)===String(selectedId))||nutrition.drinks[0];if(!d)return;
-     $('sheetBody').innerHTML=`<div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?'active':''} ${drinkTone(x)}" data-v68-drink="${x.id}"><span class="drink-icon">${x.icon||'🥤'}</span><span>${esc(x.name)}</span></button>`).join('')}</div><div class="form-field" style="margin-top:12px"><label>MENGE ML</label><input id="v68DrinkAmount" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div><div class="small quick-drink-meta">${d.hydration}% Hydrierung · ${d.calories||0} kcal/250 ml · ${d.caffeine||0} mg Koffein</div><button id="v68DrinkApply" class="primary" style="width:100%;margin-top:12px">Eintragen</button>`;
-     document.querySelectorAll('[data-v68-drink]').forEach(b=>b.onclick=()=>{selectedId=b.dataset.v68Drink;render(true)});
-     $('v68DrinkApply').onclick=()=>{addDrinkEntry(d,$('v68DrinkAmount').value);closeSheet({all:true})};
-     if(focus){const a=$('v68DrinkAmount');a.focus();a.select();ensureVisibleV68(a)}
-   };
-   openSheet('Getränk eintragen','');render(false)
- };
  if($('addWaterBtn'))$('addWaterBtn').onclick=openQuickDrinkEntry;
 
  /* Rebind saved meals to the new fraction picker after every profile render. */
- const profileBeforeV68=window.renderProfile||renderProfile;
- window.renderProfile=renderProfile=function(){
-   profileBeforeV68();
-   document.querySelectorAll('[data-meal-log]').forEach(b=>b.onclick=()=>{const m=(nutrition.meals||[]).find(x=>String(x.id)===String(b.dataset.mealLog));if(m)openMealLogV68(m)});
+ __rt.profile.post.push(function(__result,...__args){
+document.querySelectorAll('[data-meal-log]').forEach(b=>b.onclick=()=>{const m=(nutrition.meals||[]).find(x=>String(x.id)===String(b.dataset.mealLog));if(m)openMealLogV68(m)});
    if($('addFoodTodayBtn'))$('addFoodTodayBtn').onclick=()=>openFoodSearch('')
- };
+});
 
- /* Safe annual cleanup: opt-in, never deletes silently. Keeps current + previous calendar year. */
- function annualCleanupV68(){
-   if(localStorage.getItem(ANNUAL_CLEANUP_KEY)!=='1')return;
-   const year=new Date().getFullYear(),last=Number(localStorage.getItem(ANNUAL_CLEANUP_YEAR)||year);
-   if(last>=year)return;
-   localStorage.setItem(ANNUAL_CLEANUP_YEAR,String(year));
-   const cutoff=new Date(year-1,0,1).getTime();
-   openSheet('Jährliche Datenbereinigung?',`<p class="small">Um lokalen Speicher zu sparen, können Verlaufs-, Ernährungs- und Hydrierungsdaten vor dem 01.01.${year-1} gelöscht werden. Pläne, eigene Lebensmittel, Mahlzeiten und Messungen bleiben erhalten.</p><button id="v68CleanupNow" class="secondary danger" style="width:100%">Alte Verlaufsdaten löschen</button><button id="v68CleanupLater" class="secondary" style="width:100%;margin-top:8px">Dieses Jahr behalten</button>`);
-   $('v68CleanupNow').onclick=()=>{history=history.filter(w=>Number(w.finishedAt||w.startedAt||0)>=cutoff);nutrition.foodLog=(nutrition.foodLog||[]).filter(x=>new Date(x.date+'T12:00:00').getTime()>=cutoff);const hyd=hydrationLog().filter(x=>Number(x.at)>=cutoff);write(HYDRATION_LOG_KEY,hyd);saveAll();closeSheet({all:true});toast('Alte Verlaufsdaten gelöscht')};
-   $('v68CleanupLater').onclick=()=>closeSheet({all:true})
- }
- const settingsBeforeV68=window.openSettingsPage||openSettingsPage;
- window.openSettingsPage=openSettingsPage=function(){
-   settingsBeforeV68();
-   requestAnimationFrame(()=>{
-     const body=$('settingsBody');if(!body||$('v68CleanupSetting'))return;
-     const sec=document.createElement('div');sec.className='settings-section';sec.id='v68CleanupSetting';
-     sec.innerHTML=`<h3>Speicher</h3><div class="settings-card"><div class="settings-row"><div><strong>Jährliche Datenbereinigung</strong><small>Nur Erinnerung; gelöscht wird immer erst nach Bestätigung. Behält aktuelles + vorheriges Kalenderjahr.</small></div><label class="switch"><input id="v68CleanupToggle" type="checkbox" ${localStorage.getItem(ANNUAL_CLEANUP_KEY)==='1'?'checked':''}><span></span></label></div></div>`;
-     body.appendChild(sec);$('v68CleanupToggle').onchange=()=>{localStorage.setItem(ANNUAL_CLEANUP_KEY,$('v68CleanupToggle').checked?'1':'0');if($('v68CleanupToggle').checked)localStorage.setItem(ANNUAL_CLEANUP_YEAR,String(new Date().getFullYear()))}
-   })
- };
- setTimeout(annualCleanupV68,800)
+ // Annual automatic cleanup was removed. User data is deleted only via explicit data-management actions.
 })();
 
 
 /* v69 hardening */
 (function(){
- const CLEANUP_ENABLED='rethink_annual_cleanup_enabled_v1',CLEANUP_YEAR='rethink_annual_cleanup_prompt_year_v1';
 
  function v69MoveRestBar(){
    const bar=$('restBar');
@@ -1213,18 +793,11 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  };
 
  /* Exact read-only preview: use the dedicated preview renderer, not the live five-column controls. */
- openPreview=function(p){
-   $('previewTitle').textContent=p.name||'Workout Vorschau';
-   const pp={...clone(p),exercises:clone(p.exercises||[]).map(e=>{const x=normPlanEx(e);x.liveSets=Array.from({length:Number(x.sets)||defaultSetsForExerciseMethod(x,x.setTechnique||'standard')},(_,i)=>initSet(x,i));return x})};
-   $('previewBody').innerHTML=`<div class="preview-live-shell preview-exact preview-static-v43">${previewVisualGroups(pp.exercises).map(previewMethodCard).join('')}</div>`;
-   $('previewBody').querySelectorAll('[data-preview-detail]').forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.previewDetail));
-   openPage('previewPage')
- };
 
  /* Week running state + click back into running unit. */
  function v69WeekDate(day){return dateKeyLocal(weekDateAt(day))}
  function v69WeekRunning(day){return !!activeWorkout?.weekDate&&String(activeWorkout.weekDate)===String(v69WeekDate(day))}
- renderWeek=function(){
+ __rt.week.core=function(){
    $('weekMotivation').innerHTML=`<div class="small">DIESE WOCHE</div><strong>${esc(weekMotivationText())}</strong>`;
    const days=['Mo','Di','Mi','Do','Fr','Sa','So'],from=weekDateAt(0),to=weekDateAt(6);
    $('weekRangeLabel').textContent=`${fmtShortDate(from)} – ${fmtShortDate(to)}`;
@@ -1246,27 +819,15 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  };
 
  /* Selected week-plan order is explicit and is workout order. */
- openWeekPicker=function(day){
-   let selected=validWeekPlans(day).map(p=>p.id),q='';
-   const render=()=>{
-     const rows=sortedPlansForPicker(q);
-     $('sheetBody').innerHTML=`<div class="plan-picker-tools"><div class="search"><input id="weekSearch" placeholder="Plan suchen" value="${esc(q)}"><button id="weekSearchClear">×</button></div></div>
-       ${rows.map(p=>{const order=selected.indexOf(p.id)+1;return`<button class="plan-card week-select-card ${order?'selected':''}" data-wpick="${p.id}"><div><strong>${esc(p.name)}</strong><small>${p.exercises.length} Übungen · ${countPlanSets(p)} Sätze</small></div><span>${order?`<span class="week-order-badge">${order}</span>`:'›'}</span></button>`}).join('')}
-       <div class="small" style="margin:8px 0">${selected.length?`Reihenfolge: ${selected.map((id,i)=>`${i+1}. ${esc(plans.find(p=>p.id===id)?.name||'Plan')}`).join(' · ')}`:'Kein Plan gewählt'}</div>
-       <button id="weekApply" class="primary" style="width:100%">Übernehmen</button>`;
-     $('weekSearch').oninput=()=>{q=$('weekSearch').value;render()};
-     $('weekSearchClear').onclick=()=>{q='';render()};
-     document.querySelectorAll('[data-wpick]').forEach(b=>b.onclick=()=>{const id=Number(b.dataset.wpick),i=selected.indexOf(id);if(i>=0)selected.splice(i,1);else selected.push(id);render()});
-     $('weekApply').onclick=()=>{const had=validWeekPlans(day).length>0;weekPlan[day]=selected.filter(id=>plans.some(p=>String(p.id)===String(id)));if(had&&!weekPlan[day].length)clearWeekCompletionForDay(day);saveAll();closeSheet({all:true});renderWeek();renderProfileProgress?.()}
-   };
-   openSheet('Trainingsplan auswählen','');render()
- };
 
  /* Stable food search + own foods + meals + requested portion units. */
  function v69FoodList(){return window.__allFoodsV52?window.__allFoodsV52():[]}
  function v69Serving(f){return window.__foodServingV52?window.__foodServingV52(f):{grams:100,label:'1 Portion'}}
  function v69Nutrients(f,g){return window.__nutrientsForV52?window.__nutrientsForV52(f,g):{kcal:0,protein:0,water:0}}
  function v69MealTotals(m){return window.__mealTotalsV52?window.__mealTotalsV52(m.items||[]):{grams:0,kcal:0,protein:0,water:0}}
+ function v69IngredientNames(x){const direct=Array.isArray(x?.ingredients)?x.ingredients:[],items=Array.isArray(x?.items)?x.items.map(it=>it?.food?.name||it?.name||''):[];return [...new Set([...direct,...items].map(v=>String(v||'').trim()).filter(Boolean))]}
+ function v69Norm(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,' ').trim()}
+ function v69IngredientLine(x){const a=v69IngredientNames(x);return a.length>1?`<span class=\"food-ingredients\">Zutaten: ${esc(a.slice(0,8).join(' · '))}${a.length>8?' …':''}</span>`:''}
  function v69Reveal(input){window.rethinkKeepFieldVisibleV24?.(input)}
  function v69MealEntry(meal){
    const t=v69MealTotals(meal);
@@ -1281,25 +842,27 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  }
  openFoodSearch=function(initialQuery='',options={}){
    let q=String(initialQuery||'').trim().toLowerCase();
-   const score=(f)=>{const n=String(f.name||'').toLowerCase(),c=String(f.category||'').toLowerCase();if(!q)return 0;if(n===q)return 100;if(n.startsWith(q))return 90;if(n.split(/[\s\-_/()]+/).some(w=>w.startsWith(q)))return 80;if(c.startsWith(q))return 75;if(n.includes(q))return 45;if(c.includes(q))return 40;return-1};
+   const score=(f)=>{const n=String(f.name||''),c=String(f.category||''),ingredients=[...v69IngredientNames(f),...(Array.isArray(f.searchTerms)?f.searchTerms:[])].join(' '),qn=v69Norm(q),nn=v69Norm(n),cn=v69Norm(c),inn=v69Norm(ingredients);if(!qn)return 0;if(nn===qn)return 100;if(nn.startsWith(qn))return 92;if(nn.split(' ').some(w=>w.startsWith(qn)))return 84;if(inn.split(' ').some(w=>w.startsWith(qn)))return 78;if(cn.startsWith(qn))return 72;if(nn.includes(qn))return 55;if(inn.includes(qn))return 52;if(cn.includes(qn))return 45;return-1};
    const rows=()=>{
      const foods=v69FoodList().map(f=>({type:'food',item:f,score:score(f),used:(nutrition.foodLog||[]).filter(x=>String(x.name).toLowerCase()===String(f.name).toLowerCase()).length}));
-     const meals=(nutrition.meals||[]).map(m=>({type:'meal',item:m,score:score({name:m.name,category:'Mahlzeit'}),used:(nutrition.foodLog||[]).filter(x=>String(x.mealId)===String(m.id)).length}));
-     return [...foods,...meals].filter(x=>q?x.score>=0:x.used>0).sort((a,b)=>b.score-a.score||b.used-a.used||String(a.item.name).localeCompare(String(b.item.name),'de')).slice(0,100)
+     const meals=(nutrition.meals||[]).map(m=>({type:'meal',item:m,score:score({...m,category:'Mahlzeit'}),used:(nutrition.foodLog||[]).filter(x=>String(x.mealId)===String(m.id)).length}));
+     const sorted=[...foods,...meals].filter(x=>q?x.score>=0:x.used>0).sort((a,b)=>b.score-a.score||b.used-a.used||String(a.item.name).localeCompare(String(b.item.name),'de'));if(sorted.length<=300)return sorted;const head=sorted.slice(0,300),seen=new Set(head.map(x=>`${x.type}:${x.item.id||x.item.name}`));sorted.forEach(x=>{if((x.type==='meal'||x.item?.isMeal)&&!seen.has(`${x.type}:${x.item.id||x.item.name}`)){head.push(x);seen.add(`${x.type}:${x.item.id||x.item.name}`)}});return head
    };
    const markup=()=>rows().map(x=>{
-     if(x.type==='meal'){const t=v69MealTotals(x.item);return`<button class="food-result" data-v69-meal-result="${x.item.id}"><div class="food-result-copy"><strong>${esc(x.item.name)}</strong><small>Mahlzeit${x.used?` · ${x.used}× verwendet`:''}</small></div><span class="food-result-values">${Math.round(t.kcal)} kcal · ${Math.round(t.protein*10)/10} g Protein · ${Math.round(t.water)} g Wasser</span></button>`}
-     const f=x.item,s=v69Serving(f),key=f._customId?`custom:${f._customId}`:`builtin:${f.name}`;return`<button class="food-result ${foodTone(f.category)}" data-v69-food-result="${esc(key)}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category||'Eigenes Lebensmittel')}${x.used?` · ${x.used}× verwendet`:''}</small><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><span class="food-result-values">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser</span></button>`
-   }).join('')||(q?`<div class="food-search-empty food-search-no-result"><strong>Kein passender Treffer.</strong><button type="button" class="primary" data-v69-create-food style="width:100%;margin-top:10px">Lebensmittel erstellen</button></div>`:'<div class="food-search-empty"><strong>Lebensmittel oder Mahlzeit suchen</strong></div>');
-   const body=()=>`<div class="food-search-sticky"><div class="search food-search"><span class="search-loupe">⌕</span><input id="v69FoodSearch" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel, Mahlzeit oder Kategorie" value="${esc(q)}"><button id="v69FoodClear" class="${q?'':'hidden'}">×</button></div></div><div id="v69FoodRows">${markup()}</div>`;
+     if(x.type==='meal'){const t=v69MealTotals(x.item);return`<button class="food-result" data-v69-meal-result="${x.item.id}"><div class="food-result-copy"><strong>${esc(x.item.name)}</strong><small>Mahlzeit${x.used?` · ${x.used}× verwendet`:''}</small>${v69IngredientLine(x.item)}</div><span class="food-result-values">${Math.round(t.kcal)} kcal · ${Math.round(t.protein*10)/10} g Protein · ${Math.round(t.water)} g Wasser</span></button>`}
+     const f=x.item,s=v69Serving(f),key=f._customId?`custom:${f._customId}`:`builtin:${f.name}`;return`<button class="food-result ${foodTone(f.category)}" data-v69-food-result="${esc(key)}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category||'Eigenes Lebensmittel')}${x.used?` · ${x.used}× verwendet`:''}</small>${v69IngredientLine(f)}<span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><span class="food-result-values">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser</span></button>`
+   }).join('')||(q?`<div class="food-search-empty food-search-no-result"><strong>Kein passender Treffer.</strong><button type="button" class="primary" data-v69-create-food style="width:100%;margin-top:10px">Lebensmittel/Mahlzeit erstellen</button></div>`:'<div class="food-search-empty"><strong>Lebensmittel oder Mahlzeit suchen</strong></div>');
+   const body=()=>`<div class="food-search-sticky stable-entry-sticky"><div class="search food-search"><span class="search-loupe">⌕</span><input id="v69FoodSearch" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel, Mahlzeit oder Kategorie" value="${esc(q)}"><button id="v69FoodClear" class="${q?'':'hidden'}">×</button></div></div><div id="v69FoodRows" class="stable-search-results">${markup()}</div>`;
    const bindRows=()=>{
-     document.querySelectorAll('[data-v69-create-food]').forEach(b=>b.onclick=()=>window.__openCustomFoodV52?.());
+     document.querySelectorAll('[data-v69-create-food]').forEach(b=>b.onclick=()=>{
+       openSheet('Lebensmittel/Mahlzeit erstellen',`<div class="food-create-choice"><button id="v72CreateFood" class="primary" style="width:100%">Lebensmittel erstellen</button><button id="v72CreateMeal" class="secondary" style="width:100%;margin-top:8px">Mahlzeit erstellen</button></div>`,()=>{if($('v72CreateFood'))$('v72CreateFood').onclick=()=>window.__openCustomFoodV52?.();if($('v72CreateMeal'))$('v72CreateMeal').onclick=()=>window.__openMealBuilderV52?.()})
+     });
      document.querySelectorAll('[data-v69-meal-result]').forEach(b=>b.onclick=()=>{const m=(nutrition.meals||[]).find(x=>String(x.id)===String(b.dataset.v69MealResult));if(options.selectOnly){toast('Bitte einzelne Zutaten wählen.');return}if(m)v69MealEntry(m)});
      document.querySelectorAll('[data-v69-food-result]').forEach(b=>b.onclick=()=>{
        const key=b.dataset.v69FoodResult,all=v69FoodList(),f=key.startsWith('custom:')?all.find(x=>String(x._customId)===key.slice(7)):all.find(x=>String(x.name)===key.slice(8));if(!f)return;
        if(options.selectOnly&&typeof options.onSelect==='function'){options.onSelect(f);return}
        const s=v69Serving(f);
-       openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser je 100 g</div><span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div>
+       openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser je 100 g</div>${v69IngredientNames(f).length>1?`<div class="food-selected-ingredients"><b>Zutaten</b><span>${esc(v69IngredientNames(f).join(' · '))}</span></div>`:''}<span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div>
        <div class="food-quick-portions v69"><button data-v69-food-factor=".125">⅛</button><button data-v69-food-factor=".25">¼</button><button data-v69-food-factor=".5">½</button><button data-v69-food-factor="1">1</button></div>
        <div class="form-field"><label>GRAMM</label><input id="v69FoodGrams" class="field" inputmode="decimal" value="${s.grams}"></div><div id="v69FoodPreview" class="small"></div>
        <button id="v69FoodAdd" class="primary" style="width:100%;margin-top:10px">Hinzufügen</button>`);
@@ -1311,34 +874,19 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    };
    const bind=()=>{
      const input=$('v69FoodSearch');
-     input.oninput=()=>{q=input.value.trim().toLowerCase();$('v69FoodRows').innerHTML=markup();$('v69FoodClear').classList.toggle('hidden',!q);bindRows();requestAnimationFrame(()=>window.rethinkKeepFieldVisibleV24?.(input));setTimeout(()=>window.rethinkKeepFieldVisibleV24?.(input),60)};
-     $('v69FoodClear').onclick=()=>{q='';input.value='';$('v69FoodRows').innerHTML=markup();bindRows();input.focus()};
-     bindRows();input.focus()
+     input.oninput=()=>{q=input.value.trim().toLowerCase();$('v69FoodRows').innerHTML=markup();$('v69FoodClear').classList.toggle('hidden',!q);bindRows()};
+     $('v69FoodClear').onclick=()=>{q='';input.value='';$('v69FoodRows').innerHTML=markup();$('v69FoodClear').classList.add('hidden');bindRows();try{input.focus({preventScroll:true})}catch{input.focus()}};
+     bindRows();requestAnimationFrame(()=>{try{input.focus({preventScroll:true})}catch{input.focus()}})
    };
    openSheet(options.title||'Lebensmittel hinzufügen',body(),bind)
  };
 
  /* iOS requires focus directly in the user click event for the keyboard. */
- openQuickDrinkEntry=function(){
-   ensureDrinks();let selectedId=nutrition.drinks[0]?.id||null;
-   const render=()=>{
-     const d=nutrition.drinks.find(x=>String(x.id)===String(selectedId))||nutrition.drinks[0];if(!d)return;
-     $('sheetBody').innerHTML=`<div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?'active':''} ${drinkTone(x)}" data-v69-drink="${x.id}"><span class="drink-icon">${x.icon||'🥤'}</span><span>${esc(x.name)}</span></button>`).join('')}</div>
-     <div class="form-field" style="margin-top:12px"><label>MENGE ML</label><input id="v69DrinkAmount" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div>
-     <div class="small quick-drink-meta">${d.hydration}% Hydrierung · ${d.calories||0} kcal/250 ml · ${d.caffeine||0} mg Koffein</div><button id="v69DrinkApply" class="primary" style="width:100%;margin-top:12px">Eintragen</button>`;
-     document.querySelectorAll('[data-v69-drink]').forEach(b=>b.onpointerup=()=>{selectedId=b.dataset.v69Drink;render();const inp=$('v69DrinkAmount');inp.focus({preventScroll:true});inp.select();v69Reveal(inp)});
-     $('v69DrinkApply').onclick=()=>{addDrinkEntry(d,$('v69DrinkAmount').value);closeSheet({all:true})}
-   };
-   openSheet('Getränk eintragen','');render()
- };
  if($('addWaterBtn'))$('addWaterBtn').onclick=openQuickDrinkEntry;
 
  /* Restore behavior remains authoritative in app-core v24. */
 
  /* Safe yearly cleanup remains opt-in and confirm-before-delete. */
- if(localStorage.getItem(CLEANUP_ENABLED)==='1'&&!localStorage.getItem(CLEANUP_YEAR)){
-   localStorage.setItem(CLEANUP_YEAR,String(new Date().getFullYear()))
- }
 })();
 
 
@@ -1357,14 +905,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    return Math.max(0,(activeWorkout.exercises||[]).length-1)
  }
  const renderBeforeV69Active=renderLive;
- renderLive=function(){
-   if(activeWorkout?.exercises?.length){
-     const idx=Math.max(0,Math.min(Number(activeWorkout.activeExerciseIndex)||0,activeWorkout.exercises.length-1));
-     const current=activeWorkout.exercises[idx];
-     if(exerciseDoneV69(current))activeWorkout.activeExerciseIndex=firstOpenInVisualOrderV69()
-   }
-   return renderBeforeV69Active()
- };
 })();
 
 
@@ -1560,14 +1100,12 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  };
 
  /* Recurrence marker in week cards, while keeping v69 running/play behavior. */
- const renderWeekBeforeV70=renderWeek;
- renderWeek=function(){
-   renderWeekBeforeV70();
-   document.querySelectorAll('[data-v69-week-main]').forEach(btn=>{
+ __rt.week.post.push(function(__result,...__args){
+document.querySelectorAll('[data-v69-week-main]').forEach(btn=>{
      const day=Number(btn.dataset.v69WeekMain),strong=btn.querySelector('strong');
      if(strong&&hasRecurringV70(day)&&!strong.querySelector('.week-repeat-badge'))strong.insertAdjacentHTML('beforeend',repeatMarkerV70(day))
    })
- };
+});
 
  pruneOrphanRulesV70();
  window.__weekRecurringV70={
@@ -1600,9 +1138,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 })();
 
 
-
-
-
 ;
 
 
@@ -1630,8 +1165,11 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    return !!g?.members?.length&&g.members.every(x=>exerciseFullyRatedV31(x.e))
  }
  function priorRatingDotV31(e,si){
-   const r=e?._lastRatings?.[si];
-   return r?`<span class="previous-rating-dot rating-${esc(r)}" title="Bewertung letztes passendes Workout"></span>`:""
+   const set=e?.liveSets?.[si];
+   let r=(set?.rating&&set.rating!=="group")?set.rating:"";
+   if(!r&&Array.isArray(set?.segments)){const rs=set.segments.map(x=>x?.rating).filter(Boolean);if(rs.length)r=rs[0]}
+   if(!r)r=typeof visibleRatingValue==="function"?visibleRatingValue(e,si):(e?._lastRatings?.[si]||"");
+   return r?`<span class="previous-rating-dot rating-${esc(r)}" title="${set?.rating?"Bewertung dieses Satzes":"Bewertung des letzten passenden Trainings"}"></span>`:""
  }
  function nextIncompleteVisualIndexV31(){
    if(!activeWorkout)return 0;
@@ -1657,9 +1195,9 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    if(x.e.measureMode==="time"){
      return`<div class="combined-member-row unified-combined-time-row">
        <span class="combined-index combined-index-with-history">${idx}${dot}</span>
-       <label class="combined-field unified-time-field">${lab("ZEIT")}<span class="time-input-shell unified-time-shell"><input type="text" inputmode="none" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="${s.completed?"rated-time-value":""}" data-time-field="1" data-input="${x.i}|${si}|time" placeholder="${liveTimeBoxPlaceholder(s)}" value="${liveTimeBoxValue(s)}"><button type="button" class="time-play time-play-inside" data-time-play="${x.i}|${si}" aria-label="Timer starten">▶</button></span></label>
+       <label class="combined-field unified-time-field">${lab("ZEIT")}<span class="time-input-shell unified-time-shell"><input type="text" inputmode="none" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="${s.completed?"rated-time-value":""}" data-time-field="1" data-input="${x.i}|${si}|time" placeholder="${liveTimeBoxPlaceholder(s)}" value="${liveTimeBoxValue(s)}"></span></label>
        <label class="combined-field">${lab("LEISTUNG")}<input class="unified-performance-input" type="text" autocomplete="off" data-input="${x.i}|${si}|level" placeholder="Leistung" value="${esc(s.level||"")}"></label>
-       <button class="set-check ${s.completed?"done":""} ${ratingClass(s)} ${canRateSet(x.e,s)?"ready":""}" data-check="${x.i}|${si}">✓</button>
+       ${s.completed?`<button class="set-check time-rating-action done ${ratingClass(s)}" data-check="${x.i}|${si}" aria-label="Bewertung anzeigen">✓</button>`:`<button type="button" class="set-check time-rating-action ready" data-time-play="${x.i}|${si}" aria-label="Timer starten und anschließend bewerten">▶</button>`}
      </div>`
    }
    return`<div class="combined-member-row">
@@ -1734,7 +1272,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      }
    }
    activeWorkout.activeExerciseIndex=Math.min(index,Math.max(0,activeWorkout.exercises.length-1));
-   livePlanEdited=true;saveAll();renderLive()
+   markLiveStructureEdited();saveAll();renderLive()
  }
 
  function bindLiveFinalV31(){
@@ -1755,20 +1293,37 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      x.addEventListener("pointerdown",ev=>ev.stopPropagation());
      x.addEventListener("click",ev=>{ev.stopPropagation();window.rethinkKeepFieldVisibleV24?.(x)})
    });
-   document.querySelectorAll("[data-add-set]").forEach(b=>b.onclick=()=>{const e=activeWorkout.exercises[Number(b.dataset.addSet)];e.liveSets.push(initSet(e,e.liveSets.length));livePlanEdited=true;saveAll();renderLive()});
-   document.querySelectorAll("[data-add-group-set]").forEach(b=>b.onclick=()=>{const gid=b.dataset.addGroupSet,members=activeWorkout.exercises.map((x,i)=>x.techniqueGroup===gid?i:-1).filter(i=>i>=0);members.forEach(i=>{const e=activeWorkout.exercises[i];e.liveSets.push(initSet(e,e.liveSets.length));e.sets=e.liveSets.length});livePlanEdited=true;saveAll();renderLive()});
+   document.querySelectorAll("[data-add-set]").forEach(b=>b.onclick=()=>{const e=activeWorkout.exercises[Number(b.dataset.addSet)];e.liveSets.push(initSet(e,e.liveSets.length));markLiveStructureEdited();saveAll();renderLive()});
+   document.querySelectorAll("[data-add-group-set]").forEach(b=>b.onclick=()=>{const gid=b.dataset.addGroupSet,members=activeWorkout.exercises.map((x,i)=>x.techniqueGroup===gid?i:-1).filter(i=>i>=0);members.forEach(i=>{const e=activeWorkout.exercises[i];e.liveSets.push(initSet(e,e.liveSets.length));e.sets=e.liveSets.length});markLiveStructureEdited();saveAll();renderLive()});
    document.querySelectorAll("[data-remove-live-set]").forEach(b=>b.onclick=()=>removeLiveSet(b.dataset.removeLiveSet));
    document.querySelectorAll("[data-time-play]").forEach(b=>b.onclick=()=>toggleTimeTimer(b.dataset.timePlay,b))
  }
 
- renderLiveGroupCard=renderLiveGroupCardFinalV31;
- renderLiveSingleCard=renderLiveSingleCardFinalV31;
- const renderLiveCoreBeforeFinalV31=renderLive;
- renderLive=function(){
+ /* app-core.js owns renderLiveGroupCard/renderLiveSingleCard; no runtime reassignment. */
+ __rt.live.core=function(){
+   if(!activeWorkout)return;
+   activeWorkout.exercises=Array.isArray(activeWorkout.exercises)?activeWorkout.exercises:[];
+   activeWorkout.exercises=activeWorkout.exercises.map((raw,i)=>{
+     const oldSets=Array.isArray(raw?.liveSets)?raw.liveSets:null;
+     const e=normPlanEx(raw||{});
+     if(!oldSets||!oldSets.length)e.liveSets=Array.from({length:Math.max(1,Number(e.sets)||defaultSetsForExerciseMethod(e,e.setTechnique||"standard"))},(_,si)=>initSet(e,si));
+     else e.liveSets=oldSets;
+     if(!Number.isFinite(Number(e.groupPosition))&&e.techniqueGroup)e.groupPosition=i;
+     return e
+   });
    normalizeActiveAfterRenderV31();
    $("workoutNoteText").textContent=activeWorkout.note||"Notiz";
-   $("liveBody").innerHTML=liveVisualGroups(activeWorkout.exercises).map(g=>g.group?renderLiveGroupCardFinalV31(g):renderLiveSingleCardFinalV31(g.members[0].e,g.members[0].i)).join("");
-   bindLiveFinalV31()
+   const groups=liveVisualGroups(activeWorkout.exercises);
+   $("liveBody").innerHTML=groups.map(g=>{
+     try{return g.group?renderLiveGroupCardFinalV31(g):renderLiveSingleCardFinalV31(g.members[0].e,g.members[0].i)}
+     catch(err){
+       console.error("Live card render",err,g);
+       const x=g.members?.[0];if(!x)return"";
+       return `<div class="method-card live-exercise-card method-standard" data-live-card="${x.i}"><div class="method-name">${esc(METHOD_LABEL[x.e?.setTechnique||"standard"]||"STANDARD")}</div><div class="live-card-head"><div><button class="exercise-title-link" data-live-detail="${esc(x.e?.name||"")}" data-live-index="${x.i}">${esc(exerciseDisplayName(x.e||{}))}</button><div class="prescription">${esc(planPrescription(x.e||{}))}</div></div></div>${renderSets(x.e,x.i)}</div>`
+     }
+   }).join("");
+   bindLiveFinalV31();
+   saveAll()
  };
 
  // After rating, renderLive() now advances the active highlight only when the whole exercise/group is fully rated.
@@ -1792,32 +1347,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  };
 
  // Hydration: amount control is above the drink grid, then the selectable drinks follow.
- openQuickDrinkEntry=function(){
-   ensureDrinks();let selectedId=nutrition.drinks[0]?.id||null;
-   const render=(focusAmount=false)=>{
-     const d=nutrition.drinks.find(x=>String(x.id)===String(selectedId))||nutrition.drinks[0];if(!d)return;
-     $("sheetBody").innerHTML=`
-       <div class="final-drink-entry-top">
-         <div class="final-drink-selected"><span class="drink-icon">${d.icon||"🥤"}</span><div><strong>${esc(d.name)}</strong><div class="small">${d.hydration}% Hydrierung · ${d.calories||0} kcal/250 ml · ${d.caffeine||0} mg Koffein</div></div></div>
-         <div class="form-field" style="margin-bottom:0"><label>MENGE ML</label><input id="finalDrinkAmount" class="field" inputmode="numeric" value="${d.lastSize||d.size||250}"></div>
-       </div>
-       <div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?"active":""} ${drinkTone(x)}" data-final-drink="${x.id}"><span class="drink-icon">${x.icon||"🥤"}</span><span>${esc(x.name)}</span></button>`).join("")}</div>
-       <button id="finalDrinkApply" class="primary" style="width:100%;margin-top:10px">Eintragen</button>`;
-     document.querySelectorAll("[data-final-drink]").forEach(btn=>btn.onclick=()=>{
-       selectedId=btn.dataset.finalDrink;render(true)
-     });
-     $("finalDrinkApply").onclick=()=>{addDrinkEntry(d,$("finalDrinkAmount").value);closeSheet({all:true})};
-     const input=$("finalDrinkAmount");
-     if(input){
-       input.onfocus=()=>window.rethinkKeepFieldVisibleV24?.(input);
-       if(focusAmount){
-         try{input.focus({preventScroll:true})}catch{input.focus()}
-         input.select?.();window.rethinkKeepFieldVisibleV24?.(input)
-       }
-     }
-   };
-   openSheet("Getränk eintragen","");render(false)
- };
  if($("addWaterBtn"))$("addWaterBtn").onclick=openQuickDrinkEntry;
 })();
 
@@ -1826,55 +1355,20 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 (function(){
  function dotNodeV31(r){const dot=document.createElement("span");dot.className=`previous-rating-dot rating-${r}`;dot.title="Bewertung letztes passendes Workout";return dot}
  function addPreviousDotsToSinglesV31(){
-   if(!activeWorkout)return;
-   document.querySelectorAll(".live-exercise-card:not(.connected-live-card)[data-live-card]").forEach(card=>{
-     const ei=Number(card.dataset.liveCard),e=activeWorkout.exercises[ei],ratings=e?._lastRatings||[];if(!ratings.length)return;
-     [...card.querySelectorAll(".set-row,.time-row")].forEach((row,si)=>{
-       const r=ratings[si],cell=row.firstElementChild;if(!r||!cell)return;
-       cell.textContent=String(si+1);cell.classList.add("set-index-with-history");cell.append(dotNodeV31(r))
-     });
-     // Methods with one rating for a whole multi-part set show the previous
-     // rating at the first performed block (Start/Top/Cluster 1), not at every RP/drop.
-     if(["dropset","restpause","cluster"].includes(e?.setTechnique)){
-       const blocks=[...card.querySelectorAll(".advanced-compact-set")];
-       if(e.setTechnique==="dropset"){
-         const heads=[...card.querySelectorAll(".advanced-head")];
-         heads.forEach((head,si)=>{
-           const r=ratings[si];if(!r)return;
-           let row=head.nextElementSibling;
-           while(row&&!row.classList?.contains("advanced-row"))row=row.nextElementSibling;
-           const cell=row?.firstElementChild;if(!cell)return;
-           cell.classList.add("set-index-with-history");cell.append(dotNodeV31(r))
-         })
-       }else{
-         blocks.forEach((block,si)=>{
-           const r=ratings[si];if(!r)return;
-           const cell=block.querySelector(".advanced-compact-row .advanced-compact-index, .advanced-compact-row > span:first-child");
-           if(!cell)return;
-           cell.classList.add("set-index-with-history");
-           const dot=dotNodeV31(r),label=cell.querySelector("small");
-           if(label)cell.insertBefore(dot,label);else cell.append(dot)
-         })
-       }
-     }else{
-       [...card.querySelectorAll(".advanced-head")].forEach((head,si)=>{
-         const r=ratings[si],cell=head.firstElementChild;if(!r||!cell)return;
-         cell.textContent=`SATZ ${si+1}`;cell.classList.add("set-index-with-history");cell.append(dotNodeV31(r))
-       })
-     }
-   })
+   // Dots are rendered directly beside the set number by renderSets()/combinedMemberControlsFinalV31.
+   // Do not move or duplicate them after render.
  }
- const renderLiveBeforeHistoryDotsV31=renderLive;
- renderLive=function(){const result=renderLiveBeforeHistoryDotsV31();addPreviousDotsToSinglesV31();return result};
+ __rt.live.post.push(function(__result,...__args){
+const result=__result;
+addPreviousDotsToSinglesV31();return result
+});
  window.addPreviousDotsToSinglesV31=addPreviousDotsToSinglesV31
 })();
 
 
-
-
-/* Rethink_v3.1 — units, week start and text size */
+/* Rethink_v3.1 — units and week start */
 (function(){
- const PREF_KEY="rethink_preferences_v31",defaults={weightUnit:"kg",distanceUnit:"km",measurementUnit:"cm",weekStart:"monday",textScale:"normal"};
+ const PREF_KEY="rethink_preferences_v31",defaults={weightUnit:"kg",distanceUnit:"km",measurementUnit:"cm",weekStart:"monday"};
  let prefs={...defaults,...read(PREF_KEY,{})};
  function savePrefsV31(){write(PREF_KEY,prefs)}
  function nV31(v){const x=Number(String(v??"").trim().replace(",","."));return Number.isFinite(x)?x:null}
@@ -1886,7 +1380,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  function lengthStorageV31(v){const x=nV31(v);return x==null?"":roundV31(prefs.measurementUnit==="in"?x*2.54:x,2)}
  function distanceDisplayV31(km){const x=nV31(km);return x==null?"":roundV31(prefs.distanceUnit==="mi"?x*0.6213711922:x,2)}
  function distanceStorageV31(v){const x=nV31(v);return x==null?"":roundV31(prefs.distanceUnit==="mi"?x/0.6213711922:x,3)}
- function applyTextScaleV31(){document.documentElement.dataset.textScale=prefs.textScale||"normal"}applyTextScaleV31();
  function weekStartOfV31(date=new Date(),mode=prefs.weekStart){const d=new Date(date);d.setHours(12,0,0,0);const off=mode==="sunday"?d.getDay():(d.getDay()+6)%7;d.setDate(d.getDate()-off);return d}
  function weekDayLabelsV31(){return prefs.weekStart==="sunday"?["So","Mo","Di","Mi","Do","Fr","Sa"]:["Mo","Di","Mi","Do","Fr","Sa","So"]}
  function keyV31(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
@@ -1895,7 +1388,10 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  weekDateAt=function(day,offset=weekOffset){const d=weekStartOfV31();d.setDate(d.getDate()+Number(offset||0)*7+Number(day||0));return d};
  selectedWeekInfo=function(){const d=profileDate(),start=weekStartOfV31(d),end=new Date(start);end.setDate(start.getDate()+7);const iso=new Date(d);iso.setHours(12,0,0,0);const id=(iso.getDay()+6)%7;iso.setDate(iso.getDate()-id+3);const y0=new Date(iso.getFullYear(),0,4,12),yd=(y0.getDay()+6)%7,yThu=new Date(y0);yThu.setDate(y0.getDate()-yd+3);const week=1+Math.round((iso-yThu)/604800000);return{start,end,week,label:`KW ${String(week).padStart(2,"0")}`}};
  function updateWeekLabelsV31(){document.querySelectorAll("#weekList .week-day").forEach((el,i)=>el.textContent=weekDayLabelsV31()[i]||"")}
- const renderWeekBeforePrefsV31=renderWeek;renderWeek=function(){const x=renderWeekBeforePrefsV31();updateWeekLabelsV31();return x};
+ __rt.week.post.push(function(__result,...__args){
+const x=__result;
+updateWeekLabelsV31();return x
+});
  function unitizeSheetV31(){const body=$("sheetBody");if(!body)return;const walker=document.createTreeWalker(body,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){const t=node.nodeValue;if(t&&t.trim()==="KG")node.nodeValue=t.replace(/KG/g,weightLabelV31())}if((body.querySelector(".method-tabs")||body.querySelector("[id*='MethodTabs']"))&&!body.querySelector(".unit-context-chip")){const chip=document.createElement("div");chip.className="unit-context-chip";chip.textContent=`Gewicht ${weightLabelV31()}`;body.prepend(chip)}}
  const renderSheetBeforeUnitsV31=renderSheetState;renderSheetState=function(state){const x=renderSheetBeforeUnitsV31(state);requestAnimationFrame(unitizeSheetV31);return x};
  function weightFieldInfoV31(inp){const raw=inp?.dataset?.input;if(!raw)return null;const [ei,si,k,gi]=raw.split("|");return["weight","sw","gw"].includes(k)?{ei:Number(ei),si:Number(si),k,gi:Number(gi)}:null}
@@ -1903,18 +1399,22 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  function suggestedWeightForFieldV31(i){const e=activeWorkout?.exercises?.[i.ei],s=e?.liveSets?.[i.si];if(!s)return"";return i.k==="weight"?(s._suggested?.weight??""):(s.segments?.[i.gi]?._suggested?.weight??"")}
  function applyLiveUnitsV31(){document.querySelectorAll("#liveBody .set-head span,#liveBody .time-head span,#liveBody .advanced-head span,#liveBody .combined-value-head span").forEach(el=>{if(el.textContent.trim()==="KG")el.textContent=weightLabelV31()});document.querySelectorAll("#liveBody [data-input]").forEach(inp=>{const info=weightFieldInfoV31(inp);if(!info)return;const c=canonicalWeightForFieldV31(info),s=suggestedWeightForFieldV31(info);inp.value=String(c).trim()===""?"":String(weightDisplayV31(c));inp.placeholder=String(s).trim()===""?weightLabelV31():String(weightDisplayV31(s))})}
  const updateInputBeforeUnitsV31=updateInput;updateInput=function(inp){const info=weightFieldInfoV31(inp);if(!info||prefs.weightUnit==="kg")return updateInputBeforeUnitsV31(inp);const shown=inp.value,converted=weightStorageV31(shown);inp.value=converted===""?"":String(converted);const result=updateInputBeforeUnitsV31(inp);if(inp.isConnected)inp.value=shown;return result};
- const renderLiveBeforeUnitsV31=renderLive;renderLive=function(){const x=renderLiveBeforeUnitsV31();applyLiveUnitsV31();return x};
+ __rt.live.post.push(function(__result,...__args){
+const x=__result;
+applyLiveUnitsV31();return x
+});
  function unitizePreviewV31(){document.querySelectorAll("#previewBody .preview-value,#previewBody .set-head span,#previewBody .time-head span,#previewBody .advanced-head span,#previewBody .combined-value-head span").forEach(el=>{if(el.textContent.trim()==="KG")el.textContent=weightLabelV31()})}
- const openPreviewBeforeUnitsV31=openPreview;openPreview=function(p){const x=openPreviewBeforeUnitsV31(p);requestAnimationFrame(unitizePreviewV31);return x};
  function formatMeasurementValuesV31(m){return `${m.bodyfat?`<span>Körperfett ${m.bodyfat}%</span>`:""}${m.waist?`<span>Taille ${lengthDisplayV31(m.waist)} ${lengthLabelV31().toLowerCase()}</span>`:""}${m.chest?`<span>Brust ${lengthDisplayV31(m.chest)} ${lengthLabelV31().toLowerCase()}</span>`:""}${m.hip?`<span>Hüfte ${lengthDisplayV31(m.hip)} ${lengthLabelV31().toLowerCase()}</span>`:""}`}
  function patchProfileUnitsV31(){const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),cw=Number(latest?.weight||profile.weight||0);if($("profileSummary"))$("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?`${lengthDisplayV31(profile.height)} ${lengthLabelV31().toLowerCase()}`:"",cw?`${weightDisplayV31(cw)} ${weightLabelV31().toLowerCase()}`:""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet";if($("profileGoalSummary")){const base=profile.goal==="cut"?"Ziel: Gewicht reduzieren":profile.goal==="gain"?"Ziel: Muskelaufbau":profile.goal==="maintain"?"Ziel: Gewicht halten":"Persönliche Werte und Ziele";$("profileGoalSummary").innerHTML=`<span>${base}</span>${profile.targetWeight?`<span class="target-weight-line-profile">Wunschgewicht ${weightDisplayV31(profile.targetWeight)} ${weightLabelV31().toLowerCase()}</span>`:""}`}document.querySelectorAll("[data-measurement-open]").forEach(btn=>{const i=Number(btn.dataset.measurementOpen),m=measurements[i];if(!m)return;const strong=btn.querySelector("strong");if(strong)strong.textContent=m.weight?`${weightDisplayV31(m.weight)} ${weightLabelV31().toLowerCase()}`:"Messung";const vals=btn.querySelector(".measurement-values");if(vals)vals.innerHTML=formatMeasurementValuesV31(m);btn.onclick=()=>openMeasurementRecord(i)})}
- const renderProfileBeforeUnitsV31=renderProfile;renderProfile=function(){const x=renderProfileBeforeUnitsV31();patchProfileUnitsV31();requestAnimationFrame(()=>{patchProfileUnitsV31();renderProfileProgress()});return x};
- const renderProfileProgressBeforeUnitsV31=renderProfileProgress;renderProfileProgress=function(){const x=renderProfileProgressBeforeUnitsV31(),wt=weightTrend(),card=$("profileProgressOverview")?.querySelector(".profile-progress-grid .progress-stat:first-child");if(card&&wt){const strong=card.querySelector("strong"),sub=card.querySelector(".progress-sub-value");if(strong)strong.textContent=wt.current!=null?`${weightDisplayV31(wt.current)} ${weightLabelV31().toLowerCase()}`:"–";if(sub)sub.textContent=wt.target!=null?`${weightDisplayV31(Math.abs(wt.distance))} ${weightLabelV31().toLowerCase()} ${wt.distance<0?"darüber":"bis Ziel"}`:"–"}return x};
+ __rt.profile.post.push(function(__result,...__args){
+const x=__result;
+patchProfileUnitsV31();requestAnimationFrame(()=>{patchProfileUnitsV31();renderProfileProgress()});return x
+});
  openMeasurementRecord=function(i){const m=measurements[i];if(!m)return;openSheet("Messung",`<div class="card"><strong>${m.weight?`${weightDisplayV31(m.weight)} ${weightLabelV31().toLowerCase()} · ${activityLabel(m.activity||profile.activity||1.55)}`:"–"}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div><div class="measurement-values" style="margin-top:12px">${formatMeasurementValuesV31(m)}</div></div><button id="deleteMeasurementRecord" class="secondary danger" style="width:100%;margin-top:12px">Messung löschen</button>`);$("deleteMeasurementRecord").onclick=()=>{if(confirm("Diese Messung wirklich löschen?")){measurements.splice(i,1);saveAll();closeSheet({all:true});renderProfile();toast("Messung gelöscht")}}};
  openMeasurementData=function(){openSheet("Messungen",`${measurements.slice().reverse().map((m,ri)=>{const i=measurements.length-1-ri;return`<div class="card" data-settings-measure-open="${i}"><div class="space"><div><strong>${m.weight?weightDisplayV31(m.weight):"–"} ${weightLabelV31().toLowerCase()} · ${activityLabel(m.activity||profile.activity||1.55)}</strong><div class="small">${new Date(m.date||Date.now()).toLocaleString("de-DE")}</div></div><span>›</span></div></div>`}).join("")||'<div class="card small">Noch keine Messungen.</div>'}`);document.querySelectorAll("[data-settings-measure-open]").forEach(b=>b.onclick=()=>openMeasurementRecord(Number(b.dataset.settingsMeasureOpen)))};
  function openMeasurementEntryV31(){openSheet("Messung hinzufügen",`<div class="grid2"><div class="form-field"><label>GEWICHT ${weightLabelV31()}</label><input id="measureWeightUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>KÖRPERFETT IN %</label><input id="measureBodyfatUnits" class="field" inputmode="decimal"></div></div><div class="grid2"><div class="form-field"><label>TAILLE ${lengthLabelV31()}</label><input id="measureWaistUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>BRUST ${lengthLabelV31()}</label><input id="measureChestUnits" class="field" inputmode="decimal"></div></div><div class="grid2"><div class="form-field"><label>HÜFTE ${lengthLabelV31()}</label><input id="measureHipUnits" class="field" inputmode="decimal"></div><div class="form-field"><label>AKTIVITÄT</label><select id="measureActivityUnits" class="field"><option value="1.2" ${String(profile.activity)==="1.2"?"selected":""}>Wenig aktiv</option><option value="1.375" ${String(profile.activity)==="1.375"?"selected":""}>Leicht aktiv</option><option value="1.55" ${!profile.activity||String(profile.activity)==="1.55"?"selected":""}>Moderat aktiv</option><option value="1.725" ${String(profile.activity)==="1.725"?"selected":""}>Sehr aktiv</option><option value="1.9" ${String(profile.activity)==="1.9"?"selected":""}>Extrem aktiv</option></select></div></div><button id="measureSaveUnits" class="primary" style="width:100%">Speichern</button>`);$("measureSaveUnits").onclick=()=>{const weight=weightStorageV31($("measureWeightUnits").value);if(!weight||weight<20||weight>400){$("measureWeightUnits").focus();return alert("Bitte Gewicht eintragen.")}const md=profileDayOffset===0?Date.now():profileDate().setHours(12,0,0,0),m={date:md,weight,bodyfat:$("measureBodyfatUnits").value,waist:lengthStorageV31($("measureWaistUnits").value),chest:lengthStorageV31($("measureChestUnits").value),hip:lengthStorageV31($("measureHipUnits").value),activity:$("measureActivityUnits").value};measurements.push(m);measurements.sort((a,b)=>Number(a.date)-Number(b.date));profile.weight=weight;profile.activity=$("measureActivityUnits").value;saveAll();closeSheet({all:true});renderProfile()}}openMeasurementEntry=openMeasurementEntryV31;if($("addMeasurementBtn"))$("addMeasurementBtn").onclick=openMeasurementEntryV31;
- openProfileEditor=function(){openSheet("Profil bearbeiten",`<div class="profile-form-section"><h3>Persönliche Daten</h3><div class="grid2"><div class="form-field"><label>ALTER</label><input id="profileAgeEdit" class="field" inputmode="numeric" value="${esc(profile.age||"")}"></div><div class="form-field"><label>GRÖSSE ${lengthLabelV31()}</label><input id="profileHeightEdit" class="field" inputmode="decimal" value="${esc(profile.height?lengthDisplayV31(profile.height):"")}"></div></div><div class="form-field"><label>GESCHLECHT FÜR ENERGIEBERECHNUNG</label><select id="profileSexEdit" class="field"><option value="">Nicht gewählt</option><option value="female" ${profile.sex==="female"?"selected":""}>Weiblich</option><option value="male" ${profile.sex==="male"?"selected":""}>Männlich</option></select></div></div><div class="profile-form-section"><h3>Ziel</h3><div class="form-field"><label>ZIEL</label><select id="profileGoalEdit" class="field"><option value="cut" ${profile.goal==="cut"?"selected":""}>Gewicht reduzieren</option><option value="maintain" ${!profile.goal||profile.goal==="maintain"?"selected":""}>Gewicht halten</option><option value="gain" ${profile.goal==="gain"?"selected":""}>Muskelaufbau</option></select></div><div class="form-field"><label>WUNSCHGEWICHT ${weightLabelV31()}</label><input id="profileTargetWeightEdit" class="field" inputmode="decimal" value="${esc(profile.targetWeight?weightDisplayV31(profile.targetWeight):"")}"></div></div><button id="profileSaveEdit" class="primary" style="width:100%">Profil speichern</button>`);$("profileSaveEdit").onclick=()=>{const age=Number($("profileAgeEdit").value),height=lengthStorageV31($("profileHeightEdit").value),target=weightStorageV31($("profileTargetWeightEdit").value);if(age&&(age<14||age>100))return alert("Bitte ein realistisches Alter eingeben.");if(height&&(height<120||height>230))return alert("Bitte eine realistische Körpergröße eingeben.");if(target&&(target<30||target>300))return alert("Bitte ein realistisches Wunschgewicht eingeben.");profile.age=age||"";profile.height=height||"";profile.sex=$("profileSexEdit").value;profile.goal=$("profileGoalEdit").value;profile.targetWeight=target||"";saveAll();closeSheet({all:true});renderProfile()}};
- const openSettingsBeforePrefsV31=openSettingsPage;openSettingsPage=function(){openSettingsBeforePrefsV31();requestAnimationFrame(()=>{const body=$("settingsBody");if(!body||$("unitSettingsV31"))return;const sec=document.createElement("div");sec.className="settings-section";sec.id="unitSettingsV31";sec.innerHTML=`<h3>Einheiten & Ansicht</h3><div class="settings-card"><div class="settings-row"><div><strong>Gewicht</strong><small>Training, Verlauf und Körpergewicht</small></div><select id="prefWeightUnit" class="field settings-unit-select"><option value="kg" ${prefs.weightUnit==="kg"?"selected":""}>kg</option><option value="lb" ${prefs.weightUnit==="lb"?"selected":""}>lb</option></select></div><div class="settings-row"><div><strong>Distanz</strong><small>Cardio-/Distanzangaben</small></div><select id="prefDistanceUnit" class="field settings-unit-select"><option value="km" ${prefs.distanceUnit==="km"?"selected":""}>km</option><option value="mi" ${prefs.distanceUnit==="mi"?"selected":""}>mi</option></select></div><div class="settings-row"><div><strong>Messungen</strong><small>Größe, Taille, Brust und Hüfte</small></div><select id="prefMeasurementUnit" class="field settings-unit-select"><option value="cm" ${prefs.measurementUnit==="cm"?"selected":""}>cm</option><option value="in" ${prefs.measurementUnit==="in"?"selected":""}>in</option></select></div><div class="settings-row"><div><strong>Wochenstart</strong><small>Reihenfolge und Datumsbereich</small></div><select id="prefWeekStart" class="field settings-unit-select"><option value="monday" ${prefs.weekStart==="monday"?"selected":""}>Montag</option><option value="sunday" ${prefs.weekStart==="sunday"?"selected":""}>Sonntag</option></select></div><div class="settings-row"><div><strong>Textgröße</strong><small>Darstellung der App-Schrift</small></div><select id="prefTextScale" class="field settings-unit-select"><option value="normal" ${prefs.textScale==="normal"?"selected":""}>Standard</option><option value="large" ${prefs.textScale==="large"?"selected":""}>Groß</option><option value="xlarge" ${prefs.textScale==="xlarge"?"selected":""}>Sehr groß</option></select></div></div>`;const training=[...body.querySelectorAll(".settings-section")].find(x=>x.querySelector("h3")?.textContent==="Training");if(training)body.insertBefore(sec,training);else body.appendChild(sec);$("prefWeightUnit").onchange=()=>{prefs.weightUnit=$("prefWeightUnit").value;savePrefsV31();if(activeWorkout)renderLive();renderProfile();unitizeSheetV31()};$("prefDistanceUnit").onchange=()=>{prefs.distanceUnit=$("prefDistanceUnit").value;savePrefsV31();unitizeSheetV31()};$("prefMeasurementUnit").onchange=()=>{prefs.measurementUnit=$("prefMeasurementUnit").value;savePrefsV31();renderProfile()};$("prefTextScale").onchange=()=>{prefs.textScale=$("prefTextScale").value;savePrefsV31();applyTextScaleV31()};$("prefWeekStart").onchange=()=>{const old=prefs.weekStart,next=$("prefWeekStart").value;saveCurrentWeekRefs();migrateWeekStorageV31(old,next);prefs.weekStart=next;savePrefsV31();loadWeekOffset(weekOffset);renderProfileProgress()}})};
+ 
+ const openSettingsBeforePrefsV31=openSettingsPage;openSettingsPage=function(){openSettingsBeforePrefsV31();requestAnimationFrame(()=>{const body=$("settingsBody");if(!body||$("unitSettingsV31"))return;const sec=document.createElement("div");sec.className="settings-section";sec.id="unitSettingsV31";sec.innerHTML=`<h3>Einheiten & Ansicht</h3><div class="settings-card"><div class="settings-row"><div><strong>Gewicht</strong><small>Training, Verlauf und Körpergewicht</small></div><select id="prefWeightUnit" class="field settings-unit-select"><option value="kg" ${prefs.weightUnit==="kg"?"selected":""}>kg</option><option value="lb" ${prefs.weightUnit==="lb"?"selected":""}>lb</option></select></div><div class="settings-row"><div><strong>Distanz</strong><small>Cardio-/Distanzangaben</small></div><select id="prefDistanceUnit" class="field settings-unit-select"><option value="km" ${prefs.distanceUnit==="km"?"selected":""}>km</option><option value="mi" ${prefs.distanceUnit==="mi"?"selected":""}>mi</option></select></div><div class="settings-row"><div><strong>Messungen</strong><small>Größe, Taille, Brust und Hüfte</small></div><select id="prefMeasurementUnit" class="field settings-unit-select"><option value="cm" ${prefs.measurementUnit==="cm"?"selected":""}>cm</option><option value="in" ${prefs.measurementUnit==="in"?"selected":""}>in</option></select></div><div class="settings-row"><div><strong>Wochenstart</strong><small>Reihenfolge und Datumsbereich</small></div><select id="prefWeekStart" class="field settings-unit-select"><option value="monday" ${prefs.weekStart==="monday"?"selected":""}>Montag</option><option value="sunday" ${prefs.weekStart==="sunday"?"selected":""}>Sonntag</option></select></div>`;const training=[...body.querySelectorAll(".settings-section")].find(x=>x.querySelector("h3")?.textContent==="Training");if(training)body.insertBefore(sec,training);else body.appendChild(sec);$("prefWeightUnit").onchange=()=>{prefs.weightUnit=$("prefWeightUnit").value;savePrefsV31();if(activeWorkout)renderLive();renderProfile();unitizeSheetV31()};$("prefDistanceUnit").onchange=()=>{prefs.distanceUnit=$("prefDistanceUnit").value;savePrefsV31();unitizeSheetV31()};$("prefMeasurementUnit").onchange=()=>{prefs.measurementUnit=$("prefMeasurementUnit").value;savePrefsV31();renderProfile()};$("prefWeekStart").onchange=()=>{const old=prefs.weekStart,next=$("prefWeekStart").value;saveCurrentWeekRefs();migrateWeekStorageV31(old,next);prefs.weekStart=next;savePrefsV31();loadWeekOffset(weekOffset);renderProfileProgress()}})};
  window.rethinkPrefsV31={get:()=>({...prefs}),weightLabel:weightLabelV31,lengthLabel:lengthLabelV31,distanceLabel:distanceLabelV31,weightDisplay:weightDisplayV31,weightStorage:weightStorageV31,lengthDisplay:lengthDisplayV31,lengthStorage:lengthStorageV31,distanceDisplay:distanceDisplayV31,distanceStorage:distanceStorageV31,weekStartOf:weekStartOfV31,weekDayLabels:weekDayLabelsV31};
 })();
 /* Rethink_v3.1 — unit-aware measurement charts */
@@ -1943,56 +1443,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 
  // A true app/process start gets a fresh per-document boot token.
  // Standby/background does not recreate the document, so it keeps the current UI state untouched.
- const BOOT_TOKEN="rethink_boot_token_v31";
- const BACKGROUND_AT="rethink_background_at_v20";
- const thisBoot=`${Date.now()}_${Math.random().toString(36).slice(2)}`;
- const priorBoot=sessionStorage.getItem(BOOT_TOKEN);
- const backgroundAt=Number(localStorage.getItem(BACKGROUND_AT)||0);
- const resumedAfterIOSRecreate=!priorBoot&&backgroundAt>0&&(Date.now()-backgroundAt)<12*60*60*1000;
- sessionStorage.setItem(BOOT_TOKEN,thisBoot);
- const trueBoot=!priorBoot&&!resumedAfterIOSRecreate;
 
- // v34: every document recreation restores the last persisted screen.
- // This includes a running workout, detail pages and exact scroll position.
- // A restart must never force the Training home while saved UI state exists.
- if(trueBoot){
-   const saved=read(UI_KEY_V31,null);
-   if(saved){
-     restoreUI();
-     if(activeWorkout&&saved.page==="livePage")requestAnimationFrame(()=>{openLive(false);requestAnimationFrame(()=>{$("livePage").scrollTop=Number(saved.pageScroll)||0})})
-   }
- }
-
- /* v34: standby and process recreation both resume the persisted UI state. */
-
- // Final restore semantics:
- // - active workout still wins functionally, but UI transient state is fresh on a true boot;
- // - same document / resumed standby keeps current DOM exactly where it was;
- // - same session re-render restores the saved transient state.
-
- // Standby/background: capture exact transient UI state, without changing it.
- document.addEventListener("visibilitychange",()=>{
-   if(document.visibilityState==="hidden"){
-     localStorage.setItem(BACKGROUND_AT,String(Date.now()));
-     captureTabUiState(currentTab);persistUI({capture:false});saveAll()
-   }else{
-     const saved=read(UI_KEY_V31,null);
-     localStorage.removeItem(BACKGROUND_AT);
-     // iOS may recreate the document while the app was in standby. If the user left from a live workout, reopen that exact view.
-     if(activeWorkout&&saved?.page==="livePage"){
-       openLive(false);
-       requestAnimationFrame(()=>{$("livePage").scrollTop=Number(saved.pageScroll)||0})
-     }
-   }
- },true);
- window.addEventListener("pageshow",()=>{
-   const saved=read(UI_KEY_V31,null);
-   if(activeWorkout&&saved?.page==="livePage")requestAnimationFrame(()=>{openLive(false);requestAnimationFrame(()=>{$("livePage").scrollTop=Number(saved.pageScroll)||0})})
- });
- window.addEventListener("pagehide",()=>{
-   captureTabUiState(currentTab);persistUI({capture:false});saveAll()
- },true);
-
+ // Startup/standby authority lives in app-core restoreUI()/visibility handlers.
  function lastMatchingExerciseV31(e){
    for(let hi=history.length-1;hi>=0;hi--){
      const candidates=(history[hi].exercises||[]).filter(x=>
@@ -2013,23 +1465,24 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    return collection.filter(x=>x.techniqueGroup===e.techniqueGroup&&x.setTechnique===e.setTechnique).indexOf(e)
  }
  function lastMatchingExerciseV26(e){
-   const currentPos=groupPositionV26(activeWorkout?.exercises||[],e);
+   const currentPos=groupPositionV26(activeWorkout?.exercises||[],e);let fallback=null;
    for(let hi=history.length-1;hi>=0;hi--){
      const all=history[hi].exercises||[];
-     const candidates=all.filter(x=>
+     const base=all.filter(x=>
        String(x.name||'')===String(e.name||'')&&
        String(x.setTechnique||'standard')===String(e.setTechnique||'standard')&&
        String(x.measureMode||'reps')===String(e.measureMode||'reps')&&
-       String(x.variant||'')===String(e.variant||'')&&
-       String(x.equipment||'')===String(e.equipment||'')&&
        (currentPos<0||groupPositionV26(all,x)===currentPos)
      );
-     for(let ci=candidates.length-1;ci>=0;ci--){
-       const x=candidates[ci],sets=(x.liveSets||[]).filter(s=>s.completed||s.segments?.some(g=>g.completed));
-       if(sets.length)return{x,sets,workout:history[hi]}
+     const exact=base.filter(x=>String(x.variant||'')===String(e.variant||'')&&String(x.equipmentChoice||'')===String(e.equipmentChoice||''));
+     for(const list of [exact,base]){
+       for(let ci=list.length-1;ci>=0;ci--){
+         const x=list[ci],sets=(x.liveSets||[]).filter(s=>s.completed||s.segments?.some(g=>g.completed));
+         if(sets.length){const hit={x,sets,workout:history[hi]};if(list===exact)return hit;if(!fallback)fallback=hit;break}
+       }
      }
    }
-   return null
+   return fallback
  }
  function ratingNumberV26(r){return({blue:0,green:1,yellow:2,red:3})[r]}
  function setRatingV26(s){
@@ -2153,7 +1606,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    return`${weight} · ${rep||'Wiederholung beibehalten'}`
  }
  function clusterTipV26(e,sets){
-   const target=Number(String(e.reps||'').match(/\d+/)?.[0])||8,rating=weightedRatingV26(sets);
+   const target=(Math.max(2,Number(e.methodData?.blocks)||4)*Math.max(1,Number(e.methodData?.clusterReps)||2)),rating=weightedRatingV26(sets);
    const totals=sets.map(segmentTotalRepsV26),met=totals.length&&totals.every(x=>x>=target);
    let weight;
    if(!met)weight=(rating==='yellow'||rating==='red')?'Gewicht reduzieren':'Gewicht beibehalten';
@@ -2167,30 +1620,54 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    const weight=rating==='red'?'Gewicht reduzieren':rating==='yellow'?'Gewicht beibehalten':'Gewicht erhöhen';
    return`${weight} · Wiederholung beibehalten`
  }
+ function averageTimeRatingV72(sets){return weightedRatingV26(sets)}
+ function achievedTimeV72(s,target){
+   const n=Number(s?.achievedTime);
+   if(Number.isFinite(n)&&n>=0)return n;
+   if(s?.completed)return Math.max(0,Number(s?.time)||Number(target)||0);
+   return 0
+ }
+ function timeTipV72(e,prev){
+   const target=Math.max(1,Number(prev?.x?.timeSeconds)||Number(e?.timeSeconds)||60),sets=prev?.sets||[];
+   if(!sets.length)return'';
+   const achieved=sets.map(s=>achievedTimeV72(s,target)).filter(n=>Number.isFinite(n)&&n>=0);
+   const inTarget=achieved.length>0&&achieved.every(n=>n>=target),rating=averageTimeRatingV72(sets);
+   if(inTarget&&(rating==='green'||rating==='blue'))return'Zeit erhöhen';
+   return'Versuche dich zu steigern'
+ }
  function recommendationTextV31(e){
    const prev=lastMatchingExerciseV26(e);
-   if(!prev)return'Erstes Training in dieser Methode – starte kontrolliert im vorgegebenen Wiederholungsbereich.';
-   if(e.measureMode==='time'||/AMRAP/i.test(String(e.reps||'')))return'Versuche dich zu steigern';
-   const sets=prev.sets;
+   // Recommendations are also useful during the current workout once at least one set was rated.
+   // If a previous matching workout exists it remains the preferred reference; otherwise use
+   // the already rated sets of this workout so the box appears immediately after rating.
+   const currentSets=(e?.liveSets||[]).filter(s=>s?.completed&&(s?.rating||(s?.segments||[]).some(g=>g?.rating)));
+   const source=prev||((currentSets.length)?{x:e,sets:currentSets,current:true}:null);
+   if(!source)return'';
+   if(/AMRAP/i.test(String(e.reps||'')))return'Versuche dich zu steigern';
+   if(e.measureMode==='time')return timeTipV72(e,source);
+   const sets=source.sets;
    switch(e.setTechnique||'standard'){
-     case'pyramid':return pyramidTipV26(e,sets,prev.x);
-     case'backoff':return backoffTipV26(prev.x,sets);
-     case'dropset':return dropTipV26(prev.x,sets);
-     case'cluster':return clusterTipV26(prev.x,sets);
-     case'restpause':return restPauseTipV26(prev.x,sets);
-     default:return standardTipV26(prev.x,sets)
+     case'pyramid':return pyramidTipV26(e,sets,source.x);
+     case'backoff':return backoffTipV26(source.x,sets);
+     case'dropset':return dropTipV26(source.x,sets);
+     case'cluster':return clusterTipV26(source.x,sets);
+     case'restpause':return restPauseTipV26(source.x,sets);
+     default:return standardTipV26(source.x,sets)
    }
  }
  function recommendationHtmlV31(e){
-   return`<div class="live-recommendation"><strong>Trainingstipp</strong><span class="training-tip-text">${esc(recommendationTextV31(e))}</span></div>`
+   const text=recommendationTextV31(e);if(!text)return'';
+   return`<div class="live-recommendation"><strong>Empfehlung</strong><span class="training-tip-text">${esc(text)}</span></div>`
  }
  function recommendationGroupHtmlV26(indexes){
    const members=indexes.map(i=>activeWorkout?.exercises?.[i]).filter(Boolean);
-   const hasPrevious=members.some(e=>!!lastMatchingExerciseV26(e));
-   if(!hasPrevious)return`<div class="live-recommendation group-training-tip"><strong>Trainingstipp</strong><span class="training-tip-text">Erstes Training in dieser Methode – starte kontrolliert im vorgegebenen Wiederholungsbereich.</span></div>`;
-   const rows=members.map((e,gi)=>`<div class="training-tip-row"><strong>${String.fromCharCode(65+gi)}:</strong><span>${esc(recommendationTextV31(e))}</span></div>`).join('');
-   return`<div class="live-recommendation group-training-tip"><strong>Trainingstipp</strong>${rows}</div>`
+   const rows=members.map((e,gi)=>({letter:String.fromCharCode(65+gi),text:recommendationTextV31(e)})).filter(x=>x.text);
+   if(!rows.length)return'';
+   return`<div class="live-recommendation group-training-tip"><strong>Empfehlung</strong>${rows.map(x=>`<div class="training-tip-row"><strong>${x.letter}:</strong><span>${esc(x.text)}</span></div>`).join('')}</div>`
  }
+ window.rethinkRecommendationText=recommendationTextV31;
+ window.rethinkRecommendationHtml=recommendationHtmlV31;
+ window.rethinkRecommendationGroupHtml=recommendationGroupHtmlV26;
 
  // Keep previous values as grey placeholders, restoring them every time a workout/exercise is created or edited.
  function ensureSuggestionsV31(){
@@ -2264,7 +1741,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      const anchor=members.length>1
        ? (card.querySelector(".combined-series-head")||card.querySelector(".method-help"))
        : (card.querySelector(".note-line")||card.querySelector(".live-card-head")||card.querySelector(".method-help"));
-     if(anchor)anchor.insertAdjacentHTML("afterend",html)
+     if(anchor&&html)anchor.insertAdjacentHTML("afterend",html)
    })
  }
 
@@ -2296,12 +1773,13 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    if(!unit||unitFullyRatedV31(unit))activeWorkout.activeExerciseIndex=firstIncompleteUnitIndexV31()
  }
 
- const renderBeforeFinalRecommendationsV31=renderLive;
- renderLive=function(){
-   ensureSuggestionsV31();
+ __rt.live.pre.push(function(...__args){
+ensureSuggestionsV31();
    stabilizeActiveByRatingsV31();
-   const result=renderBeforeFinalRecommendationsV31();
-   // Earlier render wrappers may have used `completed`; force final classes from ratings only.
+});
+__rt.live.post.push(function(__result,...__args){
+const result=__result;
+// Earlier render wrappers may have used `completed`; force final classes from ratings only.
    document.querySelectorAll("#liveBody .live-exercise-card[data-live-card]").forEach(card=>{
      const idx=Number(card.dataset.liveCard),unit=visualUnitForIndexV31(idx),complete=unitFullyRatedV31(unit);
      const active=!complete&&unit?.members.some(x=>x.i===Number(activeWorkout.activeExerciseIndex||0));
@@ -2317,7 +1795,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    injectRecommendationsV31();
    rebindInputsWithoutHighlightV31();
    return result
- };
+});
 
  // Advance only after a rating was actually committed.
  function advanceAfterRatingV31(){
@@ -2325,28 +1803,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    activeWorkout.activeExerciseIndex=firstIncompleteUnitIndexV31();
    saveAll();renderLive()
  }
- const applySetRatingBeforeStableV31=applySetRating;
- applySetRating=function(r){
-   // Rest-Pause uses one load across its mini-blocks. Once the set is rated,
-   // materialize that load into every actually visible RP block so it is shown in white.
-   if(ratingTarget&&!ratingTarget.segment){
-     const e=activeWorkout?.exercises?.[ratingTarget.ei],s=e?.liveSets?.[ratingTarget.si];
-     if(e?.setTechnique==="restpause"&&Array.isArray(s?.segments)){
-       const visible=(typeof restPauseVisibleSegments==="function"?restPauseVisibleSegments(e,s)?.items:[] )||[];
-       const first=visible[0]?.seg||s.segments[0];
-       const load=String(first?.weight||first?._suggested?.weight||"").trim();
-       if(load)visible.forEach(({seg})=>{if(seg&&String(seg.weight||"").trim()==="")seg.weight=load})
-     }
-   }
-   applySetRatingBeforeStableV31(r);
-   setTimeout(advanceAfterRatingV31,0)
- };
- const applySegmentRatingBeforeStableV31=applySegmentRating;
- applySegmentRating=function(r){
-   applySegmentRatingBeforeStableV31(r);
-   setTimeout(advanceAfterRatingV31,0)
- };
-
+ // Core applySetRating/applySegmentRating are authoritative. They advance A→B→C / next exercise
+ // immediately after the committed rating and start the configured rest timer. Do not wrap them here.
  window.__restartHighlightTestV31={
    recommendationText:recommendationTextV31,
    exerciseRated:exerciseRatedV31,
@@ -2357,64 +1815,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 })();
 
 
-/* Rethink_v3.1 — final global text scaling and zero-mutation field focus */
+/* Rethink_v3.1 — zero-mutation field focus */
 (function(){
- const SCALE={normal:1,large:1.12,xlarge:1.24};
- let applyingFonts=false;
-
- function currentTextModeV31(){
-   // UI/dataset wins immediately; persisted prefs are fallback.
-   const ds=document.documentElement.dataset.textScale;
-   if(ds&&SCALE[ds])return ds;
-   try{return window.rethinkPrefsV31?.get?.().textScale||"normal"}catch{return"normal"}
- }
- function textFactorV31(){return SCALE[currentTextModeV31()]||1}
- function scalableV31(el){
-   if(!(el instanceof Element))return false;
-   if(el.matches("svg,svg *,canvas,script,style,link,meta"))return false;
-   return !!(el.textContent?.trim()||el.matches("input,textarea,select,button,label,option"))
- }
- function baseFontV31(el){
-   const c=Number(el.dataset.rethinkBaseFont);
-   if(Number.isFinite(c)&&c>0)return c;
-   const prev=document.documentElement.dataset.textScale;
-   document.documentElement.dataset.textScale="normal";
-   const n=parseFloat(getComputedStyle(el).fontSize);
-   document.documentElement.dataset.textScale=prev||"normal";
-   if(Number.isFinite(n)&&n>0){el.dataset.rethinkBaseFont=String(n);return n}
-   return null
- }
- function applyGlobalTextScaleV31(root=document){
-   if(applyingFonts)return;
-   applyingFonts=true;
-   try{
-     const f=textFactorV31(),nodes=[];
-     if(root instanceof Element)nodes.push(root);
-     if(root.querySelectorAll)nodes.push(...root.querySelectorAll("*"));
-     [...new Set(nodes)].forEach(el=>{
-       if(!scalableV31(el))return;
-       const b=baseFontV31(el);if(!b)return;
-       el.style.setProperty("font-size",`${Math.round(b*f*100)/100}px`,"important")
-     })
-   }finally{applyingFonts=false}
- }
- window.applyGlobalTextScaleV31=applyGlobalTextScaleV31;
-
- document.addEventListener("change",e=>{
-   if(e.target?.id!=="prefTextScale")return;
-   document.documentElement.dataset.textScale=e.target.value||"normal";
-   requestAnimationFrame(()=>applyGlobalTextScaleV31(document))
- },true);
-
- const mo=new MutationObserver(ms=>{
-   if(applyingFonts)return;
-   const roots=[];
-   ms.forEach(m=>m.addedNodes.forEach(n=>{if(n instanceof Element)roots.push(n)}));
-   if(roots.length)requestAnimationFrame(()=>roots.forEach(r=>applyGlobalTextScaleV31(r)))
- });
- mo.observe(document.body,{childList:true,subtree:true});
- requestAnimationFrame(()=>applyGlobalTextScaleV31(document));
-
  function setContextV31(inp){
    const p=inp?.dataset?.input?.split("|");if(!p||p.length<3)return null;
    const e=activeWorkout?.exercises?.[Number(p[0])],s=e?.liveSets?.[Number(p[1])];
@@ -2478,22 +1880,20 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  }
  window.bindStrictInputsV31=bindStrictInputsV31;
 
- const before=renderLive;
- renderLive=function(){
-   const r=before();
-   bindStrictInputsV31();
-   requestAnimationFrame(()=>applyGlobalTextScaleV31($("liveBody")||document));
+ __rt.live.post.push(function(__result,...__args){
+const r=__result;
+bindStrictInputsV31();
    return r
- };
+});
 
- window.__finalTextInputV31={apply:applyGlobalTextScaleV31,factor:textFactorV31,bind:bindStrictInputsV31};
+ window.__finalTextInputV31={bind:bindStrictInputsV31};
 })();
 
 
 /* Rethink_v3.1 — Metric/Imperial system, language, safe inputs, distance tracking */
 (function(){
  const PREF_KEY="rethink_preferences_v31";
- const p0={weightUnit:"kg",distanceUnit:"km",measurementUnit:"cm",weekStart:"monday",textScale:"normal",unitSystem:"metric",language:"de"};
+ const p0={weightUnit:"kg",distanceUnit:"km",measurementUnit:"cm",weekStart:"monday",unitSystem:"metric",language:"de"};
  let sysPrefs={...p0,...read(PREF_KEY,{})};
  // Backward-compatible inference from old individual selectors.
  if(!sysPrefs.unitSystem)sysPrefs.unitSystem=(sysPrefs.weightUnit==="lb"||sysPrefs.distanceUnit==="mi"||sysPrefs.measurementUnit==="in")?"imperial":"metric";
@@ -2599,19 +1999,20 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      inp.onblur=()=>{if(inp.value.trim()==="")s.distance="";saveAll()}
    })
  }
- const renderLiveBeforeDistV31=renderLive;
- renderLive=function(){const r=renderLiveBeforeDistV31();applyTranslationsV31();return r};
+ __rt.live.post.push(function(__result,...__args){
+const r=__result;
+applyTranslationsV31();return r
+});
 
  // Profile height in imperial is shown as feet + inches; circumferences stay inches.
- const renderProfileBeforeSystemV31=renderProfile;
- renderProfile=function(){
-   const r=renderProfileBeforeSystemV31();
-   if(sysPrefs.unitSystem==="imperial"&&$("profileSummary")&&profile.height){
+ __rt.profile.post.push(function(__result,...__args){
+const r=__result;
+if(sysPrefs.unitSystem==="imperial"&&$("profileSummary")&&profile.height){
      const latest=measurements.slice().reverse().find(m=>Number(m.weight)>0),w=Number(latest?.weight||profile.weight||0);
      $("profileSummary").textContent=[profile.age?profile.age+" J.":"",profile.height?feetInches(profile.height):"",w?`${weightDisplay(w)} lb`:""].filter(Boolean).join(" · ")||"Noch nicht eingerichtet"
    }
    patchHydrationUnitsV31();patchFoodMassUnitsV31();applyTranslationsV31();return r
- };
+});
 
  // Hydration display/input: ml <-> fl oz.
  function patchHydrationUnitsV31(){
@@ -2626,48 +2027,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    document.querySelectorAll("[data-food-log-id]").forEach(row=>{});
  }
 
- // Final quick-drink editor with system volume unit.
- openQuickDrinkEntry=function(){
-   ensureDrinks();let selectedId=nutrition.drinks[0]?.id||null;
-   const render=(focusAmount=false)=>{
-     const d=nutrition.drinks.find(x=>String(x.id)===String(selectedId))||nutrition.drinks[0];if(!d)return;
-     const shown=volumeDisplay(d.lastSize||d.size||250);
-     $("sheetBody").innerHTML=`
-       <div class="final-drink-entry-top">
-        <div class="final-drink-selected"><span class="drink-icon">${d.icon||"🥤"}</span><div><strong data-i18n-skip>${esc(d.name)}</strong><div class="small">${d.hydration}% Hydrierung · ${d.calories||0} kcal/250 ml · ${d.caffeine||0} mg Koffein</div></div></div>
-        <div class="form-field"><label>MENGE ${volumeUnit()}</label>
-          <div class="drink-amount-inline">
-            <input id="finalDrinkAmount" class="field" inputmode="decimal" enterkeyhint="done" value="${shown}">
-            <button id="finalDrinkApplyInline" class="drink-amount-submit" type="button">+ Eintragen</button>
-          </div>
-        </div>
-       </div>
-       <div class="quick-drink-grid">${nutrition.drinks.map(x=>`<button class="quick-drink-choice ${String(x.id)===String(d.id)?"active":""} ${drinkTone(x)}" data-final-drink="${x.id}"><span class="drink-icon">${x.icon||"🥤"}</span><span data-i18n-skip>${esc(x.name)}</span></button>`).join("")}</div>`;
-     const submit=()=>{
-       const input=$("finalDrinkAmount"),raw=String(input?.value??"").trim();
-       if(!raw){input?.focus();return}
-       const amount=volumeStore(raw);
-       if(!amount||Number(amount)<=0){input?.focus();input?.select?.();return}
-       addDrinkEntry(d,amount);closeSheet({all:true})
-     };
-     document.querySelectorAll("[data-final-drink]").forEach(btn=>btn.onclick=()=>{selectedId=btn.dataset.finalDrink;render(true)});
-     $("finalDrinkApplyInline").onclick=submit;
-     const input=$("finalDrinkAmount");
-     if(input){
-       input.onkeydown=e=>{
-         if(e.key==="Enter"){
-           e.preventDefault();e.stopPropagation();submit()
-         }
-       };
-       if(focusAmount){
-         try{input.focus({preventScroll:true})}catch{input.focus()}
-         input.select?.();window.rethinkKeepFieldVisibleV24?.(input)
-       }
-     }
-     applyTranslationsV31()
-   };
-   openSheet("Getränk eintragen","");render(false)
- };
+ // Quick-drink editor is implemented once in app-core.js.
  if($("addWaterBtn"))$("addWaterBtn").onclick=openQuickDrinkEntry;
 
  // Food quantity display: metric g; imperial oz, and >=16 oz automatically lb.
@@ -2686,7 +2046,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
   "Übungen":"Exercises","Trainingspläne":"Plans","Training":"Training","Woche":"Week","Profil":"Profile",
   "Einstellungen":"Settings","Darstellung":"Appearance","Hell / Dunkel":"Light / Dark","System":"System",
   "Einheiten & Ansicht":"Units & View","Einheitensystem":"Unit system","Metrisch":"Metric","Imperial":"Imperial",
-  "Wochenstart":"Week starts","Montag":"Monday","Sonntag":"Sunday","Textgröße":"Text size","Standard":"Standard","Groß":"Large","Sehr groß":"Extra large",
+  "Wochenstart":"Week starts","Montag":"Monday","Sonntag":"Sunday","Standard":"Standard",
   "Sprache":"Language","Deutsch":"German","Englisch":"English",
   "Heute":"Today","Gestern":"Yesterday","Morgen":"Tomorrow","Messungen":"Measurements","Messung hinzufügen":"Add measurement",
   "Hydrierung heute":"Hydration today","Ernährung heute":"Nutrition today","Menge":"Amount","Ziel":"Goal","Getränke heute":"Drinks today","Meine Getränke":"My drinks",
@@ -2723,10 +2083,10 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
   "Keine Ergebnisse":"No results","Noch keine Messung":"No measurement yet","Noch keine Messungen.":"No measurements yet.",
   "Noch nicht eingerichtet":"Not set up yet","Pause beendet":"Rest finished","Pause überspringen":"Skip rest",
   "Bewertung":"Rating","Satz erledigt":"Set done","noch passend":"still suitable","genau richtig":"just right","zu anstrengend":"too hard",
-  "Perfekt · 1–3 Wdh. mit guter Form übrig":"Perfect · 1–3 reps with good form left",
+  "Perfekt · 1–2 WDH. sauber übrig":"Perfect · 1–2 clean reps left",
   "Limit · 0 Wdh. mit guter Form übrig":"Limit · 0 reps with good form left",
   "Zu schwer · Form zu früh verloren":"Too heavy · form broke down too early",
-  "Zu leicht · problemlos noch 3+ Wdh.":"Too easy · 3+ reps still possible"
+  "Zu leicht · 3+ saubere WDH. wären möglich":"Too easy · 3+ reps still possible"
  };
  const EN_DE=Object.fromEntries(Object.entries(DE_EN).map(([a,b])=>[b,a]));
  function shouldSkipTranslationV31(el){
@@ -2770,9 +2130,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      sec.innerHTML=`<h3>Einheiten & Ansicht</h3><div class="settings-card">
        <div class="settings-row"><div><strong>Einheitensystem</strong><small>kg / km / cm / ml / g oder lb / mi / in / oz / oz-lb</small></div><select id="prefUnitSystem" class="field settings-system-select"><option value="metric" ${sysPrefs.unitSystem==="metric"?"selected":""}>Metrisch</option><option value="imperial" ${sysPrefs.unitSystem==="imperial"?"selected":""}>Imperial</option></select></div>
        <div class="settings-row"><div><strong>Wochenstart</strong></div><select id="prefWeekStartFinal" class="field settings-system-select"><option value="monday" ${sysPrefs.weekStart==="monday"?"selected":""}>Montag</option><option value="sunday" ${sysPrefs.weekStart==="sunday"?"selected":""}>Sonntag</option></select></div>
-       <div class="settings-row"><div><strong>Textgröße</strong></div><select id="prefTextScaleFinal" class="field settings-system-select"><option value="normal" ${sysPrefs.textScale==="normal"?"selected":""}>Standard</option><option value="large" ${sysPrefs.textScale==="large"?"selected":""}>Groß</option><option value="xlarge" ${sysPrefs.textScale==="xlarge"?"selected":""}>Sehr groß</option></select></div>
-       <div class="settings-row"><div><strong>Sprache</strong></div><select id="prefLanguage" class="field settings-system-select"><option value="de" ${sysPrefs.language==="de"?"selected":""}>Deutsch</option><option value="en" ${sysPrefs.language==="en"?"selected":""}>Englisch</option></select></div>
-     </div>`;
+       <div class="settings-row"><div><strong>Sprache</strong><small>Gesamte App-Oberfläche</small></div><select id="prefLanguage" class="field settings-system-select"><option value="de" ${sysPrefs.language!=="en"?"selected":""}>Deutsch</option><option value="en" ${sysPrefs.language==="en"?"selected":""}>English</option></select></div>
+       </div>`;
      const training=[...body.querySelectorAll(".settings-section")].find(x=>x.querySelector("h3")?.textContent==="Training"||x.querySelector("h3")?.textContent==="Training");
      if(training)body.insertBefore(sec,training);else body.appendChild(sec);
 
@@ -2788,9 +2147,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
        const legacy=$("prefWeekStart");if(legacy){legacy.value=sysPrefs.weekStart;legacy.dispatchEvent(new Event("change",{bubbles:true}))}
        else{renderWeek();renderProfile()}
      };
-     $("prefTextScaleFinal").onchange=()=>{sysPrefs.textScale=$("prefTextScaleFinal").value;write(PREF_KEY,sysPrefs);try{captureTabUiState(currentTab);persistUI({capture:false});saveAll()}catch{}location.reload()};
+     
      $("prefLanguage").onchange=()=>{sysPrefs.language=$("prefLanguage").value;write(PREF_KEY,sysPrefs);try{captureTabUiState(currentTab);persistUI({capture:false});saveAll()}catch{}location.reload()};
-     document.documentElement.dataset.textScale=sysPrefs.textScale;
      applyTranslationsV31()
    })
  };
@@ -2818,14 +2176,13 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    }
    s.translate?.()
  }
- const renderProfileBeforeFinalSystemV31=renderProfile;
- renderProfile=function(){
-   const r=renderProfileBeforeFinalSystemV31();
-   enforceProfileSystemV31();
+ __rt.profile.post.push(function(__result,...__args){
+const r=__result;
+enforceProfileSystemV31();
    requestAnimationFrame(enforceProfileSystemV31);
    setTimeout(enforceProfileSystemV31,40);
    return r
- };
+});
 
  // Translate the plans tab label as well; names inside plan cards remain protected.
  if(window.rethinkSystemV31){
@@ -2864,8 +2221,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      WEEK_DATED_KEY,                        // datumsbasierte Wochenpläne
      "rethink_week_recurring_rules_v1",     // wiederkehrende Wochenpläne
      "rethink_week_recurring_exceptions_v1",// Wochenplan-Ausnahmen
-     "rethink_annual_cleanup_enabled_v1",   // persönliche Datenaufbewahrungswahl
-     "rethink_annual_cleanup_prompt_year_v1"
    ].filter(Boolean))]
  }
  function payload(){
@@ -2887,10 +2242,24 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  }
  function filename(){return "Backup.json"}
  async function exportBackup(){
-   const blob=new Blob([JSON.stringify(payload(),null,2)],{type:"application/json"});
-   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename();a.style.display="none";
-   document.body.appendChild(a);a.click();a.remove();
-   setTimeout(()=>URL.revokeObjectURL(a.href),1200);
+   try{saveAll()}catch{}
+   const text=JSON.stringify(payload(),null,2);
+   const file=new File([text],filename(),{type:"application/json"});
+   // iPhone/iPad local previews are much more reliable with the native share sheet than a blob navigation.
+   try{
+     if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){
+       await navigator.share({files:[file],title:"ReThink. Fitness Backup"});
+       try{toast("Backup erstellt")}catch{}
+       return
+     }
+   }catch(err){
+     if(err?.name==="AbortError")return;
+   }
+   const blob=new Blob([text],{type:"application/json"});
+   const url=URL.createObjectURL(blob);
+   const a=document.createElement("a");a.href=url;a.download=filename();a.rel="noopener";a.style.display="none";
+   document.body.appendChild(a);a.click();
+   setTimeout(()=>{try{a.remove()}catch{};URL.revokeObjectURL(url)},2500);
    try{toast("Backup erstellt")}catch{}
  }
  function backupValueStringV19(v){
@@ -2968,48 +2337,23 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    setTimeout(()=>location.reload(),300)
  }
  function chooseRestore(){
-   let i=document.getElementById("rethinkBackupRestoreInput");
-   if(!i){
-     i=document.createElement("input");
-     i.type="file";
-     i.accept=".json,.txt,application/json,text/json,text/plain";
-     i.id="rethinkBackupRestoreInput";
-     i.setAttribute("aria-label","ReThink Backup auswählen");
-     Object.assign(i.style,{position:"fixed",left:"8px",bottom:"8px",width:"1px",height:"1px",opacity:"0.01",zIndex:"99999"});
-     document.body.appendChild(i);
-     i.addEventListener("change",async()=>{
-       const f=i.files?.[0];
-       if(!f)return;
-       try{await restore(f)}
-       catch(e){alert(e?.message||"Backup konnte nicht gelesen werden.")}
-       finally{i.value=""}
-     })
-   }
-   try{
-     if(typeof i.showPicker==="function")i.showPicker();
-     else i.click()
-   }catch{
-     i.click()
-   }
+   // Always create a fresh picker. Reusing the old iOS file input can leave it inert after one export/restore cycle.
+   const old=document.getElementById("rethinkBackupRestoreInput");if(old)old.remove();
+   const i=document.createElement("input");
+   i.type="file";i.accept=".json,.txt,application/json,text/json,text/plain";i.id="rethinkBackupRestoreInput";
+   i.setAttribute("aria-label","ReThink Backup auswählen");
+   Object.assign(i.style,{position:"fixed",left:"-10000px",top:"0",width:"1px",height:"1px",opacity:"0",zIndex:"-1"});
+   document.body.appendChild(i);
+   i.addEventListener("change",async()=>{
+     const f=i.files?.[0];
+     try{if(f)await restore(f)}
+     catch(e){alert(e?.message||"Backup konnte nicht gelesen werden.")}
+     finally{setTimeout(()=>i.remove(),0)}
+   },{once:true});
+   try{i.click()}catch(e){i.remove();throw e}
  }
  window.rethinkBackup={export:exportBackup,restore:chooseRestore,payload};
 
-})();
-
-
-/* v3.1 plans empty-state */
-(function(){
- const base=renderPlans;
- renderPlans=function(){
-   const out=base();
-   const list=$("planList");
-   if(list && plans.length===0){
-     list.innerHTML=`<div class="plan-welcome-card card"><div class="plan-welcome-mark">R.</div><h2>Dein Training beginnt hier.</h2><p>Erstelle deinen ersten Trainingsplan und stelle Übungen, Sätze und Trainingsmethoden passend zu deinem Training zusammen.</p><button id="planWelcomeCreate" class="primary plan-welcome-create">Trainingsplan erstellen</button></div>`;
-     $("planWelcomeCreate").onclick=()=>$("newPlanBtn").click();
-     try{window.rethinkSystemV31?.translate?.(list)}catch{}
-   }
-   return out
- }
 })();
 
 
@@ -3036,7 +2380,8 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
   "Gewicht":"Weight","Distanz":"Distance","Variante":"Variant","pro Seite":"per side","Notiz":"Note",
   "Bewertung":"Rating","Letzte Bewertung":"Last rating","Bewertung letztes passendes Workout":"Last matching workout rating",
   "Perfekt":"Perfect","Limit":"Limit","Zu schwer":"Too heavy","Zu leicht":"Too easy","Abgeschlossen":"Completed",
-  "Tipp nächstes Training":"Next workout tip","Erstes Training in dieser Methode – starte kontrolliert im vorgegebenen Wiederholungsbereich.":"First workout with this method – start conservatively within the prescribed rep range.",
+  "Tipp nächstes Training":"Next workout tip","Versuche dich zu steigern":"Try to improve","Zeit erhöhen":"Increase time","Lebensmittel/Mahlzeit erstellen":"Create food/meal","Gemeinsamer Streak":"Combined streak","Hydrierung + Ernährung":"Hydration + nutrition","Messverlauf":"Measurement trend",
+  "Erstes Training in dieser Methode – starte kontrolliert im vorgegebenen Wiederholungsbereich.":"First workout with this method – start conservatively within the prescribed rep range.",
   "Letztes Mal zu schwer: Gewicht beibehalten oder leicht reduzieren.":"Last time was too heavy: keep the weight or reduce it slightly.",
   "Letztes Mal deutlich zu leicht: Gewicht moderat erhöhen.":"Last time was clearly too easy: increase the weight moderately.",
   "Sehr passend: Gewicht zunächst beibehalten und Ziel-WDH. wieder anpeilen.":"Very suitable: keep the weight for now and aim for the target reps again.",
@@ -3077,13 +2422,11 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
   "Bitte einzelne Zutaten wählen.":"Please select individual ingredients.",
   "Einstellungen":"Settings","Darstellung":"Appearance","Hell / Dunkel":"Light / Dark","Hell":"Light","Dunkel":"Dark","System":"System",
   "Einheiten & Ansicht":"Units & View","Einheitensystem":"Unit system","Metrisch":"Metric","Imperial":"Imperial",
-  "Wochenstart":"Week starts","Montag":"Monday","Sonntag":"Sunday","Textgröße":"Text size","Standard":"Standard",
+  "Wochenstart":"Week starts","Montag":"Monday","Sonntag":"Sunday","Standard":"Standard",
   "Groß":"Large","Sehr groß":"Extra large","Sprache":"Language","Deutsch":"German","Englisch":"English",
   "Daten & Backup":"Data & Backup","Backup erstellen":"Create backup","Backup wiederherstellen":"Restore backup",
   "Sichern":"Back up","Wiederherstellen":"Restore","Keine gültige ReThink-Backupdatei.":"Not a valid ReThink backup file.",
   "Backup wirklich wiederherstellen? Die aktuellen Daten dieser ReThink-Installation werden durch den Backup-Stand ersetzt.":"Really restore this backup? The current data in this ReThink installation will be replaced by the backup.",
-  "Jährliche Datenbereinigung?":"Annual data cleanup?","Alte Verlaufsdaten löschen":"Delete old history data","Alte Verlaufsdaten gelöscht":"Old history data deleted",
-  "Dieses Jahr behalten":"Keep this year",
   "Speichern":"Save","Löschen":"Delete","Bearbeiten":"Edit","Fertig":"Done","Abbrechen":"Cancel","Zurück":"Back",
   "Hinzufügen":"Add","Übernehmen":"Apply","Duplizieren":"Duplicate","Vorschau":"Preview","Reihenfolge":"Order",
   "Suchen":"Search","Suche":"Search","Alle":"All","Keine Ergebnisse":"No results","Noch nicht eingerichtet":"Not set up yet",
@@ -3103,10 +2446,10 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
   "Bitte ein realistisches Alter eingeben.":"Please enter a realistic age.",
   "Bitte ein realistisches Wunschgewicht eingeben.":"Please enter a realistic target weight.",
   "Ernährungsziele":"Nutrition goals",
-  "Perfekt · 1–3 Wdh. mit guter Form übrig":"Perfect · 1–3 reps with good form left",
+  "Perfekt · 1–2 WDH. sauber übrig":"Perfect · 1–2 clean reps left",
   "Limit · 0 Wdh. mit guter Form übrig":"Limit · 0 reps with good form left",
   "Zu schwer · Form zu früh verloren":"Too heavy · form broke down too early",
-  "Zu leicht · problemlos noch 3+ Wdh.":"Too easy · 3+ reps still possible",
+  "Zu leicht · 3+ saubere WDH. wären möglich":"Too easy · 3+ reps still possible",
   "1 Stück":"1 piece","1 Brötchen":"1 roll","1 mittelgroße Kartoffel":"1 medium potato",
   "1 mittelgroße Süßkartoffel":"1 medium sweet potato","z. B. Frühstück":"e.g. breakfast",
   "z. B. Frühstück Bowl":"e.g. breakfast bowl",
@@ -3406,11 +2749,6 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 })();
 
 
-
-
-
-
-
 /* ReThink v3.1 — visible runtime correction M */
 (function(){
  const migrationKey="rethink_v31_visible_catalog_20260821m";
@@ -3449,8 +2787,10 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    if(typeof renderProfileProgress==="function")renderProfileProgress()
  }
  window.refreshCompletedStreaks=refreshCompletedStreaks;
- const previousProfileFinal=window.renderProfile||renderProfile;
- window.renderProfile=function(){const r=previousProfileFinal();refreshCompletedStreaks();return r};
+ __rt.profile.post.push(function(__result,...__args){
+const r=__result;
+refreshCompletedStreaks();return r
+});
  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")setTimeout(refreshCompletedStreaks,0)});
 })();
 
@@ -3528,13 +2868,9 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 /* Lean v6: an active workout never shows the start-training card. */
 (function(){
  const old=window.renderTrainingHome||renderTrainingHome;
- window.renderTrainingHome=renderTrainingHome=function(){const out=old();const c=document.getElementById('startTrainingCard');if(c)c.classList.toggle('hidden',!!activeWorkout);return out};
+ 
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){const c=document.getElementById('startTrainingCard');if(c)c.classList.toggle('hidden',!!activeWorkout)}})
 })();
-
-
-
-
 
 
 ;
@@ -3548,16 +2884,13 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  function keyboardOpen(){return !!vv && (window.innerHeight-vv.height-vv.offsetTop)>100}
  function keep(el){
    if(!el?.isConnected||document.activeElement!==el||!keyboardOpen())return;
-   const h=host(el); if(!h)return;
-   if(h!==document.scrollingElement&&h!==document.documentElement&&h!==document.body)
-     h.style.paddingBottom=`${Math.max(140,window.innerHeight-vv.height+100)}px`;
-   const r=el.getBoundingClientRect(),top=vv.offsetTop+74,bottom=vv.offsetTop+vv.height-22;
-   let d=0;
-   if(r.bottom>bottom)d=r.bottom-bottom+16;
-   else if(r.top<top)d=r.top-top-10;
+   const h=host(el);if(!h)return;
+   if(h!==document.scrollingElement&&h!==document.documentElement&&h!==document.body)h.style.paddingBottom=`${Math.max(120,window.innerHeight-vv.height+72)}px`;
+   if(el.closest?.('.stable-entry-sticky')){if(h?.classList?.contains('sheet-body'))h.scrollTop=0;return}
+   const r=el.getBoundingClientRect(),top=vv.offsetTop+70,bottom=vv.offsetTop+vv.height-18;let d=0;
+   if(r.bottom>bottom)d=r.bottom-bottom+12;else if(r.top<top)d=r.top-top-8;
    if(Math.abs(d)<2)return;
-   if(h===document.scrollingElement||h===document.documentElement||h===document.body)window.scrollBy(0,d);
-   else h.scrollTop+=d
+   if(h===document.scrollingElement||h===document.documentElement||h===document.body)window.scrollBy(0,d);else h.scrollTop+=d
  }
  function settle(el){requestAnimationFrame(()=>keep(el));setTimeout(()=>keep(el),70);setTimeout(()=>keep(el),180)}
  window.rethinkKeepFieldVisibleV24=el=>{if(!el?.matches?.(selector))return;focused=el;if(keyboardOpen())settle(el)};
@@ -3580,40 +2913,7 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
 /* ReThink v31 — keep sheets within the visible viewport, including iOS keyboard. */
 (function(){const vv=window.visualViewport;function sync(){document.documentElement.style.setProperty('--rethink-vvh',`${Math.round(vv?.height||window.innerHeight)}px`)}sync();vv?.addEventListener('resize',sync);vv?.addEventListener('scroll',sync);window.addEventListener('resize',sync)})();
 
-/* ReThink v44 — preview is the real training renderer, read-only. */
-(function(){
-  function previewWorkoutFromPlanV44(p){
-    const exercises=clone(p.exercises||[]).map(e=>{
-      const x=normPlanEx(e);
-      const count=Number(x.sets)||defaultSetsForExerciseMethod(x,x.setTechnique||"standard");
-      x.liveSets=Array.from({length:count},(_,i)=>initSet(x,i));
-      return x
-    });
-    return {id:"preview",name:p.name||"Workout Vorschau",startedAt:Date.now(),activeExerciseIndex:-999,exercises}
-  }
-  openPreview=function(p){
-    $("previewTitle").textContent=p.name||"Workout Vorschau";
-    const realWorkout=activeWorkout;
-    const fake=previewWorkoutFromPlanV44(p);
-    try{
-      activeWorkout=fake;
-      const markup=liveVisualGroups(fake.exercises).map(g=>g.group
-        ?renderLiveGroupCard(g)
-        :renderLiveSingleCard(g.members[0].e,g.members[0].i)
-      ).join("");
-      $("previewBody").innerHTML=`<div class="preview-live-shell preview-live-mirror-v44">${markup}</div>`;
-    }finally{
-      activeWorkout=realWorkout
-    }
-    const previewBody=$("previewBody");
-    previewBody.querySelectorAll("input,button,textarea,select,a").forEach(el=>{
-      el.tabIndex=-1;
-      el.setAttribute("aria-disabled","true");
-    });
-    previewBody.setAttribute("inert","");
-    openPage("previewPage")
-  };
-})();
+
 
 /* ReThink v49 — profile timeline: selected day is a complete read-only historical state */
 (function(){
@@ -3662,8 +2962,16 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
    const foods=(nutrition.foodLog||[]).filter(x=>x.date===key),drinks=hydrationLog().filter(x=>dateKeyLocal(Number(x.at))===key);
    const hydration=foods.reduce((s,x)=>s+Number(x.water||0),0)+drinks.reduce((s,x)=>s+Number(x.size||0)*Number(x.hydration||0)/100,0);
    const calories=foods.reduce((s,x)=>s+Number(x.kcal||0),0)+drinks.reduce((s,x)=>s+Number(x.caloriesPer250||0)*Number(x.size||0)/250,0);
-   const waterGoal=Number(settings.waterGoal||nutrition.waterGoal||0),calorieGoal=Number(settings.calories||nutrition.calories||0);
-   return{hydrationDone:drinks.length>=3&&waterGoal>0&&hydration>=waterGoal,nutritionDone:foods.length>=3&&calorieGoal>0&&calories<=calorieGoal}
+   const waterGoal=Number(settings.waterGoal||nutrition.waterGoal||0),calorieGoal=Number(settings.calories||nutrition.calories||0),goal=String(settings.goal||profile.goal||'cut');
+   // Nutrition streak only starts after at least three food/meal entries. Caloric drinks still count toward calories, but not toward the minimum entry count.
+   const nutritionLogged=foods.length>=3;
+   let nutritionDone=false;
+   if(nutritionLogged&&calorieGoal>0){
+     if(goal==='gain')nutritionDone=calories>=calorieGoal;
+     else if(goal==='maintain')nutritionDone=Math.abs(calories-calorieGoal)<=calorieGoal*.05;
+     else nutritionDone=calories<=calorieGoal;
+   }
+   return{hydrationDone:drinks.length>=1&&waterGoal>0&&hydration>=waterGoal,nutritionDone}
  }
  function streakAt(kind){
    let d=profileDate();d.setHours(12,0,0,0);if(profileDayOffset===0)d.setDate(d.getDate()-1);
@@ -3673,39 +2981,51 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
      if(!ok)break;count++;d=new Date(d);d.setDate(d.getDate()-1)
    }return count
  }
+ let profileChartMetricV72=localStorage.getItem('rethink_profile_chart_metric_v72')||'weight';
  function renderHistoricalCharts(cutoff){
    const el=$('measurementCharts');if(!el)return;
-   const rows=measurementRows(cutoff,'weight');
-   if(!rows.length){el.innerHTML='<div class="measurement-chart-stack"><div class="profile-chart card always-chart"><div class="space"><strong>Gewicht</strong><span class="small">Noch keine Messung</span></div><div class="empty-chart-line"></div></div></div>';return}
-   const vals=rows.map(x=>Number(x.weight)),min=Math.min(...vals),max=Math.max(...vals),span=Math.max(.001,max-min),w=280,h=94,pad=10,bottom=h-24,ph=h-40;
-   const y=v=>bottom-((v-min)/span)*ph,pts=vals.map((v,i)=>`${pad+(rows.length===1?0:(i/(rows.length-1))*(w-pad*2))},${y(v)}`).join(' '),last=rows.at(-1);
-   const graphic=rows.length===1?`<circle cx="${pad}" cy="${y(vals[0])}" r="3.5" fill="currentColor"/>`:`<polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
-   el.innerHTML=`<div class="measurement-chart-stack"><div class="profile-chart card always-chart"><div class="space"><strong>Gewicht</strong><span class="small">${vals.at(-1)} kg</span></div><svg viewBox="0 0 ${w} ${h}">${graphic}</svg><div class="chart-range chart-dates"><span>Zu Beginn<br><b>${vals[0]} kg</b></span><span>${new Date(last.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})}<br><b>${vals.at(-1)} kg</b></span></div></div></div>`
+   const defs={weight:{label:'Gewicht',unit:'kg',stroke:'#cdb0e8'},bodyFat:{label:'Körperfett',unit:'%',stroke:'#e7a8c8'},waist:{label:'Taille',unit:'cm',stroke:'#9ac7e8'},chest:{label:'Brust',unit:'cm',stroke:'#a9d7b1'},hip:{label:'Hüfte',unit:'cm',stroke:'#e6c48f'}};
+   if(!defs[profileChartMetricV72])profileChartMetricV72='weight';
+   const d=defs[profileChartMetricV72],rows=measurementRows(cutoff,profileChartMetricV72),tabs=Object.entries(defs).map(([k,v])=>`<button type="button" class="profile-chart-chip ${k===profileChartMetricV72?'active':''}" data-profile-chart="${k}" style="--chart-color:${v.stroke}">${v.label}</button>`).join('');
+   let graph='<div class="empty-chart-line"></div><div class="chart-range chart-dates"><span>Noch keine Messung</span><span>–</span></div>';
+   let latest='Noch keine Messung';
+   if(rows.length){
+     const vals=rows.map(x=>Number(x[profileChartMetricV72])).filter(Number.isFinite),min=Math.min(...vals),max=Math.max(...vals),span=Math.max(.001,max-min),w=280,h=82,pad=10,bottom=h-20,ph=h-34;
+     const y=v=>bottom-((v-min)/span)*ph,pts=vals.map((v,i)=>`${pad+(vals.length===1?0:(i/(vals.length-1))*(w-pad*2))},${y(v)}`).join(' '),last=rows.at(-1),graphic=vals.length===1?`<circle cx="${pad}" cy="${y(vals[0])}" r="3.5" fill="${d.stroke}"/>`:`<polyline points="${pts}" fill="none" stroke="${d.stroke}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`;
+     latest=`${vals.at(-1)} ${d.unit}`;graph=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${d.label} Verlauf">${graphic}</svg><div class="chart-range chart-dates"><span>Zu Beginn<br><b>${vals[0]} ${d.unit}</b></span><span>${new Date(last.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})}<br><b>${vals.at(-1)} ${d.unit}</b></span></div>`
+   }
+   el.innerHTML=`<div class="profile-chart card compact-profile-chart"><div class="space"><strong>Messverlauf</strong><span class="small">${d.label}: ${latest}</span></div><div class="profile-chart-tabs">${tabs}</div>${graph}</div>`;
+   el.querySelectorAll('[data-profile-chart]').forEach(b=>b.onclick=()=>{profileChartMetricV72=b.dataset.profileChart;localStorage.setItem('rethink_profile_chart_metric_v72',profileChartMetricV72);renderHistoricalCharts(cutoff)})
  }
  function renderHistoricalProgress(){
    const el=$('profileProgressOverview');if(!el)return;const cutoff=dayEnd(),settings=historicalSettings(cutoff),rows=measurementRows(cutoff,'weight'),cur=rows.length?Number(rows.at(-1).weight):null,target=Number(settings.targetWeight||profile.targetWeight||0)||null,distance=cur!=null&&target!=null?Math.round(Math.abs(target-cur)*10)/10:null,wk=weekInfoAtSelected(),train=workoutDaysForSelectedWeek(),streak=streakAt('combined');
-   el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid"><div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${cur!=null?`${cur} kg`:'–'}</strong><span class="progress-sub-value">${distance!=null?`${distance} kg bis Ziel`:'–'}</span></div><div class="card progress-stat"><div class="small">Streak</div><strong>${streak}</strong><span class="progress-sub-value">Wasser und Ernährung</span></div><div class="card progress-stat training-week-stat"><div class="small">Trainingstage</div><span class="progress-sub-label">KW ${wk.week}</span><strong>${train}/7</strong></div></div>`
+   el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid"><div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${cur!=null?`${cur} kg`:'–'}</strong><span class="progress-sub-value">${distance!=null?`${distance} kg bis Ziel`:'–'}</span></div><div class="card progress-stat"><div class="small">Gemeinsamer Streak</div><strong>${streak}</strong><span class="progress-sub-value">Hydrierung + Ernährung</span></div><div class="card progress-stat training-week-stat"><div class="small">Trainingstage</div><span class="progress-sub-label">KW ${wk.week}</span><strong>${train}/7</strong></div></div>`
  }
  function annotateMeasurements(cutoff){
    let changed=false;
    (measurements||[]).forEach(m=>{if(!m.activity){m.activity=String(historicalActivity(Number(m.date||cutoff),historicalSettings(Number(m.date||cutoff))));changed=true}});
    if(changed)try{saveAll()}catch{}
    document.querySelectorAll('[data-measurement-open]').forEach(btn=>{
-     const idx=Number(btn.dataset.measurementOpen),m=measurements[idx];if(!m)return;const strong=btn.querySelector('strong');if(strong&&m.weight){const a=activityLabel(m.activity||historicalActivity(Number(m.date||cutoff),historicalSettings(Number(m.date||cutoff))));strong.textContent=`${weightDisplayV31?weightDisplayV31(m.weight):m.weight} ${typeof weightLabelV31==='function'?weightLabelV31().toLowerCase():'kg'} · ${a}`}
+     const idx=Number(btn.dataset.measurementOpen),m=measurements[idx];if(!m)return;const strong=btn.querySelector('strong');if(strong&&m.weight){const a=activityLabel(m.activity||historicalActivity(Number(m.date||cutoff),historicalSettings(Number(m.date||cutoff))));const u=window.rethinkPrefsV31;strong.textContent=`${u?.weightDisplay?u.weightDisplay(m.weight):m.weight} ${u?.weightLabel?u.weightLabel().toLowerCase():'kg'} · ${a}`}
    })
  }
  function lockPastProfile(){
    const root=$('tab-profile');if(!root)return;root.classList.toggle('profile-history-readonly',isPast());
+   // Undo only the controls that the history view disabled itself.
+   root.querySelectorAll('[data-profile-history-locked="1"]').forEach(el=>{el.removeAttribute('disabled');el.removeAttribute('aria-disabled');delete el.dataset.profileHistoryLocked});
+   root.querySelectorAll('[data-profile-history-pointer="1"]').forEach(el=>{el.style.pointerEvents='';delete el.dataset.profileHistoryPointer});
    const next=$('profileNextDay');if(next)next.disabled=profileDayOffset>=0;
    if(!isPast())return;
-   root.querySelectorAll('button,input,select,textarea,details').forEach(el=>{if(el.id==='profilePrevDay'||el.id==='profileNextDay')return;el.setAttribute('disabled','disabled');el.setAttribute('aria-disabled','true')});
-   root.querySelectorAll('[data-edit-food-entry],[data-edit-drink-entry],[data-measurement-open]').forEach(el=>{el.style.pointerEvents='none'})
+   root.querySelectorAll('button,input,select,textarea,details').forEach(el=>{if(el.id==='profilePrevDay'||el.id==='profileNextDay'||el.disabled)return;el.dataset.profileHistoryLocked='1';el.setAttribute('disabled','disabled');el.setAttribute('aria-disabled','true')});
+   root.querySelectorAll('[data-edit-food-entry],[data-edit-drink-entry],[data-measurement-open]').forEach(el=>{el.dataset.profileHistoryPointer='1';el.style.pointerEvents='none'})
  }
  function patchHistoricalState(){
-   recordState();const cutoff=dayEnd(),settings=historicalSettings(cutoff),m=measurementAt(cutoff),weight=historicalWeight(cutoff),activity=historicalActivity(cutoff,settings);
-   if($('profileSummary'))$('profileSummary').textContent=[settings.age?settings.age+' J.':'',settings.height?settings.height+' cm':'',weight?`${typeof weightDisplayV31==='function'?weightDisplayV31(weight):weight} ${typeof weightLabelV31==='function'?weightLabelV31().toLowerCase():'kg'} · ${activityLabel(activity)}`:''].filter(Boolean).join(' · ')||'Noch nicht eingerichtet';
+   recordState();const cutoff=dayEnd();
+   const settings=profileDayOffset===0?{age:profile.age||'',height:profile.height||'',sex:profile.sex||'',goal:profile.goal||'',targetWeight:profile.targetWeight||'',activity:profile.activity||'',calories:nutrition.calories||'',protein:nutrition.protein||'',waterGoal:nutrition.waterGoal||'',waterGoalMode:nutrition.waterGoalMode||''}:historicalSettings(cutoff);
+   const m=measurementAt(cutoff),weight=profileDayOffset===0?Number(measurements.slice().sort((a,b)=>Number(a.date)-Number(b.date)).at(-1)?.weight||profile.weight||0):historicalWeight(cutoff),activity=profileDayOffset===0?(profile.activity||m?.activity||1.55):historicalActivity(cutoff,settings);
+   const uHist=window.rethinkPrefsV31;if($('profileSummary'))$('profileSummary').textContent=[settings.age?settings.age+' J.':'',settings.height?`${uHist?.lengthDisplay?uHist.lengthDisplay(settings.height):settings.height} ${uHist?.lengthLabel?uHist.lengthLabel().toLowerCase():'cm'}`:'',weight?`${uHist?.weightDisplay?uHist.weightDisplay(weight):weight} ${uHist?.weightLabel?uHist.weightLabel().toLowerCase():'kg'} · ${activityLabel(activity)}`:''].filter(Boolean).join(' · ')||'Noch nicht eingerichtet';
    const goal=settings.goal||profile.goal,target=settings.targetWeight||profile.targetWeight;
-   if($('profileGoalSummary'))$('profileGoalSummary').innerHTML=`<span>${goal==='cut'?'Ziel: Gewicht reduzieren':goal==='gain'?'Ziel: Muskelaufbau':goal==='maintain'?'Ziel: Gewicht halten':'Persönliche Werte und Ziele'}</span>${target?`<span class="target-weight-line-profile">Wunschgewicht ${esc(target)} ${typeof weightLabelV31==='function'?weightLabelV31().toLowerCase():'kg'}</span>`:''}`;
+   if($('profileGoalSummary'))$('profileGoalSummary').innerHTML=`<span>${goal==='cut'?'Ziel: Gewicht reduzieren':goal==='gain'?'Ziel: Muskelaufbau':goal==='maintain'?'Ziel: Gewicht halten':'Persönliche Werte und Ziele'}</span>${target?`<span class="target-weight-line-profile">Wunschgewicht ${esc(uHist?.weightDisplay?uHist.weightDisplay(target):target)} ${uHist?.weightLabel?uHist.weightLabel().toLowerCase():'kg'}</span>`:''}`;
    if($('nutritionCalTarget'))$('nutritionCalTarget').textContent=settings.calories?`${settings.calories} kcal`:'–';
    if($('nutritionHydrationTarget'))$('nutritionHydrationTarget').textContent=settings.waterGoal?`${settings.waterGoal} ml`:'–';
    const hb=$('hydrationStreakBadge'),nb=$('nutritionStreakBadge'),hs=streakAt('hydration'),ns=streakAt('nutrition');if(hb){hb.querySelector('strong').textContent=hs;hb.classList.toggle('active',hs>0)}if(nb){nb.querySelector('strong').textContent=ns;nb.classList.toggle('active',ns>0)}
@@ -3714,11 +3034,145 @@ try{renderProfile();renderPlans();if(activeWorkout&&!$("livePage").classList.con
  }
  // Do not allow browsing into the future; past days are snapshots, not editors.
  changeProfileDay=function(delta){profileDayOffset=Math.min(0,profileDayOffset+delta);localStorage.setItem(PROFILE_DAY_OFFSET_KEY,String(profileDayOffset));renderProfile();requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'auto'}))};
- const prior=window.renderProfile||renderProfile;
- window.renderProfile=renderProfile=function(){const r=prior();patchHistoricalState();return r};
+ __rt.profile.post.push(function(__result,...__args){
+const r=__result;
+patchHistoricalState();return r
+});
  // Any caller that redraws only progress must still respect the selected profile date.
- window.renderProfileProgress=renderProfileProgress=function(){renderHistoricalProgress()};
+ __rt.profileProgress.core=function(){renderHistoricalProgress()};
  const saveBefore=saveAll;
  saveAll=function(){const r=saveBefore();try{recordState()}catch{}return r};
  try{recordState();renderProfile()}catch(e){console.error('v49 profile timeline',e)}
+})();
+
+
+/* ReThink v51 — settings interaction reliability on iOS/local preview. */
+(function(){
+ document.addEventListener('click',e=>{
+   const t=e.target.closest?.('#settingsBackupExport,#settingsBackupRestore,#openHydrationData');if(!t)return;
+   if(t.id==='openHydrationData'&&e.target.closest('#clearHydrationDataBtn'))return;
+   e.preventDefault();e.stopPropagation();
+   if(t.id==='settingsBackupExport')window.rethinkBackup?.export?.();
+   else if(t.id==='settingsBackupRestore')window.rethinkBackup?.restore?.();
+   else if(t.id==='openHydrationData')openHydrationData();
+ },true);
+})();
+
+
+/* RETHINK 2026-09-12F — single authoritative reliability layer.
+   Important: no overrides of workout finish or custom-exercise editor live here.
+   Those are owned by app-core.js so their handlers cannot fight duplicate patches. */
+(()=>{
+ const el=id=>document.getElementById(id);
+ const same=(a,b)=>String(a)===String(b);
+ const stop=e=>{e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()};
+
+ // Plan save/delete reliability only. One handler, independent of numeric/string ids.
+ function planSave(){
+   if(!currentPlan)return false;
+   const name=String(el('planName')?.value||currentPlan.name||'').trim();
+   if(!name){alert('Bitte Planname eingeben.');return false}
+   if(!(currentPlan.exercises||[]).length){alert('Ein Trainingsplan braucht mindestens eine Übung.');return false}
+   currentPlan.name=name;
+   const source=currentPlan._editingSourceId;
+   let saved=clone(currentPlan);saved.updatedAt=Date.now();delete saved._isNew;delete saved._editingSourceId;delete saved._originalName;
+   if(source!=null){
+     const i=plans.findIndex(p=>same(p.id,source));
+     if(i>=0){saved.id=plans[i].id;saved.createdAt=plans[i].createdAt||saved.createdAt||Date.now();plans[i]=clone(saved)}
+     else{saved.id=uid();saved.createdAt=Date.now();plans.push(clone(saved))}
+   }else{
+     const i=plans.findIndex(p=>same(p.id,saved.id));
+     if(i>=0)plans[i]=clone(saved);else plans.push(clone(saved));
+   }
+   currentPlan=clone(saved);editorDirty=false;saveAll();try{setEditorBaseline()}catch{};renderPlans();renderWeek();toast('Plan gespeichert');return true
+ }
+ function closeEditorToPlans(){
+   try{closeSheet({all:true})}catch{}
+   document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));pageStack=[];
+   el('bottomNav')?.classList.remove('hidden');showTab('plans',{reset:true});renderPlans();renderWeek();
+ }
+ function planDelete(id){
+   const p=plans.find(x=>same(x.id,id));if(!p)return false;
+   if(!confirm(`„${p.name}“ wirklich löschen?`))return false;
+   plans=plans.filter(x=>!same(x.id,id));
+   weekPlan=(weekPlan||[]).map(day=>Array.isArray(day)?day.filter(x=>!same(x,id)):(same(day,id)?[]:day));
+   saveAll();renderPlans();renderWeek();renderTrainingHome();toast('Plan gelöscht');return true
+ }
+ document.addEventListener('click',e=>{
+   const b=e.target.closest?.('button');if(!b)return;
+   if(b.id==='planSaveBtn'||b.id==='confirmPlanSave'||b.id==='confirmExistingPlanSave'||b.id==='backSavePlan'){
+     stop(e);if(planSave())closeEditorToPlans();return
+   }
+   if(b.matches('[data-quick-delete],[data-swipe-delete]')){
+     stop(e);planDelete(b.dataset.quickDelete||b.dataset.swipeDelete);return
+   }
+ },true);
+
+ // Profile must visibly reflect saved data after every render. Core owns saving and buttons.
+ function refreshProfileVisible(){
+   try{
+     const u=window.rethinkPrefsV31||{};
+     const wDisp=v=>u.weightDisplay?u.weightDisplay(v):v;
+     const wLabel=()=>u.weightLabel?u.weightLabel().toLowerCase():'kg';
+     const lDisp=v=>u.lengthDisplay?u.lengthDisplay(v):v;
+     const lLabel=()=>u.lengthLabel?u.lengthLabel().toLowerCase():'cm';
+     const box=el('profileInputOverview');
+     if(box){
+       const latest=(measurements||[]).slice().sort((a,b)=>Number(a.date)-Number(b.date)).at(-1);
+       const w=Number(latest?.weight||profile.weight||0);
+       const a=profile.activity?activityLabel(profile.activity):'–';
+       const sex=profile.sex==='male'?'Männlich':profile.sex==='female'?'Weiblich':'–';
+       const goal=profile.goal==='cut'?'Abnehmen':profile.goal==='gain'?'Zunehmen':profile.goal==='maintain'?'Halten':'–';
+       const h=profile.height?lDisp(profile.height):'';
+       const tw=profile.targetWeight?wDisp(profile.targetWeight):'';
+       box.innerHTML=`<div><span>Alter</span><strong>${profile.age?`${profile.age} J.`:'–'}</strong></div><div><span>Größe</span><strong>${h?`${h} ${lLabel()}`:'–'}</strong></div><div><span>Gewicht</span><strong>${w?`${wDisp(w)} ${wLabel()}`:'–'}</strong></div><div><span>Geschlecht</span><strong>${sex}</strong></div><div><span>Ziel</span><strong>${goal}</strong></div><div><span>Wunschgewicht</span><strong>${tw?`${tw} ${wLabel()}`:'–'}</strong></div><div><span>Aktivität</span><strong>${esc(a)}</strong></div>`;
+     }
+     const drinks=typeof todayHydrationEntries==='function'?todayHydrationEntries():[];
+     const foods=typeof todayFoodEntries==='function'?todayFoodEntries():[];
+     if(el('todayDrinksDetails')&&drinks.length)el('todayDrinksDetails').open=true;
+     if(el('todayFoodsDetails')&&foods.length)el('todayFoodsDetails').open=true;
+     if(el('myFoodsDetails')&&((nutrition.meals||[]).length||(nutrition.customFoods||[]).length))el('myFoodsDetails').open=true;
+     if(typeof renderMeasurementCharts==='function')renderMeasurementCharts();
+   }catch(err){console.error('profile refresh',err)}
+ }
+ if(window.__rt?.profile?.post)window.__rt.profile.post.push(()=>refreshProfileVisible());
+ requestAnimationFrame(()=>{try{refreshProfileVisible()}catch{}});
+})();
+
+
+/* VERIFIED FIX 2026-09-12: stable current profile + live recommendation integrity. */
+(function(){
+  if(window.__rt?.live?.post){
+    window.__rt.live.post.push(function(result){
+      try{
+        if(!activeWorkout)return result;
+        document.querySelectorAll('#liveBody .live-exercise-card[data-live-card]').forEach(card=>{
+          if(card.querySelector('.live-recommendation'))return;
+          const members=String(card.dataset.liveMembers||'').split(',').filter(Boolean).map(Number).filter(Number.isFinite);
+          const idx=Number(card.dataset.liveCard);
+          let html='';
+          if(members.length>1&&window.rethinkRecommendationGroupHtml)html=window.rethinkRecommendationGroupHtml(members);
+          else if(activeWorkout.exercises?.[idx]&&window.rethinkRecommendationHtml)html=window.rethinkRecommendationHtml(activeWorkout.exercises[idx]);
+          if(!html)return;
+          const anchor=members.length>1?(card.querySelector('.combined-series-head')||card.querySelector('.method-help')):(card.querySelector('.note-line')||card.querySelector('.live-card-head')||card.querySelector('.method-help'));
+          anchor?.insertAdjacentHTML('afterend',html);
+        });
+      }catch(err){console.error('verified live recommendation',err)}
+      return result;
+    });
+  }
+})();
+
+/* RETHINK 2026-09-13 — profile controls: one capture-level interaction authority. */
+(()=>{
+ const actions={
+  editProfileBtn:()=>openProfileEditor(), addMeasurementBtn:()=>openMeasurementEntry(), addWaterBtn:()=>openQuickDrinkEntry(),
+  addFoodTodayBtn:()=>openFoodSearch(""), settingsBtn:()=>openSettingsPage(), calculateGoalsBtn:()=>calculateProfileGoals(),
+  profilePrevDay:()=>changeProfileDay(-1), profileNextDay:()=>{if(profileDayOffset<0)changeProfileDay(1)}
+ };
+ document.addEventListener('click',ev=>{
+  const el=ev.target?.closest?.('#editProfileBtn,#addMeasurementBtn,#addWaterBtn,#addFoodTodayBtn,#settingsBtn,#calculateGoalsBtn,#profilePrevDay,#profileNextDay');
+  if(!el||!el.closest('#tab-profile')||el.disabled)return;
+  const fn=actions[el.id];if(!fn)return;ev.preventDefault();ev.stopImmediatePropagation();fn();
+ },true);
 })();

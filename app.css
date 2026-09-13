@@ -12,15 +12,15 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(1
 .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:1000;width:min(100%,var(--max));height:calc(var(--nav-h) + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(7,7,8,.96);border-top:1px solid var(--line);backdrop-filter:blur(18px)}.nav button{border:0;background:transparent;color:var(--muted);font-size:9px;font-weight:800;display:grid;place-items:center;gap:2px}.nav button span{font-size:20px}.nav button.active{color:#fff}
 .page{position:fixed;inset:0;z-index:1500;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;width:min(100%,var(--max));left:50%;right:auto;transform:translateX(-50%);padding:0 var(--side) calc(24px + env(safe-area-inset-bottom))}
 .page-top{position:sticky;top:0;z-index:20;min-height:58px;margin:0 calc(-1*var(--side)) 12px;padding:calc(7px + env(safe-area-inset-top)) var(--side) 7px;background:var(--bg);border-bottom:1px solid rgba(255,255,255,.05);display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:center}.page-top h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}.page-actions{display:flex;align-items:center;gap:7px}
-.sheet-wrap{position:fixed;inset:0;z-index:2000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.48)}.sheet{width:min(calc(100% - 12px),var(--max));max-height:calc(100dvh - 10px - env(safe-area-inset-top));background:var(--bg);border:1px solid var(--line);border-radius:22px 22px 0 0;overflow:hidden;display:flex;flex-direction:column}.sheet-handle{width:38px;height:4px;border-radius:9px;background:#555;margin:7px auto 2px;flex:0 0 auto}.sheet-top{flex:0 0 auto;min-height:52px;padding:6px 14px;display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;border-bottom:1px solid var(--line)}.sheet-top h2{text-align:center}.sheet-body{padding:12px 14px calc(16px + env(safe-area-inset-bottom));overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch}
+.sheet-wrap{position:fixed;inset:0;z-index:2000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.48)}.sheet{width:min(calc(100% - 12px),var(--max));max-height:calc(100dvh - 10px - env(safe-area-inset-top));background:var(--bg);border:1px solid var(--line);border-radius:22px 22px 0 0;overflow:hidden;display:flex;flex-direction:column}.sheet-handle{width:38px;height:4px;border-radius:9px;background:#555;margin:7px auto 2px;flex:0 0 auto}.sheet-top{flex:0 0 auto;min-height:52px;padding:6px 14px;display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;border-bottom:1px solid var(--line)}.sheet-top h2{text-align:left}.sheet-body{padding:12px 14px calc(16px + env(safe-area-inset-bottom));overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch}
 .media-box{aspect-ratio:1/1;width:100%;border:1px solid var(--line);border-radius:20px;background:var(--surface);display:grid;place-items:center;margin-bottom:16px}.media-box span{font-size:54px;font-weight:200}.detail-section{padding:12px 0;border-bottom:1px solid var(--line)}.detail-section label,.form-field label{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;display:block;margin-bottom:5px}.detail-copy{line-height:1.5;font-size:13px}
 .form-field{margin-bottom:12px}.field{width:100%;height:48px;border-radius:13px;border:1px solid var(--line);background:var(--surface);color:#fff;padding:0 12px}textarea.field{height:82px;padding:10px 12px;resize:vertical}
 .method-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px}.method-card{--method:#f3efff;border:2px solid var(--method);background:var(--surface);border-radius:17px;padding:12px;margin-bottom:14px}.method-standard{--method:#f6f2ff}.method-superset{--method:#aeb4f6}.method-giant{--method:#f3c79d}.method-preexhaust{--method:#efacd1}.method-dropset{--method:#eeaaa5}.method-restpause{--method:#9fd8e8}.method-cluster{--method:#67c7b8}.method-pyramid{--method:#cfb1e9}.method-backoff{--method:#ead79e}.method-name{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--method);font-weight:900;margin-bottom:6px}.exercise-title-link{border:0;background:transparent;color:#fff;padding:0;text-align:left;font-size:16px;font-weight:900}.prescription,.note-line{font-size:10px;color:var(--muted);margin:4px 0 8px}
-.set-title{font-size:10px;color:var(--muted);font-weight:800;border-bottom:1px solid var(--line);padding:7px 0}.set-head,.set-row{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 40px 22px;gap:6px;align-items:center}.set-head{font-size:8px;color:var(--muted);font-weight:900;text-align:center;padding:5px 0}.set-row{padding:4px 0}.set-row input,.advanced-row input,.time-row input{width:100%;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:#fff;text-align:center;min-width:0}.set-check{width:38px;height:38px;border:1px solid var(--line);border-radius:11px;background:transparent;color:var(--muted)}.set-check.done{background:#fff;color:#111}.remove-mini{width:22px;border:0;background:transparent;color:var(--muted);font-size:22px}
-.advanced-head,.advanced-row{display:grid;grid-template-columns:32px minmax(70px,1fr) 72px 72px 22px;gap:6px;align-items:center}.advanced-head,.time-head{font-size:8px;color:var(--muted);font-weight:900;text-align:center;padding:5px 0}.advanced-row{padding:4px 0}.time-head,.time-row{display:grid;grid-template-columns:28px minmax(78px,1fr) 46px minmax(90px,1fr) 40px 24px;gap:5px;align-items:center}
+.set-title{font-size:10px;color:var(--muted);font-weight:800;border-bottom:1px solid var(--line);padding:7px 0}.set-head,.set-row{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 40px 22px;gap:6px;align-items:center}.set-head{font-size:8px;color:var(--muted);font-weight:900;text-align:left;padding:5px 0}.set-row{padding:4px 0}.set-row input,.advanced-row input,.time-row input{width:100%;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:#fff;text-align:left;min-width:0}.set-check{width:38px;height:38px;border:1px solid var(--line);border-radius:11px;background:transparent;color:var(--muted)}.set-check.done{background:#fff;color:#111}.remove-mini{width:22px;border:0;background:transparent;color:var(--muted);font-size:22px}
+.advanced-head,.advanced-row{display:grid;grid-template-columns:32px minmax(70px,1fr) 72px 72px 22px;gap:6px;align-items:center}.advanced-head,.time-head{font-size:8px;color:var(--muted);font-weight:900;text-align:left;padding:5px 0}.advanced-row{padding:4px 0}.time-head,.time-row{display:grid;grid-template-columns:28px minmax(78px,1fr) 46px minmax(90px,1fr) 40px 24px;gap:5px;align-items:center}
 .rating{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.rating button{min-height:34px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--muted);font-size:9px}.rating .red.active{background:#ffb7b3;color:#111}.rating .yellow.active{background:#fff0a6;color:#111}.rating .green.active{background:#c9ffce;color:#111}
 .bottom-actions{display:grid;grid-template-columns:minmax(0,1fr) 50px;gap:8px;margin-top:16px}.finish{width:100%;min-height:52px;margin:9px 0 90px}.week-list{display:grid;gap:8px}.week-row{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:stretch}.week-day{display:grid;place-items:center;color:var(--muted);font-size:11px;font-weight:900}.week-card{min-height:74px;border:1px solid var(--line);background:var(--surface);border-radius:15px;padding:10px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}.week-card strong{display:block}.week-card small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.week-actions{display:flex;gap:5px}.week-plus{width:36px;height:36px;border:0;border-radius:10px;background:#fff;color:#111;font-size:24px;display:grid;place-items:center;padding:0}.week-menu{width:30px;border:0;background:transparent;color:#fff;font-size:23px}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.stat{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:10px;text-align:center}.stat strong{display:block;font-size:17px}.stat span{font-size:8px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:9999;background:#fff;color:#111;border-radius:999px;padding:9px 14px;font-size:11px;font-weight:900}.restbar{background:#fff;color:#111;border-radius:15px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;}.restbar button{border:0;background:#e8e8e8;border-radius:9px;min-height:34px;padding:0 10px;color:#111}.summary-empty{border-top:1px solid var(--line);padding:9px 0;color:#fff;font-size:13px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.stat{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:10px;text-align:left}.stat strong{display:block;font-size:17px}.stat span{font-size:8px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:9999;background:#fff;color:#111;border-radius:999px;padding:9px 14px;font-size:11px;font-weight:900}.restbar{background:#fff;color:#111;border-radius:15px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;}.restbar button{border:0;background:#e8e8e8;border-radius:9px;min-height:34px;padding:0 10px;color:#111}.summary-empty{border-top:1px solid var(--line);padding:9px 0;color:#fff;font-size:13px}
 
 
 
@@ -34,10 +34,10 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(1
 .method-help{font-size:9px;line-height:1.35;color:var(--muted);margin:-1px 0 8px}
 .set-head,.advanced-head,.time-head{text-transform:uppercase}
 .set-head span:first-child,.advanced-head span:first-child,.time-head span:first-child{text-align:left}
-.set-head span:nth-child(n+2),.advanced-head span:nth-child(n+3),.time-head span:nth-child(n+2){text-align:center}
+.set-head span:nth-child(n+2),.advanced-head span:nth-child(n+3),.time-head span:nth-child(n+2){text-align:left}
 .rating-row{display:grid;grid-template-columns:34px 1fr;gap:6px;align-items:center;margin:2px 0 7px}.rating-label{font-size:7px;color:var(--muted);font-weight:900;text-align:left}.rating{margin:0}.rating button:disabled{opacity:.28}
 .live-card-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}.live-delete-ex{width:28px;height:28px;min-width:28px;border:0;background:transparent;color:var(--muted);font-size:20px}
-.time-head,.time-row{grid-template-columns:28px minmax(68px,1fr) 30px 50px 54px 38px 18px!important}.time-play{width:30px;height:38px;border:1px solid var(--line);border-radius:10px;background:transparent;color:#fff;padding:0;font-size:12px}.time-row .remove-mini{grid-column:7}
+.time-head,.time-row{grid-template-columns:28px minmax(68px,1fr) 30px minmax(80px,1fr) 40px 22px!important}.time-play{width:30px;height:38px;border:1px solid var(--line);border-radius:10px;background:transparent;color:#fff;padding:0;font-size:12px}.time-row .remove-mini{grid-column:6}
 .advanced-head,.advanced-row{grid-template-columns:32px minmax(58px,1fr) minmax(58px,68px) minmax(58px,68px) 38px 18px!important}.advanced-row .remove-mini{grid-column:6}
 .set-head,.set-row{grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 38px 18px!important}
 .set-row,.advanced-row,.time-row{max-width:100%;overflow:hidden}.set-row input,.advanced-row input,.time-row input{max-width:100%;min-width:0}
@@ -61,11 +61,11 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(1
 .profile-identity-card{margin-bottom:10px}.compact-profile-edit{min-height:34px;padding:0 11px;font-size:10px}.nutrition-target-card{margin-bottom:8px}.profile-form-section{padding:10px 0;border-bottom:1px solid var(--line)}.profile-form-section:last-child{border-bottom:0}.profile-form-section h3{font-size:12px;margin:0 0 8px}
 
 
-.week-nav{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;gap:8px;align-items:center;margin:2px 0 12px}.week-range{text-align:center}.week-range strong{display:block;font-size:14px}.week-range span{display:block;margin-top:2px}.week-card-date{font-size:9px;color:var(--muted);margin-bottom:2px}
+.week-nav{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;gap:8px;align-items:center;margin:2px 0 12px}.week-range{text-align:left}.week-range strong{display:block;font-size:14px}.week-range span{display:block;margin-top:2px}.week-card-date{font-size:9px;color:var(--muted);margin-bottom:2px}
 .drink-log-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.drink-log-actions{display:flex;gap:5px}.drink-log-actions .icon-btn{width:34px;height:34px;min-width:34px;font-size:16px}
 .settings-section{margin-bottom:16px}.settings-section h3{font-size:12px;margin:0 0 8px}.settings-card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:12px}.settings-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}.settings-row:last-child{border-bottom:0}.settings-row strong{font-size:13px}.settings-row small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
 .plan-card{position:relative;overflow:hidden;touch-action:pan-y;transition:transform .18s ease}.plan-card.swipe-open{transform:translateX(-74px)}.plan-swipe-delete{position:absolute;right:-74px;top:0;width:74px;height:100%;border:0;background:#4a1111;color:#fff;font-size:10px;font-weight:900}.plan-card.swipe-open .plan-swipe-delete{right:0}
-.preview-live-shell .method-card{margin-bottom:14px}.preview-live-shell input{pointer-events:none;opacity:.85}.preview-live-shell .set-check,.preview-live-shell .remove-mini,.preview-live-shell .time-play{pointer-events:none;opacity:.55}
+.preview-live-shell .method-card{margin:0 0 14px 0;width:100%;box-sizing:border-box}.preview-live-shell input{pointer-events:none;opacity:.85}.preview-live-shell .set-check,.preview-live-shell .remove-mini,.preview-live-shell .time-play{pointer-events:none;opacity:.55}
 
 
 
@@ -73,7 +73,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(1
 .group-round{border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:9px;margin:7px 0;background:rgba(255,255,255,.018)}
 .group-round-title{font-size:9px;font-weight:900;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
 .group-ex-row{display:grid;grid-template-columns:minmax(82px,1fr) minmax(54px,66px) minmax(54px,66px);gap:6px;align-items:center;padding:6px 0;border-top:1px solid rgba(255,255,255,.05)}
-.group-ex-row:first-of-type{border-top:0}.group-ex-name{font-size:10px;font-weight:850;line-height:1.15}.group-ex-row input{width:100%;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:#fff;text-align:center;min-width:0}
+.group-ex-row:first-of-type{border-top:0}.group-ex-name{font-size:10px;font-weight:850;line-height:1.15}.group-ex-row input{width:100%;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:#fff;text-align:left;min-width:0}
 .group-round-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px}
 .variant-line{font-size:12.5px;color:var(--text);margin-top:5px;font-weight:850;line-height:1.25}
 .recommendation{margin-top:7px;padding:7px 9px;border:1px solid rgba(255,255,255,.07);border-radius:10px;background:rgba(255,255,255,.02);font-size:9px;color:var(--muted)}
@@ -155,7 +155,7 @@ body{font-size:16px}
 
 #preStartPage{padding-bottom:calc(92px + env(safe-area-inset-bottom))!important}
 #confirmStartBtn{position:fixed!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:calc(min(100vw,var(--max)) - 32px)!important;z-index:100!important;margin:0!important}
-.live-title-stack{text-align:center;min-width:0}.live-title-stack h2{margin:0}.live-title-stack .small{margin-top:2px}
+.live-title-stack{text-align:left;min-width:0}.live-title-stack h2{margin:0}.live-title-stack .small{margin-top:2px}
 .active-resume-area{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:0}
 .active-workout-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.active-workout-actions button{min-height:40px}
 .set-row input::placeholder,.advanced-row input::placeholder,.group-ex-row input::placeholder,.time-row input::placeholder{color:#777!important;opacity:1}
@@ -277,7 +277,7 @@ body{font-size:16px}
 .history-summary-exercise{padding:12px;border-top:1px solid var(--line)}
 .history-summary-exercise:first-of-type{border-top:0}
 .history-group-label{font-size:10px;font-weight:950;color:var(--method);margin-bottom:3px;text-transform:uppercase}
-.history-missing-plan-note{color:var(--muted);text-align:center}
+.history-missing-plan-note{color:var(--muted);text-align:left}
 .connected-method-card .editor-group-exercise+.editor-group-exercise,
 .connected-method-card .preview-group-member+.preview-group-member{margin-top:0!important}
 
@@ -394,18 +394,18 @@ body{font-size:16px}
 
 
 
-.profile-day-nav{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;margin:-2px 0 12px;padding:3px 2px}.profile-day-nav>div{text-align:center}.profile-day-nav strong{display:block;font-size:14px}.profile-day-nav small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.profile-day-nav{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;margin:-2px 0 12px;padding:3px 2px}.profile-day-nav>div{text-align:left}.profile-day-nav strong{display:block;font-size:14px}.profile-day-nav small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
 
 
 
-.food-search-empty{padding:28px 12px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}
+.food-search-empty{padding:28px 12px;text-align:left;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}
 .pyramid-config{display:grid;gap:6px}.pyramid-config-row{display:grid;grid-template-columns:54px 1fr 46px;gap:8px;align-items:center}.pyramid-config-row>span{font-size:10px;color:var(--muted);font-weight:800}.pyramid-config-row>span:last-child{text-align:right}
 
 
 
 .rating-choice{display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;padding:9px 12px!important}.rating-choice strong{font-size:12px}.rating-choice small{display:block;font-size:9px;line-height:1.25;margin-top:2px;opacity:.72;font-weight:650}
 .live-exercise-card{transition:box-shadow .2s,transform .2s,border-color .2s}.live-exercise-card.active-live-exercise{box-shadow:0 0 0 2px rgba(255,255,255,.65),0 0 24px rgba(207,177,233,.24);transform:scale(1.008);border-color:#fff!important}
-#restBar{box-shadow:0 10px 35px rgba(0,0,0,.45)}#livePage{padding-bottom:150px!important}
+#livePage{padding-bottom:150px!important}
 #startTrainingCard{min-height:112px;padding:20px!important;display:flex;align-items:center}#startTrainingCard>.space{width:100%}#startTrainingCard strong{font-size:19px}
 .plan-card.hold-armed{transform:scale(.985);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);filter:brightness(1.12)}.plan-card.hold-ready{transform:scale(.97);box-shadow:inset 0 0 0 2px #fff,0 0 20px rgba(255,255,255,.15)}
 .mode-switch{display:flex;gap:6px;margin:8px 0 12px}.save-choice-stack{display:grid;gap:8px}.summary-plan-card .plus-btn{flex:0 0 auto}
@@ -417,20 +417,8 @@ body{font-size:16px}
 
 
 
-#restBar{
- 
- 
- 
- 
- 
- 
- 
- min-height:72px!important;
- padding:14px 16px!important;
- border-radius:18px!important;
- box-shadow:0 14px 40px rgba(0,0,0,.42)!important
-}
-#restBar #restTime{font-size:25px!important;font-weight:900!important}
+
+
 #livePage{padding-bottom:190px!important}
 .compact-partner-note{padding:10px 0 12px;font-size:13px;opacity:.78}
 .compact-partner-list{max-height:50vh;overflow:auto}
@@ -494,7 +482,7 @@ body{font-size:16px}
 .time-play{min-width:42px!important;height:42px!important}
 .combined-member-block{padding:6px 0}.combined-member-title{display:flex;align-items:center;gap:7px;margin-bottom:6px}
 .combined-time-controls{display:grid;grid-template-columns:minmax(74px,1fr) 44px minmax(96px,1fr) 42px;gap:6px;align-items:center}
-.combined-time-controls input{width:100%;min-width:0;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:#fff;text-align:center}
+.combined-time-controls input{width:100%;min-width:0;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:#fff;text-align:left}
 .group-round-title{display:flex;align-items:center;justify-content:space-between}
 
 
@@ -554,7 +542,7 @@ html[data-theme="light"] #measurementSuggestionBtn strong{color:#b43c49!importan
 .set-row input,.advanced-row input,.group-ex-row input,.combined-member-row input,
 .combined-time-controls input,.time-row input{
  height:44px!important;border:1px solid var(--line)!important;border-radius:11px!important;
- background:var(--surface2)!important;color:var(--text)!important;text-align:center!important;
+ background:var(--surface2)!important;color:var(--text)!important;text-align:left!important;
  font-size:16px!important;font-variant-numeric:tabular-nums!important;min-width:0!important;
 }
 .set-row input::placeholder,.advanced-row input::placeholder,.group-ex-row input::placeholder,
@@ -564,7 +552,7 @@ html[data-theme="light"] #measurementSuggestionBtn strong{color:#b43c49!importan
 .combined-value-head,.combined-time-head{
  display:grid;grid-template-columns:34px minmax(90px,1fr) minmax(58px,68px) minmax(58px,68px) 38px;
  gap:6px;align-items:end;margin:7px 0 -1px;font-size:9px;font-weight:900;color:var(--muted);
- text-transform:uppercase;text-align:center
+ text-transform:uppercase;text-align:left
 }
 .combined-value-head span:nth-child(2){text-align:left}
 .combined-member-row{grid-template-columns:34px minmax(90px,1fr) minmax(58px,68px) minmax(58px,68px) 38px!important;gap:6px!important}
@@ -683,8 +671,7 @@ html[data-theme="light"] .advanced-row.drop-final-row:has(.set-check.done),html[
 html[data-theme="light"] .group-ex-row:has(.set-check.done){background:rgba(67,153,91,.11)!important}
 .last-rating-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px;background:#777}
 .last-rating-dot.rating-green{background:#79d38c}.last-rating-dot.rating-yellow{background:#e7cb5f}.last-rating-dot.rating-red{background:#e47777}.last-rating-dot.rating-blue{background:#78cbe9}
-.partner-unified-card{border:1px solid var(--line);border-radius:15px;padding:12px;background:var(--surface);margin-bottom:10px}
-.partner-step-kicker{font-size:9px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+
 .weight-goal-reached{color:#75ce8d!important}
 
 
@@ -771,15 +758,7 @@ html[data-theme="light"] .method-card .group-round:has(.set-check.done){
 }
 
 /* Pause timer sits at the actual lower screen edge. */
-#restBar{
-  
-  
-  
-  
-  
-  
-  
-}
+
 #livePage{padding-bottom:120px!important}
 
 
@@ -817,8 +796,8 @@ html[data-theme="light"] .method-card{border-color:var(--method)!important}
 html[data-theme="light"] .method-card .method-name{color:color-mix(in srgb,var(--method) 72%,#3a3340)!important}
 html[data-theme="light"] .live-exercise-card.active-live-exercise:not(.live-method-complete){background:color-mix(in srgb,var(--method) 31%,#d8d9df)!important}
 html[data-theme="light"] .live-exercise-card.active-live-exercise:not(.live-method-complete) .exercise-title-link{color:#2b2730!important}
-#restBar{position:fixed!important;top:auto!important;left:0!important;right:0!important;bottom:0!important;z-index:10000!important;margin:0!important;min-height:70px!important;border-radius:18px 18px 0 0!important;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;box-shadow:0 -10px 30px rgba(0,0,0,.30)!important}
-#restBar #restTime{font-size:25px!important;font-weight:900!important}
+
+
 #livePage{padding-bottom:150px!important}
 
 
@@ -893,8 +872,7 @@ html[data-theme="light"] .chip.active{background:#aea0c0!important;color:#2c2632
 .live-delete-ex{width:34px!important;height:34px!important;min-width:34px!important;margin:0!important;box-sizing:border-box!important}
 .connected-live-card .combined-series-head{padding-right:1px}
 /* Pause timer is a body-level fixed dock. */
-#restBar{position:fixed!important;left:0!important;right:0!important;bottom:0!important;width:100vw!important;max-width:none!important;
- border-radius:18px 18px 0 0!important;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;z-index:2147483000!important;margin:0!important}
+
 #livePage{padding-bottom:150px!important}
 /* Week */
 .week-scheduled{background:color-mix(in srgb,#b7a4d8 24%,var(--surface))!important;border-color:#b7a4d8!important}
@@ -977,13 +955,7 @@ html[data-theme="light"] .week-completed strong,html[data-theme="light"] .week-c
 .live-delete-ex{position:static!important;right:auto!important;transform:none!important}
 
 /* Pause dock: actual bottom edge, centered to app width on iPad. */
-#restBar{
- position:fixed!important;top:auto!important;bottom:0!important;left:50%!important;right:auto!important;
- transform:translateX(-50%)!important;width:min(100%,var(--max))!important;max-width:var(--max)!important;
- margin:0!important;z-index:2147483000!important;border-radius:18px 18px 0 0!important;
- padding:12px 14px calc(12px + env(safe-area-inset-bottom))!important;
- box-shadow:0 -8px 26px rgba(0,0,0,.25)!important
-}
+
 #livePage{padding-bottom:150px!important}
 
 /* Week */
@@ -1314,7 +1286,7 @@ html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!
 
 
 
-.plan-welcome-card{margin-top:18px;text-align:center;padding:30px 22px 24px}
+.plan-welcome-card{margin-top:18px;text-align:left;padding:30px 22px 24px}
 .plan-welcome-mark{width:52px;height:52px;margin:0 auto 15px;border-radius:16px;display:grid;place-items:center;background:var(--accent,#b7a4d8);color:#17131c;font-size:23px;font-weight:950}
 .plan-welcome-card h2{margin:0 0 8px;font-size:22px}.plan-welcome-card p{max-width:390px;margin:0 auto 20px;line-height:1.5;color:var(--muted)}
 .plan-welcome-create{width:100%;min-height:48px;background:var(--accent,#b7a4d8)!important;color:#17131c!important;font-weight:900}
@@ -1439,7 +1411,7 @@ html.rethink-keyboard-visible textarea:focus{
 #liveBody .recommendation{display:none!important}
 #startTrainingCard{
  display:flex!important;flex-direction:column!important;align-items:center!important;
- text-align:center!important;gap:18px!important;padding:22px 18px 24px!important
+ text-align:left!important;gap:18px!important;padding:22px 18px 24px!important
 }
 #startTrainingCard .training-start-copy{width:100%}
 #startTrainingCard .training-start-copy strong{font-size:19px!important}
@@ -1525,7 +1497,7 @@ html[data-theme="light"] .training-main-play{
 .detail-copy h2{margin:0 0 14px;font-size:22px}
 .detail-copy p{margin:0;line-height:1.55;font-size:15px;white-space:normal}
 
-.training-start-card-v5{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:10px!important}
+.training-start-card-v5{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:left!important;gap:10px!important}
 .training-start-card-v5 .training-start-copy{order:2}
 .training-start-card-v5 .training-main-play{order:1}
 .live-option-line{margin-top:4px}
@@ -1567,12 +1539,12 @@ body:has(#activeBanner .active-workout-card) #startTrainingCard{display:none!imp
 .combined-member-title{display:grid!important;grid-template-columns:38px minmax(0,1fr)!important;gap:7px!important;align-items:start!important;margin:0 0 6px!important}
 .combined-member-namebox{min-width:0}
 .connected-live-card .combined-name{display:block!important;width:100%!important;text-align:left!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;font-size:14px!important;line-height:1.22!important;font-weight:850!important;color:var(--text)!important}
-.connected-field-head{color:var(--muted)!important;font-size:10px!important;line-height:1!important;font-weight:900!important;text-transform:uppercase!important;text-align:center!important;margin:2px 0 4px 45px!important}
+.connected-field-head{color:var(--muted)!important;font-size:10px!important;line-height:1!important;font-weight:900!important;text-transform:uppercase!important;text-align:left!important;margin:2px 0 4px 45px!important}
 .connected-reps-field-head{display:grid!important;grid-template-columns:minmax(64px,1fr) minmax(64px,1fr) 42px!important;gap:6px!important}
 .combined-reps-controls{display:grid!important;grid-template-columns:minmax(64px,1fr) minmax(64px,1fr) 42px!important;gap:6px!important;align-items:center!important;margin-left:45px!important}
 .connected-time-field-head{display:grid!important;grid-template-columns:minmax(74px,1fr) 44px minmax(96px,1fr) 42px!important;gap:6px!important}
 .combined-time-controls{display:grid!important;grid-template-columns:minmax(74px,1fr) 44px minmax(96px,1fr) 42px!important;gap:6px!important;align-items:center!important;margin-left:45px!important}
-.combined-reps-controls input,.combined-time-controls input{width:100%!important;min-width:0!important;height:44px!important;border:1px solid var(--line)!important;border-radius:11px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:center!important;font-size:16px!important}
+.combined-reps-controls input,.combined-time-controls input{width:100%!important;min-width:0!important;height:44px!important;border:1px solid var(--line)!important;border-radius:11px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:left!important;font-size:16px!important}
 .live-option-line{display:flex!important;flex-wrap:wrap!important;gap:7px 14px!important;align-items:flex-start!important;margin-top:7px!important;color:var(--text)!important}
 .live-option-item{display:inline-flex!important;flex-direction:column!important;gap:2px!important;min-width:0}
 .live-option-label{font-size:8px!important;line-height:1!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.08em!important;color:var(--muted)!important}
@@ -1653,17 +1625,17 @@ body:has(#activeBanner .active-workout-card) #startTrainingCard{display:none!imp
 .combined-time-row{grid-template-columns:38px 70px 32px minmax(82px,1fr) 38px!important}
 .combined-index{height:38px!important;display:flex!important;align-items:center!important;font-size:15px!important;font-weight:900!important}
 .combined-field{display:grid!important;grid-template-rows:10px 38px!important;gap:2px!important;min-width:0!important}
-.combined-field>span{font-size:7px!important;line-height:10px!important;color:var(--muted)!important;font-weight:900!important;text-align:center!important}
-.combined-field input{width:100%!important;min-width:0!important;height:38px!important;padding:0 5px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:center!important;font-size:14px!important}
+.combined-field>span{font-size:7px!important;line-height:10px!important;color:var(--muted)!important;font-weight:900!important;text-align:left!important}
+.combined-field input{width:100%!important;min-width:0!important;height:38px!important;padding:0 5px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:left!important;font-size:14px!important}
 .combined-time-row .time-play{width:32px!important;height:38px!important;min-width:32px!important;padding:0!important}
 .combined-member-row .set-check{width:38px!important;height:38px!important;min-width:38px!important;padding:0!important}
 .cluster-set-block{margin-top:8px!important}
 .cluster-head,.cluster-row{display:grid!important;grid-template-columns:44px minmax(72px,1fr) minmax(72px,1fr)!important;gap:7px!important;align-items:center!important}
-.cluster-head{font-size:8px!important;color:var(--muted)!important;font-weight:900!important;text-align:center!important;padding:4px 0!important}
+.cluster-head{font-size:8px!important;color:var(--muted)!important;font-weight:900!important;text-align:left!important;padding:4px 0!important}
 .cluster-head span:first-child{text-align:left!important}
 .cluster-row{padding:4px 0!important}
 .cluster-row>span{font-size:15px!important;font-weight:900!important}
-.cluster-row input{width:100%!important;min-width:0!important;height:40px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:center!important}
+.cluster-row input{width:100%!important;min-width:0!important;height:40px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface2)!important;color:var(--text)!important;text-align:left!important}
 .cluster-set-foot{display:flex!important;justify-content:space-between!important;align-items:center!important;margin-top:7px!important}
 #liveBody input::placeholder{color:var(--muted)!important;opacity:.72!important}
 
@@ -1677,7 +1649,7 @@ body:has(#activeBanner .active-workout-card) #startTrainingCard{display:none!imp
 }
 .advanced-compact-head{
  font-size:8px!important;color:var(--muted)!important;font-weight:900!important;
- text-align:center!important;padding:5px 0!important
+ text-align:left!important;padding:5px 0!important
 }
 .advanced-compact-head>span:first-child{text-align:left!important}
 .advanced-compact-row{padding:4px 0!important}
@@ -1688,7 +1660,7 @@ body:has(#activeBanner .active-workout-card) #startTrainingCard{display:none!imp
  width:100%!important;min-width:0!important;height:42px!important;
  border:1px solid var(--line)!important;border-radius:11px!important;
  background:var(--surface2)!important;color:var(--text)!important;
- text-align:center!important;font-size:16px!important
+ text-align:left!important;font-size:16px!important
 }
 .advanced-compact-row .set-check{width:38px!important;height:38px!important;min-width:38px!important;padding:0!important}
 .advanced-compact-row .remove-mini{width:22px!important;height:38px!important;min-width:22px!important;padding:0!important}
@@ -1756,9 +1728,9 @@ html[data-theme="light"] .summary-time-set>div{color:var(--text)!important}
 .intraset-meta-pill{white-space:nowrap!important}
 /* Time rows remain compact; time entry uses the dedicated keypad below. */
 .combined-time-row{grid-template-columns:38px 70px 32px minmax(82px,1fr) 38px!important}
-.time-row{grid-template-columns:28px minmax(68px,1fr) 30px minmax(80px,1fr) 40px 22px!important}
+.time-head,.time-row{grid-template-columns:28px minmax(68px,1fr) 30px minmax(80px,1fr) 40px 22px!important}
 .preview-live-shell .combined-time-row{grid-template-columns:38px 70px 32px minmax(82px,1fr) 38px!important}
-.preview-live-shell .time-row{grid-template-columns:28px minmax(68px,1fr) 30px minmax(80px,1fr) 40px 22px!important}
+.preview-live-shell .time-head,.preview-live-shell .time-row{grid-template-columns:28px minmax(68px,1fr) 30px minmax(80px,1fr) 40px 22px!important}
 
 
 /* ReThink v31 — final fixes from device testing */
@@ -1818,13 +1790,7 @@ html[data-theme="light"] .summary-time-set>div{color:var(--text)!important}
   grid-template-columns:38px 72px 32px minmax(106px,1fr) 38px!important;
 }
 
-/* ReThink v36 — unique Cluster teal + exact mixed-time preview geometry. */
-.preview-exact .connected-live-card .combined-time-row{grid-template-columns:38px 108px minmax(126px,1fr)!important}
-.preview-exact .connected-live-card .combined-time-row .time-play,.preview-exact .connected-live-card .combined-time-row .set-check{display:none!important}
-.preview-exact .connected-live-card .combined-time-row .combined-field{min-width:0!important;width:100%!important}
-.preview-exact .connected-live-card .combined-time-row .combined-field input{width:100%!important;min-width:0!important;box-sizing:border-box!important}
-
-/* ReThink v36 — Cluster gets its own turquoise identity + preview rows mirror live geometry. */
+/* ReThink v36 — Cluster gets its own turquoise identity. */
 .method-cluster{
   --method:#47d7c2!important;
   background:rgba(71,215,194,.055)!important;
@@ -1832,24 +1798,6 @@ html[data-theme="light"] .summary-time-set>div{color:var(--text)!important}
 .method-cluster .group-letter,
 .method-cluster .method-name,
 .method-cluster .history-group-letter{color:#47d7c2!important}
-.preview-combined-round{border-top:1px solid var(--line);padding:10px 0 4px;margin-top:8px}
-.preview-combined-rep-row{display:grid;grid-template-columns:42px minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:end;margin:8px 0 12px}
-.preview-combined-time-row{display:grid;grid-template-columns:42px minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:end;margin:8px 0 12px;width:100%}
-.preview-labeled-field{display:grid;gap:4px;min-width:0}
-.preview-labeled-field>span{font-size:8px;letter-spacing:.08em;font-weight:900;color:var(--muted);text-align:center}
-.preview-labeled-field>b{height:44px;display:flex;align-items:center;justify-content:center;padding:0 10px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);font-size:16px;color:var(--muted);font-weight:500;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.preview-performance>b{justify-content:flex-start;padding-left:14px}
-.preview-play{height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:11px;color:var(--text);font-size:14px}
-.preview-single-time{margin-top:8px}
-.preview-single-time-head,.preview-single-time-row{display:grid;grid-template-columns:42px 100px minmax(0,1fr);gap:8px;align-items:center}
-.preview-single-time-head{font-size:8px;color:var(--muted);font-weight:900;letter-spacing:.08em;margin-bottom:5px;text-align:center}
-.preview-single-time-row{margin-bottom:8px}
-.preview-single-time-row>b{height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--muted);font-weight:500}
-.preview-single-time-row>b:last-child{justify-content:flex-start;padding-left:14px}
-@media(max-width:390px){
-  .preview-combined-time-row{grid-template-columns:36px minmax(0,1fr) minmax(0,1fr);gap:6px}
-  .preview-combined-rep-row{grid-template-columns:36px minmax(0,1fr) minmax(0,1fr);gap:6px}
-}
 
 /* v37 — one summary language for every method */
 .history-summary-exercise{padding:18px 24px!important;border-top:1px solid var(--line)!important}
@@ -1870,98 +1818,1176 @@ html[data-theme="light"] .summary-time-set>div{color:var(--text)!important}
 .summary-rating-dot.rating-green{background:#79d38c!important}.summary-rating-dot.rating-yellow{background:#e7cb5f!important}.summary-rating-dot.rating-red{background:#e47777!important}.summary-rating-dot.rating-blue{background:#78cbe9!important}
 .summary-time-set>div{color:var(--text)!important}
 .summary-empty,.summary-incomplete{font-size:13px!important;color:var(--muted)!important;margin-top:8px!important}
-.preview-combined-time-row .preview-performance{min-width:0!important}
-.preview-combined-time-row .preview-labeled-field>b{width:100%!important;box-sizing:border-box!important}
 
 
-/* ReThink v38 — exact requested catalogue/display semantics and preview/profile polish. */
-/* Dedicated static preview: time rows are three columns only, so LEISTUNG can never collapse. */
-#previewBody .preview-static-v38 .preview-combined-time-row{display:grid!important;grid-template-columns:42px 104px minmax(150px,1fr)!important;gap:10px!important;width:100%!important;align-items:end!important}
-#previewBody .preview-static-v38 .preview-combined-rep-row{display:grid!important;grid-template-columns:42px minmax(0,1fr) minmax(0,1fr)!important;gap:10px!important;width:100%!important;align-items:end!important}
-#previewBody .preview-static-v38 .preview-single-time-head,#previewBody .preview-static-v38 .preview-single-time-row{grid-template-columns:42px 104px minmax(150px,1fr)!important}
-#previewBody .preview-static-v38 .preview-performance>b{justify-content:flex-start!important;padding-left:14px!important;overflow:visible!important;text-overflow:clip!important}
-/* Summary data one step smaller; hierarchy stays unchanged. */
+/* ReThink v38 — summary/profile polish. */
 .summary-set>strong,.summary-set>div,.summary-chip,.summary-rating{font-size:12px!important}
-/* All three progress cards start and end on the same horizontal line. */
 .profile-progress-grid{align-items:stretch!important}
 .profile-progress-grid>.progress-stat{margin:0!important;align-self:stretch!important;min-height:96px!important;height:96px!important;box-sizing:border-box!important}
 .profile-progress-grid>.progress-stat:nth-child(2),.profile-progress-grid>.progress-stat:nth-child(3){transform:translateY(0)!important}
 
-
-/* ReThink v39 — final preview sizing, partner title spacing, compact summary data. */
-#previewBody .preview-static-v38,
-#previewBody .preview-static-v38 .method-card,
-#previewBody .preview-static-v38 .preview-combined-round,
-#previewBody .preview-static-v38 .preview-group-member{box-sizing:border-box!important;max-width:100%!important;min-width:0!important}
-#previewBody .preview-static-v38 .preview-combined-round{width:100%!important;overflow:hidden!important;padding-left:0!important;padding-right:0!important}
-#previewBody .preview-static-v38 .preview-combined-rep-row{
-  grid-template-columns:38px minmax(0,1fr) minmax(0,1fr)!important;
-  gap:8px!important;
-  width:100%!important;
-  margin:7px 0 10px!important;
-}
-#previewBody .preview-static-v38 .preview-combined-time-row{
-  grid-template-columns:38px 88px minmax(0,1fr)!important;
-  gap:8px!important;
-  width:100%!important;
-  margin:7px 0 10px!important;
-}
-#previewBody .preview-static-v38 .preview-labeled-field>span{
-  font-size:8px!important;
-  line-height:10px!important;
-  letter-spacing:.06em!important;
-}
-#previewBody .preview-static-v38 .preview-labeled-field>b{
-  height:38px!important;
-  min-height:38px!important;
-  padding:0 8px!important;
-  border-radius:10px!important;
-  font-size:14px!important;
-  line-height:1!important;
-  font-weight:500!important;
-}
-#previewBody .preview-static-v38 .preview-performance>b{
-  justify-content:flex-start!important;
-  padding-left:11px!important;
-}
-#previewBody .preview-static-v38 .preview-single-time-head,
-#previewBody .preview-static-v38 .preview-single-time-row{
-  grid-template-columns:38px 88px minmax(0,1fr)!important;
-  gap:8px!important;
-  width:100%!important;
-}
-#previewBody .preview-static-v38 .preview-single-time-row>b{
-  height:38px!important;
-  min-height:38px!important;
-  border-radius:10px!important;
-  font-size:14px!important;
-}
-#previewBody .preview-static-v38 .preview-group-member .exercise-title-link{
-  display:inline-flex!important;
-  align-items:baseline!important;
-  gap:8px!important;
-  max-width:100%!important;
-  min-width:0!important;
-}
-#previewBody .preview-static-v38 .preview-group-member .group-letter{
-  margin-right:0!important;
-  flex:0 0 auto!important;
-}
-#previewBody .preview-static-v38 .group-title-name{min-width:0!important}
-@media(max-width:390px){
-  #previewBody .preview-static-v38 .preview-combined-time-row,
-  #previewBody .preview-static-v38 .preview-single-time-head,
-  #previewBody .preview-static-v38 .preview-single-time-row{
-    grid-template-columns:34px 82px minmax(0,1fr)!important;
-    gap:6px!important;
-  }
-  #previewBody .preview-static-v38 .preview-combined-rep-row{
-    grid-template-columns:34px minmax(0,1fr) minmax(0,1fr)!important;
-    gap:6px!important;
-  }
-}
-/* Summary chips/data: deliberately one step smaller than headings. */
+/* ReThink v39 — compact summary data. */
 .summary-chip{font-size:11px!important;min-height:26px!important;padding:4px 8px!important;border-radius:10px!important}
 .summary-rating{font-size:11px!important;gap:5px!important}
 .summary-set>div{font-size:11px!important}
 .summary-set>strong{font-size:12px!important}
+
+/* v40 — pause dock at top of live workout */
+
+#livePage{padding-bottom:92px!important}
+/* Exercise picker uses a stable 3/4-screen viewport so filtering stays visible above keyboard. */
+.exercise-picker-sheet .sheet{height:75dvh!important;max-height:75dvh!important;min-height:75dvh!important}
+.exercise-picker-sheet .sheet-body{height:calc(75dvh - 68px)!important;max-height:calc(75dvh - 68px)!important;overflow:auto!important}
+.exercise-picker-sheet .search{position:sticky!important;top:0!important;z-index:20!important;background:var(--surface)!important;padding-bottom:8px!important}
+
+/* ReThink v42 — one normalized preview geometry for every method. */
+#previewBody .preview-static-v42{width:100%;max-width:100%;box-sizing:border-box}
+#previewBody .preview-static-v42 .method-card{padding:16px 0!important;overflow:hidden!important;box-sizing:border-box!important;max-width:100%!important}
+#previewBody .preview-static-v42 .method-card>.method-name,
+#previewBody .preview-static-v42 .method-card>.method-help{margin-left:28px!important;margin-right:28px!important}
+#previewBody .preview-static-v42 .method-card>.method-help{font-weight:400!important}
+#previewBody .preview-static-v42 .preview-group-member{margin:0 28px!important;padding:12px 0!important;border-top:1px solid var(--line)!important;box-sizing:border-box!important}
+#previewBody .preview-static-v42 .preview-set-area,
+#previewBody .preview-static-v42 .preview-combined-round{margin:0 28px!important;padding:10px 0 4px!important;border-top:1px solid var(--line)!important;width:auto!important;box-sizing:border-box!important;overflow:hidden!important}
+#previewBody .preview-static-v42 .preview-group-member .exercise-title-link{display:inline-flex!important;align-items:baseline!important;gap:8px!important;max-width:100%!important;font-size:16px!important;font-weight:900!important;line-height:1.2!important}
+#previewBody .preview-static-v42 .preview-group-member .group-letter{margin:0!important;flex:0 0 auto!important;font-size:16px!important;font-weight:950!important}
+#previewBody .preview-static-v42 .preview-group-member .group-title-name{min-width:0!important;font-size:16px!important;font-weight:900!important}
+#previewBody .preview-static-v42 .exercise-title-variant,
+#previewBody .preview-static-v42 .live-option-line{font-weight:600!important}
+#previewBody .preview-static-v42 .prescription{font-weight:400!important}
+
+/* Every static row uses the same index + two equal data columns. */
+#previewBody .preview-static-v42 .preview-combined-rep-row,
+#previewBody .preview-static-v42 .preview-combined-time-row,
+#previewBody .preview-static-v42 .preview-single-time-head,
+#previewBody .preview-static-v42 .preview-single-time-row,
+#previewBody .preview-static-v42 .set-head,
+#previewBody .preview-static-v42 .set-row,
+#previewBody .preview-static-v42 .cluster-head,
+#previewBody .preview-static-v42 .cluster-row{display:grid!important;grid-template-columns:38px minmax(0,1fr) minmax(0,1fr)!important;gap:8px!important;align-items:center!important;width:100%!important;box-sizing:border-box!important}
+#previewBody .preview-static-v42 .preview-combined-rep-row,
+#previewBody .preview-static-v42 .preview-combined-time-row{margin:7px 0 10px!important;align-items:end!important}
+#previewBody .preview-static-v42 .set-row,
+#previewBody .preview-static-v42 .cluster-row,
+#previewBody .preview-static-v42 .preview-single-time-row{padding:4px 0!important;margin:0!important}
+#previewBody .preview-static-v42 .set-head span:nth-child(n+4),
+#previewBody .preview-static-v42 .set-row>span:nth-child(n+4){display:none!important}
+
+/* Drop/Rest-Pause: index + block label + two data columns; trailing controls are absent in preview. */
+#previewBody .preview-static-v42 .advanced-head,
+#previewBody .preview-static-v42 .advanced-row{display:grid!important;grid-template-columns:38px 62px minmax(0,1fr) minmax(0,1fr)!important;gap:8px!important;align-items:center!important;width:100%!important;box-sizing:border-box!important}
+#previewBody .preview-static-v42 .advanced-head span:nth-child(n+5),
+#previewBody .preview-static-v42 .advanced-row>span:nth-child(n+5){display:none!important}
+
+/* Static field typography mirrors live inputs, but never appears bold. */
+#previewBody .preview-static-v42 .preview-labeled-field{display:grid!important;grid-template-rows:10px 42px!important;gap:3px!important;min-width:0!important}
+#previewBody .preview-static-v42 .preview-field-label,
+#previewBody .preview-static-v42 .preview-single-time-head,
+#previewBody .preview-static-v42 .set-head,
+#previewBody .preview-static-v42 .cluster-head,
+#previewBody .preview-static-v42 .advanced-head{font-size:8.5px!important;line-height:10px!important;letter-spacing:.07em!important;font-weight:850!important;color:var(--muted)!important;text-align:left!important}
+#previewBody .preview-static-v42 .preview-field-box,
+#previewBody .preview-static-v42 .preview-value{height:42px!important;min-height:42px!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;border:1px solid var(--line)!important;border-radius:11px!important;background:var(--surface2)!important;color:var(--muted)!important;font-size:14px!important;line-height:1!important;font-weight:500!important;padding:0 8px!important;min-width:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+#previewBody .preview-static-v42 .preview-performance .preview-field-box{justify-content:flex-start!important;padding-left:12px!important}
+#previewBody .preview-static-v42 .combined-index,
+#previewBody .preview-static-v42 .preview-static-row>span:first-child,
+#previewBody .preview-static-v42 .preview-single-time-row>span:first-child{font-size:15px!important;font-weight:900!important;color:var(--text)!important}
+#previewBody .preview-static-v42 .cluster-row>span:not(:first-child){font-weight:500!important}
+#previewBody .preview-static-v42 .advanced-row .small{font-size:11px!important;font-weight:500!important;color:var(--muted)!important}
+
+@media(max-width:390px){
+  #previewBody .preview-static-v42 .method-card>.method-name,
+  #previewBody .preview-static-v42 .method-card>.method-help,
+  #previewBody .preview-static-v42 .preview-group-member,
+  #previewBody .preview-static-v42 .preview-set-area,
+  #previewBody .preview-static-v42 .preview-combined-round{margin-left:22px!important;margin-right:22px!important}
+  #previewBody .preview-static-v42 .preview-combined-rep-row,
+  #previewBody .preview-static-v42 .preview-combined-time-row,
+  #previewBody .preview-static-v42 .preview-single-time-head,
+  #previewBody .preview-static-v42 .preview-single-time-row,
+  #previewBody .preview-static-v42 .set-head,
+  #previewBody .preview-static-v42 .set-row,
+  #previewBody .preview-static-v42 .cluster-head,
+  #previewBody .preview-static-v42 .cluster-row{grid-template-columns:34px minmax(0,1fr) minmax(0,1fr)!important;gap:6px!important}
+}
+
+/* ReThink v43 — audited preview renderer. No live-row classes are reused here. */
+#previewBody .preview-static-v43{width:100%;max-width:100%;box-sizing:border-box}
+#previewBody .preview-static-v43 .method-card{padding:16px 0!important;overflow:hidden!important;box-sizing:border-box!important;max-width:100%!important}
+#previewBody .preview-static-v43 .method-card>.method-name,
+#previewBody .preview-static-v43 .method-card>.method-help,
+#previewBody .preview-static-v43 .preview-group-member,
+#previewBody .preview-static-v43 .pv-set-area,
+#previewBody .preview-static-v43 .pv-round{margin-left:28px!important;margin-right:28px!important;box-sizing:border-box!important}
+#previewBody .preview-static-v43 .method-card>.method-help{font-weight:400!important;margin-top:4px!important;margin-bottom:8px!important}
+#previewBody .preview-static-v43 .preview-group-member{padding:12px 0!important;border-top:1px solid var(--line)!important}
+#previewBody .preview-static-v43 .preview-group-member:first-of-type{border-top:1px solid var(--line)!important}
+#previewBody .preview-static-v43 .preview-group-member .exercise-title-link{display:inline-flex!important;align-items:baseline!important;gap:8px!important;max-width:100%!important;font-size:16px!important;font-weight:900!important;line-height:1.2!important}
+#previewBody .preview-static-v43 .preview-group-member .group-letter{margin:0!important;flex:0 0 auto!important;font-size:16px!important;font-weight:950!important;color:var(--method)!important}
+#previewBody .preview-static-v43 .preview-group-member .group-title-name{font-size:16px!important;font-weight:900!important;min-width:0!important}
+#previewBody .preview-static-v43 .exercise-title-variant,
+#previewBody .preview-static-v43 .live-option-line{font-size:12px!important;font-weight:600!important;line-height:1.3!important;margin-top:4px!important}
+#previewBody .preview-static-v43 .prescription{font-size:12px!important;font-weight:400!important;line-height:1.35!important;margin:3px 0 0!important}
+#previewBody .preview-static-v43 .pv-set-area,
+#previewBody .preview-static-v43 .pv-round{padding:10px 0 4px!important;border-top:1px solid var(--line)!important;overflow:hidden!important}
+#previewBody .preview-static-v43 .pv-round+.pv-round{margin-top:0!important}
+#previewBody .preview-static-v43 .pv-round-title{font-size:10px!important;font-weight:850!important;letter-spacing:.07em!important;color:var(--muted)!important;text-transform:uppercase!important;margin:0 0 7px!important}
+#previewBody .preview-static-v43 .pv-row{display:grid!important;grid-template-columns:36px minmax(0,1fr) minmax(0,1fr)!important;gap:8px!important;align-items:end!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;margin:0 0 10px!important;padding:0!important}
+#previewBody .preview-static-v43 .pv-advanced-row{display:grid!important;grid-template-columns:36px 58px minmax(0,1fr) minmax(0,1fr)!important;gap:8px!important;align-items:end!important;width:100%!important;box-sizing:border-box!important;margin:0 0 10px!important}
+#previewBody .preview-static-v43 .pv-field{display:grid!important;grid-template-rows:11px 40px!important;gap:3px!important;min-width:0!important}
+#previewBody .preview-static-v43 .pv-label{font-size:9px!important;line-height:11px!important;letter-spacing:.07em!important;font-weight:800!important;color:var(--muted)!important;text-align:left!important}
+#previewBody .preview-static-v43 .pv-box{height:40px!important;min-height:40px!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--surface2)!important;color:var(--muted)!important;font-size:14px!important;font-weight:500!important;line-height:1!important;padding:0 8px!important;min-width:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+#previewBody .preview-static-v43 .pv-index{align-self:end!important;height:40px!important;display:flex!important;align-items:center!important;font-size:15px!important;font-weight:900!important;color:var(--text)!important}
+#previewBody .preview-static-v43 .pv-segment-label{align-self:end!important;height:40px!important;display:flex!important;align-items:center!important;font-size:11px!important;font-weight:500!important;color:var(--muted)!important;white-space:nowrap!important}
+#previewBody .preview-static-v43 .pv-block{width:100%!important;box-sizing:border-box!important;margin:0 0 8px!important}
+@media(max-width:390px){
+ #previewBody .preview-static-v43 .method-card>.method-name,
+ #previewBody .preview-static-v43 .method-card>.method-help,
+ #previewBody .preview-static-v43 .preview-group-member,
+ #previewBody .preview-static-v43 .pv-set-area,
+ #previewBody .preview-static-v43 .pv-round{margin-left:22px!important;margin-right:22px!important}
+ #previewBody .preview-static-v43 .pv-row{grid-template-columns:32px minmax(0,1fr) minmax(0,1fr)!important;gap:6px!important}
+ #previewBody .preview-static-v43 .pv-advanced-row{grid-template-columns:32px 52px minmax(0,1fr) minmax(0,1fr)!important;gap:6px!important}
+}
+
+/* ReThink v45 — time rows use the same 50/50 geometry as repetition rows.
+   The play control lives inside the time field so it never consumes a separate column. */
+#liveBody .time-head,#liveBody .time-row{
+ display:grid!important;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 40px 22px!important;gap:6px!important;align-items:center!important;max-width:100%!important;box-sizing:border-box!important
+}
+#liveBody .time-head{font-size:8px!important;color:var(--muted)!important;font-weight:900!important;text-align:left!important;padding:5px 0!important}
+#liveBody .time-head>span:nth-child(2),#liveBody .time-head>span:nth-child(3){text-align:left!important}
+#liveBody .time-row>input[data-input$="|level"],#liveBody .time-input-shell>input{height:42px!important;min-width:0!important;width:100%!important;font-size:16px!important;font-weight:500!important;box-sizing:border-box!important}
+.time-input-shell{position:relative!important;display:block!important;min-width:0!important;width:100%!important}
+.time-input-shell>input{padding-right:42px!important}
+.time-input-shell>.time-play-inside{position:absolute!important;right:4px!important;top:50%!important;transform:translateY(-50%)!important;width:34px!important;height:34px!important;min-width:34px!important;border:0!important;border-left:1px solid var(--line)!important;border-radius:0 8px 8px 0!important;background:transparent!important;color:var(--text)!important;padding:0!important;font-size:12px!important;z-index:2!important}
+#liveBody .combined-time-row{display:grid!important;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 38px!important;gap:6px!important;align-items:end!important;max-width:100%!important;box-sizing:border-box!important}
+#liveBody .combined-time-row .combined-field{min-width:0!important}
+#liveBody .combined-time-row .combined-field input{height:38px!important;min-width:0!important;width:100%!important;font-size:14px!important;font-weight:500!important;box-sizing:border-box!important}
+#liveBody .combined-time-row .time-input-shell>input{padding-right:38px!important}
+#liveBody .combined-time-row .time-input-shell>.time-play-inside{width:30px!important;height:30px!important;min-width:30px!important;right:4px!important}
+@media(max-width:390px){
+ #liveBody .time-head,#liveBody .time-row{grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 38px 18px!important;gap:5px!important}
+ #liveBody .combined-time-row{grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 36px!important;gap:5px!important}
+}
+
+/* ReThink v44 — preview mirrors live workout geometry exactly. */
+#previewBody .preview-live-mirror-v44{width:100%;max-width:100%;box-sizing:border-box}
+#previewBody .preview-live-mirror-v44 .method-card{max-width:100%;box-sizing:border-box}
+#previewBody .preview-live-mirror-v44 input,
+#previewBody .preview-live-mirror-v44 textarea,
+#previewBody .preview-live-mirror-v44 select,
+#previewBody .preview-live-mirror-v44 button{pointer-events:none!important}
+#previewBody .preview-live-mirror-v44 input{opacity:1!important}
+#previewBody .preview-live-mirror-v44 .set-check,
+#previewBody .preview-live-mirror-v44 .remove-mini,
+#previewBody .preview-live-mirror-v44 .time-play{opacity:1!important}
+
+/* ReThink v46 — one geometry for reps and time in workout AND preview.
+   Time uses the exact rep grids; the play control is inside the time box. */
+#liveBody .unified-time-head,
+#previewBody .preview-live-mirror-v44 .unified-time-head{
+  display:grid!important;
+  grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 38px 18px!important;
+  gap:6px!important;
+  align-items:center!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+#liveBody .unified-time-row,
+#previewBody .preview-live-mirror-v44 .unified-time-row{
+  display:grid!important;
+  grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 38px 18px!important;
+  gap:6px!important;
+  align-items:center!important;
+  max-width:100%!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+  padding:4px 0!important;
+}
+#liveBody .unified-combined-time-row,
+#previewBody .preview-live-mirror-v44 .unified-combined-time-row{
+  display:grid!important;
+  grid-template-columns:38px minmax(0,1fr) minmax(0,1fr) 38px!important;
+  gap:6px!important;
+  align-items:end!important;
+  width:100%!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  margin:8px 0!important;
+}
+/* Make the whole time shell the same physical box as KG/WDH. */
+#liveBody .unified-time-shell,
+#previewBody .preview-live-mirror-v44 .unified-time-shell{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  height:44px!important;
+  border:1px solid var(--line)!important;
+  border-radius:11px!important;
+  background:var(--surface2)!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+#liveBody .unified-combined-time-row .unified-time-shell,
+#previewBody .preview-live-mirror-v44 .unified-combined-time-row .unified-time-shell{
+  height:38px!important;
+  border-radius:10px!important;
+}
+#liveBody .unified-time-shell>input,
+#previewBody .preview-live-mirror-v44 .unified-time-shell>input{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0 38px 0 8px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--text)!important;
+  text-align:left!important;
+  font-size:16px!important;
+  font-weight:500!important;
+  box-sizing:border-box!important;
+  outline:0!important;
+}
+#liveBody .unified-combined-time-row .unified-time-shell>input,
+#previewBody .preview-live-mirror-v44 .unified-combined-time-row .unified-time-shell>input{
+  padding-right:34px!important;
+  font-size:14px!important;
+}
+#liveBody .unified-time-shell>.time-play-inside,
+#previewBody .preview-live-mirror-v44 .unified-time-shell>.time-play-inside{
+  position:absolute!important;
+  right:0!important;
+  top:0!important;
+  transform:none!important;
+  width:36px!important;
+  min-width:36px!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-left:1px solid var(--line)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--text)!important;
+  font-size:12px!important;
+  z-index:2!important;
+}
+#liveBody .unified-combined-time-row .unified-time-shell>.time-play-inside,
+#previewBody .preview-live-mirror-v44 .unified-combined-time-row .unified-time-shell>.time-play-inside{
+  width:32px!important;
+  min-width:32px!important;
+}
+#liveBody .unified-time-row>.unified-performance-input,
+#previewBody .preview-live-mirror-v44 .unified-time-row>.unified-performance-input{
+  width:100%!important;
+  min-width:0!important;
+  height:44px!important;
+  border:1px solid var(--line)!important;
+  border-radius:11px!important;
+  background:var(--surface2)!important;
+  color:var(--text)!important;
+  text-align:left!important;
+  font-size:16px!important;
+  font-weight:500!important;
+  box-sizing:border-box!important;
+}
+#liveBody .unified-combined-time-row .combined-field input,
+#previewBody .preview-live-mirror-v44 .unified-combined-time-row .combined-field input{
+  width:100%!important;
+  min-width:0!important;
+  height:38px!important;
+  border:1px solid var(--line)!important;
+  border-radius:10px!important;
+  background:var(--surface2)!important;
+  color:var(--text)!important;
+  text-align:left!important;
+  font-size:14px!important;
+  font-weight:500!important;
+  box-sizing:border-box!important;
+}
+/* The shell itself owns the border for time, so don't double-border its input. */
+#liveBody .unified-combined-time-row .unified-time-shell>input,
+#previewBody .preview-live-mirror-v44 .unified-combined-time-row .unified-time-shell>input{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+@media(max-width:390px){
+  #liveBody .unified-time-head,#liveBody .unified-time-row,
+  #previewBody .preview-live-mirror-v44 .unified-time-head,#previewBody .preview-live-mirror-v44 .unified-time-row{
+    grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 36px 18px!important;
+    gap:5px!important;
+  }
+  #liveBody .unified-combined-time-row,
+  #previewBody .preview-live-mirror-v44 .unified-combined-time-row{
+    grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 36px!important;
+    gap:5px!important;
+  }
+}
+
+/* ReThink v47 — time typography exactly follows the neighbouring KG/WDH/Leistung fields. */
+#liveBody .unified-combined-time-row .unified-time-shell,
+#liveBody .unified-combined-time-row .combined-field input{
+  height:38px!important;border-radius:10px!important;background:var(--surface2)!important;
+}
+#liveBody .unified-combined-time-row .unified-time-shell>input,
+#liveBody .unified-combined-time-row .combined-field input{
+  font-family:inherit!important;font-size:14px!important;font-weight:400!important;line-height:1!important;
+  color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;
+}
+#liveBody .unified-combined-time-row .unified-time-shell>input::placeholder,
+#liveBody .unified-combined-time-row .combined-field input::placeholder{
+  font-family:inherit!important;font-size:14px!important;font-weight:400!important;color:var(--muted)!important;opacity:.72!important;
+}
+.drop-reduction-divider{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:1px 0 3px;color:var(--muted)}
+.drop-reduction-divider>span{height:1px;background:var(--line)}
+.drop-reduction-divider>b{font-size:8px;letter-spacing:.05em;font-weight:800;white-space:nowrap}
+.mode-switch button:disabled{opacity:.35!important;pointer-events:none!important}
+#previewBody[inert]{user-select:none;-webkit-user-select:none}
+
+
+/* ReThink v48 — one visual language for every live/preview workout field. */
+#liveBody .set-row input,
+#liveBody .advanced-row input,
+#liveBody .advanced-compact-row input,
+#liveBody .group-ex-row input,
+#liveBody .combined-member-row input,
+#liveBody .unified-time-shell,
+#liveBody .unified-performance-input,
+#previewBody .preview-live-mirror-v44 .set-row input,
+#previewBody .preview-live-mirror-v44 .advanced-row input,
+#previewBody .preview-live-mirror-v44 .advanced-compact-row input,
+#previewBody .preview-live-mirror-v44 .group-ex-row input,
+#previewBody .preview-live-mirror-v44 .combined-member-row input,
+#previewBody .preview-live-mirror-v44 .unified-time-shell,
+#previewBody .preview-live-mirror-v44 .unified-performance-input{
+  font-family:inherit!important;
+  font-size:16px!important;
+  font-weight:400!important;
+  line-height:1!important;
+  background:var(--surface2)!important;
+  color:var(--text)!important;
+  -webkit-text-fill-color:var(--text)!important;
+  border-color:var(--line)!important;
+}
+#liveBody .unified-time-shell>input,
+#previewBody .preview-live-mirror-v44 .unified-time-shell>input,
+#liveBody .unified-combined-time-row .combined-field input,
+#previewBody .preview-live-mirror-v44 .unified-combined-time-row .combined-field input{
+  font-family:inherit!important;
+  font-size:16px!important;
+  font-weight:400!important;
+  line-height:1!important;
+}
+#liveBody input::placeholder,
+#previewBody .preview-live-mirror-v44 input::placeholder{
+  color:var(--muted)!important;
+  -webkit-text-fill-color:var(--muted)!important;
+  opacity:.72!important;
+  font-family:inherit!important;
+  font-size:16px!important;
+  font-weight:400!important;
+}
+#liveBody .fixed-method-value,
+#previewBody .preview-live-mirror-v44 .fixed-method-value{
+  color:var(--text)!important;
+  -webkit-text-fill-color:var(--text)!important;
+  opacity:1!important;
+  cursor:default!important;
+}
+/* Preview is visually the workout, only interaction is blocked via inert/pointer-events. */
+#previewBody .preview-live-mirror-v44 input,
+#previewBody .preview-live-mirror-v44 button,
+#previewBody .preview-live-mirror-v44 textarea,
+#previewBody .preview-live-mirror-v44 select{
+  opacity:1!important;
+  filter:none!important;
+}
+#previewBody .preview-live-mirror-v44 .set-check,
+#previewBody .preview-live-mirror-v44 .remove-mini,
+#previewBody .preview-live-mirror-v44 .time-play-inside,
+#previewBody .preview-live-mirror-v44 .icon-btn{
+  opacity:1!important;
+}
+/* Neutral field appearance is independent of whether a timer completed or was stopped. */
+#liveBody .rated-time-value,
+#previewBody .preview-live-mirror-v44 .rated-time-value{
+  color:var(--text)!important;
+  -webkit-text-fill-color:var(--text)!important;
+}
+
+/* v49 historical profile: visually normal, strictly read-only */
+#tab-profile.profile-history-readonly button:disabled,
+#tab-profile.profile-history-readonly input:disabled,
+#tab-profile.profile-history-readonly select:disabled,
+#tab-profile.profile-history-readonly textarea:disabled{opacity:1!important;filter:none!important}
+#tab-profile.profile-history-readonly #profilePrevDay:disabled,
+#tab-profile.profile-history-readonly #profileNextDay:disabled{opacity:.35!important}
+#tab-profile.profile-history-readonly .measurement-suggestion,
+#tab-profile.profile-history-readonly #editProfileBtn,
+#tab-profile.profile-history-readonly #addMeasurementBtn,
+#tab-profile.profile-history-readonly #addWaterBtn,
+#tab-profile.profile-history-readonly #newDrinkBtn,
+#tab-profile.profile-history-readonly #reorderDrinksBtn,
+#tab-profile.profile-history-readonly #addFoodTodayBtn,
+#tab-profile.profile-history-readonly #calculateGoalsBtn,
+#tab-profile.profile-history-readonly #calculateGoalsExpanded,
+#tab-profile.profile-history-readonly #goalSaveHome{display:none!important}
+
+
+/* ReThink v50 — authoritative workout consistency */
+/* Single-method history cards use the same inner inset as partner-method blocks. */
+#summaryBody .history-single-card .history-summary-exercise{
+  padding:18px 12px!important;
+}
+#summaryBody .history-single-card .history-exercise-title,
+#summaryBody .history-single-card .variant-line,
+#summaryBody .history-single-card .summary-empty,
+#summaryBody .history-single-card .summary-incomplete,
+#summaryBody .history-single-card .summary-set{
+  margin-left:0!important;margin-right:0!important;
+}
+
+/* Pause timer: compact ReThink dock below the workout header, never a full-width white slab. */
+#restBar{
+  position:fixed!important;
+  top:calc(env(safe-area-inset-top) + 92px)!important;
+  bottom:auto!important;
+  left:50%!important;right:auto!important;
+  transform:translateX(-50%)!important;
+  width:min(calc(100% - 28px),460px)!important;
+  min-height:54px!important;
+  margin:0!important;
+  padding:8px 10px!important;
+  border:1px solid var(--line)!important;
+  border-radius:16px!important;
+  background:rgba(20,20,24,.96)!important;
+  color:var(--text)!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.34)!important;
+  z-index:2147483000!important;
+  display:grid!important;
+  grid-template-columns:64px 1fr 64px 64px!important;
+  gap:7px!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+}
+#restBar.hidden{display:none!important}
+#restBar button{
+  min-width:0!important;height:38px!important;padding:0 8px!important;
+  border-radius:11px!important;border:1px solid var(--line)!important;
+  background:var(--surface2)!important;color:var(--text)!important;
+  font:600 14px/1 system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif!important;
+}
+#restBar #restTime{
+  text-align:left!important;font:800 23px/1 system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif!important;
+  letter-spacing:.01em!important;color:var(--text)!important;
+}
+#livePage{padding-bottom:92px!important}
+
+.cluster-derived-total{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--muted);font-size:13px;line-height:1.35}
+
+
+/* ReThink v51 — consistency fixes requested after V50. */
+.connected-method-card>.editor-group-exercise,
+.connected-method-card>.preview-group-member{margin-left:14px!important;margin-right:14px!important}
+.connected-method-card>.editor-group-exercise:not(:first-of-type),
+.connected-method-card>.preview-group-member:not(:first-of-type){border-top-color:var(--line)!important}
+.exercise-picker-sheet .sheet{position:fixed!important;left:0!important;right:0!important;bottom:0!important;height:75svh!important;min-height:75svh!important;max-height:75svh!important}
+.exercise-picker-sheet .sheet-body{height:calc(75svh - 68px)!important;max-height:calc(75svh - 68px)!important;overflow:auto!important}
+.mode-switch button:disabled{pointer-events:none!important;opacity:.34!important;filter:none!important}
+
+/* v52 final layout constraints: work sets stay one line; cards may grow vertically. */
+#liveBody .set-row,#liveBody .advanced-compact-row,#liveBody .combined-member-row,#previewBody .set-row,#previewBody .advanced-compact-row,#previewBody .combined-member-row{min-width:0;max-width:100%;white-space:nowrap}
+#liveBody .set-row>* ,#liveBody .advanced-compact-row>* ,#liveBody .combined-member-row>*{min-width:0}
+.cluster-config-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
+.cluster-config-summary span{font-size:11px;color:var(--muted);text-align:right}
+@media(max-width:390px){#liveBody .set-row{grid-template-columns:26px minmax(0,1fr) minmax(0,1fr) 36px 18px!important;gap:4px!important}#liveBody .set-row input{height:38px!important;padding:0 4px!important}#liveBody .set-check{width:34px!important;height:34px!important;min-width:34px!important}.cluster-config-summary{font-size:12px}}
+
+/* V1 canonical plan/group layout — one card language, no method-specific geometry drift. */
+#editorExerciseList .method-card,
+.partner-config-stack{
+  border-radius:12px!important;
+  padding:14px!important;
+  box-sizing:border-box!important;
+}
+#editorExerciseList .method-card>.method-name,
+#editorExerciseList .method-card>.method-help,
+.partner-config-stack>.method-name,
+.partner-config-stack>.method-help{margin-left:0!important;margin-right:0!important}
+#editorExerciseList .method-card>.editor-group-exercise,
+.partner-config-stack>.editor-group-exercise{
+  margin-left:0!important;margin-right:0!important;
+  padding:12px 0!important;
+  border-top:1px solid var(--line)!important;
+  border-radius:0!important;
+}
+#editorExerciseList .method-card>.editor-group-exercise:first-of-type,
+.partner-config-stack>.editor-group-exercise:first-of-type{border-top:0!important}
+#editorExerciseList .method-card>.editor-action-row{margin-left:0!important;margin-right:0!important}
+.partner-full-card.partner-current{background:color-mix(in srgb,var(--surface2) 88%,transparent);}
+.partner-shared-note{display:flex;flex-direction:column;gap:3px;margin:10px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2)}
+.partner-shared-note span{font-size:12px;color:var(--muted)}
+.drink-amount-first{margin-top:0!important}
+.drink-amount-presets{display:flex;gap:6px;overflow-x:auto;padding-top:7px;padding-bottom:2px;scrollbar-width:none}
+.drink-amount-presets::-webkit-scrollbar{display:none}
+.drink-amount-presets .chip{flex:0 0 auto}
+.final-drink-selected{margin-top:10px}
+
+/* RETHINK canonical V1 layout — 11.09.2026
+   One final geometry for Plan / Preview / Live. No later layout overrides. */
+
+/* Sheets / keyboard */
+.sheet-wrap .sheet{max-height:75dvh!important}
+.sheet-wrap .sheet-body{max-height:calc(75dvh - 68px)!important;overflow-y:auto!important;overscroll-behavior:contain}
+html.rethink-keyboard-visible .sheet-wrap .sheet{max-height:calc(var(--rethink-vv-height) - 6px)!important}
+html.rethink-keyboard-visible .sheet-wrap .sheet-body{max-height:calc(var(--rethink-vv-height) - 74px)!important}
+.sheet-body>.search:first-child,.sheet-body>.plan-picker-tools:first-child .search:first-child{position:sticky;top:0;z-index:20;background:var(--surface);padding-bottom:8px}
+
+/* Plan, preview and live use the same outer card geometry. */
+#editorExerciseList .method-card,
+#previewBody .preview-live-mirror-v44>.method-card,
+#liveBody>.method-card{
+  width:100%!important;max-width:100%!important;box-sizing:border-box!important;
+  margin:0 auto 14px!important;padding:14px!important;border-radius:12px!important;
+  text-align:left!important;overflow:hidden!important;
+}
+#previewBody .preview-live-shell{width:100%!important;margin:0!important;padding:0!important}
+#editorExerciseList .method-card>.method-name,#editorExerciseList .method-card>.method-help,
+#previewBody .method-card>.method-name,#previewBody .method-card>.method-help,#previewBody .method-card>.live-card-topline,
+#liveBody .method-card>.method-name,#liveBody .method-card>.method-help,#liveBody .method-card>.live-card-topline{
+  width:100%!important;margin-left:0!important;margin-right:0!important;text-align:left!important;justify-content:flex-start!important;
+}
+#previewBody .preview-live-mirror-v44 .combined-series-head,#liveBody .combined-series-head{margin:0!important;padding:0!important;width:100%!important}
+
+/* Connected exercise title: coloured A/B/C, white exercise name, fixed gap. */
+.editor-group-title,.live-group-title-row .exercise-title-link,.preview-group-member .exercise-title-link{
+  display:flex!important;align-items:baseline!important;justify-content:flex-start!important;gap:9px!important;text-align:left!important;min-width:0!important;
+}
+.editor-group-title .group-letter,.live-group-title-row .group-letter,.preview-group-member .group-letter,
+#liveBody .group-letter,#previewBody .group-letter,.history-group-letter{
+  flex:0 0 auto!important;margin:0!important;padding:0!important;font-weight:950!important;text-transform:uppercase!important;
+  color:var(--method)!important;-webkit-text-fill-color:var(--method)!important;
+}
+.editor-group-title .group-title-name,.live-group-title-row .group-title-name,.preview-group-member .group-title-name,
+#liveBody .exercise-title-link,#liveBody .group-title-name,#previewBody .exercise-title-link,#previewBody .group-title-name{
+  min-width:0!important;color:#fff!important;-webkit-text-fill-color:#fff!important;
+}
+
+/* Connected cards in the plan editor use the same inset rhythm. */
+#editorExerciseList .connected-method-card>.editor-group-exercise{margin:0!important;padding:12px 0!important;border-top:1px solid var(--line)!important;border-radius:0!important}
+#editorExerciseList .connected-method-card>.editor-group-exercise:first-of-type{border-top:0!important}
+#editorExerciseList .connected-method-card>.editor-action-row{margin-left:0!important;margin-right:0!important}
+
+/* 2026-09-12 method-specific workout geometry.
+   Shared visual tokens, but each method family owns its own row layout. */
+:root{
+  --work-field-h:50px;
+  --work-font:17px;
+  --work-label:9px;
+  --work-index:46px;
+  --work-action:50px;
+  --work-gap:8px;
+}
+
+/* Common card details only. Method row geometry is defined below per family. */
+.workset-separator{width:100%!important;height:1px!important;background:var(--line)!important;margin:12px 0 10px!important;padding:0!important;border:0!important}
+#liveBody .combined-series-head,#previewBody .combined-series-head{border:0!important;margin:0!important;padding:0!important}
+#liveBody .exercise-title-link,#liveBody .group-title-name,#liveBody .live-single-title-row>strong,
+#previewBody .exercise-title-link,#previewBody .group-title-name,#previewBody .live-single-title-row>strong{
+  font-size:20px!important;line-height:1.18!important;font-weight:900!important;color:#fff!important;-webkit-text-fill-color:#fff!important;
+}
+#liveBody .group-letter,#previewBody .group-letter,.history-group-letter{
+  font-size:19px!important;line-height:1.18!important;font-weight:950!important;color:var(--method)!important;-webkit-text-fill-color:var(--method)!important;
+}
+
+/* Inputs always share typography, but not row geometry. */
+#liveBody input,#previewBody .preview-live-mirror-v44 input{
+  box-sizing:border-box!important;min-width:0!important;height:var(--work-field-h)!important;min-height:var(--work-field-h)!important;max-height:var(--work-field-h)!important;
+  margin:0!important;padding:0 10px!important;text-align:center!important;text-indent:0!important;
+  font-family:inherit!important;font-size:var(--work-font)!important;font-weight:500!important;line-height:var(--work-field-h)!important;font-variant-numeric:tabular-nums!important;
+  -webkit-text-align-last:center!important;text-align-last:center!important;-webkit-appearance:none!important;appearance:none!important;
+}
+#liveBody input::placeholder,#previewBody .preview-live-mirror-v44 input::placeholder{
+  font-family:inherit!important;font-size:var(--work-font)!important;font-weight:500!important;text-align:center!important;
+}
+
+/* One square action geometry, reused by every method. */
+#liveBody .set-check,#liveBody .time-rating-action,#previewBody .set-check,#previewBody .time-rating-action{
+  width:var(--work-action)!important;height:var(--work-action)!important;min-width:var(--work-action)!important;max-width:var(--work-action)!important;
+  min-height:var(--work-action)!important;max-height:var(--work-action)!important;aspect-ratio:1/1!important;
+  padding:0!important;margin:0!important;border-radius:11px!important;box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;justify-self:center!important;align-self:center!important;
+  font-family:inherit!important;font-size:20px!important;line-height:1!important;
+}
+
+/* Shared heading typography only. Placement is method-specific below. */
+#liveBody .set-head,#previewBody .set-head,
+#liveBody .group-round-title,#previewBody .group-round-title,
+#liveBody .method-set-title,#previewBody .method-set-title{
+  font-size:var(--work-label)!important;line-height:1!important;font-weight:900!important;letter-spacing:.08em!important;text-transform:uppercase!important;color:var(--muted)!important;white-space:nowrap!important;
+}
+
+/* ================================================================
+   1) STANDARD / PYRAMID / BACK-OFF
+   SATZ | KG | WDH. | action | remove
+   ================================================================ */
+#liveBody .method-standard .set-head,#previewBody .method-standard .set-head,
+#liveBody .method-pyramid .set-head,#previewBody .method-pyramid .set-head,
+#liveBody .method-backoff .set-head,#previewBody .method-backoff .set-head{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px 18px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:8px 0 5px!important;padding:0!important;
+}
+#liveBody .method-standard .set-head>span,#previewBody .method-standard .set-head>span,
+#liveBody .method-pyramid .set-head>span,#previewBody .method-pyramid .set-head>span,
+#liveBody .method-backoff .set-head>span,#previewBody .method-backoff .set-head>span{text-align:center!important}
+#liveBody .method-standard .set-row,#previewBody .method-standard .set-row,
+#liveBody .method-pyramid .set-row,#previewBody .method-pyramid .set-row,
+#liveBody .method-backoff .set-row,#previewBody .method-backoff .set-row{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px 18px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:6px 0!important;padding:0!important;
+}
+#liveBody .method-standard .set-row>span:first-child,#previewBody .method-standard .set-row>span:first-child,
+#liveBody .method-pyramid .set-row>span:first-child,#previewBody .method-pyramid .set-row>span:first-child,
+#liveBody .method-backoff .set-row>span:first-child,#previewBody .method-backoff .set-row>span:first-child{
+  height:var(--work-field-h)!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;
+  font-size:18px!important;font-weight:900!important;line-height:1!important;margin:0!important;padding:0!important;
+}
+
+/* ================================================================
+   2) STANDALONE TIME
+   SATZ | ZEIT | LEISTUNG | action | remove
+   ================================================================ */
+#liveBody .set-head.unified-time-head,#previewBody .set-head.unified-time-head{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px 18px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:8px 0 5px!important;padding:0!important;
+}
+#liveBody .set-head.unified-time-head>span,#previewBody .set-head.unified-time-head>span{text-align:center!important}
+#liveBody .set-row.unified-time-row,#previewBody .set-row.unified-time-row{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px 18px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:6px 0!important;padding:0!important;
+}
+#liveBody .set-row.unified-time-row>span:first-child,#previewBody .set-row.unified-time-row>span:first-child{
+  height:var(--work-field-h)!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;
+  font-size:18px!important;font-weight:900!important;line-height:1!important;
+}
+#liveBody .unified-time-shell,#previewBody .unified-time-shell{
+  width:100%!important;height:var(--work-field-h)!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0!important;
+}
+#liveBody .unified-time-shell>input,#previewBody .unified-time-shell>input,
+#liveBody .unified-performance-input,#previewBody .unified-performance-input{
+  width:100%!important;height:var(--work-field-h)!important;min-height:var(--work-field-h)!important;max-height:var(--work-field-h)!important;
+  padding:0 10px!important;font-family:inherit!important;font-size:var(--work-font)!important;font-weight:500!important;line-height:var(--work-field-h)!important;
+  text-align:center!important;-webkit-text-align-last:center!important;text-align-last:center!important;
+}
+
+/* ================================================================
+   3) PARTNER METHODS: SUPERSET / GIANT / PRE-EXHAUST
+   Repetition row and time row are intentionally different because
+   ZEIT/LEISTUNG need their own labels above the boxes.
+   ================================================================ */
+#liveBody .method-superset .combined-round,#previewBody .method-superset .combined-round,
+#liveBody .method-giant .combined-round,#previewBody .method-giant .combined-round,
+#liveBody .method-preexhaust .combined-round,#previewBody .method-preexhaust .combined-round{
+  margin:0!important;padding:0!important;border:0!important;
+}
+#liveBody .method-superset .combined-round+.combined-round,#previewBody .method-superset .combined-round+.combined-round,
+#liveBody .method-giant .combined-round+.combined-round,#previewBody .method-giant .combined-round+.combined-round,
+#liveBody .method-preexhaust .combined-round+.combined-round,#previewBody .method-preexhaust .combined-round+.combined-round{
+  border-top:1px solid var(--line)!important;margin-top:12px!important;padding-top:10px!important;
+}
+#liveBody .method-superset .group-round-title,#previewBody .method-superset .group-round-title,
+#liveBody .method-giant .group-round-title,#previewBody .method-giant .group-round-title,
+#liveBody .method-preexhaust .group-round-title,#previewBody .method-preexhaust .group-round-title{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:8px 0 5px!important;padding:0!important;
+}
+#liveBody .method-superset .group-round-title>span,#previewBody .method-superset .group-round-title>span,
+#liveBody .method-giant .group-round-title>span,#previewBody .method-giant .group-round-title>span,
+#liveBody .method-preexhaust .group-round-title>span,#previewBody .method-preexhaust .group-round-title>span{text-align:center!important}
+#liveBody .method-superset .group-round-title .remove-mini,#previewBody .method-superset .group-round-title .remove-mini,
+#liveBody .method-giant .group-round-title .remove-mini,#previewBody .method-giant .group-round-title .remove-mini,
+#liveBody .method-preexhaust .group-round-title .remove-mini,#previewBody .method-preexhaust .group-round-title .remove-mini{
+  grid-column:4!important;justify-self:center!important;width:28px!important;height:28px!important;min-width:28px!important;padding:0!important;margin:0!important;
+}
+#liveBody .method-superset .combined-member-row,#previewBody .method-superset .combined-member-row,
+#liveBody .method-giant .combined-member-row,#previewBody .method-giant .combined-member-row,
+#liveBody .method-preexhaust .combined-member-row,#previewBody .method-preexhaust .combined-member-row{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:7px 0!important;padding:0!important;
+}
+#liveBody .method-superset .combined-member-row:not(.unified-combined-time-row),#previewBody .method-superset .combined-member-row:not(.unified-combined-time-row),
+#liveBody .method-giant .combined-member-row:not(.unified-combined-time-row),#previewBody .method-giant .combined-member-row:not(.unified-combined-time-row),
+#liveBody .method-preexhaust .combined-member-row:not(.unified-combined-time-row),#previewBody .method-preexhaust .combined-member-row:not(.unified-combined-time-row){grid-template-rows:var(--work-field-h)!important}
+#liveBody .method-superset .combined-index,#previewBody .method-superset .combined-index,
+#liveBody .method-giant .combined-index,#previewBody .method-giant .combined-index,
+#liveBody .method-preexhaust .combined-index,#previewBody .method-preexhaust .combined-index{
+  width:100%!important;height:var(--work-field-h)!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  margin:0!important;padding:0!important;text-align:center!important;font-size:18px!important;font-weight:900!important;line-height:1!important;
+}
+#liveBody .method-superset .combined-field,#previewBody .method-superset .combined-field,
+#liveBody .method-giant .combined-field,#previewBody .method-giant .combined-field,
+#liveBody .method-preexhaust .combined-field,#previewBody .method-preexhaust .combined-field{width:100%!important;min-width:0!important;margin:0!important;padding:0!important}
+#liveBody .method-superset .combined-member-row:not(.unified-combined-time-row)>.combined-field>span,#previewBody .method-superset .combined-member-row:not(.unified-combined-time-row)>.combined-field>span,
+#liveBody .method-giant .combined-member-row:not(.unified-combined-time-row)>.combined-field>span,#previewBody .method-giant .combined-member-row:not(.unified-combined-time-row)>.combined-field>span,
+#liveBody .method-preexhaust .combined-member-row:not(.unified-combined-time-row)>.combined-field>span,#previewBody .method-preexhaust .combined-member-row:not(.unified-combined-time-row)>.combined-field>span{display:none!important}
+#liveBody .method-superset .unified-combined-time-row,#previewBody .method-superset .unified-combined-time-row,
+#liveBody .method-giant .unified-combined-time-row,#previewBody .method-giant .unified-combined-time-row,
+#liveBody .method-preexhaust .unified-combined-time-row,#previewBody .method-preexhaust .unified-combined-time-row{
+  grid-template-rows:12px 5px var(--work-field-h)!important;align-items:stretch!important;margin-top:5px!important;margin-bottom:8px!important;
+}
+#liveBody .method-superset .unified-combined-time-row>.combined-index,#previewBody .method-superset .unified-combined-time-row>.combined-index,
+#liveBody .method-giant .unified-combined-time-row>.combined-index,#previewBody .method-giant .unified-combined-time-row>.combined-index,
+#liveBody .method-preexhaust .unified-combined-time-row>.combined-index,#previewBody .method-preexhaust .unified-combined-time-row>.combined-index{grid-column:1!important;grid-row:3!important}
+#liveBody .method-superset .unified-combined-time-row>.combined-field,#previewBody .method-superset .unified-combined-time-row>.combined-field,
+#liveBody .method-giant .unified-combined-time-row>.combined-field,#previewBody .method-giant .unified-combined-time-row>.combined-field,
+#liveBody .method-preexhaust .unified-combined-time-row>.combined-field,#previewBody .method-preexhaust .unified-combined-time-row>.combined-field{
+  display:grid!important;grid-template-rows:12px 5px var(--work-field-h)!important;grid-row:1/4!important;
+}
+#liveBody .method-superset .unified-combined-time-row>.combined-field>span,#previewBody .method-superset .unified-combined-time-row>.combined-field>span,
+#liveBody .method-giant .unified-combined-time-row>.combined-field>span,#previewBody .method-giant .unified-combined-time-row>.combined-field>span,
+#liveBody .method-preexhaust .unified-combined-time-row>.combined-field>span,#previewBody .method-preexhaust .unified-combined-time-row>.combined-field>span{
+  grid-row:1!important;display:flex!important;align-items:center!important;justify-content:center!important;height:12px!important;
+  font-size:var(--work-label)!important;line-height:12px!important;font-weight:900!important;letter-spacing:.08em!important;color:var(--muted)!important;
+}
+#liveBody .method-superset .unified-combined-time-row>.combined-field>input,#previewBody .method-superset .unified-combined-time-row>.combined-field>input,
+#liveBody .method-superset .unified-combined-time-row>.combined-field>.unified-time-shell,#previewBody .method-superset .unified-combined-time-row>.combined-field>.unified-time-shell,
+#liveBody .method-giant .unified-combined-time-row>.combined-field>input,#previewBody .method-giant .unified-combined-time-row>.combined-field>input,
+#liveBody .method-giant .unified-combined-time-row>.combined-field>.unified-time-shell,#previewBody .method-giant .unified-combined-time-row>.combined-field>.unified-time-shell,
+#liveBody .method-preexhaust .unified-combined-time-row>.combined-field>input,#previewBody .method-preexhaust .unified-combined-time-row>.combined-field>input,
+#liveBody .method-preexhaust .unified-combined-time-row>.combined-field>.unified-time-shell,#previewBody .method-preexhaust .unified-combined-time-row>.combined-field>.unified-time-shell{grid-row:3!important}
+#liveBody .method-superset .unified-combined-time-row>.set-check,#previewBody .method-superset .unified-combined-time-row>.set-check,
+#liveBody .method-giant .unified-combined-time-row>.set-check,#previewBody .method-giant .unified-combined-time-row>.set-check,
+#liveBody .method-preexhaust .unified-combined-time-row>.set-check,#previewBody .method-preexhaust .unified-combined-time-row>.set-check{grid-row:3!important}
+
+/* ================================================================
+   4) CLUSTER
+   One work set made of fixed mini-blocks. Larger boxes; only last row has action.
+   ================================================================ */
+#liveBody .method-cluster .method-set-title,#previewBody .method-cluster .method-set-title{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:8px 0 5px!important;padding:0!important;
+}
+#liveBody .method-cluster .method-set-title>span,#previewBody .method-cluster .method-set-title>span{text-align:center!important}
+#liveBody .method-cluster .method-set-title .remove-mini,#previewBody .method-cluster .method-set-title .remove-mini{grid-column:4!important;justify-self:center!important;width:28px!important;height:28px!important;padding:0!important}
+#liveBody .method-cluster .advanced-compact-row,#previewBody .method-cluster .advanced-compact-row{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:7px 0!important;padding:0!important;
+}
+#liveBody .method-cluster .advanced-compact-row>span:first-child,#previewBody .method-cluster .advanced-compact-row>span:first-child{
+  height:var(--work-field-h)!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;font-size:18px!important;font-weight:900!important;
+}
+
+/* ================================================================
+   5) REST-PAUSE
+   Same wide boxes, but index also carries START / RP n sublabel.
+   ================================================================ */
+#liveBody .method-restpause .method-set-title,#previewBody .method-restpause .method-set-title{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:8px 0 5px!important;padding:0!important;
+}
+#liveBody .method-restpause .method-set-title>span,#previewBody .method-restpause .method-set-title>span{text-align:center!important}
+#liveBody .method-restpause .method-set-title .remove-mini,#previewBody .method-restpause .method-set-title .remove-mini{grid-column:4!important;justify-self:center!important;width:28px!important;height:28px!important;padding:0!important}
+#liveBody .method-restpause .advanced-compact-row,#previewBody .method-restpause .advanced-compact-row{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:7px 0!important;padding:0!important;
+}
+#liveBody .method-restpause .advanced-compact-index,#previewBody .method-restpause .advanced-compact-index{
+  height:var(--work-field-h)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;font-size:18px!important;font-weight:900!important;line-height:1!important;
+}
+#liveBody .method-restpause .advanced-compact-index small,#previewBody .method-restpause .advanced-compact-index small{font-size:7px!important;line-height:1!important;margin-top:4px!important;color:var(--muted)!important}
+
+/* ================================================================
+   6) DROP SET
+   Same columns, own reduction divider / Basis-Drop sublabels.
+   ================================================================ */
+#liveBody .method-dropset .method-set-title,#previewBody .method-dropset .method-set-title{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:8px 0 5px!important;padding:0!important;
+}
+#liveBody .method-dropset .method-set-title>span,#previewBody .method-dropset .method-set-title>span{text-align:center!important}
+#liveBody .method-dropset .method-set-title .remove-mini,#previewBody .method-dropset .method-set-title .remove-mini{grid-column:4!important;justify-self:center!important;width:28px!important;height:28px!important;padding:0!important}
+#liveBody .method-dropset .advanced-compact-row,#previewBody .method-dropset .advanced-compact-row{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;
+  align-items:center!important;width:100%!important;margin:7px 0!important;padding:0!important;
+}
+#liveBody .method-dropset .advanced-compact-index,#previewBody .method-dropset .advanced-compact-index{
+  height:var(--work-field-h)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;font-size:18px!important;font-weight:900!important;line-height:1!important;
+}
+#liveBody .method-dropset .advanced-compact-index small,#previewBody .method-dropset .advanced-compact-index small{font-size:7px!important;line-height:1!important;margin-top:4px!important;color:var(--muted)!important}
+
+/* Intra-set separators are method-owned, never allowed to cross fields. */
+#liveBody .method-cluster .intraset-rest-divider,#previewBody .method-cluster .intraset-rest-divider,
+#liveBody .method-restpause .intraset-rest-divider,#previewBody .method-restpause .intraset-rest-divider,
+#liveBody .method-dropset .intraset-rest-divider,#previewBody .method-dropset .intraset-rest-divider{
+  display:grid!important;grid-template-columns:46px minmax(0,1fr) minmax(0,1fr) 50px!important;column-gap:8px!important;align-items:center!important;height:20px!important;margin:0!important;padding:0!important;
+}
+#liveBody .intraset-rest-divider>span,#previewBody .intraset-rest-divider>span{height:1px!important;background:var(--line)!important;align-self:center!important}
+#liveBody .intraset-rest-divider>span:first-child,#previewBody .intraset-rest-divider>span:first-child{grid-column:2!important}
+#liveBody .intraset-rest-divider>span:last-child,#previewBody .intraset-rest-divider>span:last-child{grid-column:4!important}
+#liveBody .intraset-rest-divider>b,#previewBody .intraset-rest-divider>b{grid-column:3!important;text-align:center!important;font-size:10px!important;line-height:1!important;white-space:nowrap!important}
+#liveBody .restpause-progress,#previewBody .restpause-progress{margin:6px 0 0!important;text-align:right!important;font-size:10px!important}
+
+/* Preview uses the same method-specific geometry, only non-interactive. */
+#previewBody .preview-live-mirror-v44 input,#previewBody .preview-live-mirror-v44 button,#previewBody .preview-live-mirror-v44 textarea,#previewBody .preview-live-mirror-v44 select{opacity:1!important;filter:none!important}
+#previewBody .preview-live-mirror-v44 input::placeholder{color:var(--muted)!important;-webkit-text-fill-color:var(--muted)!important;opacity:.72!important}
+
+@media(max-width:390px){
+  :root{--work-field-h:48px;--work-action:48px;--work-font:16px}
+  #liveBody .method-standard .set-head,#liveBody .method-standard .set-row,
+  #liveBody .method-pyramid .set-head,#liveBody .method-pyramid .set-row,
+  #liveBody .method-backoff .set-head,#liveBody .method-backoff .set-row,
+  #liveBody .set-head.unified-time-head,#liveBody .set-row.unified-time-row,
+  #previewBody .method-standard .set-head,#previewBody .method-standard .set-row,
+  #previewBody .method-pyramid .set-head,#previewBody .method-pyramid .set-row,
+  #previewBody .method-backoff .set-head,#previewBody .method-backoff .set-row,
+  #previewBody .set-head.unified-time-head,#previewBody .set-row.unified-time-row{
+    grid-template-columns:40px minmax(0,1fr) minmax(0,1fr) 48px 16px!important;column-gap:6px!important;
+  }
+  #liveBody .method-superset .group-round-title,#liveBody .method-superset .combined-member-row,
+  #liveBody .method-giant .group-round-title,#liveBody .method-giant .combined-member-row,
+  #liveBody .method-preexhaust .group-round-title,#liveBody .method-preexhaust .combined-member-row,
+  #liveBody .method-cluster .method-set-title,#liveBody .method-cluster .advanced-compact-row,
+  #liveBody .method-restpause .method-set-title,#liveBody .method-restpause .advanced-compact-row,
+  #liveBody .method-dropset .method-set-title,#liveBody .method-dropset .advanced-compact-row,
+  #previewBody .method-superset .group-round-title,#previewBody .method-superset .combined-member-row,
+  #previewBody .method-giant .group-round-title,#previewBody .method-giant .combined-member-row,
+  #previewBody .method-preexhaust .group-round-title,#previewBody .method-preexhaust .combined-member-row,
+  #previewBody .method-cluster .method-set-title,#previewBody .method-cluster .advanced-compact-row,
+  #previewBody .method-restpause .method-set-title,#previewBody .method-restpause .advanced-compact-row,
+  #previewBody .method-dropset .method-set-title,#previewBody .method-dropset .advanced-compact-row{
+    grid-template-columns:40px minmax(0,1fr) minmax(0,1fr) 48px!important;column-gap:6px!important;
+  }
+  #liveBody .method-cluster .intraset-rest-divider,#liveBody .method-restpause .intraset-rest-divider,#liveBody .method-dropset .intraset-rest-divider,
+  #previewBody .method-cluster .intraset-rest-divider,#previewBody .method-restpause .intraset-rest-divider,#previewBody .method-dropset .intraset-rest-divider{
+    grid-template-columns:40px minmax(0,1fr) minmax(0,1fr) 48px!important;column-gap:6px!important;
+  }
+}
+
+/* Hydration / profile retained. */
+.drink-entry-sticky{position:sticky;top:0;z-index:25;background:var(--surface);padding:0 0 10px;margin:0 0 8px;border-bottom:1px solid var(--line)}
+.drink-amount-first{margin:0!important}.drink-amount-presets{display:flex;gap:6px;overflow-x:auto;padding:7px 0 2px;scrollbar-width:none}.drink-amount-presets::-webkit-scrollbar{display:none}.drink-amount-presets .chip{flex:0 0 auto}.quick-drink-grid{padding-top:2px!important}
+.streak-above-card{display:flex;justify-content:flex-end;align-items:center;margin:-4px 2px 6px}.compact-profile-chart{padding-bottom:12px!important}.profile-chart-tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0 10px;scrollbar-width:none}.profile-chart-tabs::-webkit-scrollbar{display:none}.profile-chart-chip{flex:0 0 auto;border:1px solid var(--line);background:var(--surface2);color:var(--muted);border-radius:8px;padding:6px 9px;font-size:10px;font-weight:800}.profile-chart-chip.active{color:var(--text);border-color:var(--chart-color);box-shadow:inset 0 -2px 0 var(--chart-color)}.compact-profile-chart svg{height:82px!important;max-height:82px!important}
+#sheetWrap:not(.hidden) .sheet-body input:not([disabled]),#sheetWrap:not(.hidden) .sheet-body textarea:not([disabled]),#sheetWrap:not(.hidden) .sheet-body select:not([disabled]){pointer-events:auto!important;user-select:text!important;-webkit-user-select:text!important}
+
+@media(max-width:390px){
+ :root{--work-index:40px;--work-action:48px;--work-gap:6px;--work-field-h:48px;--work-font:16px}
+ #liveBody .set-row,#liveBody .unified-time-row,#previewBody .set-row,#previewBody .unified-time-row{grid-template-columns:var(--work-index) minmax(0,1fr) minmax(0,1fr) var(--work-action) 16px!important}
+}
+
+/* Stable keyboard sheets: search/amount stays pinned, results scroll underneath. */
+.sheet-wrap .sheet{height:min(75dvh,var(--rethink-vvh,75dvh))!important;max-height:min(75dvh,var(--rethink-vvh,75dvh))!important;display:flex!important;flex-direction:column!important}
+.sheet-wrap .sheet-body{flex:1 1 auto!important;min-height:0!important;max-height:none!important;overflow-y:auto!important;overscroll-behavior:contain!important;scroll-padding-bottom:110px!important}
+.stable-entry-sticky{position:sticky!important;top:0!important;z-index:40!important;background:var(--surface)!important;padding:0 0 10px!important;margin:0 0 8px!important;border-bottom:1px solid var(--line)!important}
+.stable-search-results,.stable-choice-grid{position:relative!important;z-index:1!important}
+.profile-editor-stable{padding-bottom:16px!important}
+.profile-editor-stable .field{pointer-events:auto!important;user-select:text!important;-webkit-user-select:text!important}
+
+@media(max-width:390px){
+ :root{--work-index:34px;--work-action:44px;--work-gap:6px;--work-field-h:44px}
+ #liveBody .set-head,#liveBody .set-row,#liveBody .unified-time-head,#liveBody .unified-time-row,#previewBody .set-head,#previewBody .set-row,#previewBody .unified-time-head,#previewBody .unified-time-row{grid-template-columns:var(--work-index) minmax(0,1fr) minmax(0,1fr) var(--work-action) 16px!important}
+}
+
+
+/* RETHINK final geometry pass — method-specific, 2026-09-12 */
+:root{--rt-work-h:52px;--rt-gap-x:8px;--rt-index:46px;--rt-action:52px}
+#liveBody .method-card .exercise-name,#previewBody .method-card .exercise-name{font-size:22px!important;line-height:1.08!important}
+/* Partner methods: same field height and compact vertical rhythm. */
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row{grid-template-columns:var(--rt-index) minmax(0,1fr) minmax(0,1fr) var(--rt-action)!important;column-gap:var(--rt-gap-x)!important;margin:5px 0!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-index,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-index{height:var(--rt-work-h)!important;align-self:end!important;display:flex!important;align-items:center!important;justify-content:center!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-field input,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-field input,
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell,
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell>input,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell>input{height:var(--rt-work-h)!important;min-height:var(--rt-work-h)!important;width:100%!important;box-sizing:border-box!important;border-radius:11px!important;font:500 18px/1 system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif!important;text-align:center!important;padding:0 8px!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell{display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell>input,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell>input{position:static!important;transform:none!important;margin:0!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row{grid-template-rows:13px 3px var(--rt-work-h)!important;margin-top:2px!important;margin-bottom:5px!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field{grid-template-rows:13px 3px var(--rt-work-h)!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .set-check,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .set-check{width:var(--rt-action)!important;height:var(--rt-work-h)!important;min-width:var(--rt-action)!important;min-height:var(--rt-work-h)!important;aspect-ratio:1/1!important;border-radius:11px!important;padding:0!important;align-self:end!important}
+/* No hidden play control may collapse the time field. */
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .time-play-inside,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .time-play-inside{display:none!important}
+/* Profile sheets must sit above the iOS keyboard and remain scrollable. */
+#sheetWrap:not(.hidden) #sheetBody{padding-bottom:max(28px,env(safe-area-inset-bottom))!important;overscroll-behavior:contain}
+#sheetWrap.keyboard-open #sheetBody{padding-bottom:24px!important}
+.custom-badge{display:inline-flex;margin-top:5px;padding:3px 7px;border:1px solid var(--line);border-radius:7px;font-size:10px;font-weight:850;letter-spacing:.08em;color:var(--accent)}
+
+/* RETHINK compact live-entry rhythm + editable exercise catalogs — 2026-09-12d */
+#liveBody .method-card .set-head,
+#previewBody .method-card .set-head{margin-top:6px!important;margin-bottom:1px!important}
+#liveBody .method-card .set-row,
+#previewBody .method-card .set-row{margin-top:1px!important;margin-bottom:3px!important}
+#liveBody :is(.method-standard,.method-pyramid,.method-backoff) .set-head,
+#liveBody .set-head.unified-time-head,
+#previewBody :is(.method-standard,.method-pyramid,.method-backoff) .set-head,
+#previewBody .set-head.unified-time-head{transform:translateY(2px)}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row{margin-top:2px!important;margin-bottom:3px!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row{grid-template-rows:11px 1px var(--rt-work-h)!important;margin-top:0!important;margin-bottom:3px!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field{grid-template-rows:11px 1px var(--rt-work-h)!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>span,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>span{line-height:11px!important;align-self:end!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-round+.combined-round,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-round+.combined-round{margin-top:8px!important;padding-top:7px!important}
+.ce-wrap-chips{flex-wrap:wrap!important;overflow:visible!important}
+.ce-catalog-row,.ce-catalog-custom{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.ce-catalog-custom{margin-top:8px}.ce-catalog-row .ce-catalog-add{min-width:44px;height:44px;padding:0 14px}.ce-catalog-custom-add{height:44px;white-space:nowrap}
+.ce-catalog-values{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ce-value-chip{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+
+/* RETHINK 2026-09-12e — final workout geometry, one grid across every method */
+:root{--fit-index:44px;--fit-action:52px;--fit-remove:18px;--fit-gap:8px;--fit-field:52px;--fit-label-gap:5px}
+#liveBody :is(.method-standard,.method-pyramid,.method-backoff) .set-head,
+#liveBody .set-head.unified-time-head,
+#previewBody :is(.method-standard,.method-pyramid,.method-backoff) .set-head,
+#previewBody .set-head.unified-time-head{
+  grid-template-columns:var(--fit-index) minmax(0,1fr) minmax(0,1fr) var(--fit-action) var(--fit-remove)!important;
+  column-gap:var(--fit-gap)!important;margin:8px 0 var(--fit-label-gap)!important;transform:none!important;align-items:end!important
+}
+#liveBody :is(.method-standard,.method-pyramid,.method-backoff) .set-row,
+#liveBody .set-row.unified-time-row,
+#previewBody :is(.method-standard,.method-pyramid,.method-backoff) .set-row,
+#previewBody .set-row.unified-time-row{
+  grid-template-columns:var(--fit-index) minmax(0,1fr) minmax(0,1fr) var(--fit-action) var(--fit-remove)!important;
+  column-gap:var(--fit-gap)!important;margin:0 0 7px!important;align-items:center!important
+}
+#liveBody :is(.method-standard,.method-pyramid,.method-backoff) .set-row input,
+#liveBody .set-row.unified-time-row input,
+#liveBody .set-row.unified-time-row .unified-time-shell,
+#previewBody :is(.method-standard,.method-pyramid,.method-backoff) .set-row input,
+#previewBody .set-row.unified-time-row input,
+#previewBody .set-row.unified-time-row .unified-time-shell{height:var(--fit-field)!important;min-height:var(--fit-field)!important;max-height:var(--fit-field)!important}
+#liveBody :is(.method-standard,.method-pyramid,.method-backoff) .set-row>span:first-child,
+#liveBody .set-row.unified-time-row>span:first-child,
+#previewBody :is(.method-standard,.method-pyramid,.method-backoff) .set-row>span:first-child,
+#previewBody .set-row.unified-time-row>span:first-child{height:var(--fit-field)!important}
+#liveBody :is(.method-standard,.method-pyramid,.method-backoff) .set-check,
+#liveBody .set-row.unified-time-row .set-check,
+#previewBody :is(.method-standard,.method-pyramid,.method-backoff) .set-check,
+#previewBody .set-row.unified-time-row .set-check{width:var(--fit-action)!important;height:var(--fit-field)!important;min-width:var(--fit-action)!important;min-height:var(--fit-field)!important}
+
+/* Partner methods use the same index, value and assessment columns as single exercises. */
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .group-round-title,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .group-round-title{
+  grid-template-columns:var(--fit-index) minmax(0,1fr) minmax(0,1fr) var(--fit-action)!important;
+  column-gap:var(--fit-gap)!important;margin:8px 0 var(--fit-label-gap)!important;align-items:end!important
+}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .group-round-title>span,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .group-round-title>span{text-align:center!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row{
+  grid-template-columns:var(--fit-index) minmax(0,1fr) minmax(0,1fr) var(--fit-action)!important;
+  column-gap:var(--fit-gap)!important;margin:0 0 7px!important;align-items:center!important
+}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-index,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-index{height:var(--fit-field)!important;align-self:center!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-field input,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-field input,
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell,
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell>input,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-time-shell>input{height:var(--fit-field)!important;min-height:var(--fit-field)!important;max-height:var(--fit-field)!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .set-check,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .set-check{width:var(--fit-action)!important;height:var(--fit-field)!important;min-width:var(--fit-action)!important;min-height:var(--fit-field)!important;align-self:center!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row{
+  grid-template-rows:12px var(--fit-label-gap) var(--fit-field)!important;margin:1px 0 7px!important;align-items:end!important
+}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field{display:grid!important;grid-template-rows:12px var(--fit-label-gap) var(--fit-field)!important;align-items:end!important;height:auto!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>span,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>span{grid-row:1!important;line-height:12px!important;text-align:center!important;align-self:end!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>input,
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>.unified-time-shell,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>input,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>.unified-time-shell{grid-row:3!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-index,
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.set-check,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-index,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.set-check{grid-row:3!important;align-self:center!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-round+.combined-round,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-round+.combined-round{margin-top:10px!important;padding-top:9px!important}
+
+/* Own-exercise picker and visible profile data. */
+.ce-catalog-row,.ce-catalog-custom{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;align-items:center!important}.ce-catalog-custom{margin-top:8px!important}.ce-catalog-values{display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin-top:8px!important}.ce-wrap-chips{display:flex!important;flex-wrap:wrap!important;overflow:visible!important}
+.profile-input-overview{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.profile-input-overview>div{border-top:1px solid var(--line);padding-top:8px;min-width:0}.profile-input-overview span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:800}.profile-input-overview strong{display:block;margin-top:2px;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+@media(max-width:390px){:root{--fit-index:38px;--fit-action:48px;--fit-remove:16px;--fit-gap:6px;--fit-field:48px;--fit-label-gap:5px}}
+
+/* RETHINK 2026-09-12F — compact, aligned workout entry rhythm */
+:root{--fit-label-gap:1px;--fit-row-gap:3px}
+#liveBody :is(.method-standard,.method-pyramid,.method-backoff) .set-head,
+#liveBody .set-head.unified-time-head,
+#previewBody :is(.method-standard,.method-pyramid,.method-backoff) .set-head,
+#previewBody .set-head.unified-time-head{margin:5px 0 var(--fit-label-gap)!important}
+#liveBody :is(.method-standard,.method-pyramid,.method-backoff) .set-row,
+#liveBody .set-row.unified-time-row,
+#previewBody :is(.method-standard,.method-pyramid,.method-backoff) .set-row,
+#previewBody .set-row.unified-time-row{margin:0 0 var(--fit-row-gap)!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .group-round-title,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .group-round-title{margin:5px 0 var(--fit-label-gap)!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row{margin:0 0 var(--fit-row-gap)!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row{grid-template-rows:12px 1px var(--fit-field)!important;margin:0 0 var(--fit-row-gap)!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field{grid-template-rows:12px 1px var(--fit-field)!important}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-round+.combined-round,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-round+.combined-round{margin-top:5px!important;padding-top:5px!important}
+.custom-badge{display:inline-flex;align-items:center;min-height:24px;padding:4px 9px;border:1px solid var(--line);border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.08em;margin-bottom:10px}
+
+/* RETHINK 2026-09-12G — concept restoration */
+#summaryBody .history-exercise-title,#summaryBody .history-exercise-title *{text-align:left!important;justify-content:flex-start!important}
+#summaryBody .history-exercise-title{width:100%!important}
+#restBar #restTime{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;min-width:54px;text-align:center}
+#restBar #restTime:active{cursor:grabbing}
+#restBar.rest-idle{opacity:.88}
+:root{--fit-label-gap:3px;--fit-row-gap:5px}
+
+/* RETHINK 2026-09-12H — active pause dock lives at viewport level, never inside the scrolling workout page. */
+body>#restBar{position:fixed!important;z-index:2147483000!important}
+body>#restBar:not(.hidden){display:grid!important}
+
+/* RETHINK final rating/recommendation visibility */
+.previous-rating-dot{width:10px!important;height:10px!important;min-width:10px!important;flex-basis:10px!important;border:1.5px solid rgba(255,255,255,.7)!important;box-shadow:0 0 0 1px rgba(0,0,0,.25)!important;vertical-align:middle!important}
+.set-index-with-history,.combined-index-with-history{gap:5px!important}
+.live-recommendation{display:block!important;margin:10px 0 8px!important;padding:10px 12px!important;border:1px solid color-mix(in srgb,var(--method, var(--accent)) 45%,var(--line))!important;background:color-mix(in srgb,var(--method, var(--accent)) 8%,var(--surface2))!important}
+.live-recommendation>strong:first-child{font-size:11px!important;letter-spacing:.04em;text-transform:uppercase}
+
+/* RETHINK 2026-09-12J — rating dot directly after set number in every live method */
+#liveBody .set-index-with-history,#liveBody .combined-index-with-history,#liveBody .advanced-compact-index.set-index-with-history{display:inline-flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:5px!important;white-space:nowrap!important}
+#liveBody .set-index-with-history>.previous-rating-dot,#liveBody .combined-index-with-history>.previous-rating-dot,#liveBody .advanced-compact-index.set-index-with-history>.previous-rating-dot{position:static!important;grid-column:auto!important;grid-row:auto!important;order:1!important;margin:0!important;transform:none!important}
+#liveBody .advanced-compact-index.set-index-with-history>small{order:2!important;grid-column:auto!important;grid-row:auto!important;margin-left:2px!important}
+
+/* 2026-09-12 final alignment: Training start action is centered as one unit. */
+#startTrainingCard{align-items:center!important;justify-content:center!important;text-align:center!important}
+#startTrainingCard .training-start-copy{width:100%!important;text-align:center!important;display:flex!important;flex-direction:column!important;align-items:center!important}
+#startTrainingCard .training-start-copy strong,#startTrainingCard .training-start-copy .small{text-align:center!important;width:100%!important}
+.food-ingredients{display:block;margin-top:4px;font-size:11px;line-height:1.25;opacity:.72;white-space:normal}.food-selected-ingredients{display:flex;flex-direction:column;gap:3px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(127,127,127,.22);font-size:12px;line-height:1.35}.food-selected-ingredients span{opacity:.82}
+
+.brand-kicker{display:flex;align-items:center;gap:7px}.brand-mini-logo{width:22px;height:22px;border-radius:6px;object-fit:cover;flex:0 0 auto}.brand-kicker .kicker{margin:0}
+
+/* RETHINK 2026-09-13 — user QA: tighter mixed partner rows, centered date labels, left-aligned summary */
+.week-range{text-align:center!important}
+.profile-day-nav>div{text-align:center!important}
+
+#summaryBody .method-card,
+#summaryBody .history-summary-exercise,
+#summaryBody .history-exercise-title,
+#summaryBody .history-summary-exercise .variant-line,
+#summaryBody .summary-set,
+#summaryBody .summary-set>strong,
+#summaryBody .summary-set>div,
+#summaryBody .summary-set-content,
+#summaryBody .summary-segments,
+#summaryBody .summary-rating,
+#summaryBody .summary-empty,
+#summaryBody .summary-incomplete{text-align:left!important;justify-content:flex-start!important}
+
+/* Mixed KG/time partner rows: same rhythm as repetition rows, with compact labels. */
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row{
+  grid-template-rows:9px 1px var(--fit-field)!important;
+  margin:-1px 0 4px!important;
+}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field{
+  grid-template-rows:9px 1px var(--fit-field)!important;
+}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>span,
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .unified-combined-time-row>.combined-field>span{
+  font-size:9px!important;line-height:9px!important;height:9px!important;
+  font-weight:900!important;letter-spacing:.08em!important;color:var(--muted)!important;
+  text-align:center!important;
+}
+#liveBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row:not(.unified-combined-time-row),
+#previewBody :is(.method-superset,.method-giant,.method-preexhaust) .combined-member-row:not(.unified-combined-time-row){margin-bottom:4px!important}
+
+/* Preview/live placeholders look exactly like entered values, only grey. */
+#liveBody :is(.unified-time-shell>input,.unified-performance-input,.combined-field>input)::placeholder,
+#previewBody :is(.unified-time-shell>input,.unified-performance-input,.combined-field>input)::placeholder{
+  font:500 18px/1 system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif!important;
+  color:#777!important;opacity:1!important;text-align:center!important;
+}
+#previewBody :is(.unified-time-shell>input,.unified-performance-input,.combined-field>input){
+  text-align:center!important;text-align-last:center!important;-webkit-text-align-last:center!important;
+  font:500 18px/1 system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif!important;
+}
+
+/* RETHINK 2026-09-13B — exact user QA fixes */
+/* Summary: every line below the method heading shares the same left edge. */
+#summaryBody .history-connected-card>.method-name,
+#summaryBody .history-connected-card>.method-help{margin-left:12px!important;margin-right:12px!important}
+#summaryBody .history-connected-card .history-summary-exercise,
+#summaryBody .history-single-card .history-summary-exercise{
+  padding-left:12px!important;
+  padding-right:12px!important;
+  text-align:left!important;
+}
+#summaryBody .history-summary-exercise .history-exercise-title,
+#summaryBody .history-summary-exercise .variant-line,
+#summaryBody .history-summary-exercise .summary-empty,
+#summaryBody .history-summary-exercise .summary-incomplete,
+#summaryBody .history-summary-exercise .summary-set,
+#summaryBody .history-summary-exercise .summary-set>strong,
+#summaryBody .history-summary-exercise .summary-set>div{
+  margin-left:0!important;margin-right:0!important;text-align:left!important;
+}
+
+/* Start confirmation: make the plan being started unmistakable. */
+.start-plan-highlight{
+  margin:0 0 16px;padding:16px 16px 15px;
+  border:2px solid var(--accent);border-radius:16px;
+  background:color-mix(in srgb,var(--accent) 13%,var(--surface));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 20%,transparent) inset;
+  text-align:left;
+}
+.start-plan-kicker{font-size:10px;font-weight:950;letter-spacing:.15em;color:var(--accent);margin-bottom:6px}
+.start-plan-name{display:block;font-size:22px;line-height:1.12;font-weight:950;color:var(--text)}
+.start-plan-meta{margin-top:7px;font-size:12px;line-height:1.3;color:var(--muted);font-weight:700}
+
+/* RETHINK 2026-09-13 — authoritative QA fixes after device test */
+/* Preview values are display-only: centered, identical typography, never show an input caret. */
+#previewBody .pv-box,
+#previewBody .pv-field,
+#previewBody .pv-label{ text-align:center!important; }
+#previewBody .pv-box{display:flex!important;align-items:center!important;justify-content:center!important;font:500 18px/1 system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif!important;}
+#previewBody input[data-time-field="1"],
+#liveBody input[data-time-field="1"]{text-align:center!important;caret-color:transparent!important;}
+#previewBody input[data-time-field="1"]{pointer-events:none!important;user-select:none!important;-webkit-user-select:none!important;}
+
+/* Summary: every exercise block below the method header starts on one common left edge. */
+#summaryBody .history-connected-card .history-summary-exercise,
+#summaryBody .history-connected-card .history-exercise-title,
+#summaryBody .history-connected-card .variant-line,
+#summaryBody .history-connected-card .summary-empty,
+#summaryBody .history-connected-card .summary-incomplete,
+#summaryBody .history-connected-card .summary-set,
+#summaryBody .history-single-card .history-summary-exercise,
+#summaryBody .history-single-card .history-exercise-title,
+#summaryBody .history-single-card .variant-line,
+#summaryBody .history-single-card .summary-empty,
+#summaryBody .history-single-card .summary-incomplete,
+#summaryBody .history-single-card .summary-set{
+  margin-left:0!important;padding-left:0!important;text-align:left!important;justify-content:flex-start!important;
+}
+#summaryBody .history-connected-card>.history-summary-exercise{padding-left:12px!important;padding-right:12px!important;}
+#summaryBody .history-connected-card>.method-name,
+#summaryBody .history-connected-card>.method-help{margin-left:12px!important;margin-right:12px!important;}
+
+/* Rest dock stays visible above live content whenever a rest is active. */
+body>#restBar:not(.hidden){display:grid!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;}

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
-<meta name="theme-color" content="#070708"><link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png"><link rel="manifest" href="manifest.webmanifest"><title>ReThink. Fitness</title>
+<meta name="theme-color" content="#070708"><link rel="apple-touch-icon" sizes="180x180" href="icon-180.png"><link rel="manifest" href="manifest.webmanifest"><title>ReThink. Fitness</title>
 
 
 
@@ -101,23 +101,28 @@
 
 
 
-<link rel="stylesheet" href="./app.css?v=20260902-lean-v49">
+<link rel="stylesheet" href="./app.css?v=20260914e-summary-finish-start">
+
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="./favicon-64.png">
 </head><body>
 <div id="app" class="app">
-<main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
-<main id="tab-plans" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Meine Pläne</h1></div><div class="plan-header-actions"><button id="plansEditBtn" class="secondary plan-edit-toggle">Bearbeiten</button><button id="newPlanBtn" class="icon-btn plus-btn">+</button></div></div><div class="chips" id="planSortChips"></div><div id="planList"></div></main>
-<main id="tab-training" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Training</h1></div></div><div id="activeBanner"></div><div id="startTrainingCard" class="card training-start-card-v5"><button id="choosePlanStart" class="training-main-play" aria-label="Training starten">▶</button><div class="training-start-copy"><strong>Training starten</strong><div class="small">Wähle einen Plan.</div></div></div><div class="space" style="margin:18px 0 8px"><h2>Zuletzt</h2><button id="clearHistoryBtn" class="text-action danger">Verlauf löschen</button></div><div id="historyList"></div></main>
-<main id="tab-week" class="tab-screen hidden"><div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Wochenplan</h1></div></div><div id="weekMotivation" class="card week-motivation"></div><div class="week-nav"><button id="weekPrevBtn" class="icon-btn">‹</button><div class="week-range"><strong id="weekRangeLabel"></strong><span id="weekOffsetLabel" class="small"></span></div><button id="weekNextBtn" class="icon-btn">›</button></div><div id="weekList" class="week-list"></div></main>
+<main id="tab-exercises" class="tab-screen"><div class="tab-header"><div><div class="brand-kicker"><img class="brand-mini-logo" src="./logo.png" alt=""><span class="kicker">ReThink.</span></div><h1>Übungsbibliothek</h1></div><button id="newExerciseBtn" class="icon-btn plus-btn">+</button></div><div class="search"><input id="exerciseSearch" placeholder="Übung suchen"><button id="clearSearch">×</button></div><div id="typeChips" class="chips"></div><div id="muscleChips" class="chips"></div><div class="small" id="exerciseCount" style="margin:4px 0 10px"></div><div id="exerciseList"></div></main>
+<main id="tab-plans" class="tab-screen hidden"><div class="tab-header"><div><div class="brand-kicker"><img class="brand-mini-logo" src="./logo.png" alt=""><span class="kicker">ReThink.</span></div><h1>Meine Pläne</h1></div><div class="plan-header-actions"><button id="plansEditBtn" class="secondary plan-edit-toggle">Bearbeiten</button><button id="newPlanBtn" class="icon-btn plus-btn">+</button></div></div><div class="chips" id="planSortChips"></div><div id="planList"></div></main>
+<main id="tab-training" class="tab-screen hidden"><div class="tab-header"><div><div class="brand-kicker"><img class="brand-mini-logo" src="./logo.png" alt=""><span class="kicker">ReThink.</span></div><h1>Training</h1></div></div><div id="activeBanner"></div><div id="startTrainingCard" class="card training-start-card-v5"><button id="choosePlanStart" class="training-main-play" aria-label="Training starten">▶</button><div class="training-start-copy"><strong>Training starten</strong><div class="small">Wähle einen Plan.</div></div></div><div class="space" style="margin:18px 0 8px"><h2>Zuletzt</h2><button id="clearHistoryBtn" class="text-action danger">Verlauf löschen</button></div><div id="historyList"></div></main>
+<main id="tab-week" class="tab-screen hidden"><div class="tab-header"><div><div class="brand-kicker"><img class="brand-mini-logo" src="./logo.png" alt=""><span class="kicker">ReThink.</span></div><h1>Wochenplan</h1></div></div><div id="weekMotivation" class="card week-motivation"></div><div class="week-nav"><button id="weekPrevBtn" class="icon-btn">‹</button><div class="week-range"><strong id="weekRangeLabel"></strong><span id="weekOffsetLabel" class="small"></span></div><button id="weekNextBtn" class="icon-btn">›</button></div><div id="weekList" class="week-list"></div></main>
 <main id="tab-profile" class="tab-screen hidden">
-<div class="tab-header"><div><div class="kicker">ReThink.</div><h1>Körper und Ernährung</h1></div><button id="settingsBtn" class="icon-btn profile-settings-icon" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></button></div>
+<div class="tab-header"><div><div class="brand-kicker"><img class="brand-mini-logo" src="./logo.png" alt=""><span class="kicker">ReThink.</span></div><h1>Körper und Ernährung</h1></div><button id="settingsBtn" class="icon-btn profile-settings-icon" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></button></div>
 <div class="profile-day-nav"><button id="profilePrevDay" class="icon-btn" aria-label="Vorheriger Tag">‹</button><div><strong id="profileDayLabel">Heute</strong><small id="profileDayDate"></small></div><button id="profileNextDay" class="icon-btn" aria-label="Nächster Tag">›</button></div>
 
-<div class="card profile-identity-card"><div class="space"><div><div class="small">Mein Profil</div><strong id="profileSummary">Noch nicht eingerichtet</strong><div class="goal-line" id="profileGoalSummary">Persönliche Werte und Ziele</div></div><button id="editProfileBtn" class="secondary compact-profile-edit">Bearbeiten</button></div></div>
+<div class="card profile-identity-card"><div class="space"><div><div class="small">Mein Profil</div><strong id="profileSummary">Noch nicht eingerichtet</strong><div class="goal-line" id="profileGoalSummary">Persönliche Werte und Ziele</div></div><button id="editProfileBtn" class="secondary compact-profile-edit" type="button">Bearbeiten</button></div><div id="profileInputOverview" class="profile-input-overview"></div></div>
 
 <div class="space section-head"><h2>Messungen</h2><button id="addMeasurementBtn" class="icon-btn plus-btn">+</button></div>
 <div id="measurementCharts" class="measurement-charts"></div><div id="measurementSuggestion"></div><div id="measurementList"></div><div id="profileProgressOverview"></div>
 
-<div class="section-head streak-section-head"><h2>Hydrierung heute</h2><div id="hydrationStreakBadge" class="streak-flame" aria-label="Hydrierungs-Streak">🔥 <strong>0</strong></div></div>
+<div class="section-head streak-section-head"><h2>Hydrierung heute</h2></div>
+<div class="streak-above-card"><div id="hydrationStreakBadge" class="streak-flame" aria-label="Hydrierungs-Streak">🔥 <strong>0</strong></div></div>
 <div class="card daily-track-card hydration-today-card">
   <div class="daily-track-top">
     <div class="daily-main-stat"><span>Menge</span><strong id="waterView">0 ml</strong></div>
@@ -130,7 +135,8 @@
   <details id="drinksDetails" class="drink-details"><summary><span>Meine Getränke</span><span class="drink-summary-chevron">⌄</span></summary><div class="space drink-details-actions"><div class="small">Getränke verwalten</div><div class="drink-manage-actions"><button id="reorderDrinksBtn" class="icon-btn subtle-reorder-btn" aria-label="Reihenfolge ändern">⇅</button><button id="newDrinkBtn" class="secondary create-drink-btn">Getränk erstellen</button></div></div><div id="drinkList"></div></details>
 </div>
 
-<div class="space section-head streak-section-head"><h2>Ernährung heute</h2><div class="section-head-actions"><div id="nutritionStreakBadge" class="streak-flame" aria-label="Ernährungs-Streak">🔥 <strong>0</strong></div></div></div>
+<div class="space section-head streak-section-head"><h2>Ernährung heute</h2></div>
+<div class="streak-above-card"><div id="nutritionStreakBadge" class="streak-flame" aria-label="Ernährungs-Streak">🔥 <strong>0</strong></div></div>
 <div class="card daily-track-card nutrition-today-card">
   <div class="daily-track-top nutrition-track-top">
     <div class="daily-bar-stat"><div><span>Kalorien</span><strong id="foodCaloriesCounter">0 / – kcal</strong></div><div class="mini-progress"><i id="foodCaloriesProgress"></i></div></div>
@@ -178,12 +184,13 @@
 <section id="planEditorPage" class="page hidden"><div class="page-top"><button id="planEditorBack" class="icon-btn">‹</button><h2>Trainingsplan</h2><div class="page-actions"><button id="planPlayBtn" class="icon-btn plus-btn">▶</button><button id="planSaveBtn" class="icon-btn">✓</button></div></div><div class="form-field"><label>Planname</label><input id="planName" class="field" placeholder="Name des Plans"></div><div id="editorPlanStats"></div><div id="editorExerciseList"></div><div class="editor-add-row"><button id="editorAddExerciseBtn" class="secondary">Übung hinzufügen</button><button id="editorReorderBtn" class="icon-btn" aria-label="Reihenfolge ändern">⇅</button></div><button id="editorPreviewBtn" class="secondary" style="width:100%;margin-top:10px;border-style:dashed">Vorschau</button><button id="editorStartTrainingBtn" class="primary editor-start-training">Training starten</button></section>
 <section id="previewPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2 id="previewTitle">Workout Vorschau</h2><div></div></div><div id="previewBody"></div></section>
 <section id="preStartPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2 id="preStartTitle">Training starten</h2><button id="preStartTopPlay" class="icon-btn plus-btn top-workout-action" aria-label="Training starten">▶</button></div><div id="preStartBody"></div><button id="confirmStartBtn" class="primary" style="position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));width:100%;margin-top:12px">Training starten</button></section>
-<section id="livePage" class="page hidden"><div class="page-top"><button id="liveBackBtn" class="icon-btn">‹</button><div class="live-title-stack"><h2 id="liveTitle">Training</h2><div class="small" id="liveClock"></div></div><button id="liveTopStop" class="icon-btn plus-btn top-workout-action" aria-label="Training beenden">■</button></div><button id="workoutNoteBtn" class="workout-note">✎ <span id="workoutNoteText">Notiz</span></button><div id="liveBody"></div><div id="restBar" class="restbar hidden"><button id="restMinus">−15</button><strong id="restTime">01:30</strong><button id="restPlus">+15</button><button id="restSkip">Skip</button></div><div class="bottom-actions"><button id="liveAddExercise" class="secondary">Übung hinzufügen</button><button id="liveReorder" class="icon-btn">⇅</button></div><button id="finishWorkoutBtn" class="primary finish">Training beenden</button></section>
+<section id="livePage" class="page hidden"><div class="page-top"><button id="liveBackBtn" class="icon-btn">‹</button><div class="live-title-stack"><h2 id="liveTitle">Training</h2><div class="small" id="liveClock"></div></div><button id="liveTopStop" class="icon-btn plus-btn top-workout-action" type="button" aria-label="Training beenden">■</button></div><button id="workoutNoteBtn" class="workout-note">✎ <span id="workoutNoteText">Notiz</span></button><div id="liveBody"></div><div class="bottom-actions"><button id="liveAddExercise" class="secondary">Übung hinzufügen</button><button id="liveReorder" class="icon-btn">⇅</button></div><button id="finishWorkoutBtn" class="primary finish" type="button">Training beenden</button></section>
 <section id="summaryPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2 id="summaryTitle">Training</h2><div></div></div><div id="summaryBody"></div></section><section id="settingsPage" class="page hidden"><div class="page-top"><button class="icon-btn" data-back>‹</button><h2>Einstellungen</h2><div></div></div><div id="settingsBody"></div></section>
 <div id="sheetWrap" class="sheet-wrap hidden"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-top"><button id="sheetBack" class="icon-btn">‹</button><h2 id="sheetTitle">Auswahl</h2><button id="sheetClose" class="icon-btn">×</button></div><div id="sheetBody" class="sheet-body"></div></div></div>
 
-<script src="./foods.js?v=20260902-lean-v49"></script>
-<script src="./app-core.js?v=20260902-lean-v49"></script>
+<div id="restBar" class="restbar hidden" aria-live="polite"><button id="restMinus">−15</button><strong id="restTime">01:30</strong><button id="restPlus">+15</button><button id="restSkip">Skip</button></div>
+<script src="./foods.js?v=20260914e-summary-finish-start"></script>
+<script src="./app-core.js?v=20260914e-summary-finish-start"></script>
 
 
 
@@ -219,5 +226,5 @@
 
 
 
-<script src="./runtime-current.js?v=20260902-lean-v49"></script>
+<script src="./runtime-current.js?v=20260914e-summary-finish-start"></script>
 </body></html>
