@@ -316,38 +316,51 @@ function persistUI({capture=true}={}){
  try{localStorage.setItem(UI_KEY,JSON.stringify(state))}catch{}
 }
 const SESSION_MARKER="rethink_session_alive_v1";
-const rethinkPersistOnBackgroundV5=()=>{try{persistUI();saveAll()}catch{}};
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")rethinkPersistOnBackgroundV5()});
-window.addEventListener("pagehide",rethinkPersistOnBackgroundV5);
-
 function restoreUI(){
- const wasAlive=sessionStorage.getItem(SESSION_MARKER)==="1";
  const saved=read(UI_KEY,null);
- const navType=(()=>{try{return performance.getEntriesByType("navigation")?.[0]?.type||"navigate"}catch{return"navigate"}})();
- const resumedSession=wasAlive||navType==="reload"||navType==="back_forward";
  sessionStorage.setItem(SESSION_MARKER,"1");
- profileDayOffset=0;
- localStorage.setItem(PROFILE_DAY_OFFSET_KEY,"0");
  document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));
  pageStack=[];sheetStack=[];
  $("sheetWrap")?.classList.add("hidden");
 
- // A reload during the same browser/app session is treated as standby/resume.
- // Restore the exact workout screen instead of throwing the user back to Training home.
- if(resumedSession&&saved?.page==="livePage"&&activeWorkout){
-  currentTab="training";
-  openLive(false);
+ // Resume authority: always prefer the last persisted state, including after iOS killed the WebView.
+ // A cold process restart must not throw the user out of the screen they were using.
+ if(saved){
+  if(saved.tabUiState&&typeof saved.tabUiState==="object")tabUiState=clone(saved.tabUiState);
+  if(saved.tabScroll&&typeof saved.tabScroll==="object")tabScroll={...tabScroll,...saved.tabScroll};
+  if(saved.exerciseFilters){
+   exType=saved.exerciseFilters.type||"Alle";
+   exMuscles=new Set(Array.isArray(saved.exerciseFilters.muscles)?saved.exerciseFilters.muscles:[])
+  }
+  plansQuickEdit=!!saved.plansQuickEdit;
+  if(saved.currentPlan)currentPlan=clone(saved.currentPlan);
+  const wantedTab=["exercises","plans","training","week","profile"].includes(saved.tab)?saved.tab:"training";
+  currentTab=wantedTab;
+  $("bottomNav")?.classList.remove("hidden");
+
+  if(saved.page==="livePage"&&activeWorkout){
+   currentTab="training";
+   openLive(false);
+   requestAnimationFrame(()=>{
+    const live=$("livePage");if(live)live.scrollTop=Math.max(0,Number(saved.pageScroll)||0);
+    persistUI({capture:false})
+   });
+   return
+  }
+
+  showTab(currentTab,{reset:false,forceRender:true});
+  if(currentTab==="training")renderTrainingHome();
   requestAnimationFrame(()=>{
-   const live=$("livePage");
-   if(live)live.scrollTop=Math.max(0,Number(saved.pageScroll)||0);
-   persistUI({capture:false});
+   const page=document.querySelector(".page:not(.hidden)");
+   if(page)page.scrollTop=Math.max(0,Number(saved.pageScroll)||Number(tabScroll[currentTab])||0);
+   restoreTabUiState(currentTab);
+   persistUI({capture:false})
   });
   return
  }
 
- // A true new session starts at the Training home.
  currentTab="training";
- $("bottomNav").classList.remove("hidden");
+ $("bottomNav")?.classList.remove("hidden");
  showTab("training",{reset:true,forceRender:true});
  renderTrainingHome();
  persistUI({capture:false});
@@ -409,7 +422,7 @@ function openFoodSearch(initialQuery=""){
  let q=String(initialQuery||"").toLowerCase();
  const rows=()=>q?FOOD_DB.filter(f=>f.name.toLowerCase().includes(q)).slice(0,80):[];
  const rowMarkup=()=>rows().map(f=>`<button class="food-result ${foodTone(f.category)}" data-food-name="${esc(f.name)}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category)}</small></div><span class="food-result-values">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser</span></button>`).join("")||(q?'<div class="small empty-food-note">Kein passendes Lebensmittel gefunden.</div>':'<div class="food-search-empty"><strong>Lebensmittel suchen</strong><div class="small">Tippe einen Namen ein. Die Datenbank wird nicht als Liste angezeigt.</div></div>');
- const body=()=>`<div class="search food-search"><span class="search-loupe" aria-hidden="true">⌕</span><input id="foodSearchInput" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel suchen" value="${esc(q)}"><button id="foodSearchClear" class="${q?"":"hidden"}">×</button></div><div class="small food-source-note">${FOOD_DB.length} Lebensmittel · Nährwerte pro 100 g</div><div id="foodSearchRows">${rowMarkup()}</div>`;
+ const body=()=>`<div class="search food-search"><span class="search-loupe" aria-hidden="true">⌕</span><input id="foodSearchInput" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel suchen" value="${esc(q)}"><button id="foodSearchClear" class="${q?"":"hidden"}">×</button></div><div id="foodSearchRows">${rowMarkup()}</div>`;
  const bindRows=()=>document.querySelectorAll("[data-food-name]").forEach(b=>b.onclick=()=>{
    const f=FOOD_DB.find(x=>x.name===b.dataset.foodName);
    currentSheetState={title:"Lebensmittel hinzufügen",body:body(),scroll:$("sheetBody").scrollTop||0,bind};
@@ -586,7 +599,7 @@ function resetTabToStandard(name){
  if(name==="plans"){plansQuickEdit=false;document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
  if(name==="training"){document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
  if(name==="week"){saveCurrentWeekRefs();weekOffset=0;localStorage.setItem(WEEK_VIEW_OFFSET_KEY,"0");const all=loadDatedWeeks();weekPlan=all[weekKeyForOffset(0)]||read(WEEK_KEY,[[],[],[],[],[],[],[]])||[[],[],[],[],[],[],[]];weekPlan=weekPlan.map(x=>Array.isArray(x)?x:(x!=null?[x]:[]));document.querySelectorAll(".swipe-open").forEach(x=>x.classList.remove("swipe-open"))}
- if(name==="profile"){profileDayOffset=0;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,"0")}
+ if(name==="profile"){profileDayOffset=0;localStorage.setItem(PROFILE_DAY_OFFSET_KEY,"0");$("tab-profile")?.querySelectorAll("details").forEach(d=>d.open=false)}
  tabScroll[name]=0
 }
 function mainScrollTop(){
@@ -750,9 +763,8 @@ function renderExerciseLibrary(){
  $("typeChips").innerHTML=["Alle",...types].map(x=>`<button class="chip ${exType===x?"active":""}" data-type="${esc(x)}">${esc(x)}</button>`).join("");
  $("muscleChips").innerHTML=["Alle",...muscles].map(x=>`<button class="chip ${(x==="Alle"&&!exMuscles.size)||exMuscles.has(x)?"active":""}" data-muscle="${esc(x)}">${esc(x)}</button>`).join("");
  $("exerciseList").innerHTML=rows.map(e=>{
-   const eq=e.equipmentDisplay&&e.equipmentDisplay!=="-"?e.equipmentDisplay.replace(/\s*\|\s*Default:.*$/,"").replace(/\s*\|\s*optional$/,"").replace(/\s*\(implicit\)$/,""):"";
-   const meta=[e.custom?"Eigene":"",(e.categories||[]).join(" · "),(e.muscles||[]).join(", "),eq].filter(Boolean).join(" · ");
-   return `<button class="exercise-card exercise-card-compact" data-ex="${esc(e.name)}"><div class="exercise-card-copy"><strong>${esc(exerciseDisplayName(e))}</strong><small>${esc(meta)}</small></div><span class="exercise-card-chevron">›</span></button>`
+   const meta=[e.custom?"Eigene":"",(e.categories||[]).join(" · "),(e.muscles||[]).join(", ")].filter(Boolean).join(" · ");
+   return `<button class="exercise-card exercise-card-compact" data-ex="${esc(e.name)}"><div class="exercise-card-copy"><strong>${esc(e.name)}</strong><small>${esc(meta)}</small></div><span class="exercise-card-chevron">›</span></button>`
  }).join("")||`<div class="card small">Keine Übung gefunden.</div>`;
  document.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>openExerciseDetail(b.dataset.ex));
  document.querySelectorAll("[data-type]").forEach(b=>b.onclick=()=>{const t=b.dataset.type;exType=(t!=="Alle"&&exType===t)?"Alle":t;renderExerciseLibrary()});
@@ -2523,9 +2535,8 @@ const pipe=window.__rt?.profile;
  // Final profile integrity pass: current-day controls must remain interactive and saved data visible.
  const root=$("tab-profile");
  if(root&&profileDayOffset===0){root.querySelectorAll("[data-profile-history-locked=\"1\"]").forEach(x=>{x.disabled=false;x.removeAttribute("aria-disabled");delete x.dataset.profileHistoryLocked});root.querySelectorAll("[data-profile-history-pointer=\"1\"]").forEach(x=>{x.style.pointerEvents="";delete x.dataset.profileHistoryPointer})}
+ if(root){root.querySelectorAll("details").forEach(d=>{if(d.dataset.persistProfileOpenBound)return;d.dataset.persistProfileOpenBound="1";d.addEventListener("toggle",()=>{captureTabUiState("profile");persistUI({capture:false})})})}
  const foodsNow=todayFoodEntries(),drinksNow=todayHydrationEntries();
- if($("todayFoodsDetails")&&foodsNow.length)$("todayFoodsDetails").open=true;
- if($("todayDrinksDetails")&&drinksNow.length)$("todayDrinksDetails").open=true;
  if($("editProfileBtn"))$("editProfileBtn").onclick=openProfileEditor;
  if($("addMeasurementBtn"))$("addMeasurementBtn").onclick=openMeasurementEntry;
  if($("addWaterBtn"))$("addWaterBtn").onclick=openQuickDrinkEntry;

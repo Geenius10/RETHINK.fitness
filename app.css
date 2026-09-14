@@ -1244,8 +1244,6 @@ html[data-theme="light"] .live-complete-badge{
 .set-index-with-history .previous-rating-dot,.combined-index-with-history .previous-rating-dot{margin:0 0 0 2px!important;position:static!important;transform:none!important}
 .settings-unit-select{width:132px;max-width:46vw}.settings-unit-note{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.3}
 .unit-context-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:9px;font-weight:900;color:var(--muted);margin:0 0 8px}
-html[data-text-scale="large"] h1{font-size:33px!important}html[data-text-scale="large"] h2{font-size:20px!important}html[data-text-scale="large"] .small,html[data-text-scale="large"] small{font-size:12px!important}html[data-text-scale="large"] .exercise-card strong,html[data-text-scale="large"] .plan-card strong{font-size:15px!important}html[data-text-scale="large"] .chip,html[data-text-scale="large"] button{font-size:12px}html[data-text-scale="large"] input,html[data-text-scale="large"] select,html[data-text-scale="large"] textarea{font-size:17px!important}
-html[data-text-scale="xlarge"] h1{font-size:36px!important}html[data-text-scale="xlarge"] h2{font-size:22px!important}html[data-text-scale="xlarge"] .small,html[data-text-scale="xlarge"] small{font-size:13px!important}html[data-text-scale="xlarge"] .exercise-card strong,html[data-text-scale="xlarge"] .plan-card strong{font-size:16px!important}html[data-text-scale="xlarge"] .chip,html[data-text-scale="xlarge"] button{font-size:13px}html[data-text-scale="xlarge"] input,html[data-text-scale="xlarge"] select,html[data-text-scale="xlarge"] textarea{font-size:18px!important}
 
 
 
@@ -1260,17 +1258,9 @@ html[data-text-scale="xlarge"] h1{font-size:36px!important}html[data-text-scale=
 
 
 
-:root{--ui-text-adjust:100%}
-html[data-text-scale="normal"]{--ui-text-adjust:100%}
-html[data-text-scale="large"]{--ui-text-adjust:115%}
-html[data-text-scale="xlarge"]{--ui-text-adjust:130%}
 html,body{
-  -webkit-text-size-adjust:var(--ui-text-adjust)!important;
-  text-size-adjust:var(--ui-text-adjust)!important;
 }
 /* iOS does not always scale form controls with text-size-adjust, so these follow explicitly. */
-html[data-text-scale="large"] :is(button,input,select,textarea){font-size:115%!important}
-html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!important}
 .settings-system-select{width:142px;max-width:48vw}
 .distance-live-field{min-width:0!important}
 
@@ -1294,8 +1284,6 @@ html[data-text-scale="xlarge"] :is(button,input,select,textarea){font-size:130%!
 .nutrition-today-card .mini-progress{height:10px!important;margin-top:7px}
 #drinksDetails>summary>span:first-child,#myFoodsDetails>summary>span:first-child{font-size:16px!important;font-weight:850}
 #myFoodsDetails .food-manage-label{font-size:13px!important;font-weight:850;letter-spacing:.02em}
-html[data-text-scale="large"] .nutrition-today-card .daily-bar-stat strong{font-size:22px!important}
-html[data-text-scale="xlarge"] .nutrition-today-card .daily-bar-stat strong{font-size:25px!important}
 
 
 
@@ -3027,3 +3015,27 @@ body>#restBar:not(.hidden){display:grid!important;visibility:visible!important;o
 html.rethink-keyboard-visible .sheet-wrap.rethink-entry-sheet{padding-top:4px!important;height:var(--rethink-vv-height)!important;max-height:var(--rethink-vv-height)!important}
 html.rethink-keyboard-visible .sheet-wrap.rethink-entry-sheet .sheet{height:calc(var(--rethink-vv-height) - 8px)!important;max-height:calc(var(--rethink-vv-height) - 8px)!important}
 html.rethink-keyboard-visible .sheet-wrap.rethink-entry-sheet .sheet-body{padding-bottom:120px!important}
+
+/* RETHINK 2026-09-14 — profile collapse consistency */
+/* Daily rows are compact; management rows share exactly one height. */
+#tab-profile .daily-log-details>summary{
+  min-height:36px!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+#tab-profile #drinksDetails>summary,
+#tab-profile #myFoodsDetails>summary{
+  min-height:46px!important;
+  height:46px!important;
+  padding:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  font-size:14px!important;
+  line-height:1.15!important;
+  font-weight:800!important;
+}
+#tab-profile #drinksDetails,
+#tab-profile #myFoodsDetails{padding-top:3px!important;box-sizing:border-box!important}

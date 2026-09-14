@@ -1,4 +1,4 @@
-const CACHE='rethink-fitness-20260914e-summary-finish-start';
+const CACHE='rethink-fitness-20260914h-curated-foods';
 const ASSETS=[
  './', './index.html','./app.css','./app-core.js','./runtime-current.js','./foods.js','./manifest.webmanifest',
  './logo.png','./icon-180.png','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./favicon-32.png','./favicon-64.png'

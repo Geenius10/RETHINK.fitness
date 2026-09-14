@@ -516,11 +516,8 @@ ensureNutritionV52();
 /* Session restore, workout plan commit, last-rating dots, direct quantity editing */
 (function(){
 
- /* Restore behavior is authoritative in app-core v24. */
+ /* Restore/background behavior is authoritative in app-core.js. */
  restoreUI=window.__rethinkRestoreUIV24||restoreUI;
- document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")persistUI()});
- window.addEventListener("pagehide",persistUI);
-
 
  /* Workout finish/save flow is authoritative in app-core.js. */
 
@@ -593,18 +590,6 @@ const hs=hydrationStreakV56(),ns=nutritionStreakV56();
 });
 
 
- /* Standby/background: persist the exact current position.
-    True process/session restart: SESSION_MARKER is gone and restoreUI sends the user to Training. */
- document.addEventListener("visibilitychange",()=>{
-   if(document.visibilityState==="hidden")persistUI();
-   else if(document.visibilityState==="visible"){
-     const s=read(UI_KEY,null);
-     if(s&&sessionStorage.getItem(SESSION_MARKER)==="1"){
-       /* Do not navigate anywhere on resume; the DOM stayed alive. Only restore scroll if iOS shifted it. */
-       if(!document.querySelector(".page:not(.hidden)"))requestAnimationFrame(()=>window.scrollTo({top:tabScroll[currentTab]||0,behavior:"auto"}))
-     }
-   }
- });
 })();
 
 /* Existing-plan decision before direct workout start */
@@ -850,7 +835,7 @@ document.querySelectorAll('[data-meal-log]').forEach(b=>b.onclick=()=>{const m=(
    };
    const markup=()=>rows().map(x=>{
      if(x.type==='meal'){const t=v69MealTotals(x.item);return`<button class="food-result" data-v69-meal-result="${x.item.id}"><div class="food-result-copy"><strong>${esc(x.item.name)}</strong><small>Mahlzeit${x.used?` · ${x.used}× verwendet`:''}</small>${v69IngredientLine(x.item)}</div><span class="food-result-values">${Math.round(t.kcal)} kcal · ${Math.round(t.protein*10)/10} g Protein · ${Math.round(t.water)} g Wasser</span></button>`}
-     const f=x.item,s=v69Serving(f),key=f._customId?`custom:${f._customId}`:`builtin:${f.name}`;return`<button class="food-result ${foodTone(f.category)}" data-v69-food-result="${esc(key)}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category||'Eigenes Lebensmittel')}${x.used?` · ${x.used}× verwendet`:''}</small>${v69IngredientLine(f)}<span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div><span class="food-result-values">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser</span></button>`
+     const f=x.item,s=v69Serving(f),key=f._customId?`custom:${f._customId}`:`builtin:${f.name}`,portion=f.isMeal?v69Nutrients(f,s.grams):null;return`<button class="food-result ${foodTone(f.category)}" data-v69-food-result="${esc(key)}"><div class="food-result-copy"><strong>${esc(f.name)}</strong><small>${esc(f.category||'Eigenes Lebensmittel')}${x.used?` · ${x.used}× verwendet`:''}</small>${v69IngredientLine(f)}<span class="food-serving">${esc(s.label)}${f.isMeal?'':` ≈ ${s.grams} g`}</span></div><span class="food-result-values">${f.isMeal?`${portion.kcal} kcal · ${portion.protein} g Protein / Portion`:`${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser`}</span></button>`
    }).join('')||(q?`<div class="food-search-empty food-search-no-result"><strong>Kein passender Treffer.</strong><button type="button" class="primary" data-v69-create-food style="width:100%;margin-top:10px">Lebensmittel/Mahlzeit erstellen</button></div>`:'<div class="food-search-empty"><strong>Lebensmittel oder Mahlzeit suchen</strong></div>');
    const body=()=>`<div class="food-search-sticky stable-entry-sticky"><div class="search food-search"><span class="search-loupe">⌕</span><input id="v69FoodSearch" class="field" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Lebensmittel, Mahlzeit oder Kategorie" value="${esc(q)}"><button id="v69FoodClear" class="${q?'':'hidden'}">×</button></div></div><div id="v69FoodRows" class="stable-search-results">${markup()}</div>`;
    const bindRows=()=>{
@@ -862,7 +847,7 @@ document.querySelectorAll('[data-meal-log]').forEach(b=>b.onclick=()=>{const m=(
        const key=b.dataset.v69FoodResult,all=v69FoodList(),f=key.startsWith('custom:')?all.find(x=>String(x._customId)===key.slice(7)):all.find(x=>String(x.name)===key.slice(8));if(!f)return;
        if(options.selectOnly&&typeof options.onSelect==='function'){options.onSelect(f);return}
        const s=v69Serving(f);
-       openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser je 100 g</div>${v69IngredientNames(f).length>1?`<div class="food-selected-ingredients"><b>Zutaten</b><span>${esc(v69IngredientNames(f).join(' · '))}</span></div>`:''}<span class="food-serving">${esc(s.label)} ≈ ${s.grams} g</span></div>
+       const servingN=v69Nutrients(f,s.grams);openSheet(f.name,`<div class="food-selected ${foodTone(f.category)}"><strong>${esc(f.name)}</strong><div class="small">${f.isMeal?`${servingN.kcal} kcal · ${servingN.protein} g Protein · ${servingN.water} g Wasser pro Portion`:`${f.kcal} kcal · ${f.protein} g Protein · ${Math.round(f.water||0)} g Wasser je 100 g`}</div>${v69IngredientNames(f).length>1?`<div class="food-selected-ingredients"><b>Zutaten</b><span>${esc(v69IngredientNames(f).join(' · '))}</span></div>`:''}<span class="food-serving">${esc(s.label)}${f.isMeal?` · ${s.grams} g`: ` ≈ ${s.grams} g`}</span></div>
        <div class="food-quick-portions v69"><button data-v69-food-factor=".125">⅛</button><button data-v69-food-factor=".25">¼</button><button data-v69-food-factor=".5">½</button><button data-v69-food-factor="1">1</button></div>
        <div class="form-field"><label>GRAMM</label><input id="v69FoodGrams" class="field" inputmode="decimal" value="${s.grams}"></div><div id="v69FoodPreview" class="small"></div>
        <button id="v69FoodAdd" class="primary" style="width:100%;margin-top:10px">Hinzufügen</button>`);
@@ -1131,8 +1116,6 @@ document.querySelectorAll('[data-v69-week-main]').forEach(btn=>{
    }catch{}
  }
  loadTabUiSnapshots();
- document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")saveTabUiSnapshots()});
- window.addEventListener("pagehide",saveTabUiSnapshots);
  const persistBeforeTabState=persistUI;
  persistUI=function(){saveTabUiSnapshots();return persistBeforeTabState()}
 })();
@@ -2221,6 +2204,16 @@ enforceProfileSystemV31();
      WEEK_DATED_KEY,                        // datumsbasierte Wochenpläne
      "rethink_week_recurring_rules_v1",     // wiederkehrende Wochenpläne
      "rethink_week_recurring_exceptions_v1",// Wochenplan-Ausnahmen
+     REST_DEFAULT_KEY,                      // Standardpause
+     "rethink_preferences_v31",            // Einheiten, Wochenstart, Sprache/system preferences
+     "rethink_theme_mode",                 // Theme
+     "rethink_reminders_v32",              // Erinnerungen
+     "rethink_profile_state_history_v49",  // Profil-Tageshistorie
+     "rethink_profile_chart_metric_v72",   // gewählte Messkurve
+     "rethink_plan_sort_v31",              // Plan-Sortierung
+     "rethink_rest_dock_position_v1",      // Position des Pausentimers
+     "rethink_tab_ui_state_v31",          // eingeklappte/ausgeklappte Profil- und Tab-Bereiche
+     "rethink_ui_state_v2",               // letzter Tab, Seite, Scrollposition und UI-Zustand
    ].filter(Boolean))]
  }
  function payload(){
@@ -2971,7 +2964,7 @@ refreshCompletedStreaks();return r
      else if(goal==='maintain')nutritionDone=Math.abs(calories-calorieGoal)<=calorieGoal*.05;
      else nutritionDone=calories<=calorieGoal;
    }
-   return{hydrationDone:drinks.length>=1&&waterGoal>0&&hydration>=waterGoal,nutritionDone}
+   return{hydrationDone:drinks.length>=3&&waterGoal>0&&hydration>=waterGoal,nutritionDone}
  }
  function streakAt(kind){
    let d=profileDate();d.setHours(12,0,0,0);if(profileDayOffset===0)d.setDate(d.getDate()-1);
@@ -2999,7 +2992,7 @@ refreshCompletedStreaks();return r
  }
  function renderHistoricalProgress(){
    const el=$('profileProgressOverview');if(!el)return;const cutoff=dayEnd(),settings=historicalSettings(cutoff),rows=measurementRows(cutoff,'weight'),cur=rows.length?Number(rows.at(-1).weight):null,target=Number(settings.targetWeight||profile.targetWeight||0)||null,distance=cur!=null&&target!=null?Math.round(Math.abs(target-cur)*10)/10:null,wk=weekInfoAtSelected(),train=workoutDaysForSelectedWeek(),streak=streakAt('combined');
-   el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid"><div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${cur!=null?`${cur} kg`:'–'}</strong><span class="progress-sub-value">${distance!=null?`${distance} kg bis Ziel`:'–'}</span></div><div class="card progress-stat"><div class="small">Gemeinsamer Streak</div><strong>${streak}</strong><span class="progress-sub-value">Hydrierung + Ernährung</span></div><div class="card progress-stat training-week-stat"><div class="small">Trainingstage</div><span class="progress-sub-label">KW ${wk.week}</span><strong>${train}/7</strong></div></div>`
+   el.innerHTML=`<div class="section-head"><h2>Fortschritt</h2></div><div class="profile-progress-grid"><div class="card progress-stat"><div class="small">Gewichtstrend</div><strong>${cur!=null?`${cur} kg`:'–'}</strong><span class="progress-sub-value">${distance!=null?`${distance} kg bis Ziel`:'–'}</span></div><div class="card progress-stat"><div class="small">Gemeinsamer Streak</div><strong>${streak}</strong></div><div class="card progress-stat training-week-stat"><div class="small">Trainingstage</div><span class="progress-sub-label">KW ${wk.week}</span><strong>${train}/7</strong></div></div>`
  }
  function annotateMeasurements(cutoff){
    let changed=false;
@@ -3129,9 +3122,6 @@ patchHistoricalState();return r
      }
      const drinks=typeof todayHydrationEntries==='function'?todayHydrationEntries():[];
      const foods=typeof todayFoodEntries==='function'?todayFoodEntries():[];
-     if(el('todayDrinksDetails')&&drinks.length)el('todayDrinksDetails').open=true;
-     if(el('todayFoodsDetails')&&foods.length)el('todayFoodsDetails').open=true;
-     if(el('myFoodsDetails')&&((nutrition.meals||[]).length||(nutrition.customFoods||[]).length))el('myFoodsDetails').open=true;
      if(typeof renderMeasurementCharts==='function')renderMeasurementCharts();
    }catch(err){console.error('profile refresh',err)}
  }
