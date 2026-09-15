@@ -3039,3 +3039,8 @@ html.rethink-keyboard-visible .sheet-wrap.rethink-entry-sheet .sheet-body{paddin
 }
 #tab-profile #drinksDetails,
 #tab-profile #myFoodsDetails{padding-top:3px!important;box-sizing:border-box!important}
+
+/* vFinal: streak counters belong to the section-heading row */
+#tab-profile .streak-section-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important}
+#tab-profile .streak-section-head .streak-flame{margin:0!important;position:static!important;flex:0 0 auto!important;align-self:center!important}
+#tab-profile .streak-above-card{display:none!important}

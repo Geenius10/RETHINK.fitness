@@ -101,7 +101,7 @@
 
 
 
-<link rel="stylesheet" href="./app.css?v=20260914h-curated-foods">
+<link rel="stylesheet" href="./app.css?v=20260915j-exercise-audit">
 
 <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
@@ -116,13 +116,12 @@
 <div class="tab-header"><div><div class="brand-kicker"><img class="brand-mini-logo" src="./logo.png" alt=""><span class="kicker">ReThink.</span></div><h1>Körper und Ernährung</h1></div><button id="settingsBtn" class="icon-btn profile-settings-icon" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></button></div>
 <div class="profile-day-nav"><button id="profilePrevDay" class="icon-btn" aria-label="Vorheriger Tag">‹</button><div><strong id="profileDayLabel">Heute</strong><small id="profileDayDate"></small></div><button id="profileNextDay" class="icon-btn" aria-label="Nächster Tag">›</button></div>
 
-<div class="card profile-identity-card"><div class="space"><div><div class="small">Mein Profil</div><strong id="profileSummary">Noch nicht eingerichtet</strong><div class="goal-line" id="profileGoalSummary">Persönliche Werte und Ziele</div></div><button id="editProfileBtn" class="secondary compact-profile-edit" type="button">Bearbeiten</button></div><div id="profileInputOverview" class="profile-input-overview"></div></div>
+<div class="card profile-identity-card"><div class="space"><div><div class="small">Mein Profil</div><strong id="profileSummary">Noch nicht eingerichtet</strong><div class="goal-line" id="profileGoalSummary">Persönliche Werte und Ziele</div></div><button id="editProfileBtn" class="secondary compact-profile-edit" type="button">Bearbeiten</button></div></div>
 
 <div class="space section-head"><h2>Messungen</h2><button id="addMeasurementBtn" class="icon-btn plus-btn">+</button></div>
 <div id="measurementCharts" class="measurement-charts"></div><div id="measurementSuggestion"></div><div id="measurementList"></div><div id="profileProgressOverview"></div>
 
-<div class="section-head streak-section-head"><h2>Hydrierung heute</h2></div>
-<div class="streak-above-card"><div id="hydrationStreakBadge" class="streak-flame" aria-label="Hydrierungs-Streak">🔥 <strong>0</strong></div></div>
+<div class="section-head streak-section-head"><h2>Hydrierung heute</h2><div id="hydrationStreakBadge" class="streak-flame" aria-label="Hydrierungs-Streak">🔥 <strong>0</strong></div></div>
 <div class="card daily-track-card hydration-today-card">
   <div class="daily-track-top">
     <div class="daily-main-stat"><span>Menge</span><strong id="waterView">0 ml</strong></div>
@@ -135,8 +134,7 @@
   <details id="drinksDetails" class="drink-details"><summary><span>Meine Getränke</span><span class="drink-summary-chevron">⌄</span></summary><div class="space drink-details-actions"><div class="small">Getränke verwalten</div><div class="drink-manage-actions"><button id="reorderDrinksBtn" class="icon-btn subtle-reorder-btn" aria-label="Reihenfolge ändern">⇅</button><button id="newDrinkBtn" class="secondary create-drink-btn">Getränk erstellen</button></div></div><div id="drinkList"></div></details>
 </div>
 
-<div class="space section-head streak-section-head"><h2>Ernährung heute</h2></div>
-<div class="streak-above-card"><div id="nutritionStreakBadge" class="streak-flame" aria-label="Ernährungs-Streak">🔥 <strong>0</strong></div></div>
+<div class="space section-head streak-section-head"><h2>Ernährung heute</h2><div id="nutritionStreakBadge" class="streak-flame" aria-label="Ernährungs-Streak">🔥 <strong>0</strong></div></div>
 <div class="card daily-track-card nutrition-today-card">
   <div class="daily-track-top nutrition-track-top">
     <div class="daily-bar-stat"><div><span>Kalorien</span><strong id="foodCaloriesCounter">0 / – kcal</strong></div><div class="mini-progress"><i id="foodCaloriesProgress"></i></div></div>
@@ -189,8 +187,8 @@
 <div id="sheetWrap" class="sheet-wrap hidden"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-top"><button id="sheetBack" class="icon-btn">‹</button><h2 id="sheetTitle">Auswahl</h2><button id="sheetClose" class="icon-btn">×</button></div><div id="sheetBody" class="sheet-body"></div></div></div>
 
 <div id="restBar" class="restbar hidden" aria-live="polite"><button id="restMinus">−15</button><strong id="restTime">01:30</strong><button id="restPlus">+15</button><button id="restSkip">Skip</button></div>
-<script src="./foods.js?v=20260914h-curated-foods"></script>
-<script src="./app-core.js?v=20260914h-curated-foods"></script>
+<script src="./foods.js?v=20260915j-exercise-audit"></script>
+<script src="./app-core.js?v=20260915j-exercise-audit"></script>
 
 
 
@@ -226,5 +224,5 @@
 
 
 
-<script src="./runtime-current.js?v=20260914h-curated-foods"></script>
+<script src="./runtime-current.js?v=20260915j-exercise-audit"></script>
 </body></html>

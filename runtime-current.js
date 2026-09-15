@@ -1117,7 +1117,14 @@ document.querySelectorAll('[data-v69-week-main]').forEach(btn=>{
  }
  loadTabUiSnapshots();
  const persistBeforeTabState=persistUI;
- persistUI=function(){saveTabUiSnapshots();return persistBeforeTabState()}
+ persistUI=function(options={}){
+   const capture=options?.capture!==false;
+   try{
+     if(capture&&typeof captureTabUiState==="function")captureTabUiState(currentTab);
+     localStorage.setItem(TAB_UI_STORAGE,JSON.stringify(tabUiState))
+   }catch{}
+   return persistBeforeTabState(options)
+ }
 })();
 
 
@@ -1180,7 +1187,7 @@ document.querySelectorAll('[data-v69-week-main]').forEach(btn=>{
        <span class="combined-index combined-index-with-history">${idx}${dot}</span>
        <label class="combined-field unified-time-field">${lab("ZEIT")}<span class="time-input-shell unified-time-shell"><input type="text" inputmode="none" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="${s.completed?"rated-time-value":""}" data-time-field="1" data-input="${x.i}|${si}|time" placeholder="${liveTimeBoxPlaceholder(s)}" value="${liveTimeBoxValue(s)}"></span></label>
        <label class="combined-field">${lab("LEISTUNG")}<input class="unified-performance-input" type="text" autocomplete="off" data-input="${x.i}|${si}|level" placeholder="Leistung" value="${esc(s.level||"")}"></label>
-       ${s.completed?`<button class="set-check time-rating-action done ${ratingClass(s)}" data-check="${x.i}|${si}" aria-label="Bewertung anzeigen">✓</button>`:`<button type="button" class="set-check time-rating-action ready" data-time-play="${x.i}|${si}" aria-label="Timer starten und anschließend bewerten">▶</button>`}
+       ${s.completed?`<button class="set-check time-rating-action done ${ratingClass(s)}" data-check="${x.i}|${si}" aria-label="Bewertung anzeigen">✓</button>`:s._timedOnce?`<button type="button" class="set-check time-rating-action ${canRateSet(x.e,s)?"ready":""}" data-time-play="${x.i}|${si}" aria-label="Satz bewerten">✓</button>`:`<button type="button" class="set-check time-rating-action ready" data-time-play="${x.i}|${si}" aria-label="Timer starten">▶</button>`}
      </div>`
    }
    return`<div class="combined-member-row">
@@ -1414,7 +1421,7 @@ patchProfileUnitsV31();requestAnimationFrame(()=>{patchProfileUnitsV31();renderP
    // Persistent preferences (units, theme, week start, text size, plans, history, nutrition...) are NOT touched.
    tabScroll={exercises:0,plans:0,training:0,week:0,profile:0};
    Object.keys(tabUiState||{}).forEach(k=>{
-     tabUiState[k]={scroll:0,horizontal:[],details:[],inputs:{},logical:null}
+     tabUiState[k]={scroll:0,horizontal:{},details:{},inputs:{},logical:null}
    });
    exType="Alle";exMuscles=new Set();plansQuickEdit=false;
    weekOffset=0;localStorage.setItem(WEEK_VIEW_OFFSET_KEY,"0");
